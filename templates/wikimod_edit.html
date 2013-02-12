@@ -1,0 +1,25 @@
+<{$wikimodform.javascript}>
+<form id="<{$wikimodform.name}>" name="<{$wikimodform.name}>" action="<{$wikimodform.action}>" method="<{$wikimodform.method}>" <{$wikimodform.extra}>>
+<table class="outer" cellspacing="1">
+    <tr>
+    <th colspan="2"><{$wikimodform.title}></th>
+    </tr>
+    <!-- start of form elements loop -->
+    <{foreach item=element from=$wikimodform.elements}>
+        <{if $element.hidden != true}>
+        <tr>
+            <td class="head"><{$element.caption}></td>
+            <td class="<{cycle values="even,odd"}>"><{$element.body}></td>
+        </tr>
+        <{else}>
+        <{$element.body}>
+        <{/if}>
+    <{/foreach}>
+    <!-- end of form elements loop -->
+</table>
+</form>
+
+<{if $wikimod}><p class="itemInfo"><{$_MD_WIKIMOD_PAGE}>: <strong><{$wikimod.keyword}></strong> - <{$_MD_WIKIMOD_PREVIEW}></p>
+
+<h1><{$wikimod.title}></h1>
+<{$wikimod.body}><{/if}>
