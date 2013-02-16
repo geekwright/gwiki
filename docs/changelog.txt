@@ -1,0 +1,7 @@
+FBComment ChangeLog
+
+=== FBComment Module 1.0 ===
+Release date: 2012
+
+* initial release
+

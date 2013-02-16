@@ -1,0 +1,961 @@
+<{if isset($err_message)}>
+<hr />
+<div class="errorMsg"><{$err_message}></div>
+<hr />
+<{/if}>
+<{if isset($message)}>
+<hr />
+<div class="resultMsg"><{$message}></div>
+<hr />
+<{/if}>
+<{$gwikiform.javascript}>
+<div class="wikieditor">
+<form id="<{$gwikiform.name}>" name="<{$gwikiform.name}>" action="<{$gwikiform.action}>" method="<{$gwikiform.method}>" <{$gwikiform.extra}>>
+<table class="outer" cellspacing="1">
+    <tr>
+    <th colspan="2"><{$gwikiform.title}></th>
+    </tr>
+    <!-- start of form elements loop -->
+    <tbody id="gwikiformbodyedit">
+    <{foreach item=element from=$gwikiform.elements}>
+        <{if $element.hidden != true}>
+        <tr>
+            <td class="head"><{$element.caption}></td>
+            <td class="<{cycle values="even,odd"}>"><{$element.body}></td>
+        </tr>
+        <{else}>
+        <{$element.body}>
+        <{/if}>
+        <{if $element.name == 'gwikiformpage1'}>
+        </tbody>
+        <tbody id="gwikiformmetaedit">
+	<{/if}>
+    <{/foreach}>
+    </tbody>
+    <!-- end of form elements loop -->
+</table>
+<div id="bigeditdiv" style="z-index:3000; display:none; background-color:white;">
+   <div style="height:36px; width:100%; background-color:grey; text-align: right; border:0px; margin-right: 1em;">
+   <!--  full window editor Toolbar goes here -->
+   <span style="display: inline-block; vertical-align: middle; margin-top: 6px; margin-right: 2em;">
+   <a onclick="toggleDiv('wikiimageedit'); return false;"><img src="<{$gwiki.modurl}>/images/imageicon.png" alt="<{$smarty.const._MD_GWIKI_IMAGES}>" title="<{$smarty.const._MD_GWIKI_IMAGES}>" /></a>
+   <a onclick="toggleDiv('wikifileedit'); return false;"><img src="<{$gwiki.modurl}>/images/attachicon.png" alt="<{$smarty.const._MD_GWIKI_ATTACHMENT_EDIT}>" title="<{$smarty.const._MD_GWIKI_ATTACHMENT_EDIT}>" /></a>
+   <a onclick="helpwindow();return false;"><img src="<{$gwiki.modurl}>/images/helpicon.png" alt="<{$smarty.const._MD_GWIKI_WIKI_EDIT_HELP}>" title="<{$smarty.const._MD_GWIKI_WIKI_EDIT_HELP}>" /></a>
+   <a onclick="bigWindow(0); return false;"><img src="<{$gwiki.modurl}>/images/closeicon.png" alt="<{$smarty.const._MD_GWIKI_FULLSCREEN_EXIT}>" title="<{$smarty.const._MD_GWIKI_FULLSCREEN_EDIT}>" /></a>
+   </span>
+   </div>
+   <textarea id="editfield" style="width:100%; height:94%; overflow:auto; border:0px; margin-right: 1em;"> </textarea>
+</div>
+</form>
+</div>
+<{include file="db:gwiki_page_info.html"}>
+
+<{if $gwiki.preview}><p class="itemInfo"><{$smarty.const._MD_GWIKI_PAGE}>: <strong><{$gwiki.keyword}></strong> - <{$smarty.const._MD_GWIKI_PREVIEW}></p>
+
+<div id="wikipage" class="wikipage">
+<h1 class="wikititle" id="toc0"><{$gwiki.title}></h1>
+<{$gwiki.body}>
+</div>
+<br clear="all" /><a href="#<{$gwikiform.name}>"><img src="<{$gwiki.modurl}>/images/upicon.png" alt="<{$smarty.const._MD_GWIKI_BACK_TO_TOP}>" /> <{$smarty.const._MD_GWIKI_BACK_TO_TOP}></a>
+<{/if}>
+
+<div id="wikiimageedit" class="wikiimageedit">
+<div class="wikiimageedit_title"><{$smarty.const._MD_GWIKI_IMAGES_TITLE}></div>
+<table><tr><td width="10%">
+<h2><{$smarty.const._MD_GWIKI_IMAGES_LIST}></h2>
+<div id="wikiimgliblist" class="wikiimagelist">
+<b><{$smarty.const._MD_GWIKI_IMAGES_LIBRARY}><br /><select id="imagelib" name="imagelib" onchange="clearImageDetail(); fetchImageList();">
+<{foreach item=imglib from=$gwiki.imglib}>
+  <option value="<{$imglib}>"><{$imglib}></option>
+<{/foreach}>
+</select>
+</div>
+<div id="wikiimagelist" class="wikiimagelist">
+<{$imagelist}>
+</div>
+</td><td width="90%">
+<h2><{$smarty.const._MD_GWIKI_IMAGES_DETAIL}></h2>
+<div class="wikiimagedetail">
+<form id="wikieditimg_form" action="ajaximgedit.php" method="POST" enctype="multipart/form-data">
+<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="2000000" />
+<input type="hidden" id="page" name="page" value="<{$gwiki.keyword}>" />
+<input type="hidden" id="wikiimage_id" name="image_id" value="0" />
+
+<div id="wikieditimg_dd">
+<img name="wikieditimg_img" id="wikieditimg_img" class="wikieditimg" src="images/blank.png" />
+<br /><span id="wikieditimg_dd_msg"><{$smarty.const._MD_GWIKI_IMAGES_DROPHERE}></span>
+<div id="gwikiimgform_nofiledrag"><{$smarty.const._MD_GWIKI_IMAGES_PICKFILE}><input type="file" id="wikieditimg_fileselect" name="fileselect[]" /></div>
+<div id="wikieditimg_progress"></div>
+</div>
+<span class="wikieditimg_field"><{$smarty.const._MD_GWIKI_IMAGES_NAME}></span> <input type="text" id="wikieditimg_name" name="wikieditimg_name" size="30" value="" onchange="fieldEventHandler('change','wikieditimg_name');" onfocus="fieldEventHandler('focus','wikieditimg_name');" />
+<br /><span class="wikieditimg_field"><{$smarty.const._MD_GWIKI_IMAGES_ALTTEXT}></span> <input type="text" id="wikieditimg_alttext" name="wikieditimg_alttext" size="30" value="" onchange="fieldEventHandler('change','wikieditimg_alttext');" onfocus="fieldEventHandler('focus','wikieditimg_alttext');" />
+<br /><span class="wikieditimg_field"> </span> <input type="checkbox" id="wikieditimg_represent" name="wikieditimg_represent" value="represent" onchange="fieldEventHandler('change','wikieditimg_represent');" onfocus="fieldEventHandler('focus','wikieditimg_represent');" /> <{$smarty.const._MD_GWIKI_IMAGES_REPRESENT}>
+<br /><br />
+<div id="wikiedit_buttons">
+<span id="wikieditimg_submitbutton"><button type="button" onclick="updateImageDetail();"><{$smarty.const._MD_GWIKI_IMAGES_UPDATE}></button></span>
+<span id="wikieditimg_newbutton"><button type="button" onclick="newImageDetail();"><{$smarty.const._MD_GWIKI_IMAGES_NEW}></button></span>
+<span id="wikieditimg_deletebutton"><button type="button" onclick="deleteImageDetail();"><{$smarty.const._MD_GWIKI_IMAGES_DELETE}></button></span>
+</div>
+</form>
+</div>
+<div class="wikiimagedetail">
+<form id="insertimage">
+<{$smarty.const._MD_GWIKI_IMAGES_INSERT_TITLE}>
+<{$smarty.const._MD_GWIKI_IMAGES_ALIGN}><select id="wikiimage_align" name="align">
+  <option value=""><{$smarty.const._MD_GWIKI_IMAGES_ALIGN_NONE}></option>
+  <option value="left"><{$smarty.const._MD_GWIKI_IMAGES_ALIGN_LEFT}></option>
+  <option value="center"><{$smarty.const._MD_GWIKI_IMAGES_ALIGN_CENTER}></option>
+  <option value="right"><{$smarty.const._MD_GWIKI_IMAGES_ALIGN_RIGHT}></option>
+</select>
+<{$smarty.const._MD_GWIKI_IMAGES_MAX_WIDTH}><input id="wikiimage_maxwidth" name='maxwidth' type="text" size="3">
+<a onclick="addImageMarkup();" title="<{$smarty.const._MD_GWIKI_IMAGES_INSERT_TIP}>"><img src="images/insimgicon.png" /></a>
+<a onclick="toggleDiv('wikiimageedit'); return false;"><img src="images/closeicon.png" title="<{$smarty.const._MD_GWIKI_IMAGES_CLOSE}>" align="right" /></a>
+</form>
+</div>
+</td></tr></table>
+</div>
+
+<div id="wikifileedit" class="wikifileedit">
+<div class="wikifileedit_title"><{$smarty.const._MD_GWIKI_FILES_TITLE}></div>
+<table><tr><td width="10%">
+<h2><{$smarty.const._MD_GWIKI_FILES_LIST}></h2>
+<div id="wikifilelist" class="wikifilelist">
+</div>
+</td><td width="90%">
+<h2><{$smarty.const._MD_GWIKI_FILES_DETAIL}></h2>
+<div class="wikifiledetail">
+<form id="wikieditfile_form" action="ajaxfileedit.php" method="POST" enctype="multipart/form-data">
+<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="2000000" />
+<input type="hidden" id="page" name="page" value="<{$gwiki.keyword}>" />
+<input type="hidden" id="wikifile_id" name="file_id" value="0" />
+
+<div id="wikieditfile_dd">
+<img name="wikieditfile_img" id="wikieditfile_img" class="wikieditfile" src="images/blank.png" />
+<br /><span id="wikieditfile_dd_msg"><{$smarty.const._MD_GWIKI_FILES_DROPHERE}></span>
+<div id="wikifileform_nofiledrag"><{$smarty.const._MD_GWIKI_FILES_PICKFILE}><input type="file" id="wikieditfile_fileselect" name="fileselect[]" /></div>
+<div id="wikieditfile_progress"></div>
+</div>
+<span class="wikieditfile_fieldname"><{$smarty.const._MD_GWIKI_FILES_NAME}></span> <span id="wikieditfile_name" class="wikieditfile_field" /> </span>
+<br /><span class="wikieditfile_fieldname"><{$smarty.const._MD_GWIKI_FILES_TYPE}></span> <span id="wikieditfile_type" class="wikieditfile_field" /> </span>
+<br /><span class="wikieditfile_fieldname"><{$smarty.const._MD_GWIKI_FILES_SIZE}></span> <span id="wikieditfile_size" class="wikieditfile_field" /> </span>
+<br /><span class="wikieditfile_fieldname"><{$smarty.const._MD_GWIKI_FILES_DATE}></span> <span id="wikieditfile_date" class="wikieditfile_field" /> </span>
+<br /><span class="wikieditfile_fieldname"><{$smarty.const._MD_GWIKI_FILES_DESCRIPTION}></span> <span class="wikieditfile_field" style="display: inline-block; vertical-align: top;"> <textarea id="wikieditfile_description" name="wikieditfile_description" rows="3" cols="50" onchange="fileFieldEventHandler('change','wikieditfile_description');" onfocus="fileFieldEventHandler('focus','wikieditfile_description');"> </textarea></span>
+<br /><span class="wikieditfile_fieldname"><{$smarty.const._MD_GWIKI_FILES_USER}></span> <span id="wikieditfile_userlink" class="wikieditfile_field" /> </span>
+<br /><br />
+<div id="wikiedit_buttons">
+<span id="wikieditfile_submitbutton"><button type="button" onclick="updateFileDetail();"><{$smarty.const._MD_GWIKI_FILES_UPDATE}></button></span>
+<span id="wikieditfile_newbutton"><button type="button" onclick="newFileDetail();"><{$smarty.const._MD_GWIKI_FILES_NEW}></button></span>
+<span id="wikieditfile_deletebutton"><button type="button" onclick="deleteFileDetail();"><{$smarty.const._MD_GWIKI_FILES_DELETE}></button></span>
+</div>
+</form>
+</div>
+<div>
+<a onclick="toggleDiv('wikifileedit'); return false;"><img src="images/closeicon.png" title="<{$smarty.const._MD_GWIKI_FILES_CLOSE}>" align="right" style="margin:0.5em;" /></a>
+</div>
+</td></tr></table>
+</div>
+
+<script>
+// some misc script things 
+function helpwindow() {
+	window.open('<{$gwiki.modurl}>/language/<{$smarty.const._MD_GWIKI_WIKI_HELP_DIR}>/help/wikihelp.html','1359403524804','width=400,height=680,toolbar=0,menubar=1,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+}
+
+// we have 2 editor textareas - one normal, one full screen. Figure out which one is active and return it
+function idEditField() {
+	var e = document.getElementById("bigeditdiv");
+	if (e.style.display=='block') return (document.getElementById("editfield"));
+	else return (document.getElementById("body"));
+}
+
+function addImageMarkup() {
+	var image_id=document.getElementById("wikiimage_id").value;
+	var image_name=	document.getElementById("wikieditimg_name").value;
+	var image_alt=document.getElementById("wikieditimg_alttext").value;
+	var image_align=document.getElementById("wikiimage_align").value;
+	var image_maxwidth=document.getElementById("wikiimage_maxwidth").value;
+	var markup = '';
+	if (image_id==0 || image_name=='') { alert("<{$smarty.const._MD_GWIKI_IMAGES_NO_SELECTION}>"); return false; }
+	// going backwards - only add empty values if we already have arguments that will be behind in the markup
+	if (image_maxwidth!='' || markup!='') {
+		markup = '|'+image_maxwidth + markup;
+	}
+	if (image_align!='' || markup!='') {
+		markup = '|'+image_align + markup;
+	}
+	// we will always use the default alt tag, so leave empty
+	if (markup!='') {
+		markup = '|'+ markup;
+	}
+	markup = '{{' + image_name + markup + '}}';
+	var e=idEditField();
+	insertAtCursor(e,markup);
+	toggleDiv('wikiimageedit');
+	e.focus();
+	return true;
+} 
+
+function insertAtCursor(myField, myValue) {
+//IE support
+	if (document.selection) {
+		myField.focus();
+		sel = document.selection.createRange();
+		sel.text = myValue;
+	}
+//MOZILLA/NETSCAPE support
+	else if (myField.selectionStart || myField.selectionStart == '0') {
+		var startPos = myField.selectionStart;
+		var endPos = myField.selectionEnd;
+		myField.value = myField.value.substring(0, startPos)
+		+ myValue
+		+ myField.value.substring(endPos, myField.value.length);
+	} else {
+		myField.value += myValue;
+	}
+	moveCaretPosition(myField,myValue.length);
+}
+
+function moveCaretPosition(myField,delta) {
+	setCaretPosition(myField,getCaretPosition(myField)+delta);
+}
+
+// enable a full screen textarea for editing
+function getCaretPosition (ctrl) {
+ 
+	var CaretPos = 0;
+	// IE Support
+	if (document.selection) {
+ 
+		ctrl.focus ();
+		var Sel = document.selection.createRange ();
+ 
+		Sel.moveStart ('character', -ctrl.value.length);
+ 
+		CaretPos = Sel.text.length;
+	}
+	// Firefox support
+	else if (ctrl.selectionStart || ctrl.selectionStart == '0')
+		CaretPos = ctrl.selectionStart;
+ 
+	return (CaretPos);
+ 
+}
+
+function setCaretPosition(ctrl, pos)
+{
+ 
+	if(ctrl.setSelectionRange)
+	{
+		ctrl.focus();
+		ctrl.setSelectionRange(pos,pos);
+	}
+	else if (ctrl.createTextRange) {
+		var range = ctrl.createTextRange();
+		range.collapse(true);
+		range.moveEnd('character', pos);
+		range.moveStart('character', pos);
+		range.select();
+	}
+}
+
+
+function viewport()
+{
+var e = window
+, a = 'inner';
+if ( !( 'innerWidth' in window ) )
+{
+a = 'client';
+e = document.documentElement || document.body;
+}
+return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
+}
+
+function bigWindow(op)
+{
+var w=viewport();
+var e = document.getElementById("bigeditdiv");
+var f1 = document.getElementById("body");
+var f2 = document.getElementById("editfield");
+if(op==1) {
+f2.value=f1.value;
+e.style.display="block";
+e.style.position="fixed";
+var basewidth=w.width;
+e.style.width=basewidth+"px";
+var baseheight=w.height;
+e.style.height=baseheight+"px";
+e.style.left=0;
+e.style.top=0;
+e.style.zIndex="3000";
+f2.style.width=(basewidth-20)+"px";
+f2.style.height=(baseheight-36-20)+"px";
+setCaretPosition(f2,getCaretPosition(f1));
+f2.focus();
+}
+else {
+f1.value=f2.value;
+setCaretPosition(f1,getCaretPosition(f2));
+f1.focus ();
+e.style.display="none";
+}
+
+}
+
+// output status and other info
+function Output(msg) {
+	var m = document.getElementById("wikieditimg_dd_msg");
+	m.innerHTML = msg;
+}
+
+
+function ClearOutput() {
+	var m = document.getElementById("wikieditimg_dd_msg");
+	if(window.wikisaysdumbbrowser==true) { m.innerHTML = ''; }
+	else { m.innerHTML="<{$smarty.const._MD_GWIKI_IMAGES_DROPHERE}>"; }
+	m = document.getElementById("wikieditimg_progress");
+	m.innerHTML = '';
+}
+
+
+function toggleDiv(id) {
+	var ele = document.getElementById(id);
+	if(ele.style.display == "block") {
+		ele.style.display = "none";
+	}
+	else {
+		if(id=='wikifileedit') {
+			clearFileDetail();
+			fetchFileList();
+			var newZ = document.getElementById('wikiimageedit').style.zIndex;
+		}
+		if(id=='wikiimageedit') {
+			clearImageDetail();
+			fetchImageList();
+			var newZ = document.getElementById('wikifileedit').style.zIndex;
+		}
+		if(newZ<4000) newZ=4000;
+		ele.style.zIndex=(++newZ);
+
+		ele.style.position="absolute";
+		if(typeof(window.pageYOffset)=='number') {
+			ele.style.top = (window.pageYOffset)+"px";
+			ele.style.left = window.pageXOffset+"px";
+		}
+		else {
+			ele.style.top = document.documentElement.scrollTop+"px";
+			ele.style.left = document.documentElement.scrollLeft+"px";
+		}
+		ele.style.display = "block";
+	}
+} 
+function hideDiv(id) {
+	var ele = document.getElementById(id);
+	ele.style.display = "none";
+} 
+
+function clearImageDetail() {
+	document.getElementById("wikiimage_id").value='0';
+	document.getElementById("wikieditimg_name").value='';
+	document.getElementById("wikieditimg_alttext").value='';
+	document.getElementById("wikieditimg_represent").checked=false;
+
+	document.getElementById("wikieditimg_img").src='images/blank.png';
+
+	document.getElementById("wikieditimg_fileselect").value='';
+	document.getElementById("wikieditimg_progress").innerHTML='';
+	document.getElementById("wikieditimg_name").className = 'wikifield_input_reset';
+	document.getElementById("wikieditimg_alttext").className = 'wikifield_input_reset';
+	ClearOutput();
+} 
+
+
+function getImageListById(imageid) {
+
+	clearImageDetail();
+	
+	document.getElementById("wikiimage_id").value=window.imageList[imageid].image_id;
+	document.getElementById("wikieditimg_name").value=window.imageList[imageid].image_name;
+	document.getElementById("wikieditimg_alttext").value=window.imageList[imageid].image_alt_text;
+	document.getElementById("wikieditimg_represent").checked=(window.imageList[imageid].use_to_represent!="0"); // make boolean
+
+	document.getElementById("wikieditimg_img").src=window.imageList[imageid].link;
+
+} 
+
+
+function fetchImageList() {
+	document.getElementById("wikiimagelist").innerHTML='<img id="loadanim" src="images/loading-anim.gif" />';
+	window.imageList = new Object;
+
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function() {
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			var ajaxreturn=JSON.parse(xmlhttp.responseText);
+			var cnt=0;
+			var body='';
+			for (i in ajaxreturn)
+			{
+				++cnt;
+				window.imageList[ajaxreturn[i].image_id]=ajaxreturn[i];
+				body=body+'<br /><img src="'+ajaxreturn[i].link+'" alt="'+ajaxreturn[i].image_alt_text+'" title="'+ajaxreturn[i].image_name+'" onclick="getImageListById(\''+ajaxreturn[i].image_id+'\');" /><br />';
+				body=body+ajaxreturn[i].image_name + '<br />';
+			}
+			if(cnt==0) { body='<{$smarty.const._MD_GWIKI_IMAGES_EMPTY}>'; }
+			document.getElementById("wikiimagelist").innerHTML=body+'<br />';
+	      }
+	}
+
+	xmlhttp.open("GET","ajaximglist.php?page="+document.getElementById('imagelib').value,true); // +'&cachekill=' + Math.random()
+	xmlhttp.send();
+} 
+
+
+function serializeImageDetail() {
+	var image = new Object;
+	
+	image.page=document.getElementById("page").value;
+	image.image_id=document.getElementById("wikiimage_id").value;
+	image.image_name=document.getElementById("wikieditimg_name").value;
+	image.image_alt_text=document.getElementById("wikieditimg_alttext").value;
+	image.use_to_represent=document.getElementById("wikieditimg_represent").checked;
+	var jsonimg = JSON.stringify(image);
+	return jsonimg;
+}
+
+function deleteImageDetail() {
+	var doit = confirm("<{$smarty.const._MD_GWIKI_IMAGES_DELETE_CONFIRM}>");
+	if(doit) {
+		var deletereq = new Object;
+		deletereq.page=document.getElementById("page").value;
+		deletereq.image_id=document.getElementById("wikiimage_id").value;
+		deletereq.op='delete';
+		var x_jsondata = JSON.stringify(deletereq);
+		
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function(e) {
+			if (xhr.readyState == 4) {
+				try {
+					var ajaxreturn=JSON.parse(xhr.responseText);
+					if(typeof(ajaxreturn.message)!='undefined') {
+						clearImageDetail();
+						document.getElementById("wikieditimg_dd_msg").innerHTML=ajaxreturn.message;
+						fetchImageList();
+					}
+				}
+				catch(err) { document.getElementById("wikieditimg_dd_msg").innerHTML='JSON response error'; }
+			}
+		};
+		// send data
+		xhr.open("POST", document.getElementById("wikieditimg_form").action, true);
+		xhr.setRequestHeader("X_JSONDATA", x_jsondata);
+		xhr.send();
+	}
+} 
+
+function newImageDetail() {
+	clearImageDetail();
+} 
+
+function updateImageDetail() {
+	alert("To be completed");
+} 
+
+// handles all the individual field changes
+function fieldEventHandler(event,field) {
+	if(event == "focus") {
+	  document.getElementById(field).className = 'wikifield_input_reset';
+	  return;
+	}
+
+	var x_jsondata = serializeImageDetail();
+	
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function(e) {
+		if (xhr.readyState == 4) {
+			try {
+				var ajaxreturn=JSON.parse(xhr.responseText);
+				if(typeof(ajaxreturn.message)!='undefined') {
+					Output(ajaxreturn.message);
+				}
+			}
+			catch(err) { Output('JSON response error'); }
+		}
+		document.getElementById(field).className = 'wikifield_input_ok';
+		fetchImageList();
+	};
+	// send data
+	xhr.open("POST", document.getElementById("wikieditimg_form").action, true);
+	xhr.setRequestHeader("X_JSONDATA", x_jsondata);
+	xhr.send();
+}
+
+
+/*
+taken from
+filedrag.js - HTML5 File Drag & Drop demonstration
+Featured on SitePoint.com
+Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
+*/
+
+(function() {
+
+	// file drag hover
+	function FileDragHover(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		e.target.className = (e.type == "dragover" ? "hover" : "");
+	}
+
+
+	// file selection
+	function FileSelectHandler(e) {
+
+		// cancel event and hover styling
+		FileDragHover(e);
+
+		// fetch FileList object
+		var files = e.target.files || e.dataTransfer.files;
+
+		// process all File objects
+		for (var i = 0, f; f = files[i]; i++) {
+			ParseFile(f);
+			UploadFile(f);
+		}
+
+	}
+
+
+	// output file information
+	function ParseFile(file) {
+		ClearOutput();
+		Output(
+			"<p><strong>" + file.name +
+			"</strong> : <strong>" + file.type +
+			"</strong> : <strong>" + file.size +
+			"</strong> bytes</p>"
+		);
+
+		// display an image
+		if (file.type.indexOf("image") == 0) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				var i = document.getElementById('wikieditimg_img');
+				i.src=e.target.result;
+				Output(file.name);
+			}
+			reader.readAsDataURL(file);
+		}
+
+	}
+
+	// upload JPEG files
+	function UploadFile(file) {
+		// create progress bar
+		var o = document.getElementById("wikieditimg_progress")
+		var progress = o.appendChild(document.createElement("p"));
+		progress.appendChild(document.createTextNode(file.name));
+		
+		if (file.size > document.getElementById("MAX_FILE_SIZE").value) {
+			progress.className = "toobig";
+			return;
+		}
+		var x_jsondata = serializeImageDetail();
+		
+		var xhr = new XMLHttpRequest();
+		if (xhr.upload && (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/gif")) {
+
+			// progress bar
+			xhr.upload.addEventListener("progress", function(e) {
+				var pc = parseInt(100 - (e.loaded / e.total * 100));
+				progress.style.backgroundPosition = pc + "% 0";
+			}, false);
+
+			// file received/failed
+			xhr.onreadystatechange = function(e) {
+				if (xhr.readyState == 4) {
+					progress.className = (xhr.status == 200 ? "success" : "failed");
+					try {
+						var ajaxreturn=JSON.parse(xhr.responseText);
+						if(typeof(ajaxreturn.image_id)!='undefined') {
+							document.getElementById("wikiimage_id").value=ajaxreturn.image_id;
+							document.getElementById("wikieditimg_name").value=ajaxreturn.image_name;
+							fetchImageList();
+						}
+						if(typeof(ajaxreturn.message)!='undefined') {
+							Output(ajaxreturn.message);
+						}
+					}
+					catch(err) { Output('JSON response error'); }
+				}
+			};
+
+			// start upload
+			xhr.open("POST", document.getElementById("wikieditimg_form").action, true);
+			xhr.setRequestHeader("X_FILENAME", file.name);
+			xhr.setRequestHeader("X_JSONDATA", x_jsondata);
+			xhr.send(file);
+
+		}
+
+	}
+
+
+	// initialize
+	function Init() {
+
+		var fileselect = document.getElementById("wikieditimg_fileselect"),
+			filedrag = document.getElementById("wikieditimg_dd"),
+			submitbutton = document.getElementById("wikieditimg_submitbutton");
+
+		// file select
+		fileselect.addEventListener("change", FileSelectHandler, false);
+
+		// is XHR2 available?
+		var xhr = new XMLHttpRequest();
+
+		if (xhr.upload) {
+
+			// file drop
+			filedrag.addEventListener("dragover", FileDragHover, false);
+			filedrag.addEventListener("dragleave", FileDragHover, false);
+			filedrag.addEventListener("drop", FileSelectHandler, false);
+			filedrag.style.display = "block";
+
+			// remove submit button
+			submitbutton.style.display = "none";
+			window.wikisaysdumbbrowser=false;
+		} else {
+			document.getElementById("gwikiimgform_nofiledrag").style.display='none';
+			document.getElementById("wikieditimg_dd_msg").innerHTML="";
+		}
+	}
+
+	// call initialization file
+	window.wikisaysdumbbrowser=true; // set to false when proven otherwise
+	if (window.File && window.FileList && window.FileReader) {
+		Init();
+	} else {
+		document.getElementById("gwikiimgform_nofiledrag").style.display='none';
+		document.getElementById("wikieditimg_dd_msg").innerHTML="";
+	}
+
+})();
+
+// attachment specific
+function fileOutput(msg) {
+	var m = document.getElementById("wikieditfile_dd_msg");
+	m.innerHTML = msg;
+}
+
+
+function fileClearOutput() {
+	var m = document.getElementById("wikieditfile_dd_msg");
+	if(window.wikisaysdumbbrowser==true) { m.innerHTML = ''; }
+	else { m.innerHTML="<{$smarty.const._MD_GWIKI_FILES_DROPHERE}>"; }
+	m = document.getElementById("wikieditfile_progress");
+	m.innerHTML = '';
+}
+
+function clearFileDetail() {
+	document.getElementById("wikifile_id").value='0';
+	document.getElementById("wikieditfile_name").innerHTML='';
+	document.getElementById("wikieditfile_userlink").innerHTML='';
+	document.getElementById("wikieditfile_type").innerHTML='';
+	document.getElementById("wikieditfile_size").innerHTML='';
+	document.getElementById("wikieditfile_date").innerHTML='';
+	document.getElementById("wikieditfile_description").value='';
+
+	document.getElementById("wikieditfile_img").src='images/blank.png';
+
+	document.getElementById("wikieditfile_fileselect").value='';
+	document.getElementById("wikieditfile_progress").innerHTML='';
+	document.getElementById("wikieditfile_description").className = 'wikifield_input_reset';
+	fileClearOutput();
+} 
+
+
+function getFileListById(fileid) {
+
+	clearFileDetail();
+	
+	document.getElementById("wikifile_id").value=window.fileList[fileid].file_id;
+	document.getElementById("wikieditfile_name").innerHTML=window.fileList[fileid].file_name;
+	document.getElementById("wikieditfile_userlink").innerHTML=window.fileList[fileid].userlink;
+	document.getElementById("wikieditfile_type").innerHTML=window.fileList[fileid].file_type;
+	document.getElementById("wikieditfile_size").innerHTML=window.fileList[fileid].size;
+	document.getElementById("wikieditfile_date").innerHTML=window.fileList[fileid].date;
+	document.getElementById("wikieditfile_description").value=window.fileList[fileid].file_description;
+	document.getElementById("wikieditfile_img").src=window.fileList[fileid].iconlink;
+
+} 
+
+
+function fetchFileList() {
+	document.getElementById("wikifilelist").innerHTML='<img id="loadanim" src="images/loading-anim.gif" />';
+	window.fileList = new Object;
+
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function() {
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			var ajaxreturn=JSON.parse(xmlhttp.responseText);
+			var cnt=0;
+			var body='';
+			for (i in ajaxreturn)
+			{
+				++cnt;
+				window.fileList[ajaxreturn[i].file_id]=ajaxreturn[i];
+				body=body+'<br /><img src="'+ajaxreturn[i].iconlink+'" alt="'+ajaxreturn[i].file_icon+'" title="'+ajaxreturn[i].file_icon+'" onclick="getFileListById(\''+ajaxreturn[i].file_id+'\');" /><br />';
+				body=body+ajaxreturn[i].file_name + '<br />';
+			}
+			if(cnt==0) { body='<{$smarty.const._MD_GWIKI_FILES_EMPTY}>'; }
+			document.getElementById("wikifilelist").innerHTML=body+'<br />';
+	      }
+	}
+
+	xmlhttp.open("GET","ajaxfilelist.php?page=<{$gwiki.keyword}>",true);
+	xmlhttp.send();
+} 
+
+
+function serializeFileDetail() {
+	var file = new Object;
+	
+	file.page=document.getElementById("page").value;
+	file.file_id=document.getElementById("wikifile_id").value;
+	file.file_description=document.getElementById("wikieditfile_description").value;
+	var jsonfile = JSON.stringify(file);
+	return jsonfile;
+}
+
+function deleteFileDetail() {
+	var file_id = document.getElementById("wikifile_id").value;
+	if (file_id==0) { alert("<{$smarty.const._MD_GWIKI_FILES_NO_SELECTION}>"); return; }
+	var doit = confirm("<{$smarty.const._MD_GWIKI_FILES_DELETE_CONFIRM}>");
+	if(doit) {
+		var deletereq = new Object;
+		deletereq.page=document.getElementById("page").value;
+		deletereq.file_id=document.getElementById("wikifile_id").value;
+		deletereq.op='delete';
+		var x_jsondata = JSON.stringify(deletereq);
+		
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function(e) {
+			if (xhr.readyState == 4) {
+				try {
+					var ajaxreturn=JSON.parse(xhr.responseText);
+					if(typeof(ajaxreturn.message)!='undefined') {
+						clearFileDetail();
+						document.getElementById("wikieditfile_dd_msg").innerHTML=ajaxreturn.message;
+						fetchFileList();
+					}
+				}
+				catch(err) { document.getElementById("wikieditfile_dd_msg").innerHTML='JSON response error'; }
+			}
+		};
+		// send data
+		xhr.open("POST", document.getElementById("wikieditfile_form").action, true);
+		xhr.setRequestHeader("X_JSONDATA", x_jsondata);
+		xhr.send();
+	}
+} 
+
+function newFileDetail() {
+	clearFileDetail();
+} 
+
+function updateFileDetail() {
+	alert("To be completed");
+} 
+
+// handles all the individual field changes
+function fileFieldEventHandler(event,field) {
+	if(event == "focus") {
+	  document.getElementById(field).className = 'wikifield_input_reset';
+	  return;
+	}
+
+	var x_jsondata = serializeFileDetail();
+	
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function(e) {
+		if (xhr.readyState == 4) {
+			try {
+				var ajaxreturn=JSON.parse(xhr.responseText);
+				if(typeof(ajaxreturn.message)!='undefined') {
+					fileOutput(ajaxreturn.message);
+				}
+			}
+			catch(err) { fileOutput('JSON response error'); }
+		}
+		document.getElementById(field).className = 'wikifield_input_ok';
+		fetchFileList();
+	};
+	// send data
+	xhr.open("POST", document.getElementById("wikieditfile_form").action, true);
+	xhr.setRequestHeader("X_JSONDATA", x_jsondata);
+	xhr.send();
+}
+
+
+/*
+taken from
+filedrag.js - HTML5 File Drag & Drop demonstration
+Featured on SitePoint.com
+Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
+*/
+
+(function() {
+
+	// file drag hover
+	function FileDragHover(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		e.target.className = (e.type == "dragover" ? "hover" : "");
+	}
+
+
+	// file selection
+	function FileSelectHandler(e) {
+
+		// cancel event and hover styling
+		FileDragHover(e);
+
+		// fetch FileList object
+		var files = e.target.files || e.dataTransfer.files;
+
+		// process all File objects
+		for (var i = 0, f; f = files[i]; i++) {
+			ParseFile(f);
+			UploadFile(f);
+		}
+
+	}
+
+
+	// output file information
+	function ParseFile(file) {
+		fileClearOutput();
+		fileOutput(
+			"<p><strong>" + file.name +
+			"</strong> : <strong>" + file.type +
+			"</strong> : <strong>" + file.size +
+			"</strong> bytes</p>"
+		);
+
+		// display an image
+//		if (file.type.indexOf("image") == 0) {
+//			var reader = new FileReader();
+//			reader.onload = function(e) {
+//				var i = document.getElementById('wikieditfile_img');
+//				i.src=e.target.result;
+//				Output(file.name);
+//			}
+//			reader.readAsDataURL(file);
+//		}
+
+	}
+
+	// upload JPEG files
+	function UploadFile(file) {
+		// create progress bar
+		var o = document.getElementById("wikieditfile_progress")
+		var progress = o.appendChild(document.createElement("p"));
+		progress.appendChild(document.createTextNode(file.name));
+		
+		if (file.size > document.getElementById("MAX_FILE_SIZE").value) {
+			progress.className = "toobig";
+			return;
+		}
+		var x_jsondata = serializeFileDetail();
+		
+		var xhr = new XMLHttpRequest();
+		if (xhr.upload) { // && (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/gif")) {
+
+			// progress bar
+			xhr.upload.addEventListener("progress", function(e) {
+				var pc = parseInt(100 - (e.loaded / e.total * 100));
+				progress.style.backgroundPosition = pc + "% 0";
+			}, false);
+
+			// file received/failed
+			xhr.onreadystatechange = function(e) {
+				if (xhr.readyState == 4) {
+					progress.className = (xhr.status == 200 ? "success" : "failed");
+					try {
+						var ajaxreturn=JSON.parse(xhr.responseText);
+						if(typeof(ajaxreturn.file_id)!='undefined') {
+							document.getElementById("wikifile_id").value=ajaxreturn.file_id;
+							
+	document.getElementById("wikieditfile_name").innerHTML=ajaxreturn.file_name;
+	document.getElementById("wikieditfile_userlink").innerHTML=ajaxreturn.userlink;
+	document.getElementById("wikieditfile_type").innerHTML=ajaxreturn.file_type;
+	document.getElementById("wikieditfile_size").innerHTML=ajaxreturn.size;
+	document.getElementById("wikieditfile_date").innerHTML=ajaxreturn.date;
+	document.getElementById("wikieditfile_description").value=ajaxreturn.file_description;
+	document.getElementById("wikieditfile_img").src=ajaxreturn.iconlink;
+							fetchFileList();
+						}
+						if(typeof(ajaxreturn.message)!='undefined') {
+							fileOutput(ajaxreturn.message);
+						}
+					}
+					catch(err) { fileOutput('JSON response error'); }
+				}
+			};
+
+			// start upload
+			xhr.open("POST", document.getElementById("wikieditfile_form").action, true);
+			xhr.setRequestHeader("X_FILENAME", file.name);
+			xhr.setRequestHeader("X_JSONDATA", x_jsondata);
+			xhr.send(file);
+
+		}
+
+	}
+
+
+	// initialize
+	function Init() {
+
+		var fileselect = document.getElementById("wikieditfile_fileselect"),
+			filedrag = document.getElementById("wikieditfile_dd"),
+			submitbutton = document.getElementById("wikieditfile_submitbutton");
+
+		// file select
+		fileselect.addEventListener("change", FileSelectHandler, false);
+
+		// is XHR2 available?
+		var xhr = new XMLHttpRequest();
+
+		if (xhr.upload) {
+
+			// file drop
+			filedrag.addEventListener("dragover", FileDragHover, false);
+			filedrag.addEventListener("dragleave", FileDragHover, false);
+			filedrag.addEventListener("drop", FileSelectHandler, false);
+			filedrag.style.display = "block";
+
+			// remove submit button
+			submitbutton.style.display = "none";
+			window.wikisaysdumbbrowser=false;
+		} else {
+			document.getElementById("wikifileform_nofiledrag").style.display='none';
+			document.getElementById("wikieditfile_dd_msg").innerHTML="";
+		}
+	}
+
+	// call initialization file
+	window.wikisaysdumbbrowser=true; // set to false when proven otherwise
+	if (window.File && window.FileList && window.FileReader) {
+		Init();
+	} else {
+		document.getElementById("wikifileform_nofiledrag").style.display='none';
+		document.getElementById("wikieditfile_dd_msg").innerHTML="";
+	}
+
+})();
+
+</script>

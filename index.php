@@ -1,92 +1,90 @@
 <?php
 include "header.php";
+global $xoTheme, $xoopsTpl;
+global $wikiPage;
 
-$page = makeKeyWord((isset($HTTP_GET_VARS['page']))?$HTTP_GET_VARS['page']:_MI_WIKIMOD_WIKIHOME);
-$op = (isset($HTTP_GET_VARS['op']))?$HTTP_GET_VARS['op']:"";
-if (!empty($HTTP_POST_VARS)) {
-    extract($HTTP_POST_VARS);
+// this exists to make xoops comments work
+// index.php?page_id=15&com_mode=thread&com_order=0&com_id=2&com_rootid=1
+if(isset($_GET['page_id']) && !isset($_GET['page'])) {
+	$page_id=$_GET['page_id'];
+	$page=$wikiPage->getKeywordById($page_id);
+	if(!empty($page)) {
+		$extra='';
+		if(isset($_GET['com_mode'])) $extra.='&com_mode='.$_GET['com_mode'];
+		if(isset($_GET['com_order'])) $extra.='&com_order='.$_GET['com_order'];
+		if(isset($_GET['com_id'])) $extra.='&com_id='.$_GET['com_id'];
+		if(isset($_GET['com_rootid'])) $extra.='&com_rootid='.$_GET['com_rootid'];
+		$header=sprintf($xoopsModuleConfig['wikilink_template'],$page).$extra;
+		header("Location: {$header}");
+		exit;
+	}
 }
-$mayEdit = $xoopsModuleConfig['anonymous_edit'] || !!$xoopsUser;
+// $_GET variables we use
+$page = normalizePageName((isset($_GET['page']))?cleaner($_GET['page']):$wikiPage->wikiHomePage);
+$highlight = isset($_GET['query'])?cleaner($_GET['query']):null;
 
-if (($op != "") && !$mayEdit) {
-    redirect_header("index.php?page=$page", 2, _NOPERM);
-    exit();
+// if we get a naked or external prefix, try and do something useful
+$pfx=$wikiPage->getPrefix($page);
+if ($pfx) {
+	$page=$pfx['actual_page'];
+	if($pfx['prefix_is_external']) {
+		header("Location: {$pfx['actual_page']}");
+		exit;
+	}
 }
 
-if (($op == "insert") && isset($id)) {
-    if (intval($id) == getCurrentId($page)) {
-        $success = addRevision($page, $title, $body, $uid);
-        redirect_header("index.php?page=$page", 2, ($success)?_MD_WIKIMOD_DBUPDATED:_MD_WIKIMOD_ERRORINSERT);
-    } else {
-        redirect_header("index.php?page=$page", 2, _MD_WIKIMOD_EDITCONFLICT);
-    }
-    exit();
-}
+	global $wikiPage;
+	$pageX = $wikiPage->getPage($page);
+	$attachments=$wikiPage->getAttachments($page);
+	$mayEdit = $wikiPage->checkEdit();
 
-if (($op == "preview") && isset($id)) {
-    $result = intval($id) > 0;
-    $title = $myts->stripSlashesGPC($title);
-    $body = $myts->stripSlashesGPC($body);
-} elseif ($result = getPage($page)) {
-    list($title, $body, $lastmodified, $uid) = $xoopsDB->fetchRow($result);
-} else {
-    $title = $body = "";
-    $op = "edit";
-}
+	if($pageX) {
+		$pageX['body']=$wikiPage->renderPage($wikiPage->body);
+		$pageX['mayEdit'] = $mayEdit;
+		$pageX['pageFound'] = true;
+		if(!empty($highlight)) $pageX['body'] = $wikiPage->highlightWords($highlight);
+	}
+	else {
+		$dir=$wikiPage->getWikiDir();
+		if ($mayEdit) redirect_header(XOOPS_URL."/modules/{$dir}/edit.php?page={$page}", 2, _MD_GWIKI_PAGENOTFOUND);
+		$pageX=array();
+		$pageX['title']=_MD_GWIKI_NOEDIT_NOTFOUND_TITLE;
+		$pageX['body']=_MD_GWIKI_NOEDIT_NOTFOUND_BODY;
+		$pageX['author']='';
+		$pageX['revisiontime']='';
+		$pageX['createdtime']='';
+		$pageX['mayEdit'] = $mayEdit;
+		$pageX['pageFound'] = false;
+	}
 
-switch ($op) {
-case "edit":
-case "preview":
-    $xoopsOption['template_main'] = 'wikimod_edit.html';
-    include XOOPS_ROOT_PATH."/header.php";
-    
-    if ($op == "preview") {
-        $xoopsTpl->assign('wikimod', array('keyword' => $page, 'title' => $title, 'body' => wikiDisplay($body)));
-        $xoopsTpl->assign(array('_MD_WIKIMOD_PAGE' => _MD_WIKIMOD_PAGE, '_MD_WIKIMOD_PREVIEW' => _MD_WIKIMOD_PREVIEW));
-    }
-    
-    $title = $myts->htmlSpecialChars($title);
-    $body = $myts->htmlSpecialChars($body);
-    $uid = ($xoopsUser)?$xoopsUser->getVar('uid'):0;
-    
-    $form = new XoopsThemeForm(_MD_WIKIMOD_EDITPAGE.": $page", "wikimodform", "index.php");
-    $btn_tray = new XoopsFormElementTray("", " ");
-    
-    if ($mayEdit) {
-        $form->addElement(new XoopsFormHidden('op', 'insert'));
-        $form->addElement(new XoopsFormHidden('page', $page));
-        $form->addElement(new XoopsFormHidden('id', getCurrentId($page)));
-        $form->addElement(new XoopsFormHidden('uid', $uid));
-        
-        $form->addElement(new XoopsFormText(_MD_WIKIMOD_TITLE, "title", 80, 250, $title));
-        $form->addElement(new XoopsFormTextArea(_MD_WIKIMOD_BODY, 'body', $body, 20, 80));
-        
-        $btn_tray->addElement(new XoopsFormButton("", "submit", _SUBMIT, "submit"));
-        $preview_btn = new XoopsFormButton("", "preview", _PREVIEW, "button");
-        $preview_btn->setExtra("onclick='document.forms.wikimodform.op.value=\"preview\"; document.forms.wikimodform.submit.click();'");
-        $btn_tray->addElement($preview_btn);
-    }
-    
-    $cancel_btn = new XoopsFormButton("", "cancel", _CANCEL, "button");
-    $cancel_btn->setExtra("onclick='".(($op == "edit")?"history.back();":"document.location.href=\"index.php".(($result)?"?page=$page":"")."\";")."'");
-    $btn_tray->addElement($cancel_btn);
-    if (!$result) {
-        $btn_tray->addElement(new XoopsFormLabel("", " - <strong>"._MD_WIKIMOD_PAGENOTFOUND."</strong>"));
-    }
-    $form->addElement($btn_tray);
-    
-    $form->assign($xoopsTpl);
-    break;
+	$dir = basename( dirname( __FILE__ ) ) ;
+	$pageX['moddir']  = $dir;
+	$pageX['modpath'] = XOOPS_ROOT_PATH .'/modules/' . $dir;
+	$pageX['modurl']  = XOOPS_URL .'/modules/' . $dir;
+	if(!empty($attachments)) $pageX['attachments']  = prepOut($attachments);
 
-default:
-    $xoopsOption['template_main'] = 'wikimod_view.html';
-    include XOOPS_ROOT_PATH."/header.php";
-    
-    $xoopsTpl->assign('wikimod', array('keyword' => $page, 'title' => $title, 'body' => wikiDisplay($body), 'lastmodified' => date($xoopsModuleConfig['date_format'], strtotime($lastmodified)), 'author' => getUserName($uid), 'mayEdit' => $mayEdit));
-    $xoopsTpl->assign(array('_MD_WIKIMOD_PAGE' => _MD_WIKIMOD_PAGE, '_MD_WIKIMOD_LASTMODIFIED' => _MD_WIKIMOD_LASTMODIFIED, '_MD_WIKIMOD_BY' => _MD_WIKIMOD_BY, '_EDIT' => _EDIT));
-    break;
 
-}
+	$xoopsOption['template_main'] = $wikiPage->getTemplateName(); // 'gwiki_view.html';
+	include XOOPS_ROOT_PATH."/header.php";
+
+	$pageX['title']=prepOut($pageX['title']);
+	$xoopsTpl->assign('gwiki', $pageX);
+
+	$xoTheme->addStylesheet(XOOPS_URL.'/modules/gwiki/module.css');
+	if($pageX['pageFound']) {
+		$xoTheme->addMeta('meta','keywords',htmlspecialchars($pageX['meta_keywords'], ENT_QUOTES,null,false));
+		$xoTheme->addMeta('meta','description',htmlspecialchars($pageX['meta_description'], ENT_QUOTES,null,false));
+	}
+	$title=$pageX['title'];
+	if(empty($title)) $title=$myts->htmlSpecialChars($xoopsModule->name());
+	$xoopsTpl->assign('xoops_pagetitle', $title);
+	$xoopsTpl->assign('icms_pagetitle', $title);
+	if(!empty($message)) $xoopsTpl->assign('message', $message);
+	if(!empty($err_message)) $xoopsTpl->assign('err_message', $err_message);
+	
+	$_GET['page_id']=$wikiPage->page_id;
+
+	include XOOPS_ROOT_PATH.'/include/comment_view.php';
 
 include XOOPS_ROOT_PATH."/footer.php";
 ?>

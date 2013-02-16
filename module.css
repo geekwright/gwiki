@@ -1,0 +1,734 @@
+/**
+* $Id$
+* Module: gwiki
+* Licence: GNU
+*/
+
+
+/*.wikipage, .wikiblock { 
+	font-family: Sans-Serif; 
+}
+*/
+.wikipage p, .wikiblock p { 
+	margin-bottom: 2em; 
+}
+
+.wikipage h2, .wikiblock h2 { 
+	font-size: 160%;
+	font-weight: bold;
+	margin-bottom: 1em; 
+}
+
+.wikipage h3, .wikiblock h3 { 
+	font-size: 130%;
+	font-weight: bold;
+	margin-bottom: 1em; 
+}
+
+img.wikiimage { 
+	margin: 0.5em; 
+}
+
+img.left {
+  float:left;
+  margin-right: 2em;
+}
+
+img.right {
+  float:right;
+  margin-left: 2em;
+}
+
+.wikipage ul.wikiulist, .wikiblock ul.wikiulist  {
+  list-style-type: disc;
+  list-style-position:inside;
+  margin: 4px;
+  padding: 4px;
+  margin-left: 1em;
+}
+
+ul.wikiulist > li {
+  list-style: disc;
+}
+
+ul.wikiulist > li > ul > li {
+  list-style: circle;
+}
+
+ul.wikiulist > li > ul > li > ul > li {
+  list-style: square;
+}
+
+ul.wikiulist > li > ul > li > ul > li > ul > li {
+  list-style: disc;
+}
+
+.wikipage ol.wikiolist, .wikiblock ol.wikiolist {
+  list-style-type: decimal;
+  list-style-position:inside;
+  margin: 4px;
+  padding: 4px;
+  margin-left: 2em;
+}
+
+ol.wikiolist > li {
+  list-style: decimal;
+}
+
+ol.wikiolist > li > ol > li {
+  list-style: lower-latin;
+}
+
+ol.wikiolist > li > ol > li > ol > li {
+  list-style: lower-roman;
+}
+
+ol.wikiolist > li > ol > li > ol > li > ol > li {
+  list-style: decimal;
+}
+
+
+.wikititle {
+	font-size: 180%;
+	font-weight: bold;
+	margin-bottom: 1em; 
+}
+
+.wikinewpage:before
+{
+	content: "(?)";
+}
+.wikinewpage 
+{
+	color: #666;
+	background-color: inherit;
+	text-decoration: none;
+	font-size: 83%;
+	vertical-align: super;
+}
+
+span.wikiextlink
+{
+	background-image:url('images/extlinkicon.png');
+	background-position: left top; 
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 1em;
+	display: inline-block;
+}
+
+.wikinote
+{
+  display: block;
+  width: 90%;
+  background-color: #ffffcc;
+  border-style: solid;
+  border-width: thin;
+  border-color: #888888;
+  border-radius: 10px;
+  box-shadow: 10px 10px 5px #888888;
+  margin: 2em;
+  text-align: left;
+}
+
+.wikinote.right
+{
+  width: 25%;
+  float: right;
+}
+
+.wikinote.left
+{
+  width: 25%;
+  float: left;
+}
+
+.wikinoteinner
+{
+  margin-top: 0;
+  margin-left: 3em;
+  margin-right: 2em;
+  margin-bottom: 2em; 
+  text-align: left;
+  clear:both;
+}
+
+.wikinotetitle
+{
+  margin-left: 1em;
+  margin-top: 24px;
+  font-size: 120%;
+  font-weight: bold;
+  text-align: left;
+}
+
+.wikinoteicon
+{ 
+   background: url(images/noteicon.png) no-repeat center; 
+   width: 64px; 
+   height: 64px;
+   float: left;
+}
+
+.wikiinfo
+{
+  display: block;
+  width: 90%;
+  background-color: #eeeeff;
+  border-style: solid;
+  border-width: thin;
+  border-color: #888888;
+  border-radius: 10px;
+  box-shadow: 10px 10px 5px #888888;
+  margin: 2em;
+  text-align: left;
+}
+
+.wikiinfoinner
+{
+  margin-top: 0;
+  margin-left: 3em;
+  margin-right: 2em;
+  margin-bottom: 2em; 
+  text-align: left;
+  clear:both;
+}
+
+.wikiinfotitle
+{
+  margin-left: 1em;
+  margin-top: 24px;
+  font-size: 120%;
+  font-weight: bold;
+  text-align: left;
+}
+
+.wikiinfoicon
+{ 
+   background: url(images/infoicon.png) no-repeat center; 
+   width: 64px; 
+   height: 64px;
+   float: left;
+}
+
+.wikiwarn
+{
+  display: block;
+  width: 90%;
+  background-color: #ffeeee;
+  border-style: solid;
+  border-width: thin;
+  border-color: #888888;
+  border-radius: 10px;
+  box-shadow: 10px 10px 5px #888888;
+  margin: 2em;
+  text-align: left;
+}
+
+.wikiwarninner
+{
+  margin-top: 0;
+  margin-left: 3em;
+  margin-right: 2em;
+  margin-bottom: 2em; 
+  text-align: left;
+  clear:both;
+}
+
+.wikiwarntitle
+{
+  margin-left: 1em;
+  margin-top: 24px;
+  font-size: 120%;
+  font-weight: bold;
+  text-align: left;
+}
+
+.wikiwarnicon
+{ 
+   background: url(images/warnicon.png) no-repeat center; 
+   width: 64px; 
+   height: 64px;
+   float: left;
+}
+
+.wikitip
+{
+  display: block;
+  width: 90%;
+  background-color: #eeffee;
+  border-style: solid;
+  border-width: thin;
+  border-color: #888888;
+  border-radius: 10px;
+  box-shadow: 10px 10px 5px #888888;
+  margin: 2em;
+  text-align: left;
+}
+
+.wikitipinner
+{
+  margin-top: 0;
+  margin-left: 3em;
+  margin-right: 2em;
+  margin-bottom: 2em; 
+  text-align: left;
+  clear:both;
+}
+
+.wikitiptitle
+{
+  margin-left: 1em;
+  margin-top: 24px;
+  font-size: 120%;
+  font-weight: bold;
+  text-align: left;
+}
+
+.wikitipicon
+{ 
+   background: url(images/tipicon.png) no-repeat center; 
+   width: 64px; 
+   height: 64px;
+   float: left;
+}
+
+.wikicode
+{
+  display: block;
+  width: 90%;
+  background-color: #eeeeee;
+  border-style: solid;
+  border-width: thin;
+  border-color: #888888;
+  border-radius: 10px;
+  box-shadow: 10px 10px 5px #888888;
+  margin: 2em;
+  text-align: left;
+}
+.wikicodeinner
+{
+  margin-top: 0;
+  margin-left: 3em;
+  margin-right: 2em;
+  margin-bottom: 2em; 
+  text-align: left;
+  clear:both;
+  max-height:400px;
+  overflow:auto;
+}
+
+.wikicodetitle
+{
+  margin-left: 1em;
+  margin-top: 24px;
+  font-size: 120%;
+  font-weight: bold;
+  text-align: left;
+}
+
+.wikicodeicon
+{ 
+   background: url(images/codeicon.png) no-repeat center; 
+   width: 64px; 
+   height: 64px;
+   float: left;
+}
+
+.wikinote.right, .wikiinfo.right, .wikiwarn.right, .wikitip.right, .wikicode.right
+{
+  width: 25%;
+  float: right;
+}
+
+.wikinote.left, .wikiinfo.left, .wikiwarn.left, .wikitip.left, .wikicode.left
+{
+  width: 25%;
+  float: left;
+}
+
+.wikiblocknav
+{
+  float: right;
+}
+
+.wiki_search_term
+{
+  background-color: yellow;
+}
+
+#wikibase, #wikicomp 
+{ 
+  width:100%; 
+  height : 250px;
+  overflow : auto;
+  border-style: solid;
+  border-width: thin;
+  border-color: #cccccc;
+  border-radius: 5px;
+  margin: .3em;
+}
+
+.wikitable
+{
+  width:auto;
+  margin: 1em;
+  margin-left:2em;
+  border-style: solid;
+  border-width: thin;
+  border-color: #cccccc;
+  border-radius: 5px;
+  background-color:#e4e4d0;
+  box-shadow: 3px 3px 2px #bbbbbb;
+}
+
+.wikitable tr td
+{
+/*  text-align:center; */
+  background-color:#f4f4cc;
+  color: #111111;
+  border-style: solid;
+  border-width: thin;
+  border-color: #d4d470;
+  border-radius: 5px;
+  padding-left: 1.6em;
+  padding-right: 1.6em;
+}
+
+.wikitable .left
+{
+  text-align:left;
+}
+
+.wikitable .center
+{
+  text-align:center;
+}
+
+.wikitable .right
+{
+  text-align:right;
+}
+
+.wikitable .number
+{
+  text-align:right;
+  font-family: monospace;
+}
+
+.wikitable .negative
+{
+  color:red;
+}
+
+.wikitable tr.even td
+{
+  background-color: #f4f4cc;
+}
+
+.wikitable tr.odd td
+{
+  background-color: #f4f4dd;
+}
+
+.wikitable tbody tr th
+{
+  text-align: center;
+  border: 0 !important;
+}
+
+.wikitoclevel1 { margin-left: 0em; }
+.wikitoclevel2 { margin-left: 1em; }
+.wikitoclevel3 { margin-left: 2em; }
+.wikitoclevel4 { margin-left: 3em; }
+.wikitoclevel5 { margin-left: 4em; }
+.wikitoclevel6 { margin-left: 5em; }
+ul.wikitoclist > li { list-style: none; }
+.wikitoc a { color: #383838; }
+.wikitocheader { 
+  font-size: 125%;
+  font-weight: bold;
+  color: #333311;
+  padding: 0;
+  margin: 0.5em;
+  margin-bottom: 0px;
+  line-height: 1em;
+  border-bottom:thin solid #666633;
+}
+.wikitoc
+{
+  display: block;
+  width: 20%;
+  font-size: 75%;
+  background-color: #ffffee;
+  border-style: solid;
+  border-width: thin;
+  border-color: #888888;
+  border-radius: 10px;
+  box-shadow: 10px 10px 5px #888888;
+  margin: 0.5em;
+  text-align: left;
+  float: right;
+}
+
+.wikiindent1 { margin-left: 2em; }
+.wikiindent2 { margin-left: 4em; }
+.wikiindent3 { margin-left: 6em; }
+.wikiindent4 { margin-left: 8em; }
+.wikiindent5 { margin-left: 10em; }
+.wikiquote   { background-color: #eeeeee; }
+.wikibreak   { clear:both;}
+.wikimore { display:block; padding-top:1em; clear: both; font-size: 75%; vertical-align: sub;}
+
+/* 
+ * .wikistrong
+ * .wikiem
+ * .wikihr
+ * .wikidel
+ * .wikiu
+ * .wikisup
+ * .wikisub
+ */
+
+.wikitt {white-space: pre;}
+
+#gwikiformpageedit { display:inherit; }
+#gwikiformmetaedit { display:none; }
+
+.wikiimageedit_title, .wikifileedit_title  {
+	width: 100%;
+	font-size: 130%;
+	font-weight: bold;
+	text-align: center;
+	background-image: url('images/panel.jpg');
+	background-repeat: repeat-x;
+	border-style: outset;
+	border-width: thin;
+	border-color: #cccccc;
+	border-radius: 10px;
+	padding-top: .3em;
+	padding-bottom: .4em;
+}
+#wikiimageedit h2, #wikifileedit h2 { 
+  padding-left: 1.4em;
+}
+#wikiimageedit, #wikifileedit { 
+  display: none; 
+  width:90%;
+  position: absolute; /* fixed;*/
+  background-color: #eeeeee;
+  border-style: solid;
+  border-width: thin;
+  border-color: #888888;
+  border-radius: 10px;
+  box-shadow: 10px 10px 5px #888888;
+  margin: 2em;
+  text-align: left;
+}
+
+.wikiimagelist, .wikifilelist {
+  width: 160px;
+  max-height: 480px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #ffffff;
+  border-style: solid;
+  border-width: thin;
+  border-color: #888888;
+  border-radius: 10px;
+  margin: 1em;
+  padding-left: 1.4em;
+}
+.wikiimagelist img {
+  max-height: 150px;
+  max-width: 150px;
+  height: auto;
+  width: auto;
+}
+#wikiimgliblist { font-size: 0.8em; }
+
+.wikiimagedetail, .wikifiledetail {
+  width: 90%;
+  background-color: #ffffff;
+  border-style: solid;
+  border-width: thin;
+  border-color: #888888;
+  border-radius: 10px;
+  margin: 1em;
+  padding: 1em;
+}
+#wikieditimg_dd, #wikieditfile_dd
+{
+/*	display: none; */
+	font-weight: bold;
+	text-align: center;
+	padding: 1em 0;
+	margin: 1em 0;
+	color: #555;
+	border: 1px dashed #999999;
+	border-radius: 7px;
+	cursor: default;
+}
+#wikieditimg_dd img, #wikieditfile_dd img
+{
+  max-height: 120px;
+  max-width: 120px;
+  height: auto;
+  width: auto;
+}
+
+span.wikieditimg_field, span.wikieditfile_fieldname  {
+  display: inline-block;
+  width: 8em;
+  text-align: right;
+  font-weight: bold;
+}
+span.wikieditfile_field  {
+  font-weight: normal;
+  margin-left: 1em;
+}
+#wikieditimg_progress p, #wikieditfile_progress p
+{
+	display: block;
+	padding: 2px 5px;
+	margin: 2px 0;
+	border: 1px inset #446;
+	border-radius: 5px;
+	background: #eee url("images/progress.png") 100% 0 repeat-y;
+}
+
+#wikieditimg_progress p.success, #wikieditfile_progress p.success
+{
+	background: #0c0 none 0 0 no-repeat;
+}
+#wikieditimg_progress p.success:before, #wikieditfile_progress p.success:before {
+   content: "OK! ";
+}
+
+#wikieditimg_progress p.failed, #wikieditfile_progress p.failed
+{
+	background: #c00 none 0 0 no-repeat;
+}
+#wikieditimg_progress p.failed:before, #wikieditfile_progress p.failed:before {
+   content: "Failed! ";
+}
+#wikieditimg_progress p.toobig, #wikieditfile_progress p.toobig
+{
+	background: #c00 none 0 0 no-repeat;
+}
+#wikieditimg_progress p.toobig:before, #wikieditfile_progress p.toobig:before {
+   content: "Too Large! ";
+}
+
+.wikifield_input_reset {
+  background-color: #ffffff;
+}
+.wikifield_input_ok {
+  background-color: #ddffdd;
+}
+
+.wikifolded, .wikiunfolded
+{
+  display: block;
+  margin-top: 1em;
+}
+
+.wikifolded.right
+{
+  width: 25%;
+  float: right;
+  clear: right;
+}
+
+.wikifolded.left
+{
+  width: 25%;
+  float: left;
+  clear: left;
+}
+
+.wikiunfolded.right
+{
+  width: 25%;
+  float: right;
+  clear: right;
+}
+
+.wikiunfolded.left
+{
+  width: 25%;
+  float: left;
+  clear: left;
+}
+
+.wikifolded>.wikifoldedinner
+{
+  display: none;
+}
+
+.wikiunfolded>.wikifoldedinner
+{
+  display: block;
+  margin-top: 1em;
+}
+
+.wikifoldedtitle
+{
+  margin-left: 1.2em;
+/*  margin-top: 24px; */
+  font-size: 120%;
+  font-weight: bold;
+  text-align: left;
+}
+
+.wikifoldedtitle span
+{
+  background: #FFFFAA; 
+  border: 1px solid #FFAD33;
+  position: relative;
+  z-index: 99;
+  margin-left: 1em;
+  font-size: 75%;
+  font-weight: normal;
+  display: none;
+}
+
+.wikifoldedtitle:hover span
+{
+  display: inline;
+}
+
+.wikifolded>.wikifoldedicon
+{ 
+   background: url(images/foldedicon.png) no-repeat center; 
+   width: 16px; 
+   height: 16px;
+   float: left;
+}
+
+.wikiunfolded>.wikifoldedicon
+{ 
+   background: url(images/unfoldedicon.png) no-repeat center; 
+   width: 16px; 
+   height: 16px;
+   float: left;
+}
+
+.wikirecentitem
+{
+   border-bottom: 1px solid #ccc;
+}
+
+.wikirepresentimage
+{
+  margin: 0; margin-left: 1em; margin-right: 1em;
+  max-height: 150px;
+  max-width: 150px;
+  height: auto;
+  width: auto;
+  float: left;
+   
+}
+
+/*#wikiAttachList th { background-color: #6e98c5; color: #fff; }*/
+.wikiAttachItem td { padding: 5px; vertical-align: middle; }
