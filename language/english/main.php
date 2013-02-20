@@ -34,13 +34,13 @@ define('_MD_GWIKI_PAGE_PERM_EDIT_ANY_NUM','11');
 define('_MD_GWIKI_PAGE_PERM_EDIT_ANY','Edit Any');
 // edit prefix
 define('_MD_GWIKI_PAGE_PERM_EDIT_PFX_NUM','12');
-define('_MD_GWIKI_PAGE_PERM_EDIT_PFX','Edit Prefix');
+define('_MD_GWIKI_PAGE_PERM_EDIT_PFX','Edit Namespace');
 // create any
 define('_MD_GWIKI_PAGE_PERM_CREATE_ANY_NUM','21');
 define('_MD_GWIKI_PAGE_PERM_CREATE_ANY','Create Any');
 // create prefix
 define('_MD_GWIKI_PAGE_PERM_CREATE_PFX_NUM','22');
-define('_MD_GWIKI_PAGE_PERM_CREATE_PFX','Create Prefix');
+define('_MD_GWIKI_PAGE_PERM_CREATE_PFX','Create Namespace');
 
 define('_MD_GWIKI_NOEDIT_NOTFOUND_TITLE','No Such Page');
 define('_MD_GWIKI_NOEDIT_NOTFOUND_BODY','<div class="wikinote"><div class="wikinoteicon"></div><div class="wikinotetitle">That Page Was Not Found</div><div class="wikiwarninner">The requested page has not been created yet.</div></div>');

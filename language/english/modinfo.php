@@ -24,9 +24,9 @@ define('_MI_GWIKI_IMAGE_LIBRARY_PAGES_DESC', 'Comma separated list of Wiki pages
 define('_MI_GWIKI_RETAIN_DAYS', 'Minimum History Retention Days');
 define('_MI_GWIKI_RETAIN_DAYS_DESC', 'Number of days of change history to retain when database is cleaned. Enter 0 to disable.');
 define('_MI_GWIKI_ATTACH_EXT_BLACKLIST', 'Attachment Extension Blacklist');
-define('_MI_GWIKI_ATTACH_EXT_BLACKLIST_DESC', 'Commas separated list of file extensions NOT to be allowed for attachments. (Do not specify if Whitelist is specified.)');
+define('_MI_GWIKI_ATTACH_EXT_BLACKLIST_DESC', 'Comma separated list of file extensions NOT to be allowed for attachments. (Do not specify if Whitelist is specified.)');
 define('_MI_GWIKI_ATTACH_EXT_WHITELIST', 'Attachment Extension Whitelist');
-define('_MI_GWIKI_ATTACH_EXT_WHITELIST_DESC', 'Commas separated list of file extensions to be allowed for attachments. (Do not specify if Blacklist is specified.)');
+define('_MI_GWIKI_ATTACH_EXT_WHITELIST_DESC', 'Comma separated list of file extensions to be allowed for attachments. (Do not specify if Blacklist is specified.)');
 
 // Wiki special pages
 // Change these names, if you want a different homepage and error page
@@ -42,7 +42,7 @@ define('_MI_GWIKI_ADPERM','Permissions');
 define('_MI_GWIKI_ADPREFIX','Namespaces');
 define('_MI_GWIKI_ADRECENT', 'Recent Activity');
 define('_MI_GWIKI_AD_PERM_TITLE','Wiki Page Authority');
-define('_MI_GWIKI_AD_PERM_DESC',"These permissions control the user's authority to create and edit wiki pages. Permissions can be granted for ALL pages, or only pages with specifc name prefixes assigned to the group.");
+define('_MI_GWIKI_AD_PERM_DESC',"These permissions control the user's authority to create and edit wiki pages. Permissions can be granted for ALL pages, or only pages in specifc namespaces assigned to the group.");
 
 // Blocks
 define('_MI_GWIKI_BL_CLONE_WARN','<span style="color:red;">Please save this cloned block, and then edit and save again!</span>.');
