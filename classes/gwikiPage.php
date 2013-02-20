@@ -15,7 +15,7 @@
 if (!defined("XOOPS_ROOT_PATH")) die("Root path not defined");
 
 define ('_WIKI_CAMELCASE_REGEX','(([A-Z]{1,}[a-z0-9\:]+){2,}\d*)');
-define ('_WIKI_KEYWORD_REGEX','([A-Za-z0-9.\:_-]{1,})');
+define ('_WIKI_KEYWORD_REGEX','([A-Za-z0-9.\:-]{1,})');
 
 class gwikiPage {
 	//------------------------------------------------------------
