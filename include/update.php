@@ -91,7 +91,7 @@ if($old_version<100) {
 	" file_name varchar(128) NOT NULL DEFAULT '', file_path varchar(255) NOT NULL DEFAULT '', " .
 	" file_type varchar(128) NOT NULL DEFAULT '', file_icon varchar(64) NOT NULL DEFAULT '', " .
 	" file_size int(10) NOT NULL DEFAULT '0', file_upload_date int(10) NOT NULL DEFAULT '0'," .
-	" file_description text, file_uid int(10) NOT NULL DEFAULT '0' " .
+	" file_description text, file_uid int(10) NOT NULL DEFAULT '0', " .
 	" PRIMARY KEY (file_id), UNIQUE KEY (keyword, file_name) ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 	$xoopsDB->queryF($sql);
 
