@@ -53,6 +53,7 @@ function getUserName($uid)
 }
 
 function cleaner($string,$trim=true) {
+	if (get_magic_quotes_gpc()) $string=stripslashes($string);
 //	$string=stripcslashes($string);
 	$string=html_entity_decode($string);
 //	$string=strip_tags($string); // DANGER -- kills wiki text
