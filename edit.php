@@ -233,7 +233,7 @@ case "preview":
 	$form->addElement(new XoopsFormRadioYN(_MD_GWIKI_SHOW_IN_INDEX, "show_in_index", intval($show_in_index)));
 	$form->addElement(new XoopsFormRadioYN(_MD_GWIKI_LEAVE_INACTIVE, "leave_inactive", intval($leave_inactive)));
 	$btn_tray2 = new XoopsFormElementTray('', ' ','gwikiformpage2');
-	$btn_tray2->addElement(new XoopsFormButton("", "submit2", _SUBMIT, "submit"));
+	$btn_tray2->addElement(new XoopsFormButton("", "submit2", _MD_GWIKI_SUBMIT, "submit"));
 
 	$bodydata_btn = new XoopsFormButton("", "bodyedit", _MD_GWIKI_EDIT_SHOW_BODY, "button");
 	$bodydata_btn->setExtra("onclick=".
