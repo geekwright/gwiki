@@ -1,7 +1,7 @@
-FBComment ChangeLog
+gwiki ChangeLog
 
-=== FBComment Module 1.0 ===
-Release date: 2012
+=== gwiki Module 1.0 ===
+Release date: 2013
 
 * initial release
 
