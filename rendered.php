@@ -6,7 +6,7 @@ global $wikiPage;
 
 
 	if (isset($_GET['page'])) {
-		$page = normalizePageName(cleaner($_GET['page']));
+		$page = $wikiPage->normalizeKeyword(cleaner($_GET['page']));
 		$pageX = $wikiPage->getPage($page);
 	}
 	else {

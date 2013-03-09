@@ -732,3 +732,9 @@ span.wikieditfile_field  {
 
 /*#wikiAttachList th { background-color: #6e98c5; color: #fff; }*/
 .wikiAttachItem td { padding: 5px; vertical-align: middle; }
+
+.wikiajaxremotewiki
+{
+  max-height:400px;
+  overflow:auto;
+}

@@ -25,7 +25,7 @@ if (isset($_GET['nsid'])) { // prefix
 }
 if(empty($page)) $page=$wikiPage->wikiHomePage;
 
-$normpage=normalizePageName($page);
+$normpage=$wikiPage->normalizeKeyword($page);
 if ($normpage==_MI_GWIKI_WIKI404 && strcasecmp($page,_MI_GWIKI_WIKI404)!=0) redirect_header("index.php?page=$page", 2, _MI_GWIKI_WIKI404);
 else $page=$normpage;
 
@@ -54,7 +54,7 @@ if(isset($_POST['leave_inactive'])) $leave_inactive = intval($_POST['leave_inact
 	$mayEdit = $wikiPage->checkEdit();
 	
 	if($pageX) {
-		$pageX['author'] = getUserName($wikiPage->uid);
+		$pageX['author'] = $wikiPage->getUserName($wikiPage->uid);
 		$pageX['revisiontime']=date($wikiPage->dateFormat,$pageX['lastmodified']);
 		$pageX['mayEdit'] = $mayEdit;
 		$pageX['pageFound'] = true;
@@ -64,7 +64,7 @@ if(isset($_POST['leave_inactive'])) $leave_inactive = intval($_POST['leave_inact
 		$pageX=array();
 		$uid = ($xoopsUser)?$xoopsUser->getVar('uid'):0;
 		$pageX['uid']=$uid;
-		$pageX['author']=getUserName($uid);
+		$pageX['author']=$wikiPage->getUserName($uid);
 		$pageX['revisiontime']=date($wikiPage->dateFormat);
 		$pageX['mayEdit'] = $mayEdit;
 		$pageX['keyword'] = $page;
@@ -139,8 +139,6 @@ if (($op == "preview") && isset($id)) {
     $title = $myts->stripSlashesGPC($title);
     $body = $myts->stripSlashesGPC($body);
 } else {
-	// $pageX = getPage($page); already did this on entry
-
 	//print_r($pageX);
 	if($pageX['pageFound']) {
 		$result=true;
@@ -197,7 +195,7 @@ case "preview":
     
 	$form->addElement(new XoopsFormHidden('op', 'insert'));
 	$form->addElement(new XoopsFormHidden('page', $page));
-	$form->addElement(new XoopsFormHidden('id', getCurrentId($page)));
+	$form->addElement(new XoopsFormHidden('id', $wikiPage->getCurrentId($page)));
 	$form->addElement(new XoopsFormHidden('uid', $uid));
        
 	$form->addElement(new XoopsFormText(_MD_GWIKI_TITLE, "title", 40, 250, $title));
@@ -233,7 +231,7 @@ case "preview":
 	$form->addElement(new XoopsFormRadioYN(_MD_GWIKI_SHOW_IN_INDEX, "show_in_index", intval($show_in_index)));
 	$form->addElement(new XoopsFormRadioYN(_MD_GWIKI_LEAVE_INACTIVE, "leave_inactive", intval($leave_inactive)));
 	$btn_tray2 = new XoopsFormElementTray('', ' ','gwikiformpage2');
-	$btn_tray2->addElement(new XoopsFormButton("", "submit2", _SUBMIT, "submit"));
+	$btn_tray2->addElement(new XoopsFormButton("", "submit2", _MD_GWIKI_SUBMIT, "submit"));
 
 	$bodydata_btn = new XoopsFormButton("", "bodyedit", _MD_GWIKI_EDIT_SHOW_BODY, "button");
 	$bodydata_btn->setExtra("onclick=".

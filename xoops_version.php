@@ -170,7 +170,7 @@ $modversion['blocks'][1] = array(
 	'description' =>  _MI_GWIKI_BL_WIKIBLOCK_DESC,
 	'show_func' => 'b_gwiki_wikiblock_show',
 	'edit_func' => 'b_gwiki_wikiblock_edit',
-	'options' => _MI_GWIKI_WIKIHOME.'|0',
+	'options' => _MI_GWIKI_WIKIHOME.'|0|',
 	'template' => 'gwiki_ajaxblock.html');
 
 $modversion['blocks'][] = array(

@@ -18,5 +18,7 @@ define('_MB_GWIKI_PAGE_NAME' , 'Name:');
 define('_MB_GWIKI_RECENT_COUNT' , 'Number of Pages:');
 define('_MB_GWIKI_SHOW_DEFAULT_IMAGE' , 'Show Default Image:');
 define('_MB_GWIKI_MAX_AGE' , 'Maximum age (passed to strtotime(), blank disables):');
+define('_MB_GWIKI_REMOTE_AJAX_URL' , 'URL to Remote gwiki module');
+define('_MB_GWIKI_REMOTE_AJAX_URL_DESC' , '(leave blank to use local wiki.)');
 
 ?>

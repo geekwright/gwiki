@@ -1,58 +1,60 @@
 <?php
+if (!defined("XOOPS_ROOT_PATH"))  die("Root path not defined");
 $dir = basename( dirname ( dirname( __FILE__ ) ) ) ;
 include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
 global $wikiPage;
 $wikiPage = new gwikiPage;
 $wikiPage->setRecentCount($xoopsModuleConfig['number_recent']);
 
-function makeKeyWord($keyword)
-{
-	global $wikiPage;
-	$x=$wikiPage->makeKeyword($keyword);
-	return $x;
-}
+//function makeKeyWord($keyword)
+//{
+//	global $wikiPage;
+//	$x=$wikiPage->makeKeyword($keyword);
+//	return $x;
+//}
 
-function getCurrentId($page)
-{
-	global $wikiPage;
-	return $wikiPage->getCurrentId($page);
-}
+//function getCurrentId($page)
+//{
+//	global $wikiPage;
+//	return $wikiPage->getCurrentId($page);
+//}
 
-function addRevision($page, $title, $body, $uid)
-{
-	global $wikiPage;
-	$wikiPage->keyword=$page;
-	$wikiPage->title=$title;
-	$wikiPage->body=$body;
-	$wikiPage->uid=$uid;
-	return $wikiPage->addRevision();
-}
+//function addRevision($page, $title, $body, $uid)
+//{
+//	global $wikiPage;
+//	$wikiPage->keyword=$page;
+//	$wikiPage->title=$title;
+//	$wikiPage->body=$body;
+//	$wikiPage->uid=$uid;
+//	return $wikiPage->addRevision();
+//}
 
-function getPage($page)
-{
-	global $wikiPage;
-	return $wikiPage->getPage($page);
-}
+//function getPage($page)
+//{
+//	global $wikiPage;
+//	return $wikiPage->getPage($page);
+//}
 
-function wikiDisplay($body)
-{
-	global $wikiPage;
-	return $wikiPage->renderPage($body);
-}
+//function wikiDisplay($body)
+//{
+//	global $wikiPage;
+//	return $wikiPage->renderPage($body);
+//}
 
-function normalizePageName($page)
-{
-	global $wikiPage;
-	return $wikiPage->normalizeKeyword($page);
-}
+//function normalizePageName($page)
+//{
+//	global $wikiPage;
+//	return $wikiPage->normalizeKeyword($page);
+//}
 
-function getUserName($uid)
-{
-	global $wikiPage;
-	return $wikiPage->getUserName($uid);
-}
+//function getUserName($uid)
+//{
+//	global $wikiPage;
+//	return $wikiPage->getUserName($uid);
+//}
 
 function cleaner($string,$trim=true) {
+	if (get_magic_quotes_gpc()) $string=stripslashes($string);
 //	$string=stripcslashes($string);
 	$string=html_entity_decode($string);
 //	$string=strip_tags($string); // DANGER -- kills wiki text
@@ -66,11 +68,11 @@ function cleaner($string,$trim=true) {
 * @param mixed $keyword - wiki page name
 * @since 1.0
 */
-function checkEdit()
-{
-	global $wikiPage;
-	return $wikiPage->checkEdit();
-}
+//function checkEdit()
+//{
+//	global $wikiPage;
+//	return $wikiPage->checkEdit();
+//}
 
 function getPrefixFromId($pid)
 {

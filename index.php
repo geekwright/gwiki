@@ -20,7 +20,7 @@ if(isset($_GET['page_id']) && !isset($_GET['page'])) {
 	}
 }
 // $_GET variables we use
-$page = normalizePageName((isset($_GET['page']))?cleaner($_GET['page']):$wikiPage->wikiHomePage);
+$page = $wikiPage->normalizeKeyword((isset($_GET['page']))?cleaner($_GET['page']):$wikiPage->wikiHomePage);
 $highlight = isset($_GET['query'])?cleaner($_GET['query']):null;
 
 // if we get a naked or external prefix, try and do something useful
@@ -48,6 +48,7 @@ if ($pfx) {
 		$dir=$wikiPage->getWikiDir();
 		if ($mayEdit) redirect_header(XOOPS_URL."/modules/{$dir}/edit.php?page={$page}", 2, _MD_GWIKI_PAGENOTFOUND);
 		$pageX=array();
+		$pageX['keyword']=$page;
 		$pageX['title']=_MD_GWIKI_NOEDIT_NOTFOUND_TITLE;
 		$pageX['body']=_MD_GWIKI_NOEDIT_NOTFOUND_BODY;
 		$pageX['author']='';

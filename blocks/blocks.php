@@ -29,30 +29,44 @@ global $xoopsConfig,$xoTheme;
 	$wikiPage = new gwikiPage;
 	$wikiPage->setRecentCount($moduleConfig['number_recent']);
 
-	$block=$wikiPage->getPage($options[0]);
-	if ($block) {
-		$block['title']=htmlspecialchars($block['title']);
-		if(!defined('_MI_GWIKI_NAME')) {
-			$langfile=XOOPS_ROOT_PATH.'/modules/'.$dir.'/language/'.$xoopsConfig['language'].'/modinfo.php';
-			if (!file_exists($langfile)) {
-				$langfile=XOOPS_ROOT_PATH.'/modules/'.$dir.'/language/english/modinfo.php';
-			}
-			include_once $langfile;
-		}
-		$xoTheme->addStylesheet(XOOPS_URL.'/modules/'.$dir.'/module.css');
-
-		$wikiPage->setWikiLinkURL("javascript:ajaxGwikiLoad('%s','{$options[1]}');");
-		$block['rendered']='<h1 class="wikititle">'.$block['title'].'</h1>' . $wikiPage->renderPage();
-		
-		$block['bid']=$options[1]; // we use our block id to make a (quasi) unique div id
-		
-		$block['moddir']  = $dir;
-		$block['modpath'] = XOOPS_ROOT_PATH .'/modules/' . $dir;
-		$block['modurl']  = XOOPS_URL .'/modules/' . $dir;
-		$block['mayEdit'] = $wikiPage->checkEdit();
+	$remotegwiki = !empty($options[2]);
+	if(!$remotegwiki) {
+		$block=$wikiPage->getPage($options[0]);
+	}
+	if (!$block) {
+		$block['keyword']=$options[0];
+		$block['display_keyword']=$options[0];
 	}
 
-//	$block['body']='WHAT?'; // print_r($page,true);
+
+//	if(!defined('_MI_GWIKI_NAME')) {
+//		$langfile=XOOPS_ROOT_PATH.'/modules/'.$dir.'/language/'.$xoopsConfig['language'].'/modinfo.php';
+//		if (!file_exists($langfile)) {
+//			$langfile=XOOPS_ROOT_PATH.'/modules/'.$dir.'/language/english/modinfo.php';
+//		}
+//		include_once $langfile;
+//	}
+	$xoTheme->addStylesheet(XOOPS_URL.'/modules/'.$dir.'/module.css');
+
+//		$wikiPage->setWikiLinkURL("javascript:ajaxGwikiLoad('%s','{$options[1]}');");
+//		$block['rendered']='<h1 class="wikititle">'.$block['title'].'</h1>' . $wikiPage->renderPage();
+		
+	$block['bid']=$options[1]; // we use our block id to make a (quasi) unique div id
+		
+	$block['moddir']  = $dir;
+	$block['modpath'] = XOOPS_ROOT_PATH .'/modules/' . $dir;
+	$block['modurl']  = XOOPS_URL .'/modules/' . $dir;
+	if($remotegwiki) {
+		$block['ajaxurl']=$options[2];
+		$block['mayEdit'] = false;
+		$block['remotewiki']=true;
+	}
+	else {
+		$block['ajaxurl']=$block['modurl'];
+		$block['mayEdit'] = $wikiPage->checkEdit();
+		$block['remotewiki']=false;
+	}
+		
 	return $block;
 }
 
@@ -62,6 +76,7 @@ function b_gwiki_wikiblock_edit($options) {
 	// capture the block id from the url and save through a hidden option.
 	if($_GET['op']=='clone') $form.=_MI_GWIKI_BL_CLONE_WARN.'<br />';
 	$form .= '<input type="hidden" value="'.intval($_GET['bid']).'"id="options[1]" name="options[1]" />';
+	$form .= _MB_GWIKI_REMOTE_AJAX_URL . ' <input type="text" size="35" value="'.$options[2].'"id="options[2]" name="options[2]" />  <i>'._MB_GWIKI_REMOTE_AJAX_URL_DESC.'</i><br />';
 
 	return $form;
 }

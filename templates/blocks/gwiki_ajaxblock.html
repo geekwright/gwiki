@@ -41,7 +41,7 @@ if(typeof ajaxGwikiLoad != 'function'){
   				if(scrOfY>topPos) { document.body.scrollTop=topPos-16; document.documentElement.scrollTop=topPos-16; }
 			}
 		}
-		xmlhttp.open("GET","<{$block.modurl}>/ajaxgwiki.php?page="+encodeURIComponent(keyword)+"&bid="+bid,true);
+		xmlhttp.open("GET","<{$block.ajaxurl}>/ajaxgwiki.php?page="+encodeURIComponent(keyword)+"&bid="+bid,true);
 		xmlhttp.send();
 	}
 	window.ajaxGwikiStackPush = function(keyword,bid) {
@@ -66,10 +66,13 @@ if(typeof ajaxGwikiLoad != 'function'){
 }
 </script>
 <div class="wikiblock">
-<div id="wikiajaxblock<{$block.bid}>"><{$block.rendered}></div>
+<div id="wikiajaxblock<{$block.bid}>" class="wikiajaxblock<{if $block.remotewiki}> wikiajaxremotewiki<{/if}>"><img src="<{$block.modurl}>/images/loading-anim.gif" alt="Loading" /></div>
 </div>
 <div class="wikiblocknav">
 <a href="javascript:ajaxGwikiLoad('<{$block.keyword}>','<{$block.bid}>');"><img src="<{$block.modurl}>/images/homeicon.png" alt="<{$block.display_keyword}>" title="<{$block.display_keyword}>" /></a> 
 <a href="javascript:ajaxGwikiStackPop('<{$block.bid}>');"><img src="<{$block.modurl}>/images/backicon.png" alt="<{$smarty.const._BACK}>" title="<{$smarty.const._BACK}>" /></a> 
 <{if $block.mayEdit}><a href="javascript:ajaxGwikiRedirect('edit', '<{$block.keyword}>','<{$block.bid}>');"><img src="<{$block.modurl}>/images/editicon.png" alt="<{$smarty.const._EDIT}>" title="<{$smarty.const._EDIT}>" /></a> <a href="javascript:ajaxGwikiRedirect('history', '<{$block.keyword}>','<{$block.bid}>');"><img src="<{$block.modurl}>/images/historyicon.png" alt="<{$smarty.const._MD_GWIKI_HISTORY}>" title="<{$smarty.const._MD_GWIKI_HISTORY}>" /></a><{/if}>
 </div>
+<script>
+	ajaxGwikiLoad('<{$block.keyword}>','<{$block.bid}>');
+</script>

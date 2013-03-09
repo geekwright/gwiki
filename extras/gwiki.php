@@ -45,22 +45,6 @@ global $xoopsConfig;
 	}
 }
 
-function getUserName($uid)
-{
-    global $xoopsConfig;
-    
-    $uid = intval($uid);
-    
-    if ($uid > 0) {
-        $member_handler =& xoops_gethandler('member');
-        $user =& $member_handler->getUser($uid);
-        if (is_object($user)) {
-            return "<a href=\"".XOOPS_URL."/userinfo.php?uid=$uid\">".htmlspecialchars($user->getVar('uname'), ENT_QUOTES)."</a>";
-        }
-    }
-    
-    return $xoopsConfig['anonymous'];
-}
 
 	$script = (!empty($_SERVER['HTTPS']))
 		? "https://".$_SERVER['SERVER_NAME'].parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) 
@@ -98,7 +82,7 @@ function getUserName($uid)
 
 	if($pageX) {
 		$pageX['body']=$wikiPage->renderPage($wikiPage->body);
-		$pageX['author'] = getUserName($wikiPage->uid);
+		$pageX['author'] = $wikiPage->getUserName($wikiPage->uid);
 		$pageX['revisiontime']=date($wikiPage->dateFormat,$pageX['lastmodified']);
 		$pageX['mayEdit'] = $mayEdit;
 		$pageX['pageFound'] = true;
@@ -106,6 +90,7 @@ function getUserName($uid)
 	}
 	else {
 		$pageX=array();
+		$pageX['keyword']=$page;
 		$pageX['title']=_MD_GWIKI_NOEDIT_NOTFOUND_TITLE;
 		$pageX['body']=_MD_GWIKI_NOEDIT_NOTFOUND_BODY;
 		$pageX['author']='';

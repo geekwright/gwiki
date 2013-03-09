@@ -95,7 +95,7 @@ EOT;
 
 function showHistory($page)
 {
-    global $xoopsDB, $xoopsModuleConfig;
+    global $xoopsDB, $xoopsModuleConfig, $wikiPage;
     
     allowRestoration($page);
     
@@ -110,7 +110,7 @@ function showHistory($page)
         
         echo '<tr class="'.(($i % 2)?"even":"odd").'"><td><a href="pages.php?page='.$page.'&op=display&id='.$id.'">'.htmlspecialchars($title,ENT_QUOTES).'</a></td>';
         echo '<td>'.$modified.($active?'*':'').'</td>';
-        echo '<td>'.getUserName($uid).'</td>';
+        echo '<td>'.$wikiPage->getUserName($uid).'</td>';
         echo '<td><a href="pages.php?page='.$page.'&op=display&id='.$id.'">'._AD_GWIKI_VIEW.'</a> | <a href="javascript:restoreRevision(\''.$id.'\');">'._AD_GWIKI_RESTORE.'</a> ';
         echo ' | <a href="pages.php?page='.$page.'&op=fix&id='.$id.'">'._AD_GWIKI_FIX.'</a> | <a href="pages.php?page='.$page.'&op=tool&id='.$id.'">'._AD_GWIKI_PAGETOOLS.'</a></td></tr>';
     }
@@ -138,7 +138,7 @@ function showPage($page, $id)
     adminTableStart(_AD_GWIKI_SHOWPAGE,1);
     echo '<tr><td width="100%" >';
     echo '<div style="width: 94%; margin: 2em;">';
-    echo '<p style="padding-bottom: 2px; border-bottom: 1px solid #000000;">'._MD_GWIKI_PAGE.": <strong>$page</strong> - "._MD_GWIKI_LASTMODIFIED." <i>".date($xoopsModuleConfig['date_format'], $wikiPage->lastmodified)."</i> "._MD_GWIKI_BY." <i>".getUserName($wikiPage->uid)."</i></p>";
+    echo '<p style="padding-bottom: 2px; border-bottom: 1px solid #000000;">'._MD_GWIKI_PAGE.": <strong>$page</strong> - "._MD_GWIKI_LASTMODIFIED." <i>".date($xoopsModuleConfig['date_format'], $wikiPage->lastmodified)."</i> "._MD_GWIKI_BY." <i>".$wikiPage->getUserName($wikiPage->uid)."</i></p>";
     
     echo '<div id="wikipage"><h1 class="wikititle" id="toc0">' . htmlspecialchars($wikiPage->title) . '</h1>';
     echo $wikiPage->renderPage();
@@ -179,7 +179,7 @@ $form->addElement(new XoopsFormButton("", "submit", _SUBMIT, "submit"));
     adminTableStart(_AD_GWIKI_PAGETOOLS,1);
     echo '<tr><td width="100%" >';
     echo '<div style="width: 94%; margin: 2em;">';
-    echo '<p style="padding-bottom: 2px; border-bottom: 1px solid #000000;">'._MD_GWIKI_PAGE.": <strong>$page</strong> - "._MD_GWIKI_LASTMODIFIED." <i>".date($xoopsModuleConfig['date_format'], $wikiPage->lastmodified)."</i> "._MD_GWIKI_BY." <i>".getUserName($wikiPage->uid)."</i></p>";
+    echo '<p style="padding-bottom: 2px; border-bottom: 1px solid #000000;">'._MD_GWIKI_PAGE.": <strong>$page</strong> - "._MD_GWIKI_LASTMODIFIED." <i>".date($xoopsModuleConfig['date_format'], $wikiPage->lastmodified)."</i> "._MD_GWIKI_BY." <i>".$wikiPage->getUserName($wikiPage->uid)."</i></p>";
     echo $form->render();    
     echo '<br /><div id="wikipage" style="height: 120px; overflow: auto;" ><h1 class="wikititle" id="toc0">' . htmlspecialchars($wikiPage->title) . '</h1>';
     echo $wikiPage->renderPage();

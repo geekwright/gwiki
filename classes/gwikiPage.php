@@ -668,8 +668,11 @@ class gwikiPage {
 					$body.="</ul><h3>{$lastletter}</h3><ul>";
 				}
 			}
-
-			$body.='<li>'.$this->wikiLink($content["keyword"],$display_keyword).' : '.htmlspecialchars($content["title"]).'</li>';
+			$title=htmlspecialchars($content['title']);
+			$display_keyword=htmlspecialchars($display_keyword);
+			$url=sprintf($this->wikiLinkURL,strtolower($content['keyword']));
+			$link=sprintf('<a href="%s" title="%s">%s%s</a>', $url, $title, $display_keyword, '');
+			$body.='<li>'.$link.' : '.$title.'</li>';
 		}
 		if($body!='') $body.='</ul>';
 		return $body."\n\n";
@@ -705,7 +708,12 @@ class gwikiPage {
 				$body.="</ul><h3>{$lastdate}</h3><ul>";
 			}
 
-			$body.='<li>'.$this->wikiLink($content["keyword"]).' : '.htmlspecialchars($content["title"]).'</li>';
+			$title=htmlspecialchars($content['title']);
+			$display_keyword=htmlspecialchars($content['display_keyword']);
+			$url=sprintf($this->wikiLinkURL,strtolower($content['keyword']));
+			$link=sprintf('<a href="%s" title="%s">%s%s</a>', $url, $title, $display_keyword, '');
+			$body.='<li>'.$link.' : '.$title.'</li>';
+
 		}
 		if($body!='') $body.='</ul>';
 		return $body."\n\n";

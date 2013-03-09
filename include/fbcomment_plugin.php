@@ -1,4 +1,5 @@
 <?php
+if (!defined("XOOPS_ROOT_PATH"))  die("Root path not defined");
 /**
 * include/fbcomment_plugin.php - supply gwiki meta data open graph style for fbcomment module
 *

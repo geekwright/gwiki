@@ -4,7 +4,7 @@ global $xoTheme, $xoopsTpl;
 global $wikiPage;
 
 // $_GET variables we use
-$page = normalizePageName((isset($_GET['page']))?cleaner($_GET['page']):$wikiPage->wikiHomePage);
+$page = $wikiPage->normalizeKeyword((isset($_GET['page']))?cleaner($_GET['page']):$wikiPage->wikiHomePage);
 $highlight = isset($_GET['query'])?cleaner($_GET['query']):null;
 
 global $wikiPage, $xoopsDB, $xoopsModuleConfig;
@@ -41,7 +41,7 @@ function setRevision($page, $id)
 }
 
 	if($pageX) {
-		$pageX['author'] = getUserName($wikiPage->uid);
+		$pageX['author'] = $wikiPage->getUserName($wikiPage->uid);
 		$pageX['revisiontime']=date($wikiPage->dateFormat,$pageX['lastmodified']);
 		$pageX['mayEdit'] = $mayEdit;
 		$pageX['pageFound'] = true;
@@ -75,7 +75,7 @@ function setRevision($page, $id)
 			if(empty($row['title'])) $row['title']= _MD_GWIKI_EMPTY_TITLE;
 			prepOut($row);
 			$row['revisiontime']=date($wikiPage->dateFormat,$row['lastmodified']);
-			$row['username']=getUserName($row['uid']);
+			$row['username']=$wikiPage->getUserName($row['uid']);
 			$history[]=$row;
 //			echo '<td><a href="pages.php?page='.$page.'&op=display&id='.$id.'">'._AD_GWIKI_VIEW.'</a> | <a href="javascript:restoreRevision(\''.$id.'\');">'._AD_GWIKI_RESTORE.'</a> | <a href="pages.php?page='.$page.'&op=fix&id='.$id.'">'._AD_GWIKI_FIX.'</a></td></tr>';
 		}
