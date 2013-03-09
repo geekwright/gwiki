@@ -43,24 +43,28 @@ EOT;
 	$total=0;
 	$limit=10;
 	$start=0;
+	$like='';
 	if(!empty($_GET['start'])) $start=intval($_GET['start']);
+	if(!empty($_GET['like'])) $like=cleaner($_GET['like']);
 
 	$sql="SELECT COUNT(DISTINCT keyword) FROM ".$xoopsDB->prefix('gwiki_pages');
+	if(!empty($like)) $sql.=" WHERE keyword LIKE '{$like}%' ";
 	$result = $xoopsDB->query($sql);
 	if ($result) {
 		$myrow=$xoopsDB->fetchRow($result);
 		$total=$myrow[0];
 	}
 
+	echo '<form method="get"><b>'. _AD_GWIKI_KEYWORD_FILTER . '</b><input type="text" name="like"><input type="submit"></form><br />';
 	adminTableStart(_AD_GWIKI_ADMINTITLE,4);
 	if(!empty($message)) {
 		echo '<tr><td colspan="4" align="center"><br /><b>'.$message.'</b><br /><br /></td></tr>';
 	}
 	echo '<tr><th width="15%">'._AD_GWIKI_KEYWORD.'</th><th>'._MD_GWIKI_TITLE.'</th><th width="5%">'._AD_GWIKI_REVISIONS.'</th><th width="30%">'._AD_GWIKI_ACTION.'</th></tr>';
-    
+ 	$sqlwhere=''; if(!empty($like)) $sqlwhere=" WHERE t1.keyword LIKE '{$like}%' ";   
 	$sql = 'SELECT t1.keyword, COUNT(*), t2.title, t2.admin_lock FROM '.$xoopsDB->prefix('gwiki_pages').' t1 '.
 		' LEFT JOIN '.$xoopsDB->prefix('gwiki_pages').' t2 on t1.keyword = t2.keyword and t2.active = 1 '.
-		' GROUP BY keyword ';
+		$sqlwhere.' GROUP BY keyword ';
 	$result = $xoopsDB->query($sql, $limit, $start);
     
 	for ($i = 0; $i < $xoopsDB->getRowsNum($result); $i++) {
@@ -83,7 +87,8 @@ EOT;
 	$pager='';
 	if ($total > $limit) {
 		include_once XOOPS_ROOT_PATH.'/class/pagenav.php';
-		$nav = new xoopsPageNav($total,$limit,$start,'start','');
+		$likenav=''; if(!empty($like)) $likenav="like={$like}"; 
+		$nav = new xoopsPageNav($total,$limit,$start,'start',$likenav);
 		if(intval($total/$limit) < 5) $pager=$nav->renderNav();
 		else $pager= _AD_GWIKI_PAGENAV . $nav->renderSelect(false);
 	}

@@ -234,6 +234,8 @@ class gwikiPage {
 		$page=mysql_real_escape_string($this->keyword);
 		$display_keyword=$this->display_keyword;
 		if(empty($this->display_keyword)) $this->display_keyword=$page;
+		$this->tocQueue = array();
+		$this->tocIndex = 0;
 		$this->search_body=strip_tags($this->renderPage());
 		$this->toc_cache=serialize($this->tocQueue);
 		$this->gwiki_version = $this->gwikiVersion;		// new revisions always for current engine
@@ -828,7 +830,7 @@ class gwikiPage {
 			$linktext=trim(substr($source,$pos+1));
 		}
 
-		if(preg_match('/^([A-Za-z0-9.:_ ]){4,}$/',$link)) { 
+		if(preg_match('/^([A-Za-z0-9.:\- ]){2,}$/',$link)) { 
 			//$link=str_replace (' ', '', $link);
 			if(empty($linktext)) $ret=$this->wikiLink($link);
 			else $ret=$this->wikiLink($link,stripslashes($linktext));
