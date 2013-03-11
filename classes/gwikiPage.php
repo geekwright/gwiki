@@ -1,6 +1,6 @@
 <?php
 /**
-* gwikiPage.php - class to facilitate printing data
+* gwikiPage.php - class to access wiki page data
 *
 * This file is part of gwiki - geekwright wiki
 *
@@ -9,9 +9,33 @@
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
 * @package    gwiki
-* @version    $Id: gwlotoPrintJob.php 4 2010-09-11 02:19:21Z rgriffith $
+* @version    $Id$
 */
 // TODO look for places wher freeRecordSet($result) should be added
+/*
+TODO - need to handle large wiki in pageindex
+
+Testing shows ~25000 pages will generate in less than a second, but can
+crush some browsers (cough, IE)
+
+Also found initial start up (and randomly after inactivity) slowdowns on
+load - more than a minute in some cases. Not apache2 or mysql as restart 
+on either/both does not trigger, but machine cycle does. Assuming 
+caching in server (LVM?) but not sure.
+
+Clearly, this will be worse in the wild, and gets worse with size.
+* 
+Current thought is to switch to an ajax load after a certain threshold
+
+Create a brief index with something like:
+SELECT distinct substr(keyword,1,1) as letter, count(*) FROM `gwwiki_gwiki_pages`
+where active=1 and show_in_index = 1
+group by letter
+
+Use uniqid() for a div id for the data pane and call data only on request.
+This should make for a more manageable load.
+*/
+
 if (!defined("XOOPS_ROOT_PATH")) die("Root path not defined");
 
 define ('_WIKI_CAMELCASE_REGEX','(([A-Z]{1,}[a-z0-9\:]+){2,}\d*)');
@@ -142,6 +166,11 @@ class gwikiPage {
 		$this->tocIndex = 0;
 	}
 
+	public function escapeForDB($value)
+	{
+		return mysql_real_escape_string($value);
+	}
+
 	public function setRecentCount($count)
 	{
 		$count=intval($count);
@@ -198,7 +227,7 @@ class gwikiPage {
 	{
 		global $xoopsDB;
 		
-		$keyword=mysql_real_escape_string($keyword);
+		$keyword=$this->escapeForDB($keyword);
 		$sql = "SELECT keyword FROM ".$xoopsDB->prefix('gwiki_pages')." WHERE keyword='{$keyword}' AND active=1 ";
 		$result = $xoopsDB->query($sql);
 		if ($content = $xoopsDB->fetcharray($result)) {
@@ -231,7 +260,7 @@ class gwikiPage {
 	{
 		global $xoopsDB;
 		
-		$page=mysql_real_escape_string($this->keyword);
+		$page=$this->escapeForDB($this->keyword);
 		$display_keyword=$this->display_keyword;
 		if(empty($this->display_keyword)) $this->display_keyword=$page;
 		$this->tocQueue = array();
@@ -252,22 +281,22 @@ class gwikiPage {
 			$sql .= ', lastmodified, uid, admin_lock, active, search_body, toc_cache, show_in_index, gwiki_version)';
 			$sql .= ' VALUES (';
 			$sql .= '\''.$page.'\' ,';
-			$sql .= '\''.mysql_real_escape_string($this->display_keyword).'\' ,';
-			$sql .= '\''.mysql_real_escape_string($this->title).'\' ,';
-			$sql .= '\''.mysql_real_escape_string($this->body).'\' ,';
-			$sql .= '\''.mysql_real_escape_string($this->parent_page).'\' ,';
-			$sql .= '\''.mysql_real_escape_string($this->page_set_home).'\' ,';
-			$sql .= '\''.mysql_real_escape_string($this->page_set_order).'\' ,';
-			$sql .= '\''.mysql_real_escape_string($this->meta_description).'\' ,';
-			$sql .= '\''.mysql_real_escape_string($this->meta_keywords).'\' ,';
+			$sql .= '\''.$this->escapeForDB($this->display_keyword).'\' ,';
+			$sql .= '\''.$this->escapeForDB($this->title).'\' ,';
+			$sql .= '\''.$this->escapeForDB($this->body).'\' ,';
+			$sql .= '\''.$this->escapeForDB($this->parent_page).'\' ,';
+			$sql .= '\''.$this->escapeForDB($this->page_set_home).'\' ,';
+			$sql .= '\''.$this->escapeForDB($this->page_set_order).'\' ,';
+			$sql .= '\''.$this->escapeForDB($this->meta_description).'\' ,';
+			$sql .= '\''.$this->escapeForDB($this->meta_keywords).'\' ,';
 			$sql .= 'UNIX_TIMESTAMP() ,';
-			$sql .= '\''.mysql_real_escape_string($this->uid).'\' ,';
-			$sql .= '\''.mysql_real_escape_string($this->admin_lock).'\' ,';
-			$sql .= '\''.mysql_real_escape_string($this->active).'\' ,';
-			$sql .= '\''.mysql_real_escape_string($this->search_body).'\' ,';
-			$sql .= '\''.mysql_real_escape_string($this->toc_cache).'\' ,';
-			$sql .= '\''.mysql_real_escape_string($this->show_in_index).'\' ,';
-			$sql .= '\''.mysql_real_escape_string($this->gwiki_version).'\' )';
+			$sql .= '\''.$this->escapeForDB($this->uid).'\' ,';
+			$sql .= '\''.$this->escapeForDB($this->admin_lock).'\' ,';
+			$sql .= '\''.$this->escapeForDB($this->active).'\' ,';
+			$sql .= '\''.$this->escapeForDB($this->search_body).'\' ,';
+			$sql .= '\''.$this->escapeForDB($this->toc_cache).'\' ,';
+			$sql .= '\''.$this->escapeForDB($this->show_in_index).'\' ,';
+			$sql .= '\''.$this->escapeForDB($this->gwiki_version).'\' )';
 			$result=$xoopsDB->query($sql);
 			if($result) {
 				$result=$xoopsDB->getInsertId();
@@ -284,22 +313,22 @@ class gwikiPage {
 				$sql .= ', lastmodified, uid, admin_lock, active, search_body, toc_cache, show_in_index, gwiki_version)';
 				$sql .= ' VALUES (';
 				$sql .= '\''.$page.'\' ,';
-				$sql .= '\''.mysql_real_escape_string($this->display_keyword).'\' ,';
-				$sql .= '\''.mysql_real_escape_string($this->title).'\' ,';
-				$sql .= '\''.mysql_real_escape_string($this->body).'\' ,';
-				$sql .= '\''.mysql_real_escape_string($this->parent_page).'\' ,';
-				$sql .= '\''.mysql_real_escape_string($this->page_set_home).'\' ,';
-				$sql .= '\''.mysql_real_escape_string($this->page_set_order).'\' ,';
-				$sql .= '\''.mysql_real_escape_string($this->meta_description).'\' ,';
-				$sql .= '\''.mysql_real_escape_string($this->meta_keywords).'\' ,';
+				$sql .= '\''.$this->escapeForDB($this->display_keyword).'\' ,';
+				$sql .= '\''.$this->escapeForDB($this->title).'\' ,';
+				$sql .= '\''.$this->escapeForDB($this->body).'\' ,';
+				$sql .= '\''.$this->escapeForDB($this->parent_page).'\' ,';
+				$sql .= '\''.$this->escapeForDB($this->page_set_home).'\' ,';
+				$sql .= '\''.$this->escapeForDB($this->page_set_order).'\' ,';
+				$sql .= '\''.$this->escapeForDB($this->meta_description).'\' ,';
+				$sql .= '\''.$this->escapeForDB($this->meta_keywords).'\' ,';
 				$sql .= 'UNIX_TIMESTAMP() ,';
-				$sql .= '\''.mysql_real_escape_string($this->uid).'\' ,';
-				$sql .= '\''.mysql_real_escape_string($this->admin_lock).'\' ,';
-				$sql .= '\''.mysql_real_escape_string($this->active).'\' ,';
-				$sql .= '\''.mysql_real_escape_string($this->search_body).'\' ,';
-				$sql .= '\''.mysql_real_escape_string($this->toc_cache).'\' ,';
-				$sql .= '\''.mysql_real_escape_string($this->show_in_index).'\' ,';
-				$sql .= '\''.mysql_real_escape_string($this->gwiki_version).'\' )';
+				$sql .= '\''.$this->escapeForDB($this->uid).'\' ,';
+				$sql .= '\''.$this->escapeForDB($this->admin_lock).'\' ,';
+				$sql .= '\''.$this->escapeForDB($this->active).'\' ,';
+				$sql .= '\''.$this->escapeForDB($this->search_body).'\' ,';
+				$sql .= '\''.$this->escapeForDB($this->toc_cache).'\' ,';
+				$sql .= '\''.$this->escapeForDB($this->show_in_index).'\' ,';
+				$sql .= '\''.$this->escapeForDB($this->gwiki_version).'\' )';
 				$result=$xoopsDB->query($sql);
 				if($result) {
 					$result=$xoopsDB->getInsertId();
@@ -413,7 +442,7 @@ class gwikiPage {
 
 		$page_id=0;
 		
-		$keyword=mysql_real_escape_string($keyword);
+		$keyword=$this->escapeForDB($keyword);
 		
 		$sql = 'SELECT page_id FROM '.$xoopsDB->prefix('gwiki_pageids')." WHERE keyword = '{$keyword}' ";
 		$result=$xoopsDB->query($sql);
@@ -437,7 +466,7 @@ class gwikiPage {
 			$this->currenttemplateid = $prefix['prefix_template_id'];
 		}
 
-		$keyword=mysql_real_escape_string($keyword);
+		$keyword=$this->escapeForDB($keyword);
 		
 		$this->page_id = $this->getPageId($keyword);
 
@@ -507,14 +536,14 @@ class gwikiPage {
 		global $xoopsDB;
 
 		$prefix=false;
-		$keyword=mysql_real_escape_string($keyword);
+		$keyword=$this->escapeForDB($keyword);
 
 		$pos=strpos($keyword,':');
 		// split namespace and page reference on first colon
 		if($pos!==false && $pos>0) {
 			$pre=substr($keyword,0,$pos);
 			$page=substr($keyword,$pos+1);
-			$q_pre=mysql_real_escape_string($pre);
+			$q_pre=$this->escapeForDB($pre);
 			$sql = "SELECT * FROM ".$xoopsDB->prefix('gwiki_prefix')." WHERE prefix='{$q_pre}' ";
 			$result = $xoopsDB->query($sql);
 			$rows=$xoopsDB->getRowsNum($result);
@@ -554,7 +583,7 @@ class gwikiPage {
 	global $xoopsDB;
 
 		$this->attachments=array();
-		$q_keyword=mysql_real_escape_string($page);
+		$q_keyword=$this->escapeForDB($page);
 		$sql = "SELECT * FROM ".$xoopsDB->prefix('gwiki_page_files')." WHERE keyword='{$q_keyword}' ";
 		$result = $xoopsDB->query($sql);
 		$rows=$xoopsDB->getRowsNum($result);
@@ -901,8 +930,8 @@ class gwikiPage {
 		$lib=$this->imageLib;
 		array_unshift($lib,$keyword);
 		foreach ($lib as $page) {
-			$sql  = 'SELECT * FROM '.$xoopsDB->prefix('gwiki_page_images').' WHERE keyword=\''.mysql_real_escape_string($page).'\' ';
-			$sql .= ' AND image_name=\''.mysql_real_escape_string($name).'\' ';
+			$sql  = 'SELECT * FROM '.$xoopsDB->prefix('gwiki_page_images').' WHERE keyword=\''.$this->escapeForDB($page).'\' ';
+			$sql .= ' AND image_name=\''.$this->escapeForDB($name).'\' ';
 			$result = $xoopsDB->query($sql);
 			if ($image = $xoopsDB->fetcharray($result)) {
 				return $image;

@@ -26,10 +26,10 @@ function cleaner($string) {
 }
 
 function deleteData(&$input) {
-global $xoopsDB, $uploadpath;
+global $xoopsDB, $uploadpath, $wikiPage;
 
 	$q_image_id=intval($input['image_id']);
-	$q_keyword=mysql_real_escape_string($input['page']); // use keyword in delete so we know id and edit authority are connected
+	$q_keyword=$wikiPage->escapeForDB($input['page']); // use keyword in delete so we know id and edit authority are connected
 
 	// look up the name and delete the image file
 	$sql = "SELECT image_file FROM ".$xoopsDB->prefix('gwiki_page_images').
@@ -60,15 +60,15 @@ global $xoopsDB, $uploadpath;
 }
 
 function updateData(&$input) {
-global $xoopsDB;
+global $xoopsDB, $wikiPage;
 
 	$q_image_id=intval($input['image_id']);
-	$q_keyword=mysql_real_escape_string($input['page']);
-	$q_image_name=mysql_real_escape_string($input['image_name']);
-	$q_image_alt_text=mysql_real_escape_string($input['image_alt_text']);
+	$q_keyword=$wikiPage->escapeForDB($input['page']);
+	$q_image_name=$wikiPage->escapeForDB($input['image_name']);
+	$q_image_alt_text=$wikiPage->escapeForDB($input['image_alt_text']);
 	//  image_file only changed by image upload
 	$q_use_to_represent=intval($input['use_to_represent']);
-	$q_image_file=empty($input['image_file'])?'':mysql_real_escape_string($input['image_file']);
+	$q_image_file=empty($input['image_file'])?'':$wikiPage->escapeForDB($input['image_file']);
 
 //	if(!$q_image_id) return false; // only updates
 

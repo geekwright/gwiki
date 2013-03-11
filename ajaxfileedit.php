@@ -121,10 +121,10 @@ function getUserName($uid)
 }
 
 function deleteData(&$input) {
-global $xoopsDB, $uploadpath;
+global $xoopsDB, $uploadpath, $wikiPage;
 
 	$q_file_id=intval($input['file_id']);
-	$q_keyword=mysql_real_escape_string($input['page']); // use keyword in delete so we know id and edit authority are connected
+	$q_keyword=$wikiPage->escapeForDB($input['page']); // use keyword in delete so we know id and edit authority are connected
 
 	// look up the name and delete the image file
 	$sql = "SELECT file_path FROM ".$xoopsDB->prefix('gwiki_page_files').
@@ -154,17 +154,17 @@ global $xoopsDB, $uploadpath;
 }
 
 function updateData(&$input) {
-global $xoopsDB, $xoopsUser;
+global $xoopsDB, $xoopsUser, $wikiPage;
 
 	$q_file_id=intval($input['file_id']);
-	$q_keyword=mysql_real_escape_string($input['page']);
-	$q_file_name=mysql_real_escape_string($input['file_name']);
-	$q_file_icon=mysql_real_escape_string($input['file_icon']);
-	$q_file_type=mysql_real_escape_string($input['file_type']);
-	$q_file_description=mysql_real_escape_string($input['file_description']);
+	$q_keyword=$wikiPage->escapeForDB($input['page']);
+	$q_file_name=$wikiPage->escapeForDB($input['file_name']);
+	$q_file_icon=$wikiPage->escapeForDB($input['file_icon']);
+	$q_file_type=$wikiPage->escapeForDB($input['file_type']);
+	$q_file_description=$wikiPage->escapeForDB($input['file_description']);
 	//  file_path only changed by image upload
 	$q_file_size=intval($input['file_size']);
-	$q_file_path=empty($input['file_path'])?'':mysql_real_escape_string($input['file_path']);
+	$q_file_path=empty($input['file_path'])?'':$wikiPage->escapeForDB($input['file_path']);
 	$q_file_uid = ($xoopsUser)?$xoopsUser->getVar('uid'):0;
 	$input['file_uid']=$q_file_uid;
 	if(intval($input['file_upload_date'])==0) $input['file_upload_date']=time();
@@ -177,7 +177,7 @@ global $xoopsDB, $xoopsUser;
 	$sql.= " file_size = '{$q_file_size}', ";
 	$sql.= " file_path = '{$q_file_path}', ";
 	$sql.= " file_uid  = '{$q_file_uid}', ";
-	$sql.= " file_uid  = '{$q_file_upload_date}', ";
+//	$sql.= " file_uid  = '{$q_file_upload_date}', ";
 	$sql.= " file_description = '{$q_file_description}' ";
 	$sql.= " where file_id = '{$q_file_id}' AND keyword = '{$q_keyword}' ";
 	
@@ -293,8 +293,8 @@ global $uploadpath,$xoopsDB;
 		exit;
 	}
 
-	$q_newfile=mysql_real_escape_string($newfile);
-	$q_keyword=mysql_real_escape_string($input['page']);
+	$q_newfile=$wikiPage->escapeForDB($newfile);
+	$q_keyword=$wikiPage->escapeForDB($input['page']);
 
 	$sql = "SELECT file_id FROM ".$xoopsDB->prefix('gwiki_page_files')." where file_name = '{$q_newfile}' AND keyword='{$q_keyword}' ";
 	$result = $xoopsDB->query($sql);

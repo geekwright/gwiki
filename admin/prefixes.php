@@ -238,7 +238,7 @@ global $xoopsDB;
 }
 
 function updatePrefix($pid) {
-global $xoopsDB;
+global $xoopsDB, $wikiPage;
 
 	$row=getPrefix($pid);
 	
@@ -255,22 +255,22 @@ global $xoopsDB;
 
 	if($row['prefix_id']) {
 		$sql  = 'UPDATE '.$xoopsDB->prefix('gwiki_prefix');
-		$sql .= ' SET prefix_home = \''. mysql_real_escape_string($row['prefix_home']). '\'';
-		$sql .= ' , prefix_auto_name = \''. mysql_real_escape_string($row['prefix_auto_name']) .'\'';
-		$sql .= ' , prefix_is_external = \''. mysql_real_escape_string($row['prefix_is_external']) .'\'';
-		$sql .= ' , prefix_external_url = \''. mysql_real_escape_string($row['prefix_external_url']) .'\'';
+		$sql .= ' SET prefix_home = \''. $wikiPage->escapeForDB($row['prefix_home']). '\'';
+		$sql .= ' , prefix_auto_name = \''. $wikiPage->escapeForDB($row['prefix_auto_name']) .'\'';
+		$sql .= ' , prefix_is_external = \''. $wikiPage->escapeForDB($row['prefix_is_external']) .'\'';
+		$sql .= ' , prefix_external_url = \''. $wikiPage->escapeForDB($row['prefix_external_url']) .'\'';
 		$sql .= ' WHERE prefix_id = "'.$pid.'" ';
 		$result = $xoopsDB->queryF($sql);
 	}
 	else {
 		$sql  = 'INSERT INTO '.$xoopsDB->prefix('gwiki_prefix');
 		$sql .= ' (prefix, prefix_home, prefix_auto_name, prefix_template_id, prefix_is_external, prefix_external_url)';
-		$sql .= ' VALUES (\''. mysql_real_escape_string($row['prefix']) .'\'';
-		$sql .= ' , \''. mysql_real_escape_string($row['prefix_home']) .'\'';
-		$sql .= ' , \''. mysql_real_escape_string($row['prefix_auto_name']) .'\'';
+		$sql .= ' VALUES (\''. $wikiPage->escapeForDB($row['prefix']) .'\'';
+		$sql .= ' , \''. $wikiPage->escapeForDB($row['prefix_home']) .'\'';
+		$sql .= ' , \''. $wikiPage->escapeForDB($row['prefix_auto_name']) .'\'';
 		$sql .= ' , \'0\'';
-		$sql .= ' , \''. mysql_real_escape_string($row['prefix_is_external']) .'\'';
-		$sql .= ' , \''. mysql_real_escape_string($row['prefix_external_url']) .'\'';
+		$sql .= ' , \''. $wikiPage->escapeForDB($row['prefix_is_external']) .'\'';
+		$sql .= ' , \''. $wikiPage->escapeForDB($row['prefix_external_url']) .'\'';
 		$sql .= ' ) ';
 		$result = $xoopsDB->queryF($sql);
 		if($result) $pid=$xoopsDB->getInsertId();
@@ -394,7 +394,7 @@ global $xoopsDB;
 }
 
 function updateTemplate($pid) {
-global $xoopsDB;
+global $xoopsDB,$wikiPage;
 
 	$row=getPrefix($pid);
 	
@@ -404,18 +404,18 @@ global $xoopsDB;
 	
 	if($row['template_id']) {
 		$sql  = 'UPDATE '.$xoopsDB->prefix('gwiki_template');
-		$sql .= ' SET template = \''. mysql_real_escape_string($row['template']). '\'';
-		$sql .= ' , template_body = \''. mysql_real_escape_string($row['template_body']) .'\'';
-		$sql .= ' , template_notes = \''. mysql_real_escape_string($row['template_notes']) .'\'';
+		$sql .= ' SET template = \''. $wikiPage->escapeForDB($row['template']). '\'';
+		$sql .= ' , template_body = \''. $wikiPage->escapeForDB($row['template_body']) .'\'';
+		$sql .= ' , template_notes = \''. $wikiPage->escapeForDB($row['template_notes']) .'\'';
 		$sql .= ' WHERE template_id = "'.$row['template_id'].'" ';
 		$result = $xoopsDB->queryF($sql);
 	}
 	else {
 		$sql  = 'INSERT INTO '.$xoopsDB->prefix('gwiki_template');
 		$sql .= ' (template, template_body, template_notes)';
-		$sql .= ' VALUES (\''. mysql_real_escape_string($row['template']) .'\'';
-		$sql .= ' , \''. mysql_real_escape_string($row['template_body']) .'\'';
-		$sql .= ' , \''. mysql_real_escape_string($row['template_notes']) .'\'';
+		$sql .= ' VALUES (\''. $wikiPage->escapeForDB($row['template']) .'\'';
+		$sql .= ' , \''. $wikiPage->escapeForDB($row['template_body']) .'\'';
+		$sql .= ' , \''. $wikiPage->escapeForDB($row['template_notes']) .'\'';
 		$sql .= ' ) ';
 		$result = $xoopsDB->queryF($sql);
 		if($result) $row['template_id']=$xoopsDB->getInsertId();
