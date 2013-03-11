@@ -1,6 +1,6 @@
 <?php
 include 'header.php';
-if(!$xoop25plus) adminmenu(6);
+if(!$xoop25plus) adminmenu(7);
 
 global $xoopsModule, $xoopsConfig;
 

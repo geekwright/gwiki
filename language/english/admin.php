@@ -77,5 +77,19 @@ define('_AD_GWIKI_TEMPLATE_BODY', 'Template Code');
 define('_AD_GWIKI_TEMPLATE_NOTES', 'Notes');
 define('_AD_GWIKI_TEMPLATE_CONFIRM_DEL', 'Do you really want to delete this template: %s?');
 
+// attachments
+define('_AD_GWIKI_FILES_LIST', 'Attachments');
+define('_AD_GWIKI_FILES_EMPTY', 'No attachments defined');
+
+define('_AD_GWIKI_FILES_KEYWORD', 'Page');
+define('_AD_GWIKI_FILES_NAME', 'File Name');
+define('_AD_GWIKI_FILES_PATH', 'Path');
+define('_AD_GWIKI_FILES_TYPE', 'Type');
+define('_AD_GWIKI_FILES_ICON', 'Icon');
+define('_AD_GWIKI_FILES_SIZE', 'Size');
+define('_AD_GWIKI_FILES_DATE', 'Upload Date');
+define('_AD_GWIKI_FILES_DESC', 'Description');
+define('_AD_GWIKI_FILES_UID', 'User');
+
 }
 ?>

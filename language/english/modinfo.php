@@ -40,6 +40,7 @@ define('_MI_GWIKI_ABOUT','About');
 define('_MI_GWIKI_PAGES', 'Mange Revisions');
 define('_MI_GWIKI_ADPERM','Permissions');
 define('_MI_GWIKI_ADPREFIX','Namespaces');
+define('_MI_GWIKI_ADFILES','Attachments');
 define('_MI_GWIKI_ADRECENT', 'Recent Activity');
 define('_MI_GWIKI_AD_PERM_TITLE','Wiki Page Authority');
 define('_MI_GWIKI_AD_PERM_DESC',"These permissions control the user's authority to create and edit wiki pages. Permissions can be granted for ALL pages, or only pages in specifc namespaces assigned to the group.");

@@ -20,13 +20,19 @@ $adminmenu[] = array(
 $adminmenu[] = array(
 	'title'	=> _MI_GWIKI_ADPERM ,
 	'link'	=> 'admin/permissions.php' ,
-	'icon'	=> 'images/admin/permission.png'
+	'icon'	=> 'images/admin/group.png'
 ) ;
 
 $adminmenu[] = array(
 	'title'	=> _MI_GWIKI_ADPREFIX ,
 	'link'	=> 'admin/prefixes.php' ,
-	'icon'	=> 'images/admin/group.png'
+	'icon'	=> 'images/admin/namespaces.png'
+) ;
+
+$adminmenu[] = array(
+	'title'	=> _MI_GWIKI_ADFILES ,
+	'link'	=> 'admin/attachments.php' ,
+	'icon'	=> 'images/admin/attachments.png'
 ) ;
 
 $adminmenu[] = array(
