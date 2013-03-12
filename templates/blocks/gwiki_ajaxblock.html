@@ -20,7 +20,9 @@ if(typeof ajaxGwikiLoad != 'function'){
 				txt=xmlhttp.responseText;
 				el=document.getElementById("wikiajaxblock"+bid);
 				el.innerHTML=txt;
-				
+				el.scrollTop = 0;
+				el.scrollLeft = 0;
+
 				// try to make sure the top of the just changed content is visible
 				// find the top of our div
 				for (var topPos = 0;
