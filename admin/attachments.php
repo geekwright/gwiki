@@ -16,6 +16,7 @@ function cleaner($string,$trim=true) {
 function showAttachments()
 {
 global $xoopsDB, $wikiPage;
+$dir = basename( dirname ( dirname( __FILE__ ) ) ) ;
 /*
 gwiki_page_files
   file_id int(10) NOT NULL AUTO_INCREMENT,
@@ -112,11 +113,11 @@ gwiki_page_files
 */
 		echo '<tr class="'.(($i % 2)?"even":"odd").'"><td><a href="../edit.php?page='.$row['keyword'].'">'.htmlspecialchars($row['keyword'], ENT_QUOTES).'</a></td>' .
 			'<td>'.htmlspecialchars($row['file_name'], ENT_QUOTES).'</td>'.
-			'<td>'.htmlspecialchars($row['file_path'], ENT_QUOTES).'</td>'.
+			'<td><a href="'.XOOPS_URL.'/uploads/'.$dir.'/'.$row['file_path'].'">'.htmlspecialchars($row['file_path'], ENT_QUOTES).'</a></td>'.
 			'<td>'.htmlspecialchars($row['file_type'], ENT_QUOTES).'</td>'.
-			'<td>'.htmlspecialchars($row['file_icon'], ENT_QUOTES).'</td>'.
+			'<td><img src="'.XOOPS_URL.'/modules/'.$dir.'/icons/16px/'.$row['file_icon'].'.png" alt="'.$row['file_icon'].'" title="'.$row['file_icon'].'" /></td>'.
 			'<td>'.htmlspecialchars($row['file_size'], ENT_QUOTES).'</td>'.
-			'<td>'.htmlspecialchars($row['file_upload_date'], ENT_QUOTES).'</td>'.
+			'<td>'.date('Y-m-d',$row['file_upload_date']).'</td>'.
 			'<td>'.htmlspecialchars($row['file_description'], ENT_QUOTES).'</td>'.
 			'<td>'.$wikiPage->getUserName($row['file_uid']).'</td>'.
 		'</tr>';
