@@ -79,7 +79,8 @@ define('_AD_GWIKI_TEMPLATE_CONFIRM_DEL', 'Do you really want to delete this temp
 
 // attachments
 define('_AD_GWIKI_FILES_LIST', 'Attachments');
-define('_AD_GWIKI_FILES_EMPTY', 'No attachments defined');
+define('_AD_GWIKI_FILES_EMPTY', 'No matching attachments defined');
+define('_AD_GWIKI_FILES_FILTER', 'Filter');
 
 define('_AD_GWIKI_FILES_KEYWORD', 'Page');
 define('_AD_GWIKI_FILES_NAME', 'File Name');
