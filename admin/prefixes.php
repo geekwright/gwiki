@@ -393,14 +393,18 @@ global $xoopsDB;
 	redirect_header("prefixes.php", 2,_MD_GWIKI_DBUPDATED);
 }
 
+function gpcStrip($string) {
+	if (get_magic_quotes_gpc()) $string=stripslashes($string);
+	return $string;
+}
 function updateTemplate($pid) {
 global $xoopsDB,$wikiPage;
 
 	$row=getPrefix($pid);
 	
-	if(isset($_POST['template'])) $row['template']=$_POST['template'];
-	if(isset($_POST['template_body'])) $row['template_body']=$_POST['template_body'];
-	if(isset($_POST['template_notes'])) $row['template_notes']=$_POST['template_notes'];
+	if(isset($_POST['template'])) $row['template']=gpcStrip($_POST['template']);
+	if(isset($_POST['template_body'])) $row['template_body']=gpcStrip($_POST['template_body']);
+	if(isset($_POST['template_notes'])) $row['template_notes']=gpcStrip($_POST['template_notes']);
 	
 	if($row['template_id']) {
 		$sql  = 'UPDATE '.$xoopsDB->prefix('gwiki_template');
