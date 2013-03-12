@@ -24,6 +24,9 @@ if (isset($_GET['id'])) $id=intval($_GET['id']);    // from utility (i.e. histor
 	$config_handler =& xoops_gethandler('config');
 	$moduleConfig   =& $config_handler->getConfigsByCat(0, $module->getVar('mid'));
 
+	$alloworigin=$moduleConfig['allow_origin'];
+	if(!empty($alloworigin)) header("Access-Control-Allow-Origin: ".$alloworigin);
+
 	include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
 
 	$wikiPage = new gwikiPage;

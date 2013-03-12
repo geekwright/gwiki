@@ -160,6 +160,15 @@ $modversion['config'][]= array(
 	'default' => '',
 	'options' => array() );
 	
+$modversion['config'][]= array(
+	'name' => 'allow_origin',
+	'title' => '_MI_GWIKI_AJAX_ALLOW_ORIGIN',
+	'description' => '_MI_GWIKI_AJAX_ALLOW_ORIGIN_DESC',
+	'formtype' => 'textbox',
+	'valuetype' => 'text',
+	'default' => '',
+	'options' => array() );
+	
 
 
 // Blocks

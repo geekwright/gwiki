@@ -27,6 +27,8 @@ define('_MI_GWIKI_ATTACH_EXT_BLACKLIST', 'Attachment Extension Blacklist');
 define('_MI_GWIKI_ATTACH_EXT_BLACKLIST_DESC', 'Comma separated list of file extensions NOT to be allowed for attachments. (Do not specify if Whitelist is specified.)');
 define('_MI_GWIKI_ATTACH_EXT_WHITELIST', 'Attachment Extension Whitelist');
 define('_MI_GWIKI_ATTACH_EXT_WHITELIST_DESC', 'Comma separated list of file extensions to be allowed for attachments. (Do not specify if Blacklist is specified.)');
+define('_MI_GWIKI_AJAX_ALLOW_ORIGIN', 'AJAX Wiki Allowed Origin');
+define('_MI_GWIKI_AJAX_ALLOW_ORIGIN_DESC', 'String to include in Access-Control-Allow-Origin: header for AJAX Wiki. Leave blank to disable, * to allow all, or specific host(s)');
 
 // Wiki special pages
 // Change these names, if you want a different homepage and error page
