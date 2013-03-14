@@ -141,5 +141,9 @@ define('_MD_GWIKI_AJAX_IMGEDIT_UPD_OK', 'Image Updated');
 define('_MD_GWIKI_AJAX_IMGEDIT_ADD_OK', 'Image Added');
 define('_MD_GWIKI_AJAX_IMGEDIT_NO_AUTH', 'No Edit Permission for Page');
 
+define('_MD_GWIKI_PAGENAV_TOP', 'Top');
+define('_MD_GWIKI_PAGENAV_NEXT', 'Next');
+define('_MD_GWIKI_PAGENAV_PREV', 'Previous');
+
 }
 ?>

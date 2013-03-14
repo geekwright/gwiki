@@ -208,5 +208,13 @@ $modversion['blocks'][] = array(
 	'options' => '4|0|-3 months',
 	'template' => 'gwiki_recentblock.html');
 
+$modversion['blocks'][] = array(
+	'file' => 'blocks.php',
+	'name' => _MI_GWIKI_BL_PAGESET_TOC,
+	'description' =>  _MI_GWIKI_BL_PAGESET_TOC_DESC,
+	'show_func' => 'b_gwiki_pagesettoc_show',
+	'edit_func' => 'b_gwiki_pagesettoc_edit',
+	'options' => '|6',
+	'template' => 'gwiki_pagesettoc.html');
 
 ?>

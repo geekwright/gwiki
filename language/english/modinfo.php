@@ -57,6 +57,8 @@ define('_MI_GWIKI_BL_TEASERBLOCK', 'Page Display Block');
 define('_MI_GWIKI_BL_TEASERBLOCK_DESC', 'Display Full or Teaser only view of a Wiki Page');
 define('_MI_GWIKI_BL_RECENTBLOCK', 'Recent Pages');
 define('_MI_GWIKI_BL_RECENTBLOCK_DESC', 'Display Teaser view of recently changed Wiki pages');
+define('_MI_GWIKI_BL_PAGESET_TOC', 'Page Set TOC');
+define('_MI_GWIKI_BL_PAGESET_TOC_DESC', 'Display Table of Contents for a Page Set');
 
 }
 ?>

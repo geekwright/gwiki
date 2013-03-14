@@ -268,6 +268,11 @@ class gwikiPage {
 		$this->search_body=strip_tags($this->renderPage());
 		$this->toc_cache=serialize($this->tocQueue);
 		$this->gwiki_version = $this->gwikiVersion;		// new revisions always for current engine
+		
+		// if we are adding to a page set, auto increment the order if none specified
+		if(!empty($this->page_set_home) && $this->page_set_order==0) {
+			$this->page_set_order = $this->getNextPageSetOrder($this->page_set_home);
+		}
 
 		// this will usually fail (duplicate)
 		$sql = 'INSERT INTO '.$xoopsDB->prefix('gwiki_pageids')." (keyword, created) VALUES('{$page}', UNIX_TIMESTAMP())";
@@ -340,6 +345,23 @@ class gwikiPage {
 		return $result;
 	}
 
+	// get the next higher page_set_order for a given page_set_home
+	private function getNextPageSetOrder($page_set_home) {
+		global $xoopsDB;
+
+		$page_set_order=1;
+		
+		$keyword=$this->escapeForDB($page_set_home);
+		
+		$sql = 'SELECT MAX(page_set_order) FROM '.$xoopsDB->prefix('gwiki_pages')." WHERE active = 1 and page_set_home = '{$keyword}' ";
+		$result=$xoopsDB->query($sql);
+		if ($result) {
+			$myrow=$xoopsDB->fetchRow($result);
+			$page_set_order=$myrow[0]+1;
+		}
+		return $page_set_order;
+	}
+	
 	/**
 	* Check if the current user may edit the current page
 	* Since the class can be used outside the module where permissions are assigned, we have to work at this a bit
@@ -912,6 +934,93 @@ class gwikiPage {
 		return $toc; 
 	}
 
+	public function fetchPageSetToc(&$page)
+	{
+		global $xoopsDB;
+		$toc=false;
+
+		$q_page=$this->escapeForDB($page);
+
+		$sql  = 'SELECT keyword, display_keyword, page_set_home, page_set_order, toc_cache ';
+		$sql .= ' FROM '.$xoopsDB->prefix('gwiki_pages');
+		$sql .= " WHERE active=1 and keyword='{$q_page}' ";
+	
+		$result = $xoopsDB->query($sql);
+    
+		$rows=$xoopsDB->getRowsNum($result);
+		if($rows) {
+			$row = $xoopsDB->fetchArray($result);
+			if(!empty($row['page_set_home'])) {
+				$page=$row['page_set_home']; // this is passed back up to caller!
+				$q_page=$this->escapeForDB($row['page_set_home']);
+				$xoopsDB->freeRecordSet($result);
+				$sql  = 'SELECT keyword, display_keyword, page_set_home, page_set_order, toc_cache ';
+				$sql .= ' FROM '.$xoopsDB->prefix('gwiki_pages');
+				$sql .= " WHERE active=1 and page_set_home='{$q_page}' ";
+				$sql .= " ORDER BY page_set_order, keyword ";
+	
+				$result = $xoopsDB->query($sql);
+				while($row = $xoopsDB->fetchArray($result)) {
+					$row['toc']=unserialize($row['toc_cache']);
+					$toc[]=$row;
+				}
+    
+			}
+		}
+		$xoopsDB->freeRecordSet($result);
+		return($toc);
+	}
+
+	public function renderPageSetToc(&$page,$level,$tocclass='wikitocpage')
+	{
+		$toc=$this->fetchPageSetToc($page);
+		$tocout='';
+		foreach($toc as $ti=>$tv) {
+			$link=sprintf($this->getWikiLinkURL(),$tv['keyword']);
+			foreach($tv['toc'] as $i=>$v) {
+				if(intval($v['level']) <= $level) {
+					$tocout .= '<li class="wikitoclevel' . $v['level'] . '"><a href="'.$link.sprintf($this->tocAnchorFmt,$this->tocIdPrefix.$i).'">'.$v['name'].'</a></li>';
+				}
+			}
+		}
+		if(!empty($tocout)) {
+			$tocout='<div class="'.$tocclass.'"><ul class="wikitoclist">'.$tocout.'</ul></div>';
+		}
+		return($tocout);
+	}
+
+	public function renderPageSetNav($page)
+	{
+		$sethome=$page;
+		$toc=$this->fetchPageSetToc($sethome); // this will set home
+		$home = -1; $current = -1; $prev = -1; $next= -1;
+		foreach($toc as $i=>$v) {
+			if(strcasecmp($v['keyword'],$page)==0) $current=$i; 
+			if(strcasecmp($v['keyword'],$sethome)==0) $home=$i; 
+		}
+		$tocout='';
+		if($current>-1) { $prev=$current-1; $next=$current+1; }
+		if($next>(count($toc)-1)) $next = -1;
+		
+		if($prev>=0) {
+			$link=sprintf($this->getWikiLinkURL(),$toc[$prev]['keyword']);
+			$tocout .= '<li class="wikipagesetprev"><a href="'.$link.'" title="'.htmlentities($toc[$prev]['display_keyword'],ENT_QUOTES).'">'._MD_GWIKI_PAGENAV_PREV.'</a></li>';
+		}
+		if($home>=0) {
+			$link=sprintf($this->getWikiLinkURL(),$toc[$home]['keyword']);
+			$tocout .= '<li class="wikipagesethome"><a href="'.$link.'" title="'.htmlentities($toc[$home]['display_keyword'],ENT_QUOTES).'">'._MD_GWIKI_PAGENAV_TOP.'</a></li>';
+		}
+		if($next>=0) {
+			$link=sprintf($this->getWikiLinkURL(),$toc[$next]['keyword']);
+			$tocout .= '<li class="wikipagesetnext"><a href="'.$link.'" title="'.htmlentities($toc[$next]['display_keyword'],ENT_QUOTES).'">'._MD_GWIKI_PAGENAV_NEXT.'</a></li>';
+		}
+
+		if(!empty($tocout)) {
+			$tocout='<div class="wikipagesetnav"><ul class="wikipagesetlist">'.$tocout.'</ul></div>';
+		}
+		return($tocout);
+	}
+
 	public function getImageLib($keyword)
 	{
 		global $xoopsDB;
@@ -1309,6 +1418,14 @@ class gwikiPage {
 		$search[]  = "#\{toc\}#ie";
 		$replace[] = '$this->renderToc()';
 		
+		// page set table of contents
+		$search[]  = "#\{pagesettoc\}#ie";
+		$replace[] = '$this->renderPageSetToc($this->keyword,6)';
+
+		// page set navigation
+		$search[]  = "#\{pagesetnav\}#ie";
+		$replace[] = '$this->renderPageSetNav($this->keyword)';
+
 		// more anchor - indicates end of teaser/summary
 		$search[]  = "#\{more\}#i";
 		$replace[] = '<span id="more"></span>';

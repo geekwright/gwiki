@@ -302,4 +302,52 @@ global $xoopsDB;
 	return $form;
 }
 
+function b_gwiki_pagesettoc_show($options) {
+global $xoTheme;
+
+	$block=false;
+
+	$dir = basename( dirname ( dirname( __FILE__ ) ) ) ;
+	include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
+	$wikiPage = new gwikiPage;
+	
+	if(empty($options[0])) {
+		if (isset($_GET['page'])) {
+			$page = $_GET['page'];
+			if (get_magic_quotes_gpc()) $page=stripslashes($page);
+			$page=html_entity_decode($page);
+			$page=trim($page);
+		}
+	}
+	else {
+		$page=$options[0];
+	}
+
+	if(empty($page)) return false;
+
+	$level=intval($options[1]);
+	if($level<1) $level=1;
+	
+	$toc=$wikiPage->renderPageSetToc($page,$level,'wikitocblock');
+	if($toc) {
+		$block['toc']=$toc;
+		
+		$xoTheme->addStylesheet(XOOPS_URL.'/modules/'.$dir.'/module.css');
+
+		$block['keyword']=$page;
+		$block['moddir']  = $dir;
+		$block['modpath'] = XOOPS_ROOT_PATH .'/modules/' . $dir;
+		$block['modurl']  = XOOPS_URL .'/modules/' . $dir;
+	}
+		
+	return $block;
+}
+
+function b_gwiki_pagesettoc_edit($options) {
+
+	$form = _MB_GWIKI_WIKIPAGESET . ' <input type="text" value="'.$options[0].'"id="options[0]" name="options[0]" /> '._MB_GWIKI_WIKIPAGESET_DESC.'<br />';
+	$form .= _MB_GWIKI_WIKIPAGESET_LEVELS. ' <input type="text" value="'.$options[1].'"id="options[1]" name="options[1]" /><br />';
+	return $form;
+}
+
 ?>
