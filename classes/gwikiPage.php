@@ -24,7 +24,7 @@ on either/both does not trigger, but machine cycle does. Assuming
 caching in server (LVM?) but not sure.
 
 Clearly, this will be worse in the wild, and gets worse with size.
-* 
+ 
 Current thought is to switch to an ajax load after a certain threshold
 
 Create a brief index with something like:
@@ -475,6 +475,18 @@ class gwikiPage {
 		return $page_id;
 	}
 
+	public function registerHit($keyword)
+	{
+		global $xoopsDB;
+
+		$keyword=$this->escapeForDB($keyword);
+		
+		$sql = 'UPDATE '.$xoopsDB->prefix('gwiki_pageids')." SET hit_count = hit_count + 1 WHERE keyword = '{$keyword}' ";
+		$result=$xoopsDB->queryF($sql);
+		// nothing to do if it fails
+		return $xoopsDB->getAffectedRows();
+	}
+
 	public function getPage($keyword,$id=NULL)
 	{
 		global $xoopsDB;
@@ -534,6 +546,8 @@ class gwikiPage {
 			$page['createdday']=date('d',$page['created']);
 			$page['createdyear']=date('Y',$page['created']);
 
+			$temp = $this->renderPageSetNav($keyword);
+			if($temp) $page['pageset'] = $temp;
 		}
 		return $page;
 	}
@@ -901,7 +915,7 @@ class gwikiPage {
 			else
 				$ret="<a href=\"{$link}\" title=\"{$linktext}\">{$linktext}</a>";
 		}
-// trigger_error($ret);
+
 		return $ret;
 	}
 
@@ -974,6 +988,7 @@ class gwikiPage {
 	public function renderPageSetToc(&$page,$level,$tocclass='wikitocpage')
 	{
 		$toc=$this->fetchPageSetToc($page);
+		if(!$toc) return false;
 		$tocout='';
 		foreach($toc as $ti=>$tv) {
 			$link=sprintf($this->getWikiLinkURL(),$tv['keyword']);
@@ -993,32 +1008,44 @@ class gwikiPage {
 	{
 		$sethome=$page;
 		$toc=$this->fetchPageSetToc($sethome); // this will set home
+		if(!$toc) return false;
 		$home = -1; $current = -1; $prev = -1; $next= -1;
 		foreach($toc as $i=>$v) {
-			if(strcasecmp($v['keyword'],$page)==0) $current=$i; 
-			if(strcasecmp($v['keyword'],$sethome)==0) $home=$i; 
-		}
-		$tocout='';
-		if($current>-1) { $prev=$current-1; $next=$current+1; }
-		if($next>(count($toc)-1)) $next = -1;
-		
-		if($prev>=0) {
-			$link=sprintf($this->getWikiLinkURL(),$toc[$prev]['keyword']);
-			$tocout .= '<li class="wikipagesetprev"><a href="'.$link.'" title="'.htmlentities($toc[$prev]['display_keyword'],ENT_QUOTES).'">'._MD_GWIKI_PAGENAV_PREV.'</a></li>';
-		}
-		if($home>=0) {
-			$link=sprintf($this->getWikiLinkURL(),$toc[$home]['keyword']);
-			$tocout .= '<li class="wikipagesethome"><a href="'.$link.'" title="'.htmlentities($toc[$home]['display_keyword'],ENT_QUOTES).'">'._MD_GWIKI_PAGENAV_TOP.'</a></li>';
-		}
-		if($next>=0) {
-			$link=sprintf($this->getWikiLinkURL(),$toc[$next]['keyword']);
-			$tocout .= '<li class="wikipagesetnext"><a href="'.$link.'" title="'.htmlentities($toc[$next]['display_keyword'],ENT_QUOTES).'">'._MD_GWIKI_PAGENAV_NEXT.'</a></li>';
+			if(strcasecmp($toc[$i]['keyword'],$page)===0) $current=$i; 
+			if(strcasecmp($toc[$i]['keyword'],$sethome)===0) $home=$i; 
 		}
 
-		if(!empty($tocout)) {
-			$tocout='<div class="wikipagesetnav"><ul class="wikipagesetlist">'.$tocout.'</ul></div>';
-		}
-		return($tocout);
+		if($current>-1) { $prev=$current-1; $next=$current+1; }
+
+		$first=0;
+		$last=count($toc)-1;
+
+		// should these wrap instead?
+		if($next>$last) $next = $last;
+		if($prev<0) $prev = 0;
+		if($home<0) $home = 0;
+		
+		$pageset['first']=array('link' => sprintf($this->getWikiLinkURL(),$toc[$first]['keyword']),
+								'text' => htmlentities($toc[$first]['display_keyword'],ENT_QUOTES),
+								'desc' => _MD_GWIKI_PAGENAV_FIRST);
+
+		$pageset['prev']=array(	'link' => sprintf($this->getWikiLinkURL(),$toc[$prev]['keyword']),
+								'text' => htmlentities($toc[$prev]['display_keyword'],ENT_QUOTES),
+								'desc' => _MD_GWIKI_PAGENAV_PREV);
+
+		$pageset['home']=array( 'link' => sprintf($this->getWikiLinkURL(),$toc[$home]['keyword']),
+								'text' => htmlentities($toc[$home]['display_keyword'],ENT_QUOTES),
+								'desc' => _MD_GWIKI_PAGENAV_TOP);
+
+		$pageset['next']=array( 'link' => sprintf($this->getWikiLinkURL(),$toc[$next]['keyword']),
+								'text' => htmlentities($toc[$next]['display_keyword'],ENT_QUOTES),
+								'desc' => _MD_GWIKI_PAGENAV_NEXT);
+
+		$pageset['last']=array( 'link' => sprintf($this->getWikiLinkURL(),$toc[$last]['keyword']),
+								'text' => htmlentities($toc[$last]['display_keyword'],ENT_QUOTES),
+								'desc' => _MD_GWIKI_PAGENAV_LAST);
+
+		return($pageset);
 	}
 
 	public function getImageLib($keyword)
@@ -1169,7 +1196,6 @@ class gwikiPage {
 	
 	private function renderBox($type,$title,$body)
 	{
-//		trigger_error('renderBox('.$type.','.$title.', ...)');
 		// make sure we have a valid type
 		$type=strtolower($type);
 		if(!($type=='code' || $type=='info' || $type=='info' || $type=='note' || $type=='tip' || $type=='warn' || $type=='folded' )) $type='info';
@@ -1196,9 +1222,7 @@ class gwikiPage {
 			$ejs=' onclick="var c=this.className; if(c==\''.$foldclass.'\') this.className=\''.$unfoldclass.'\'; else this.className=\''.$foldclass.'\';"';
 			$etooltip='<span>'._MD_GWIKI_FOLDED_TT.'</span>';
 		}
-		
-//		trigger_error($type.$eclass.$parms[0].$title);
-		
+
 		$ret = '<div class="wiki'.$type.$eclass.'"'.$ejs.'><div class="wiki'.$type.'icon"></div><div class="wiki'.$type.'title">'.$title.$etooltip.'</div><div class="wiki'.$type.'inner">'.$body.'<br clear="all" /></div></div>';
 		return $ret;
 	}
@@ -1423,8 +1447,8 @@ class gwikiPage {
 		$replace[] = '$this->renderPageSetToc($this->keyword,6)';
 
 		// page set navigation
-		$search[]  = "#\{pagesetnav\}#ie";
-		$replace[] = '$this->renderPageSetNav($this->keyword)';
+		//$search[]  = "#\{pagesetnav\}#ie";
+		//$replace[] = '$this->renderPageSetNav($this->keyword)';
 
 		// more anchor - indicates end of teaser/summary
 		$search[]  = "#\{more\}#i";

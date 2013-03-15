@@ -144,6 +144,8 @@ define('_MD_GWIKI_AJAX_IMGEDIT_NO_AUTH', 'No Edit Permission for Page');
 define('_MD_GWIKI_PAGENAV_TOP', 'Top');
 define('_MD_GWIKI_PAGENAV_NEXT', 'Next');
 define('_MD_GWIKI_PAGENAV_PREV', 'Previous');
+define('_MD_GWIKI_PAGENAV_FIRST', 'First');
+define('_MD_GWIKI_PAGENAV_LAST', 'Last');
 
 }
 ?>

@@ -1,4 +1,13 @@
 <br clear="all" />
+<{if $gwiki.pageset.first.link}>
+<div class="wikipagesetnav">
+	<a href="<{$gwiki.pageset.first.link}>"><img src="<{$gwiki.modurl}>/images/psfirst.png" alt="<{$gwiki.pageset.first.desc}>" title="<{$gwiki.pageset.first.text}>" /></a>
+	<a href="<{$gwiki.pageset.prev.link}>"><img src="<{$gwiki.modurl}>/images/psprev.png" alt="<{$gwiki.pageset.prev.desc}>" title="<{$gwiki.pageset.prev.text}>" /></a>
+	<a href="<{$gwiki.pageset.home.link}>"><img src="<{$gwiki.modurl}>/images/pshome.png" alt="<{$gwiki.pageset.home.desc}>" title="<{$gwiki.pageset.home.text}>" /></a>
+	<a href="<{$gwiki.pageset.next.link}>"><img src="<{$gwiki.modurl}>/images/psnext.png" alt="<{$gwiki.pageset.next.desc}>" title="<{$gwiki.pageset.next.text}>" /></a>
+	<a href="<{$gwiki.pageset.last.link}>"><img src="<{$gwiki.modurl}>/images/pslast.png" alt="<{$gwiki.pageset.last.desc}>" title="<{$gwiki.pageset.last.text}>" /></a>
+</div>
+<{/if}>
 <{if empty($hideInfoBar)}>
 <{if $gwiki.pageFound}>
 <{if isset($gwiki.attachments)}>
