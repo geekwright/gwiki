@@ -31,6 +31,7 @@ CREATE TABLE gwiki_pageids (
   page_id int(10) NOT NULL AUTO_INCREMENT,
   keyword varchar(128) NOT NULL DEFAULT '',
   created int(10) NOT NULL DEFAULT '0',
+  hit_count int(10) NOT NULL DEFAULT '0',
 
   PRIMARY KEY (page_id),
   UNIQUE KEY (keyword)

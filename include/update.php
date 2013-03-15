@@ -103,6 +103,13 @@ if($old_version<100) {
 
 	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_page_files')." ADD COLUMN file_uid int(10) NOT NULL DEFAULT '0' ";
 	$xoopsDB->queryF($sql);
+
+	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pageids')." ADD COLUMN hit_count int(10) NOT NULL DEFAULT '0' ";
+	$xoopsDB->queryF($sql);
+
+//	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pages').' ENGINE = MyISAM;'
+//	$xoopsDB->queryF($sql);
+
 }
 	
 	return !$error;

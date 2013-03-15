@@ -36,6 +36,7 @@ if ($pfx) {
 	global $wikiPage;
 	$pageX = $wikiPage->getPage($page);
 	$attachments=$wikiPage->getAttachments($page);
+	$wikiPage->registerHit($page);
 	$mayEdit = $wikiPage->checkEdit();
 
 	if($pageX) {
@@ -70,6 +71,8 @@ if ($pfx) {
 
 	$pageX['title']=prepOut($pageX['title']);
 	$xoopsTpl->assign('gwiki', $pageX);
+	
+	//echo '<pre>';print_r($pageX);echo '</pre>';
 
 	$xoTheme->addStylesheet(XOOPS_URL.'/modules/gwiki/module.css');
 	if($pageX['pageFound']) {

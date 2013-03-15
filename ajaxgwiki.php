@@ -54,6 +54,7 @@ if (isset($_GET['id'])) $id=intval($_GET['id']);    // from utility (i.e. histor
 		}
 		$rendered = '<h1 class="wikititle">'.htmlspecialchars($wikiPage->title).'</h1>';
 		$rendered.=$wikiPage->renderPage();
+		if(!isset($id)) $wikiPage->registerHit($page); // don't count hits from utilities
 	} else {
 		//if ($mayEdit) redirect_header("edit.php?page=$page", 2, _MD_GWIKI_PAGENOTFOUND);
 		$rendered = '<h1 class="wikititle">'._MD_GWIKI_NOEDIT_NOTFOUND_TITLE.'</h1>';
