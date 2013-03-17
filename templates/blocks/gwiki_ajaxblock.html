@@ -8,6 +8,8 @@ if(typeof ajaxGwikiLoad != 'function'){
 	window.ajaxGwikiLoad = function(keyword,bid) {
 		ajaxGwikiStackPush(keyword,bid);
 		// alert(keyword+bid);
+		var split=keyword.split('#');
+		keyword=split[0];
 		var xmlhttp;
 		var txt,x,_y,i;
 		if (window.XMLHttpRequest) { // code for browsers
@@ -41,6 +43,10 @@ if(typeof ajaxGwikiLoad != 'function'){
 				// alert(scrOfY+' : '+topPos);
 				// try to make the browser reposition if content is not in view
   				if(scrOfY>topPos) { document.body.scrollTop=topPos-16; document.documentElement.scrollTop=topPos-16; }
+				if (typeof split[1] !== 'undefined') {
+					location.hash='#'+split[1];
+				}
+
 			}
 		}
 		xmlhttp.open("GET","<{$block.ajaxurl}>/ajaxgwiki.php?page="+encodeURIComponent(keyword)+"&bid="+bid,true);

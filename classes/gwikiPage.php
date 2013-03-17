@@ -82,6 +82,7 @@ class gwikiPage {
 	private $tocIdPrefix='toc';
 	private $tocAnchorFmt='#%s';
 	private $imageLib=array();
+	private $useCamelCase;
 	
 	private $wikiDir;				// dirname of the gwiki module
 	private $gwikiVersion=1;			// wiki syntax version for future backward compatability
@@ -121,6 +122,7 @@ class gwikiPage {
 		$this->wikiHomePage = $moduleConfig['wiki_home_page'];
 		$this->dateFormat = $moduleConfig['date_format'];
 		$this->imageLib = explode(',',$moduleConfig['imagelib_pages']);
+		$this->useCamelCase = $moduleConfig['allow_camelcase'];
 
 		if(!defined('_MI_GWIKI_WIKIHOME')) $this->loadLanguage('modinfo',$dir);
 		if(!defined('_MD_GWIKI_PAGE_PERM_EDIT_ANY_NUM')) $this->loadLanguage('main',$dir);
@@ -666,7 +668,8 @@ class gwikiPage {
 			if($prefix['prefix_is_external']) {
 				if($altkey) $linktext = $altkey;
 				else $linktext = $org_keyword;
-				$linktext=$this->noWikiHold('inline',$linktext);
+				$linktext=stripslashes($linktext);
+				//$linktext=$this->noWikiHold('inline',$linktext);
 				$ret='<a href="'.$link.'" target="_blank" title="'._MD_GWIKI_PAGE_EXT_LINK_TT.'">'.$linktext.'<span class="wikiextlink"> </span></a>';
 				return $ret;
 			}
@@ -681,6 +684,7 @@ class gwikiPage {
 		$rows=$xoopsDB->getRowsNum($result);
 		if($rows) {	// existing page
 			list($keyword, $display_keyword, $title) = $xoopsDB->fetchRow($result);
+			$display_keyword=htmlentities($display_keyword,ENT_QUOTES);
 			if(empty($display_keyword)) $display_keyword=$org_keyword;
 			$keyword=strtolower($keyword);
 			$newpage='';
@@ -692,8 +696,9 @@ class gwikiPage {
 		}
 		if(!empty($altkey)) $display_keyword=$altkey;
 		$title=htmlspecialchars($title);
-		$display_keyword=htmlspecialchars($display_keyword);
-		$display_keyword=$this->noWikiHold('inline',$display_keyword);
+		$display_keyword=stripslashes($display_keyword);
+		//$display_keyword=htmlspecialchars($display_keyword);
+		//$display_keyword=$this->noWikiHold('inline',$display_keyword);
 
 		$url=sprintf($this->wikiLinkURL,$keyword);
 		return sprintf('<a href="%s" title="%s">%s%s</a>', $url, $title, $display_keyword, $newpage);
@@ -898,6 +903,7 @@ class gwikiPage {
 		if(preg_match('/^([A-Za-z0-9.:\- ]){2,}$/',$link)) { 
 			//$link=str_replace (' ', '', $link);
 			if(empty($linktext)) $ret=$this->wikiLink($link);
+//			else $ret=$this->wikiLink($link,$linktext);
 			else $ret=$this->wikiLink($link,stripslashes($linktext));
 		}
 		else {
@@ -909,7 +915,8 @@ class gwikiPage {
 			}
 			if(strpos($link,':')===false) $ext=false; // no protocol, assume relative url
 			if($linktext=='') $linktext=$link;
-			$linktext=$this->noWikiHold('inline',stripslashes($linktext));
+			$linktext=stripslashes($linktext);
+			// $linktext=$this->noWikiHold('inline',stripslashes($linktext));
 			if($ext)
 				$ret='<a href="'.$link.'" target="_blank" title="'._MD_GWIKI_PAGE_EXT_LINK_TT.'">'.$linktext.'<span class="wikiextlink"> </span></a>';
 			else
@@ -940,7 +947,7 @@ class gwikiPage {
 		$tocq=$this->tocQueue;
 		$toc='';
 		foreach($tocq as $i=>$v) {
-			$toc.='<li class="wikitoclevel' . $v['level'] . '"><a href="'.sprintf($this->tocAnchorFmt,$this->tocIdPrefix.$i).'">'.$v['name'].'</a></li>';
+			$toc.='<li class="wikitoclevel' . $v['level'] . '"><a href="'.sprintf($this->tocAnchorFmt,$this->tocIdPrefix.$i).'">'.strip_tags($v['name']).'</a></li>';
 		}
 		if(!empty($toc)) {
 			$toc='<div class="wikitoc"><div class="wikitocheader">'._MD_GWIKI_TOC.'</div><ul class="wikitoclist">'.$toc.'</ul></div>';
@@ -975,8 +982,16 @@ class gwikiPage {
 	
 				$result = $xoopsDB->query($sql);
 				while($row = $xoopsDB->fetchArray($result)) {
-					$row['toc']=unserialize($row['toc_cache']);
-					$toc[]=$row;
+					$row['display_keyword']=strip_tags($row['display_keyword']);
+					if(!empty($row['toc_cache'])) {
+						$tmp=unserialize($row['toc_cache']);
+						foreach($tmp as $i=>$v) {
+							$tmp[$i]['name']=strip_tags($tmp[$i]['name']);
+						}
+						$row['toc']=$tmp;
+					
+						$toc[]=$row;
+					}
 				}
     
 			}
@@ -991,10 +1006,10 @@ class gwikiPage {
 		if(!$toc) return false;
 		$tocout='';
 		foreach($toc as $ti=>$tv) {
-			$link=sprintf($this->getWikiLinkURL(),$tv['keyword']);
+			//$link=sprintf($this->getWikiLinkURL(),$tv['keyword']);
 			foreach($tv['toc'] as $i=>$v) {
 				if(intval($v['level']) <= $level) {
-					$tocout .= '<li class="wikitoclevel' . $v['level'] . '"><a href="'.$link.sprintf($this->tocAnchorFmt,$this->tocIdPrefix.$i).'">'.$v['name'].'</a></li>';
+					$tocout .= '<li class="wikitoclevel' . $v['level'] . '"><a href="' . sprintf($this->getWikiLinkURL(),$tv['keyword'].sprintf($this->tocAnchorFmt,$this->tocIdPrefix.$i)).'">'.$v['name'].'</a></li>';
 				}
 			}
 		}
@@ -1130,7 +1145,7 @@ class gwikiPage {
 		}
 
 		$alt='';
-		$alttext=htmlspecialchars($alttext);
+//		$alttext=htmlspecialchars($alttext);
 		if(!empty($alttext)) $alt=" alt=\"{$alttext}\"  title=\"{$alttext}\" ";
 		
 		if(!empty($maxpx)) $maxpx=" style=\"max-width:{$maxpx}; max-height:{$maxpx}; width:auto; height:auto;\" ";
@@ -1414,8 +1429,10 @@ class gwikiPage {
 
 		// CamelCase wiki link
 		//                "#^([A-Z][a-z\:]+){2,}\d*$#" - Could be between whitespace on either end or between > on start and/or < on end
-		$search[]  = "#(?<=\s|>)"._WIKI_CAMELCASE_REGEX."(?=\s|</l|</t)#e";
-		$replace[] = '$this->wikiLink("$1")';
+		if($this->useCamelCase) {
+			$search[]  = "#(?<=\s|>)"._WIKI_CAMELCASE_REGEX."(?=\s|</l|</t)#e";
+			$replace[] = '$this->wikiLink("$1")';
+		}
 
 		// =====headings up to 5 levels
 		$search[]  = "#(^|\s)(={1,5})([^=].*[^=])(={0,5})\s*$#Ume";

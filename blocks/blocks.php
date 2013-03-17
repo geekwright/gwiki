@@ -311,7 +311,7 @@ global $xoTheme;
 	include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
 	$wikiPage = new gwikiPage;
 	
-	if(empty($options[0])) {
+	if(empty($options[1])) {
 		if (isset($_GET['page'])) {
 			$page = $_GET['page'];
 			if (get_magic_quotes_gpc()) $page=stripslashes($page);
@@ -320,12 +320,12 @@ global $xoTheme;
 		}
 	}
 	else {
-		$page=$options[0];
+		$page=$options[1];
 	}
 
 	if(empty($page)) return false;
 
-	$level=intval($options[1]);
+	$level=intval($options[0]);
 	if($level<1) $level=1;
 	
 	$toc=$wikiPage->renderPageSetToc($page,$level,'wikitocblock');
@@ -345,8 +345,101 @@ global $xoTheme;
 
 function b_gwiki_pagesettoc_edit($options) {
 
-	$form = _MB_GWIKI_WIKIPAGESET . ' <input type="text" value="'.$options[0].'"id="options[0]" name="options[0]" /> '._MB_GWIKI_WIKIPAGESET_DESC.'<br />';
-	$form .= _MB_GWIKI_WIKIPAGESET_LEVELS. ' <input type="text" value="'.$options[1].'"id="options[1]" name="options[1]" /><br />';
+	$form  = _MB_GWIKI_WIKIPAGESET_LEVELS. ' <input type="text" value="'.$options[0].'"id="options[0]" name="options[0]" /><br />';
+	$form .= _MB_GWIKI_WIKIPAGESET . ' <input type="text" value="'.$options[1].'"id="options[1]" name="options[1]" /> '._MB_GWIKI_WIKIPAGESET_DESC.'<br />';
+	return $form;
+}
+
+function b_gwiki_related_show($options) {
+global $xoTheme, $xoopsDB;
+
+	$block=false;
+
+	$dir = basename( dirname ( dirname( __FILE__ ) ) ) ;
+	include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
+	$wikiPage = new gwikiPage;
+	
+	$q_exclude_page='';
+
+	if(empty($options[1])) {
+		if (isset($_GET['page'])) {
+			$page = $_GET['page'];
+			if (get_magic_quotes_gpc()) $page=stripslashes($page);
+			$page=html_entity_decode($page);
+			$page=trim($page);
+
+			$q_page=$wikiPage->escapeForDB($page);
+			$q_exclude_page=$wikiPage->escapeForDB($page);
+
+			$sql  = 'SELECT parent_page ';
+			$sql .= ' FROM '.$xoopsDB->prefix('gwiki_pages');
+			$sql .= " WHERE active=1 and keyword='{$q_page}' ";
+	
+			$result = $xoopsDB->query($sql);
+    
+			$rows=$xoopsDB->getRowsNum($result);
+			if($rows) {
+				$row = $xoopsDB->fetchArray($result);
+				if(!empty($row['parent_page'])) $page=$row['parent_page'];
+			}
+			$xoopsDB->freeRecordSet($result);
+		}
+	}
+	else {
+		$page=$options[1];
+	}
+
+	if(empty($page)) return false;
+
+	$limit=intval($options[0]);
+	if($limit<1) $limit=1;
+
+	$sort=intval($options[2]);
+	if($sort<0) $sort=0;
+	if($sort>1) $sort=1;
+	
+	$relatedsort=" lastmodified DESC, hit_count DESC, ";
+	if($sort==1) $relatedsort=" hit_count DESC, lastmodified DESC, ";
+	
+	$q_page=$wikiPage->escapeForDB($page);
+
+	$sql  = 'SELECT keyword, display_keyword, title, lastmodified, uid, page_id, created, hit_count ';
+	$sql .= ' FROM '.$xoopsDB->prefix('gwiki_pages');
+	$sql .= ' natural left join ' .$xoopsDB->prefix('gwiki_pageids') ;
+	$sql .= " WHERE active=1 and parent_page = '{$q_page}' and keyword!='{$q_exclude_page}' ";
+	$sql .= " ORDER BY {$relatedsort} keyword ";
+	
+	$related=false;
+	$result = $xoopsDB->query($sql,$limit,0);
+	while($row = $xoopsDB->fetchArray($result)) {
+		$row['pageurl'] = sprintf($wikiPage->getWikiLinkURL(),$row['keyword']);
+		$row['pagelink'] = sprintf('<a href="%s" title="%s">%s</a>', $row['pageurl'], htmlspecialchars($row['title'],ENT_COMPAT), $row['title']);
+		$related[]=$row;
+	}
+	$xoopsDB->freeRecordSet($result);
+
+	if($related) {
+		$block['related']=$related;
+		
+		$xoTheme->addStylesheet(XOOPS_URL.'/modules/'.$dir.'/module.css');
+
+		$block['keyword']=$page;
+		$block['moddir']  = $dir;
+		$block['modpath'] = XOOPS_ROOT_PATH .'/modules/' . $dir;
+		$block['modurl']  = XOOPS_URL .'/modules/' . $dir;
+	}
+		
+	return $block;
+}
+
+function b_gwiki_related_edit($options) {
+
+	$form  = _MB_GWIKI_RELATED_COUNT. ' <input type="text" value="'.$options[0].'"id="options[0]" name="options[0]" /><br />';
+	$form .= _MB_GWIKI_RELATED . ' <input type="text" value="'.$options[1].'"id="options[1]" name="options[1]" /> '._MB_GWIKI_RELATED_DESC.'<br />';
+	$form .= _MB_GWIKI_RELATED_SORT . ' <select id="options[2]" name="options[2]">';
+	$form .= '<option value="0"'.(intval($options[2])==0?' selected':'').'>'._MB_GWIKI_RELATED_SORT_DATE.'</option>';
+	$form .= '<option value="1"'.(intval($options[2])==1?' selected':'').'>'._MB_GWIKI_RELATED_SORT_HITS.'</option>';
+	$form .= '</select><br />';
 	return $form;
 }
 

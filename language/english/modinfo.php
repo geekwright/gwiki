@@ -29,6 +29,8 @@ define('_MI_GWIKI_ATTACH_EXT_WHITELIST', 'Attachment Extension Whitelist');
 define('_MI_GWIKI_ATTACH_EXT_WHITELIST_DESC', 'Comma separated list of file extensions to be allowed for attachments. (Do not specify if Blacklist is specified.)');
 define('_MI_GWIKI_AJAX_ALLOW_ORIGIN', 'AJAX Wiki Allowed Origin');
 define('_MI_GWIKI_AJAX_ALLOW_ORIGIN_DESC', 'String to include in Access-Control-Allow-Origin: header for AJAX Wiki. Leave blank to disable, * to allow all, or specific host(s)');
+define('_MI_GWIKI_ALLOW_CAMELCASE', 'Treat CamelCase as Link');
+define('_MI_GWIKI_ALLOW_CAMELCASE_DESC', 'Treat CamelCase text in Wiki pages as a link to a same named page.');
 
 // Wiki special pages
 // Change these names, if you want a different homepage and error page
@@ -59,6 +61,8 @@ define('_MI_GWIKI_BL_RECENTBLOCK', 'Recent Pages');
 define('_MI_GWIKI_BL_RECENTBLOCK_DESC', 'Display Teaser view of recently changed Wiki pages');
 define('_MI_GWIKI_BL_PAGESET_TOC', 'Page Set TOC');
 define('_MI_GWIKI_BL_PAGESET_TOC_DESC', 'Display Table of Contents for a Page Set');
+define('_MI_GWIKI_BL_RELATED', 'Related Pages');
+define('_MI_GWIKI_BL_RELATED_DESC', 'Display Related Pages');
 
 }
 ?>

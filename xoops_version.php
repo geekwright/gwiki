@@ -168,7 +168,14 @@ $modversion['config'][]= array(
 	'valuetype' => 'text',
 	'default' => '',
 	'options' => array() );
-	
+
+$modversion['config'][]=array(
+  'name' => 'allow_camelcase',
+  'title' => '_MI_GWIKI_ALLOW_CAMELCASE',
+  'description' => '_MI_GWIKI_ALLOW_CAMELCASE_DESC',
+  'formtype' => 'yesno',
+  'valuetype' => 'int',
+  'default' => '1');
 
 
 // Blocks
@@ -214,7 +221,16 @@ $modversion['blocks'][] = array(
 	'description' =>  _MI_GWIKI_BL_PAGESET_TOC_DESC,
 	'show_func' => 'b_gwiki_pagesettoc_show',
 	'edit_func' => 'b_gwiki_pagesettoc_edit',
-	'options' => '|6',
+	'options' => '1|',
 	'template' => 'gwiki_pagesettoc.html');
+
+$modversion['blocks'][] = array(
+	'file' => 'blocks.php',
+	'name' => _MI_GWIKI_BL_RELATED,
+	'description' =>  _MI_GWIKI_BL_RELATED_DESC,
+	'show_func' => 'b_gwiki_related_show',
+	'edit_func' => 'b_gwiki_related_edit',
+	'options' => '1|',
+	'template' => 'gwiki_relatedblock.html');
 
 ?>

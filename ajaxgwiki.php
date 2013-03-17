@@ -1,6 +1,9 @@
 <?php
 include '../../mainfile.php';
 $xoopsLogger->activated = false;
+// provide error logging for our sanity in debugging ajax use (won't see xoops logger)
+//restore_error_handler();
+//error_reporting(-1);
 
 function cleaner($string) {
 	$string=stripcslashes($string);
@@ -14,6 +17,12 @@ function cleaner($string) {
 // $_GET variables we use
 unset($page,$bid,$id);
 $page = isset($_GET['page'])?cleaner($_GET['page']):null;
+
+// strip rid of any anchor references
+//$x=strpos($page,'#');
+//if($x!==false) $page=substr($page,0,$x);
+//trigger_error($page);
+
 if (isset($_GET['bid'])) $bid=intval($_GET['bid']); // from a block
 if (isset($_GET['id'])) $id=intval($_GET['id']);    // from utility (i.e. history)
 
@@ -28,12 +37,21 @@ if (isset($_GET['id'])) $id=intval($_GET['id']);    // from utility (i.e. histor
 	if(!empty($alloworigin)) header("Access-Control-Allow-Origin: ".$alloworigin);
 
 	include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
+	$imgdir=XOOPS_URL.'/modules/'.$dir.'/images';
 
 	$wikiPage = new gwikiPage;
 	$wikiPage->setRecentCount($moduleConfig['number_recent']);
 
 	if(empty($page)) $page = $wikiPage->wikiHomePage;
 
+	if(isset($id)) {
+		$wikiPage->setWikiLinkURL("javascript:alert('%s');");
+		$wikiPage->setTocFormat('toc'.$id.'-','#%s');
+	}
+	if(isset($bid)) {
+		$wikiPage->setWikiLinkURL("javascript:ajaxGwikiLoad('%s','{$bid}');");
+		$wikiPage->setTocFormat('toc'.$bid.'-','#%s');
+	}
 	if(isset($id)) $thispage=$wikiPage->getPage($page,$id);
 	else $thispage=$wikiPage->getPage($page);
 	if ($thispage) {
@@ -44,16 +62,19 @@ if (isset($_GET['id'])) $id=intval($_GET['id']);    // from utility (i.e. histor
 			}
 			include_once $langfile;
 		}
-		if(isset($id)) {
-			$wikiPage->setWikiLinkURL("javascript:alert('%s');");
-			$wikiPage->setTocFormat('toc'.$id.'-','#%s');
-		}
-		if(isset($bid)) {
-			$wikiPage->setWikiLinkURL("javascript:ajaxGwikiLoad('%s','{$bid}');");
-			$wikiPage->setTocFormat('toc'.$bid.'-','#%s');
-		}
+
 		$rendered = '<h1 class="wikititle">'.htmlspecialchars($wikiPage->title).'</h1>';
 		$rendered.=$wikiPage->renderPage();
+		if(!empty($thispage['pageset']['first']['link'])) {
+			$rendered.='<div class="wikipagesetnav">';
+			$rendered.='<a href="'.$thispage['pageset']['first']['link'].'"><img src="'.$imgdir.'/psfirst.png" alt="'.$thispage['pageset']['first']['desc'].'" title="'.$thispage['pageset']['first']['text'].'" /></a>';
+			$rendered.='<a href="'.$thispage['pageset']['prev']['link'].'"><img src="'.$imgdir.'/psprev.png" alt="'.$thispage['pageset']['prev']['desc'].'" title="'.$thispage['pageset']['prev']['text'].'" /></a>';
+			$rendered.='<a href="'.$thispage['pageset']['home']['link'].'"><img src="'.$imgdir.'/pshome.png" alt="'.$thispage['pageset']['home']['desc'].'" title="'.$thispage['pageset']['home']['text'].'" /></a>';
+			$rendered.='<a href="'.$thispage['pageset']['next']['link'].'"><img src="'.$imgdir.'/psnext.png" alt="'.$thispage['pageset']['next']['desc'].'" title="'.$thispage['pageset']['next']['text'].'" /></a>';
+			$rendered.='<a href="'.$thispage['pageset']['last']['link'].'"><img src="'.$imgdir.'/pslast.png" alt="'.$thispage['pageset']['last']['desc'].'" title="'.$thispage['pageset']['last']['text'].'" /></a>';
+			$rendered.='</div>';
+		}
+
 		if(!isset($id)) $wikiPage->registerHit($page); // don't count hits from utilities
 	} else {
 		//if ($mayEdit) redirect_header("edit.php?page=$page", 2, _MD_GWIKI_PAGENOTFOUND);

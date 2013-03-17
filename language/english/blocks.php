@@ -23,5 +23,11 @@ define('_MB_GWIKI_REMOTE_AJAX_URL_DESC' , '(leave blank to use local wiki.)');
 define('_MB_GWIKI_WIKIPAGESET' , 'Page Set to Load:');
 define('_MB_GWIKI_WIKIPAGESET_DESC' , '(Leave blank to derive from current page.)');
 define('_MB_GWIKI_WIKIPAGESET_LEVELS' , 'Levels of TOC to show:');
+define('_MB_GWIKI_RELATED' , 'Relation Page:');
+define('_MB_GWIKI_RELATED_DESC' , '(Leave blank to derive from current page.)');
+define('_MB_GWIKI_RELATED_COUNT' , 'Max Number of Pages:');
+define('_MB_GWIKI_RELATED_SORT' , 'Sort Related Pages by:');
+define('_MB_GWIKI_RELATED_SORT_HITS' , 'Popularity');
+define('_MB_GWIKI_RELATED_SORT_DATE' , 'Recently Updated');
 
 ?>
