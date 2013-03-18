@@ -13,6 +13,9 @@ $LIGen = new LoremIpsumGenerator;
 $limit=100;
 $bodylimit=1000;
 
+$pageset='';
+$pscnt=0;
+
 if(!empty($_POST['op'])) {
 	for ($i = 1; $i <= $limit; $i++) {
 //		$keyword=trim($LIGen->getContent( mt_rand ( 1, 2), 'txt', $loremipsum = false));
@@ -48,8 +51,31 @@ if(!empty($_POST['op'])) {
 		$wikiPage->body=$body;
 		$wikiPage->uid=($xoopsUser)?$xoopsUser->getVar('uid'):0;
 
-		$wikiPage->parent_page='';
-		$wikiPage->page_set_home='';
+		// randomly pick a random parent page
+		$parent='';
+		if(mt_rand(0,1000)>700) {
+			$sql  = 'SELECT keyword FROM '.$xoopsDB->prefix('gwiki_pageids').' AS r1 ';
+			$sql .= 'JOIN (SELECT (RAND() * (SELECT MAX(page_id) FROM '.$xoopsDB->prefix('gwiki_pageids').')) AS id) AS r2 ';
+			$sql .= 'WHERE r1.page_id >= r2.id ORDER BY r1.page_id ASC LIMIT 1 ';
+			$result=$xoopsDB->query($sql);
+			if ($result) {
+				$myrow=$xoopsDB->fetchRow($result);
+				$parent=$myrow[0];
+			}
+		}
+
+		$wikiPage->parent_page=$parent;
+
+		// randomly construct a page set
+		if($pageset=='' && mt_rand(0,1000)>950) {
+			$pageset=$keyword;
+			$pscnt=mt_rand(3,20);
+		}
+		else {
+			if((--$pscnt)<1) $pageset='';
+		}
+
+		$wikiPage->page_set_home=$pageset;
 		$wikiPage->page_set_order='';
 		$wikiPage->meta_description='';
 		$wikiPage->meta_keywords='';
@@ -57,7 +83,7 @@ if(!empty($_POST['op'])) {
 
 		$success = $wikiPage->addRevision();
 
-		echo $success.' - '.$keyword.'<br />';
+		echo $success.' - '.$keyword.' ('.$pageset.'-'.$parent.')<br />';
 	}
 }
 echo '<br /><br/><form method="post"><input type="hidden" name="op" value="doit"><input type="submit" value="Run"></form>';
