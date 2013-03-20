@@ -15,7 +15,7 @@ include 'header.php';
 		echo '<tr><th>'._AD_GW_ADMENU_WELCOME.'</th></tr>';
 		echo '<tr><td width="100%" ><div style="margin:2em;">'._AD_GW_ADMENU_MESSAGE . '</td></tr>';
 		echo '</table>';
-}
+	}
 
 include 'footer.php';
 ?>
