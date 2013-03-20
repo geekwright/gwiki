@@ -110,6 +110,21 @@ if($old_version<100) {
 //	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pages').' ENGINE = MyISAM;'
 //	$xoopsDB->queryF($sql);
 
+//	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pageids').' ENGINE = MyISAM;'
+//	$xoopsDB->queryF($sql);
+
+	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pages')." CHANGE parent_page  parent_page VARCHAR(128) NOT NULL DEFAULT ''";
+	$xoopsDB->queryF($sql);
+
+	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pages')." CHANGE page_set_home  page_set_home VARCHAR(128) NOT NULL DEFAULT ''";
+	$xoopsDB->queryF($sql);
+
+	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pages')." CHANGE active active tinyint NOT NULL DEFAULT '0'";
+	$xoopsDB->queryF($sql);
+
+	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pages')." CHANGE admin_lock admin_lock tinyint NOT NULL DEFAULT '0'";
+	$xoopsDB->queryF($sql);
+
 }
 	
 	return !$error;
