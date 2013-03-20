@@ -10,16 +10,20 @@ $wikiPage = new gwikiPage;
 include "LoremIpsumGenerator.php";
 $LIGen = new LoremIpsumGenerator;
 
-$limit=100;
-$bodylimit=1000;
+$limit=100;			// how many pages per run
+$bodylimit=1000;	// max length of a page body in words
 
 $pageset='';
 $pscnt=0;
 
 if(!empty($_POST['op'])) {
 	for ($i = 1; $i <= $limit; $i++) {
-//		$keyword=trim($LIGen->getContent( mt_rand ( 1, 2), 'txt', $loremipsum = false));
-		$keyword=trim($LIGen->getContent( 2, 'txt', $loremipsum = false));
+		$r=mt_rand ( 1, 1000);
+		$keylength=1;
+		if($r < 980) $keylength=2;
+		if($r < 780) $keylength=3;
+
+		$keyword=trim($LIGen->getContent( $keylength, 'txt', $loremipsum = false));
 		$keyword = str_replace(array(' ', '.',',',"\t"), array('-', '','',''), $keyword);
 		//echo $keyword . "\n";
 		$title=$LIGen->getContent( mt_rand ( 3, 6), 'txt', $loremipsum = false);
@@ -28,6 +32,7 @@ if(!empty($_POST['op'])) {
 		$body=$LIGen->getContent( mt_rand ( 60, $bodylimit), 'txt', $loremipsum = true);
 		//echo $body . "\n";
 
+		// convert a few single words in body to links
 		$linklimit=mt_rand(3,8);
 		for($j=1;$j<$linklimit;$j++) {
 			$text=trim($LIGen->getContent( 1, 'txt', $loremipsum = false));
@@ -36,6 +41,8 @@ if(!empty($_POST['op'])) {
 			$body = str_replace(' '.$text.' ',' [['.$link.'|'.$text.']] ', $body);
 			//echo $text.':';
 		}
+		
+		// convert 2 word phrases in body to links - do lots since most won't be found
 		$linklimit=mt_rand(100,300);
 		for($j=1;$j<$linklimit;$j++) {
 			$text=trim($LIGen->getContent( 2, 'txt', $loremipsum = false));
