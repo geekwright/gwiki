@@ -28,7 +28,7 @@ if(is_object($GLOBALS['xoops'])) {
 //    include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar("dirname") . "/language/english/main.php" ;
 //}
 
-if(!defined('_MI_FBCOM_NAME')) { // if modinfo isn't loaded, do it
+if(!defined('_MI_GWIKI_NAME')) { // if modinfo isn't loaded, do it
 	if ( !@include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar("dirname") . "/language/" . $xoopsConfig['language'] . "/modinfo.php") {
 		include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar("dirname") . "/language/english/modinfo.php" ;
 	}
