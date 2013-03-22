@@ -713,8 +713,7 @@ class gwikiPage {
     
 		$body = "";
 
-		$sql = 'SELECT keyword, display_keyword, title, lastmodified';
-		$sql.= ', FROM_UNIXTIME(lastmodified) as fmtlastmodified, uid';
+		$sql = 'SELECT keyword, display_keyword, title';
 		$sql.= ' FROM '.$xoopsDB->prefix('gwiki_pages');
 		$sql.= ' WHERE '.$pageselect;
 		$sql.=' ORDER BY display_keyword, title ';
