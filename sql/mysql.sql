@@ -25,7 +25,10 @@ CREATE TABLE gwiki_pages (
   PRIMARY KEY (gwiki_id, active),
   KEY (active,keyword),
   KEY (keyword)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+  KEY (active,parent_page),
+  KEY (active,page_set_home),
+  KEY (active,lastmodified)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE gwiki_pageids (
   page_id int(10) NOT NULL AUTO_INCREMENT,
@@ -35,7 +38,7 @@ CREATE TABLE gwiki_pageids (
 
   PRIMARY KEY (page_id),
   UNIQUE KEY (keyword)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE gwiki_group_prefix(
   group_prefix_id int(10) NOT NULL auto_increment,
@@ -43,7 +46,7 @@ CREATE TABLE gwiki_group_prefix(
   prefix_id int(10) NOT NULL default '0',
 
   PRIMARY KEY (group_prefix_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE gwiki_prefix(
   prefix_id int(10) NOT NULL auto_increment,
@@ -56,7 +59,7 @@ CREATE TABLE gwiki_prefix(
 
   PRIMARY KEY (prefix_id),
   UNIQUE KEY (prefix)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE gwiki_template(
   template_id int(10) NOT NULL auto_increment,
@@ -65,7 +68,7 @@ CREATE TABLE gwiki_template(
   template_notes text NOT NULL,
 
   PRIMARY KEY (template_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE gwiki_page_images (
   image_id int(10) NOT NULL AUTO_INCREMENT,
@@ -77,7 +80,7 @@ CREATE TABLE gwiki_page_images (
 
   PRIMARY KEY (image_id),
   UNIQUE KEY (keyword, image_name)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE gwiki_page_files (
   file_id int(10) NOT NULL AUTO_INCREMENT,
@@ -93,4 +96,4 @@ CREATE TABLE gwiki_page_files (
 
   PRIMARY KEY (file_id),
   UNIQUE KEY (keyword, file_name)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;

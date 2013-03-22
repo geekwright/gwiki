@@ -63,7 +63,7 @@ global $xoopsDB;
 	// table alterations - these will quietly fail if already done
 	// these are all to bring development versions to current
 if($old_version<100) {
-	trigger_error($old_version);
+//	trigger_error($old_version);
 	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pages').' ADD COLUMN toc_cache TEXT NOT NULL AFTER search_body';
 	$xoopsDB->queryF($sql);
 	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pages').' ADD COLUMN show_in_index TINYINT NOT NULL DEFAULT 1 AFTER toc_cache';
@@ -124,6 +124,9 @@ if($old_version<100) {
 
 	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pages')." CHANGE admin_lock admin_lock tinyint NOT NULL DEFAULT '0'";
 	$xoopsDB->queryF($sql);
+
+//	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pages').' ADD KEY (active,parent_page), ADD KEY (active,page_set_home), ADD KEY (active,lastmodified)';
+//	$xoopsDB->queryF($sql);
 
 }
 	
