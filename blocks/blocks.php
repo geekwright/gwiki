@@ -162,7 +162,19 @@ global $xoopsDB, $xoopsConfig, $xoTheme;
 	$wikiPage = new gwikiPage;
 	$wikiPage->setRecentCount($moduleConfig['number_recent']);
 
-	$block=$wikiPage->getPage($options[1]);
+	$page=$options[1];
+	if($options[2]) {
+		$pagelike=$page."%";
+		$sql  = 'SELECT keyword FROM '.$xoopsDB->prefix('gwiki_pageids');
+		$sql .= " WHERE keyword like '{$pagelike}' ORDER BY RAND() LIMIT 1 ";
+		$result=$xoopsDB->query($sql);
+		if ($result) {
+			$myrow=$xoopsDB->fetchRow($result);
+			$page=$myrow[0];
+		}
+	}
+
+	$block=$wikiPage->getPage($page);
 	if ($block) {
 		$block['title']=htmlspecialchars($block['title']);
 		if(!defined('_MI_GWIKI_NAME')) {
@@ -183,10 +195,10 @@ global $xoopsDB, $xoopsConfig, $xoTheme;
 		$block['mayEdit'] = $wikiPage->checkEdit();
 		$block['template']= 'db:'.$wikiPage->getTemplateName();
 
-		if($options[2]) {
+		if($options[3]) {
 			$sql  = 'SELECT image_file, image_alt_text FROM ' . $xoopsDB->prefix('gwiki_page_images') ;
-			$sql .= ' WHERE keyword = "'.$options[1].'" AND use_to_represent = 1 ';
-			$result = $xoopsDB->query($sql,$options[0],0);
+			$sql .= ' WHERE keyword = "'.$page.'" AND use_to_represent = 1 ';
+			$result = $xoopsDB->query($sql);
 			if($myrow = $xoopsDB->fetchArray($result)) {
 				$block['image_file'] = XOOPS_URL .'/uploads/' . $dir . '/' . $myrow['image_file'];
 				$block['image_alt_text'] = $myrow['image_alt_text'];
@@ -201,17 +213,22 @@ global $xoopsDB, $xoopsConfig, $xoTheme;
 
 function b_gwiki_teaserblock_edit($options) {
 	$form  = '';
-	$form .= _MB_GWIKI_SHOW_FULL_PAGE . ": <input type='radio' name='options[0]' value='1' ";
-	if($options[0]) $form .="checked='checked'"; 
-	$form .=" />&nbsp;"._YES."&nbsp;<input type='radio' name='options[0]' value='0' ";
-	if(!$options[0]) $form .="checked='checked'"; 
-	$form .= " />&nbsp;"._NO."<br /><br />";
+	$form .= _MB_GWIKI_SHOW_FULL_PAGE . ' <input type="radio" name="options[0]" value="1" ';
+	if($options[0]) $form .='checked="checked"'; 
+	$form .=' />&nbsp;'._YES.'&nbsp;<input type="radio" name="options[0]" value="0" ';
+	if(!$options[0]) $form .='checked="checked"'; 
+	$form .= ' />&nbsp;'._NO.'<br /><br />';
 	$form .= _MB_GWIKI_WIKIPAGE . ' <input type="text" value="'.$options[1].'"id="options[1]" name="options[1]" /><br /><br />';
-	$form .= _MB_GWIKI_SHOW_DEFAULT_IMAGE. ": <input type='radio' name='options[2]' value='1' ";
-	if($options[2]) $form .="checked='checked'"; 
-	$form .=" />&nbsp;"._YES."&nbsp;<input type='radio' name='options[2]' value='0' ";
-	if(!$options[2]) $form .="checked='checked'"; 
-	$form .= " />&nbsp;"._NO."<br />";
+	$form .= _MB_GWIKI_RANDOM_PAGE. ' <input type="radio" name="options[2]" value="1" ';
+	if($options[2]) $form .='checked="checked"'; 
+	$form .=' />&nbsp;'._YES.'&nbsp;<input type="radio" name="options[2]" value="0" ';
+	if(!$options[2]) $form .='checked="checked"'; 
+	$form .= ' />&nbsp;'._NO.'<br />'._MB_GWIKI_RANDOM_PAGE_DESC.'<br /><br />';
+	$form .= _MB_GWIKI_SHOW_DEFAULT_IMAGE. ' <input type="radio" name="options[3]" value="1" ';
+	if($options[3]) $form .='checked="checked" '; 
+	$form .= ' />&nbsp;'._YES.'&nbsp;<input type="radio" name="options[3]" value="0" ';
+	if(!$options[3]) $form .= 'checked="checked"'; 
+	$form .= ' />&nbsp;'._NO.'<br /><br />';
 	return $form;
 }
 

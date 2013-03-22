@@ -203,7 +203,7 @@ $modversion['blocks'][] = array(
 	'description' =>  _MI_GWIKI_BL_TEASERBLOCK_DESC,
 	'show_func' => 'b_gwiki_teaserblock_show',
 	'edit_func' => 'b_gwiki_teaserblock_edit',
-	'options' => '0|'._MI_GWIKI_WIKIHOME.'|1',
+	'options' => '0||0|1',
 	'template' => 'gwiki_block.html');
 
 $modversion['blocks'][] = array(
