@@ -47,7 +47,7 @@ EOT;
 	if(!empty($_GET['start'])) $start=intval($_GET['start']);
 	if(!empty($_GET['like'])) $like=cleaner($_GET['like']);
 
-	$sql="SELECT COUNT(DISTINCT keyword) FROM ".$xoopsDB->prefix('gwiki_pages');
+	$sql="SELECT COUNT(*) FROM ".$xoopsDB->prefix('gwiki_pageids');
 	if(!empty($like)) $sql.=" WHERE keyword LIKE '{$like}%' ";
 	$result = $xoopsDB->query($sql);
 	if ($result) {
