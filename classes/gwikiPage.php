@@ -1072,7 +1072,7 @@ class gwikiPage {
 		return array_unique($lib);;
 	}
 
-	private function getPageImage($keyword,$name)
+	public function getPageImage($keyword,$name)
 	{
 		global $xoopsDB;
 		
@@ -1116,6 +1116,18 @@ class gwikiPage {
 		if (strcasecmp('siteurl:', substr($link,0,8)) == 0) { // explicit reference to our site
 			$link=XOOPS_URL.substr($link,8);
 		}
+		$showthumb=false;
+		if (strcasecmp('thumb:', substr($link,0,6)) == 0) { // explicit reference to our site
+			$revertlink=$link;
+			$link=substr($link,6);
+			$showthumb=true;
+		}
+		$showthumblink=false;
+		if (strcasecmp('thumblink:', substr($link,0,10)) == 0) { // explicit reference to our site
+			$revertlink=$link;
+			$link=substr($link,10);
+			$showthumblink=true;
+		}
 		$alttext  = empty($parms[0])?'':$parms[0];
 		$align    = empty($parms[1])?'':$parms[1];
 		$maxpx    = empty($parms[2])?'':intval($parms[2]).'px';
@@ -1142,12 +1154,23 @@ class gwikiPage {
 			$link = XOOPS_URL . '/uploads/' . $this->wikiDir . '/' . $image['image_file'];
 			if(empty($alttext)) $alttext = $image['image_alt_text'];
 		}
+		else {
+			// thumbs don't apply, so put everything back the way it was
+			if($showthumb) { $link=$revertlink; $showthumb=false; }
+			if($showthumblink) { $link=$revertlink; $showthumblink=false; }
+		}
 
 		$alt='';
 //		$alttext=htmlspecialchars($alttext);
 		if(!empty($alttext)) $alt=" alt=\"{$alttext}\"  title=\"{$alttext}\" ";
 		
 		if(!empty($maxpx)) $maxpx=" style=\"max-width:{$maxpx}; max-height:{$maxpx}; width:auto; height:auto;\" ";
+		
+		if($showthumb) {
+			$thumbsize=150; // TODO make module parameter
+			if(!empty($maxpx)) $thumbsize=$maxps;
+			$link=XOOPS_URL.'/modules/'.$this->wikiDir.'/getthumb.php?page='.$image['keyword'].'&name='.$image['image_name'].'&size='.$thumbsize;
+		}
 		
 		$ret="<img class=\"wikiimage{$alignparm}\" src=\"{$link}\" {$alt}{$maxpx} />"; 
 

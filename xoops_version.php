@@ -148,7 +148,7 @@ $modversion['config'][]= array(
 	'description' => '_MI_GWIKI_ATTACH_EXT_BLACKLIST_DESC',
 	'formtype' => 'textbox',
 	'valuetype' => 'text',
-	'default' => 'ini,php,phtml,php4,php3,php5,phps,pl,pm,t,pod,ap,asa,asax,ascx,ashx,asmx,asp,aspx,asr,axd,jsp,jspx',
+	'default' => '', //'ini,php,phtml,php4,php3,php5,phps,pl,pm,t,pod,ap,asa,asax,ascx,ashx,asmx,asp,aspx,asr,axd,jsp,jspx',
 	'options' => array() );
 	
 $modversion['config'][]= array(
@@ -157,7 +157,7 @@ $modversion['config'][]= array(
 	'description' => '_MI_GWIKI_ATTACH_EXT_WHITELIST_DESC',
 	'formtype' => 'textbox',
 	'valuetype' => 'text',
-	'default' => '',
+	'default' => 'pdf,doc,docx,xls,ppt,jpg,jpeg,png',
 	'options' => array() );
 	
 $modversion['config'][]= array(
@@ -177,6 +177,14 @@ $modversion['config'][]=array(
   'valuetype' => 'int',
   'default' => '1');
 
+$modversion['config'][]= array(
+	'name' => 'default_thumb_size',
+	'title' => '_MI_GWIKI_DEFAULT_THUMB_SIZE',
+	'description' => '_MI_GWIKI_DEFAULT_THUMB_SIZE_DESC',
+	'formtype' => 'textbox',
+	'valuetype' => 'int',
+	'default' => 150 );
+	
 
 // Blocks
 $modversion['blocks'][1] = array(

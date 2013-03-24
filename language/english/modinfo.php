@@ -31,6 +31,8 @@ define('_MI_GWIKI_AJAX_ALLOW_ORIGIN', 'AJAX Wiki Allowed Origin');
 define('_MI_GWIKI_AJAX_ALLOW_ORIGIN_DESC', 'String to include in Access-Control-Allow-Origin: header for AJAX Wiki. Leave blank to disable, * to allow all, or specific host(s)');
 define('_MI_GWIKI_ALLOW_CAMELCASE', 'Treat CamelCase as Link');
 define('_MI_GWIKI_ALLOW_CAMELCASE_DESC', 'Treat CamelCase text in Wiki pages as a link to a same named page.');
+define('_MI_GWIKI_DEFAULT_THUMB_SIZE', 'Default Thumbnail Size');
+define('_MI_GWIKI_DEFAULT_THUMB_SIZE_DESC', 'Default maximal pixel dimension for thumbnail cache.');
 
 // Wiki special pages
 // Change these names, if you want a different homepage and error page

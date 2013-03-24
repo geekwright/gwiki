@@ -571,8 +571,8 @@ ul.wikitoclist > li { list-style: none; }
 }
 #wikieditimg_dd img, #wikieditfile_dd img
 {
-  max-height: 120px;
-  max-width: 120px;
+  max-height: 150px;
+  max-width: 150px;
   height: auto;
   width: auto;
 }

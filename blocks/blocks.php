@@ -6,7 +6,7 @@
  * @license	GNU General Public License (GPL)
  * @since	1.0
  * @author	Richard Griffith richard@geekwright.com
- * @package	qr
+ * @package	gwiki
  * @version	$Id$
  */
 
@@ -196,11 +196,12 @@ global $xoopsDB, $xoopsConfig, $xoTheme;
 		$block['template']= 'db:'.$wikiPage->getTemplateName();
 
 		if($options[3]) {
-			$sql  = 'SELECT image_file, image_alt_text FROM ' . $xoopsDB->prefix('gwiki_page_images') ;
+			$sql  = 'SELECT * FROM ' . $xoopsDB->prefix('gwiki_page_images') ;
 			$sql .= ' WHERE keyword = "'.$page.'" AND use_to_represent = 1 ';
 			$result = $xoopsDB->query($sql);
 			if($myrow = $xoopsDB->fetchArray($result)) {
-				$block['image_file'] = XOOPS_URL .'/uploads/' . $dir . '/' . $myrow['image_file'];
+				// $block['image_file'] = XOOPS_URL .'/uploads/' . $dir . '/' . $myrow['image_file'];
+				$block['image_file'] = XOOPS_URL . '/modules/' . $dir . '/getthumb.php?page='.$page.'&name='.$myrow['image_name'];
 				$block['image_alt_text'] = $myrow['image_alt_text'];
 			}
 		}
@@ -255,7 +256,7 @@ global $xoopsDB,$xoTheme;
 	
 	$keywords=array();
 		
-	$sql  = 'SELECT p.keyword, image_file, image_alt_text FROM ' . $xoopsDB->prefix('gwiki_pages') . ' p ';
+	$sql  = 'SELECT p.keyword, image_file, image_alt_text, image_name FROM ' . $xoopsDB->prefix('gwiki_pages') . ' p ';
 	$sql .= ' left join ' . $xoopsDB->prefix('gwiki_page_images') . ' i on p.keyword=i.keyword and use_to_represent = 1 ';
 	$sql .= ' WHERE active=1 AND show_in_index=1 AND p.keyword like "'.$prefix.'" ';
 	$sql .= ' AND lastmodified > "'.$maxage.'" ORDER BY lastmodified desc';
@@ -286,7 +287,8 @@ global $xoopsDB,$xoTheme;
 			$gwiki['mayEdit']    = $wikiPage->checkEdit();
 			$gwiki['template']   = 'db:'.$wikiPage->getTemplateName();
 			if(!empty($keyimg['image_file'])) {
-				$gwiki['image_file'] = XOOPS_URL .'/uploads/' . $dir . '/' . $keyimg['image_file'];
+				// $gwiki['image_file'] = XOOPS_URL .'/uploads/' . $dir . '/' . $keyimg['image_file'];
+				$gwiki['image_file'] = XOOPS_URL . '/modules/' . $dir . '/getthumb.php?page='.$keyimg['keyword'].'&name='.$keyimg['image_name'];
 				$gwiki['image_alt_text'] = $keyimg['image_alt_text'];
 			}
 			$gwiki['pageurl'] = sprintf($wikiPage->getWikiLinkURL(),$gwiki['keyword']);

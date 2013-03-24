@@ -29,8 +29,8 @@ $page = isset($_GET['page'])?cleaner($_GET['page']):'';
 	
 	for ($i = 0; $i < $xoopsDB->getRowsNum($result); $i++) {
 		$image = $xoopsDB->fetchArray($result);
-		$image['link']=XOOPS_URL . '/uploads/' . $dir . '/' . $image['image_file'];
-		
+//		$image['link']=XOOPS_URL . '/uploads/' . $dir . '/' . $image['image_file'];
+		$image['link']=XOOPS_URL . '/modules/' . $dir . '/getthumb.php?page='.$image['keyword'].'&name='.$image['image_name'];
 		$images[]=$image;
 	}
 
