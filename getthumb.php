@@ -1,6 +1,6 @@
 <?php
 /*
- * blocks
+ * getthumb
  *
  * @copyright	Geekwright, LLC http://geekwright.com
  * @license	GNU General Public License (GPL)
@@ -34,7 +34,7 @@ $dir = basename( dirname( __FILE__ ) ) ;
 include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
 $wikiPage = new gwikiPage;
 
-$default_thumb_size=$xoopsModuleConfig['default_thumb_size'];
+$default_thumb_size=$wikiPage->defaultThumbSize;
 
 global $xoopsDB;
 
@@ -53,12 +53,25 @@ function cleaner($string) {
 	return $string;
 }
 
-function serveFile($name,$mime) {
+function serveFile($name,$mime,$modtime,$nocache=false) {
+	
+	if(!($nocache) && (getenv("HTTP_IF_MODIFIED_SINCE") == gmdate("D, d M Y H:i:s",$modtime) . " GMT")) {
+		header ("HTTP/1.0 304 Not Modified");
+		exit;
+	}
+
 	$fp = fopen($name, 'rb');
 
 	header('Content-Type: ' . $mime);
 	header('Content-Disposition: inline; filename='. urlencode(basename($name)) );
 	header('Content-Length: ' . filesize($name) );
+	
+	$seconds_to_cache = 3600;
+	$ts = gmdate("D, d M Y H:i:s", time() + $seconds_to_cache) . " GMT";
+	header("Expires: $ts");
+	header("Pragma: cache");
+	header("Cache-Control: max-age=$seconds_to_cache");
+	header("last-modified: " . gmdate("D, d M Y H:i:s",$modtime) . " GMT");
 
 	fpassthru($fp);
 	fclose($fp);
@@ -91,7 +104,9 @@ $thumbpath=XOOPS_ROOT_PATH.'/uploads/'.$dir.'/'.$file_pre.'/'.$size;
 $thumbname=$thumbpath.$file_post;
 //echo $filename.'<br />'.$thumbpath.'<br />'.$thumbname;
 
-if (file_exists($thumbname) && (filemtime($thumbname) > filemtime($filename))) {
+$modtime=filemtime($filename);
+
+if (file_exists($thumbname) && (filemtime($thumbname) > $modtime)) {
 	$strategy=$strategy_old_thumb;
 	$info = getimagesize($thumbname);
 	$img_width=$info[0];
@@ -154,13 +169,13 @@ switch($strategy) {
 		if($img_type=='png') imagepng($ti, $thumbname);
 		if($img_type=='git') imagegif($ti, $thumbname);
 		imagedestroy($ti);
-		serveFile($thumbname,$img_mime);
+		serveFile($thumbname,$img_mime,$modtime,true);
 		break;
 	case $strategy_old_thumb:
-		serveFile($thumbname,$img_mime);
+		serveFile($thumbname,$img_mime,$modtime);
 		break;
 	default:
-		serveFile($filename,$img_mime);
+		serveFile($filename,$img_mime,$modtime);
 		break;
 }
 

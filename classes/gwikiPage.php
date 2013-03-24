@@ -79,6 +79,7 @@ class gwikiPage {
 	private $numberOfRecentItems=10;
 	private $wikiLinkURL='index.php?page=%s';	// keyword will be inserted with sprintf. better link establised in __construct()
 	public $dateFormat;
+	public $defaultThumbSize;
 	private $tocIdPrefix='toc';
 	private $tocAnchorFmt='#%s';
 	private $imageLib=array();
@@ -123,6 +124,7 @@ class gwikiPage {
 		$this->dateFormat = $moduleConfig['date_format'];
 		$this->imageLib = explode(',',$moduleConfig['imagelib_pages']);
 		$this->useCamelCase = $moduleConfig['allow_camelcase'];
+		$this->defaultThumbSize = $moduleConfig['default_thumb_size'];
 
 		if(!defined('_MI_GWIKI_WIKIHOME')) $this->loadLanguage('modinfo',$dir);
 		if(!defined('_MD_GWIKI_PAGE_PERM_EDIT_ANY_NUM')) $this->loadLanguage('main',$dir);
@@ -1117,20 +1119,20 @@ class gwikiPage {
 			$link=XOOPS_URL.substr($link,8);
 		}
 		$showthumb=false;
-		if (strcasecmp('thumb:', substr($link,0,6)) == 0) { // explicit reference to our site
+		if (strcasecmp('thumb:', substr($link,0,6)) == 0) { // explicit request for thumbnail
 			$revertlink=$link;
 			$link=substr($link,6);
 			$showthumb=true;
 		}
 		$showthumblink=false;
-		if (strcasecmp('thumblink:', substr($link,0,10)) == 0) { // explicit reference to our site
-			$revertlink=$link;
-			$link=substr($link,10);
-			$showthumblink=true;
-		}
+//		if (strcasecmp('thumblink:', substr($link,0,10)) == 0) { // explicit request for thumbnail that links to full image
+//			$revertlink=$link;
+//			$link=substr($link,10);
+//			$showthumblink=true;
+//		}
 		$alttext  = empty($parms[0])?'':$parms[0];
 		$align    = empty($parms[1])?'':$parms[1];
-		$maxpx    = empty($parms[2])?'':intval($parms[2]).'px';
+		$maxpx    = empty($parms[2])?'':intval($parms[2]);
 		
 		// align must be left, right, center or empty
 		if     (strcasecmp($align,'left'  )===0) $align='left';
@@ -1164,15 +1166,19 @@ class gwikiPage {
 //		$alttext=htmlspecialchars($alttext);
 		if(!empty($alttext)) $alt=" alt=\"{$alttext}\"  title=\"{$alttext}\" ";
 		
-		if(!empty($maxpx)) $maxpx=" style=\"max-width:{$maxpx}; max-height:{$maxpx}; width:auto; height:auto;\" ";
+		$maxpxstyle='';
+		if(!empty($maxpx)) {
+			$maxpxstyle=" style=\"max-width:{$maxpx}px; max-height:{$maxpx}px; width:auto; height:auto;\" ";
+			$showthumb=true; // trigger automatic thumbnail use
+		}
 		
 		if($showthumb) {
-			$thumbsize=150; // TODO make module parameter
-			if(!empty($maxpx)) $thumbsize=$maxps;
+			$thumbsize=$this->defaultThumbSize;
+			if(!empty($maxpx)) $thumbsize=$maxpx;
 			$link=XOOPS_URL.'/modules/'.$this->wikiDir.'/getthumb.php?page='.$image['keyword'].'&name='.$image['image_name'].'&size='.$thumbsize;
 		}
 		
-		$ret="<img class=\"wikiimage{$alignparm}\" src=\"{$link}\" {$alt}{$maxpx} />"; 
+		$ret="<img class=\"wikiimage{$alignparm}\" src=\"{$link}\" {$alt}{$maxpxstyle} />"; 
 
 		if($align=='center') $ret='<div style="margin: 0 auto; text-align: center;">'.$ret.'</div>';
 
