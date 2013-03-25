@@ -43,6 +43,7 @@ if (isset($_GET['id'])) $id=intval($_GET['id']);    // from utility (i.e. histor
 	$wikiPage->setRecentCount($moduleConfig['number_recent']);
 
 	if(empty($page)) $page = $wikiPage->wikiHomePage;
+	$page = $wikiPage->normalizeKeyword($page);
 
 	if(isset($id)) {
 		$wikiPage->setWikiLinkURL("javascript:alert('%s');");

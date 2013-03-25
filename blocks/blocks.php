@@ -343,6 +343,7 @@ global $xoTheme;
 	}
 
 	if(empty($page)) return false;
+	$page=$wikiPage->getOOBFromKeyword($page); 
 
 	$level=intval($options[0]);
 	if($level<1) $level=1;
@@ -386,6 +387,7 @@ global $xoTheme, $xoopsDB;
 			if (get_magic_quotes_gpc()) $page=stripslashes($page);
 			$page=html_entity_decode($page);
 			$page=trim($page);
+			$page=$wikiPage->getOOBFromKeyword($page); 
 
 			$q_page=$wikiPage->escapeForDB($page);
 			$q_exclude_page=$wikiPage->escapeForDB($page);

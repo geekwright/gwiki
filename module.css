@@ -741,3 +741,13 @@ span.wikieditfile_field  {
 }
 
 /* div.wikipagesetnav {   } */
+
+div.wikiindex { width: 100%; display: table;}
+div.wikiindextabs { width: 40px; display: table-cell; padding-right: 2em;}
+.wikiindextabs ul { list-style-type: none; padding-left: 0.2em;}
+.wikiindextabs ul li { }
+.wikiindextabs ul li a { background-color: #C6DDFA; width: 36px; display:block; border: 1px solid grey; text-align: center; }
+.wikiindextabs ul li a:hover { background-color: #CAE2FF; border: 1px solid black; text-decoration: none; }
+#wikiindextabactive a { background-color: #ffffff; border: 1px solid black; border-right: 0px; }
+/* .wikiindextabinactive a { background-color: #B0C4DE; border: 1px solid black; border-right: 0px; } */
+div.wikiindexbody { display: table-cell; }

@@ -48,6 +48,14 @@ global $xoopsDB;
 		// connonicalize our url with our rules
 		// - page needs to be case insensitve (AbCde and AbcDe yield the same page)
 		$keyword=strtolower($plugin_env['page']);
+		// - strip any OOB data
+		if(substr($keyword,-1)==')') {
+			$lparen=strpos($keyword,'(');
+			if($lparen!==false) {
+				$keyword=substr($keyword,0,$lparen);
+			}
+		}
+
 		// - eliminate index.php?page=wikihome
 		$ourscript= explode ('?', urldecode($metas['og:url']) );
 		$ourscript_parts = pathinfo($ourscript[0]);

@@ -6,52 +6,6 @@ global $wikiPage;
 $wikiPage = new gwikiPage;
 $wikiPage->setRecentCount($xoopsModuleConfig['number_recent']);
 
-//function makeKeyWord($keyword)
-//{
-//	global $wikiPage;
-//	$x=$wikiPage->makeKeyword($keyword);
-//	return $x;
-//}
-
-//function getCurrentId($page)
-//{
-//	global $wikiPage;
-//	return $wikiPage->getCurrentId($page);
-//}
-
-//function addRevision($page, $title, $body, $uid)
-//{
-//	global $wikiPage;
-//	$wikiPage->keyword=$page;
-//	$wikiPage->title=$title;
-//	$wikiPage->body=$body;
-//	$wikiPage->uid=$uid;
-//	return $wikiPage->addRevision();
-//}
-
-//function getPage($page)
-//{
-//	global $wikiPage;
-//	return $wikiPage->getPage($page);
-//}
-
-//function wikiDisplay($body)
-//{
-//	global $wikiPage;
-//	return $wikiPage->renderPage($body);
-//}
-
-//function normalizePageName($page)
-//{
-//	global $wikiPage;
-//	return $wikiPage->normalizeKeyword($page);
-//}
-
-//function getUserName($uid)
-//{
-//	global $wikiPage;
-//	return $wikiPage->getUserName($uid);
-//}
 
 function cleaner($string,$trim=true) {
 	if (get_magic_quotes_gpc()) $string=stripslashes($string);
@@ -62,17 +16,6 @@ function cleaner($string,$trim=true) {
 //	$string=stripslashes($string);
 	return $string;
 }
-
-/**
-* Check edit permissions for the current page
-* @param mixed $keyword - wiki page name
-* @since 1.0
-*/
-//function checkEdit()
-//{
-//	global $wikiPage;
-//	return $wikiPage->checkEdit();
-//}
 
 function getPrefixFromId($pid)
 {

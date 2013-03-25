@@ -173,6 +173,7 @@ global $uploadpath,$xoopsDB;
 	}
 
 	if(empty($input['page'])) { header("Status: 500 Internal Error - No Page"); exit; }
+	$input['page']=strtolower($wikiPage->normalizeKeyword($input['page']));
 	$pageX = $wikiPage->getPage($input['page']);
 	$mayEdit = $wikiPage->checkEdit();
 	
@@ -192,7 +193,6 @@ global $uploadpath,$xoopsDB;
 		exit;
 	}
 */
-	$input['page']=strtolower($wikiPage->normalizeKeyword($input['page']));
 
 	if($newimage) {
 		$input['image_id']=updateImage($newimage,$input);

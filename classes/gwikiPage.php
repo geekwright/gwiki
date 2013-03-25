@@ -12,29 +12,6 @@
 * @version    $Id$
 */
 // TODO look for places wher freeRecordSet($result) should be added
-/*
-TODO - need to handle large wiki in pageindex
-
-Testing shows ~25000 pages will generate in less than a second, but can
-crush some browsers (cough, IE)
-
-Also found initial start up (and randomly after inactivity) slowdowns on
-load - more than a minute in some cases. Not apache2 or mysql as restart 
-on either/both does not trigger, but machine cycle does. Assuming 
-caching in server (LVM?) but not sure.
-
-Clearly, this will be worse in the wild, and gets worse with size.
- 
-Current thought is to switch to an ajax load after a certain threshold
-
-Create a brief index with something like:
-SELECT distinct substr(keyword,1,1) as letter, count(*) FROM `gwwiki_gwiki_pages`
-where active=1 and show_in_index = 1
-group by letter
-
-Use uniqid() for a div id for the data pane and call data only on request.
-This should make for a more manageable load.
-*/
 
 if (!defined("XOOPS_ROOT_PATH")) die("Root path not defined");
 
@@ -95,6 +72,10 @@ class gwikiPage {
 	
 	private $tocQueue = array();                   // track headers for toc
 	private $tocIndex = 0;
+	
+	// Out Of Bounds data - not cleared with resetPage
+	private $pageIndexPrefix='';	// current prefix for the pageindex
+
 	//------------------------------------------------------------
 	// Methods
 	//------------------------------------------------------------
@@ -222,6 +203,36 @@ class gwikiPage {
 	}
 	
 	/**
+	* Capture out of bounds data traveling with keyword. Such data is sent
+	* in keyword(oob) construct. This function processes any oob data and
+	* returns a clean keyword.
+	* oob data is used this way to pass page specific data in any url
+	* 
+	* Only call this if you will NOT be calling normalizeKeyword or the
+	* OOB data will be lost.
+	* 
+	* @param mixed $keyword - wiki page name possibily containing OOB data
+	* @access public
+	* @since 1.0
+	*/
+	public function getOOBFromKeyword($keyword)
+	{
+		$oob=null;
+		if(substr($keyword,-1)==')') {
+			$lparen=strpos($keyword,'(');
+			if($lparen!==false) {
+				$inparen=substr($keyword,$lparen);
+				$inparen=substr($inparen,1,strlen($inparen)-2);
+				$keyword=substr($keyword,0,$lparen);
+				$oob=$inparen;
+			}
+		}
+		// currently this is the only use
+		$this->pageIndexPrefix=strtolower($oob);
+		return $keyword;
+	}
+	
+	/**
 	* If page exists, fix case of page name to that specified in database
 	* @param mixed $keyword - wiki page name
 	* @access public
@@ -231,6 +242,7 @@ class gwikiPage {
 	{
 		global $xoopsDB;
 		
+		$keyword=$this->getOOBFromKeyword($keyword);
 		$keyword=$this->escapeForDB($keyword);
 		$sql = "SELECT keyword FROM ".$xoopsDB->prefix('gwiki_pages')." WHERE keyword='{$keyword}' AND active=1 ";
 		$result = $xoopsDB->query($sql);
@@ -705,15 +717,66 @@ class gwikiPage {
 		$url=sprintf($this->wikiLinkURL,$keyword);
 		return sprintf('<a href="%s" title="%s">%s%s</a>', $url, $title, $display_keyword, $newpage);
 	}
+
+	private function getIndexTabs()
+	{
+		global $xoopsDB ,$wikiPage;
+
+		$related=false;
+
+		$tabs=array();
+
+		$sql  = 'SELECT SUBSTRING(display_keyword,1,1) as letter, count(*) as count ';
+		$sql .= ' FROM '.$xoopsDB->prefix('gwiki_pages');
+		$sql .= ' WHERE active=1 AND show_in_index=1 ';
+		$sql .= ' GROUP BY letter ';
+	
+		$result = $xoopsDB->query($sql);
+
+		$currentset=false;
+		$rows=$xoopsDB->getRowsNum($result);
+		if($rows) {
+			while($row = $xoopsDB->fetchArray($result)) {
+				$row['letter']=strtolower($row['letter']);
+				if($this->pageIndexPrefix==$row['letter']) { $row['current']=true; $currentset=true; }
+				else $row['current']=false;
+				$tabs[]=$row;
+			}
+		}
+		$xoopsDB->freeRecordSet($result);
+		
+		if(!$currentset) {
+			$this->pageIndexPrefix=$tabs[0]['letter'];
+			$tabs[0]['current']=true;
+		}
+		return $tabs;
+	}
 	
 	private function pageIndex($prefix=null)
 	{
 		global $xoopsDB;
-    
-		$pageselect='active=1 AND show_in_index=1 ';
-		if(!empty($prefix)) $pageselect .= ' AND keyword LIKE "' . $prefix . '%" ';
-    
+		$simplelayout=false;
+		$tablayout=false;
+		
 		$body = "";
+		    
+		$pageselect='active=1 AND show_in_index=1 ';
+		
+		if(!empty($prefix)) $pageselect .= ' AND keyword LIKE "' . $prefix . '%" ';
+		else {
+			$sql  = 'SELECT count(*) as count  FROM '.$xoopsDB->prefix('gwiki_pages');
+			$sql .= ' WHERE '.$pageselect;
+			$result = $xoopsDB->query($sql);
+			$row = $xoopsDB->fetchArray($result);
+			$cnt=$row['count'];
+			$xoopsDB->freeRecordSet($result);
+			if($cnt>500) {
+				$tablayout=true; 
+				$simplelayout=true; // tablayout is already grouped by first character
+				$tabs=$this->getIndexTabs();
+				$pageselect .= ' AND display_keyword LIKE "' . $this->pageIndexPrefix . '%" ';
+			}
+		}
 
 		$sql = 'SELECT keyword, display_keyword, title';
 		$sql.= ' FROM '.$xoopsDB->prefix('gwiki_pages');
@@ -724,6 +787,19 @@ class gwikiPage {
 		$rowcnt = $xoopsDB->getRowsNum($result);
 		$simplelayout=false;
 		if($rowcnt<50) $simplelayout=true; // skip the fancy by letter breakout if this is a small index
+
+		if($tablayout) {
+			$body.='<div class="wikiindex"><div class="wikiindextabs"><ul>';
+
+			foreach($tabs as $tab) {
+				if($tab['current']) $class=' id="wikiindextabactive"';
+				else $class='';
+				$url=sprintf($this->wikiLinkURL,strtolower($this->keyword.'(\\'.$tab['letter'].')'));
+				$letter=strtoupper($tab['letter']);
+				$body.="\n<li{$class}><a href=\"{$url}\">{$letter}</a></li>";
+			}
+			$body.='</ul></div><div class="wikiindexbody">';
+		}
     
 		$lastletter='';
 		if($simplelayout) $body .= '<ul>';
@@ -747,7 +823,10 @@ class gwikiPage {
 			$link=sprintf('<a href="%s" title="%s">%s%s</a>', $url, $title, $display_keyword, '');
 			$body.='<li>'.$link.' : '.$title.'</li>';
 		}
-		if($body!='') $body.='</ul>';
+		if($tablayout) {
+			$body.='</ul></div></div>';
+		}
+		else if($body!='') $body.='</ul>';
 		return $body."\n\n";
 	}
 
