@@ -781,11 +781,11 @@ class gwikiPage {
 		$sql = 'SELECT keyword, display_keyword, title';
 		$sql.= ' FROM '.$xoopsDB->prefix('gwiki_pages');
 		$sql.= ' WHERE '.$pageselect;
-		$sql.=' ORDER BY active, show_in_index, display_keyword, title ';
+		$sql.=' ORDER BY active, show_in_index, display_keyword ';
     
 		$result = $xoopsDB->query($sql);
 		$rowcnt = $xoopsDB->getRowsNum($result);
-		$simplelayout=false;
+
 		if($rowcnt<50) $simplelayout=true; // skip the fancy by letter breakout if this is a small index
 
 		if($tablayout) {
