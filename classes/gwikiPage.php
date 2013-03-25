@@ -718,7 +718,7 @@ class gwikiPage {
 		$sql = 'SELECT keyword, display_keyword, title';
 		$sql.= ' FROM '.$xoopsDB->prefix('gwiki_pages');
 		$sql.= ' WHERE '.$pageselect;
-		$sql.=' ORDER BY display_keyword, title ';
+		$sql.=' ORDER BY active, show_in_index, display_keyword, title ';
     
 		$result = $xoopsDB->query($sql);
 		$rowcnt = $xoopsDB->getRowsNum($result);

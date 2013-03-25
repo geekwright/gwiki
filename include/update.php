@@ -107,11 +107,16 @@ if($old_version<100) {
 	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pageids')." ADD COLUMN hit_count int(10) NOT NULL DEFAULT '0' ";
 	$xoopsDB->queryF($sql);
 
-//	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pages').' ENGINE = MyISAM;'
-//	$xoopsDB->queryF($sql);
+	// shift all tables to MyISAM
+	$tabs=array('gwiki_pages','gwiki_pageids','gwiki_group_prefix',
+			'gwiki_prefix','gwiki_template','gwiki_page_images','gwiki_page_files');
+	foreach($tabs as $v) {
+		$sql='ALTER TABLE '.$xoopsDB->prefix($v).' ENGINE = MyISAM';
+		$xoopsDB->queryF($sql);
+	}
 
-//	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pageids').' ENGINE = MyISAM;'
-//	$xoopsDB->queryF($sql);
+	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pageids').' ENGINE = MyISAM';
+	$xoopsDB->queryF($sql);
 
 	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pages')." CHANGE parent_page  parent_page VARCHAR(128) NOT NULL DEFAULT ''";
 	$xoopsDB->queryF($sql);
@@ -125,9 +130,31 @@ if($old_version<100) {
 	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pages')." CHANGE admin_lock admin_lock tinyint NOT NULL DEFAULT '0'";
 	$xoopsDB->queryF($sql);
 
-//	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pages').' ADD KEY (active,parent_page), ADD KEY (active,page_set_home), ADD KEY (active,lastmodified)';
-//	$xoopsDB->queryF($sql);
+	$sql='ALTER TABLE '.$xoopsDB->prefix('gwiki_pages')." CHANGE display_keyword  display_keyword VARCHAR(128) NOT NULL DEFAULT ''";
+	$xoopsDB->queryF($sql);
 
+	// drop all indexes except PRIMARY
+	$tabs=array();
+	$sql  = 'SHOW INDEX FROM '.$xoopsDB->prefix('gwiki_pages');
+	$result = $xoopsDB->queryF($sql);
+	while($row = $xoopsDB->fetchArray($result)) {
+		if($row['Key_name']!='PRIMARY') $tabs[$row['Key_name']]=$row['Non_unique'];
+	}
+	$xoopsDB->freeRecordSet($result);
+	if(!empty($tabs)) {
+		$sql='';
+		foreach($tabs as $i => $v) {
+			if(empty($sql)) $sql = 'ALTER TABLE '.$xoopsDB->prefix('gwiki_pages') . ' DROP KEY '.$i;
+			else $sql .= ' , DROP KEY '.$i;
+		}
+		$xoopsDB->queryF($sql);
+	}
+	
+	$sql  = 'ALTER TABLE '.$xoopsDB->prefix('gwiki_pages');
+	$sql .=	' ADD KEY activekey (active,keyword), ADD KEY keyword (keyword), ' .
+			' ADD KEY parent (active,parent_page), ADD KEY pageset (active,page_set_home), ' .
+			' ADD KEY lastmod (active,lastmodified), ADD KEY pageindex (active,show_in_index,display_keyword) ';
+	$xoopsDB->queryF($sql);
 }
 	
 	return !$error;

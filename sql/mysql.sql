@@ -5,7 +5,7 @@
 CREATE TABLE gwiki_pages (
   gwiki_id int(10) NOT NULL AUTO_INCREMENT,
   keyword varchar(128) NOT NULL DEFAULT '',
-  display_keyword varchar(255) NOT NULL DEFAULT '',
+  display_keyword varchar(128) NOT NULL DEFAULT '',
   title varchar(255) NOT NULL DEFAULT '',
   body text NOT NULL,
   parent_page varchar(128) NOT NULL DEFAULT '',
@@ -23,11 +23,12 @@ CREATE TABLE gwiki_pages (
   gwiki_version int(4) NOT NULL DEFAULT '0',
 
   PRIMARY KEY (gwiki_id, active),
-  KEY (active,keyword),
-  KEY (keyword)
-  KEY (active,parent_page),
-  KEY (active,page_set_home),
-  KEY (active,lastmodified)
+  KEY activekey (active,keyword),
+  KEY keyword (keyword)
+  KEY parent (active,parent_page),
+  KEY pageset (active,page_set_home),
+  KEY lastmod (active,lastmodified)
+  KEY pageindex (active,show_in_index,display_keyword)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE gwiki_pageids (
