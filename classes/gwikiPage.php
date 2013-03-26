@@ -1264,6 +1264,37 @@ class gwikiPage {
 		return $ret;
 	}
 
+	private function renderGallery($source)
+	{
+		global $xoopsDB;
+
+		$maxpx=intval(trim($source));
+		if($maxpx<10) $maxpx=$this->defaultThumbSize;
+		$page=$this->keyword;
+		
+		$sql = 'SELECT * FROM '.$xoopsDB->prefix('gwiki_page_images') .
+			' WHERE keyword = \''.$page.'\' '.
+			' ORDER BY image_name ';
+		$result = $xoopsDB->query($sql);
+
+		$dir=$this->wikiDir;
+		$body='<div class="wikigallery"><ul class="wikigalleryimg">';
+	
+		for ($i = 0; $i < $xoopsDB->getRowsNum($result); $i++) {
+			$image = $xoopsDB->fetchArray($result);
+			$img=XOOPS_URL . '/uploads/' . $dir . '/' . $image['image_file'];
+			$thumb=XOOPS_URL . '/modules/' . $dir . '/getthumb.php?page='.$image['keyword'].'&name='.$image['image_name'].'&size='.$maxpx;
+			$alt=htmlentities($image['image_alt_text'],ENT_QUOTES);
+			$name=htmlentities($image['image_name'],ENT_QUOTES);
+			if(empty($alt)) $alt=$name;
+			$body.='<li><a href="'.$img.'" title="'.$name.'"><img src="'.$thumb.'" alt="'.$alt.'" title="'.$alt.'" /></a></li>'."\n";
+		}
+		
+		$body.='</ul><br style="clear:both;" /></div>';
+		
+		return $body;
+	}
+
 	private function renderLists($source)
 	{
 		$lines=explode("\n",$source);
@@ -1558,7 +1589,7 @@ class gwikiPage {
 //		$search[]  = "#\{(PageIndex|RecentChanges)\}#ie";
 //		$replace[] = '$this->renderIndex("$1")';
 
-		// note box {note title}xxx{endnote}
+		// index or change list {pageindex prefix}
 		$search[]  = "#{(PageIndex|RecentChanges)([^\"<\n]+?)?}#sie";
 		$replace[] = '$this->renderIndex(\'\\1\',\'\\2\')';
 
@@ -1569,6 +1600,10 @@ class gwikiPage {
 		// page set table of contents
 		$search[]  = "#\{pagesettoc\}#ie";
 		$replace[] = '$this->renderPageSetToc($this->keyword,6)';
+
+		// image gallery {gallery size}
+		$search[]  = "#{gallery([^\"<\n]+?)?}#sie";
+		$replace[] = '$this->renderGallery(\'\\1\')';
 
 		// page set navigation
 		//$search[]  = "#\{pagesetnav\}#ie";

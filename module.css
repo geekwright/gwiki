@@ -744,10 +744,50 @@ span.wikieditfile_field  {
 
 div.wikiindex { width: 100%; display: table;}
 div.wikiindextabs { width: 40px; display: table-cell; padding-right: 2em;}
-.wikiindextabs ul { list-style-type: none; padding-left: 0.2em;}
-.wikiindextabs ul li { }
-.wikiindextabs ul li a { background-color: #C6DDFA; width: 36px; display:block; border: 1px solid grey; text-align: center; }
-.wikiindextabs ul li a:hover { background-color: #CAE2FF; border: 1px solid black; text-decoration: none; }
-#wikiindextabactive a { background-color: #ffffff; border: 1px solid black; border-right: 0px; }
+div.wikiindextabs ul { list-style-type: none; padding-left: 0.2em;}
+div.wikiindextabs ul li { }
+div.wikiindextabs ul li a { background-color: #C6DDFA; width: 36px; display:block; border: 1px solid grey; border-radius: 3px; text-align: center; }
+div.wikiindextabs ul li a:hover { background-color: #B2C7E1; border: 1px solid black; text-decoration: none; }
+#wikiindextabactive a { background-color: #ffffff; border: 1px solid black; border-right: 0px; border-top-right-radius:0px; 
+border-bottom-right-radius:0px;}
 /* .wikiindextabinactive a { background-color: #B0C4DE; border: 1px solid black; border-right: 0px; } */
 div.wikiindexbody { display: table-cell; }
+
+ul.wikigalleryimg li { display: inline; }
+ul.wikigalleryimg a {
+ background: #fff;
+ display: inline; 
+ float: left; 
+ margin: 0 0 27px 30px; 
+ width: auto; 
+ padding: 10px 10px 15px; 
+ text-align: center; 
+ font-family: "Marker Felt", Arial, sans-serif; 
+ text-decoration: none; 
+ color: #333; 
+ font-size: 18px;
+	zoom:1; /* This enables hasLayout, which is required for older IE browsers */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(color='#b0b0b0', Direction=135, Strength=3)";
+    filter: progid:DXImageTransform.Microsoft.Shadow(color='#b0b0b0', Direction=135, Strength=3);
+-webkit-box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+-moz-box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+ 
+ -webkit-transform: rotate(-2deg); -moz-transform: rotate(-2deg); transform: rotate(-2deg); 
+ -webkit-transition: -webkit-transform .15s linear; 
+}
+ul.wikigalleryimg img { display: block; border: 1px solid #dddddd; margin-bottom: 12px; }
+ul.wikigalleryimg a:after { content: attr(title); }
+
+ul.wikigalleryimg li:nth-child(even) a { -webkit-transform: rotate(2deg);  -moz-transform: rotate(2deg); transform: rotate(2deg);}
+ul.wikigalleryimg li:nth-child(3n) a { -webkit-transform: none; position: relative; top: -5px;  -moz-transform: none; transform: none; }
+ul.wikigalleryimg li:nth-child(5n) a { -webkit-transform: rotate(5deg); position: relative; right: 5px;  -moz-transform: rotate(5deg); transform: rotate(5deg);}
+ul.wikigalleryimg li:nth-child(8n) a { position: relative; right: 5px; top: 8px; }
+ul.wikigalleryimg li:nth-child(11n) a { position: relative; left: -5px; top: 3px; }
+		
+ul.wikigalleryimg li.messy a { margin-top: -375px; margin-left: 160px; -webkit-transform: rotate(-5deg); -moz-transform: rotate(-5deg); transform: rotate(-5deg);}
+
+ul.wikigalleryimg li a:hover { -webkit-transform: scale(1.25); -moz-transform: scale(1.25); transform: scale(1.25); -webkit-box-shadow: 0 3px 6px rgba(0,0,0,.5); -moz-box-shadow: 0 3px 6px rgba(0,0,0,.5); position: relative; z-index: 5; }
+
+div.wikigallery { background-color: #f8f8f8; padding:3em;}
+
