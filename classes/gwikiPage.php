@@ -1198,17 +1198,12 @@ class gwikiPage {
 			$link=XOOPS_URL.substr($link,8);
 		}
 		$showthumb=false;
-		if (strcasecmp('thumb:', substr($link,0,6)) == 0) { // explicit request for thumbnail
+		$showthumblink=false;
+		if (strcasecmp('thumb:', substr($link,0,6)) == 0) { // explicit request for thumbnail, links to full image
 			$revertlink=$link;
 			$link=substr($link,6);
-			$showthumb=true;
+			$showthumblink=true;
 		}
-		$showthumblink=false;
-//		if (strcasecmp('thumblink:', substr($link,0,10)) == 0) { // explicit request for thumbnail that links to full image
-//			$revertlink=$link;
-//			$link=substr($link,10);
-//			$showthumblink=true;
-//		}
 		$alttext  = empty($parms[0])?'':$parms[0];
 		$align    = empty($parms[1])?'':$parms[1];
 		$maxpx    = empty($parms[2])?'':intval($parms[2]);
@@ -1237,7 +1232,6 @@ class gwikiPage {
 		}
 		else {
 			// thumbs don't apply, so put everything back the way it was
-			if($showthumb) { $link=$revertlink; $showthumb=false; }
 			if($showthumblink) { $link=$revertlink; $showthumblink=false; }
 		}
 
@@ -1257,7 +1251,16 @@ class gwikiPage {
 			$link=XOOPS_URL.'/modules/'.$this->wikiDir.'/getthumb.php?page='.$image['keyword'].'&name='.$image['image_name'].'&size='.$thumbsize;
 		}
 		
-		$ret="<img class=\"wikiimage{$alignparm}\" src=\"{$link}\" {$alt}{$maxpxstyle} />"; 
+		if($showthumblink) {
+			$thumbsize=$this->defaultThumbSize;
+			if(!empty($maxpx)) $thumbsize=$maxpx;
+			$thumb=XOOPS_URL.'/modules/'.$this->wikiDir.'/getthumb.php?page='.$image['keyword'].'&name='.$image['image_name'].'&size='.$thumbsize;
+			$img=XOOPS_URL . '/uploads/' . $this->wikiDir . '/' . $image['image_file'];
+			$ret.='<a href="'.$img.'" '.$alt.'><img src="'.$thumb.'"'.$alt.$maxpxstyle.'/></a>';
+		}
+		else {
+			$ret="<img class=\"wikiimage{$alignparm}\" src=\"{$link}\" {$alt}{$maxpxstyle} />"; 
+		}
 
 		if($align=='center') $ret='<div style="margin: 0 auto; text-align: center;">'.$ret.'</div>';
 

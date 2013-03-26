@@ -753,7 +753,7 @@ border-bottom-right-radius:0px;}
 /* .wikiindextabinactive a { background-color: #B0C4DE; border: 1px solid black; border-right: 0px; } */
 div.wikiindexbody { display: table-cell; }
 
-ul.wikigalleryimg li { display: inline; }
+ul.wikigalleryimg li { display: inline-block; }
 ul.wikigalleryimg a {
  background: #fff;
  display: inline; 
@@ -762,7 +762,7 @@ ul.wikigalleryimg a {
  width: auto; 
  padding: 10px 10px 15px; 
  text-align: center; 
- font-family: "Marker Felt", Arial, sans-serif; 
+ font-family: "Marker Felt", "Comic Sans", Arial, sans-serif; 
  text-decoration: none; 
  color: #333; 
  font-size: 18px;
@@ -785,9 +785,7 @@ ul.wikigalleryimg li:nth-child(5n) a { -webkit-transform: rotate(5deg); position
 ul.wikigalleryimg li:nth-child(8n) a { position: relative; right: 5px; top: 8px; }
 ul.wikigalleryimg li:nth-child(11n) a { position: relative; left: -5px; top: 3px; }
 		
-ul.wikigalleryimg li.messy a { margin-top: -375px; margin-left: 160px; -webkit-transform: rotate(-5deg); -moz-transform: rotate(-5deg); transform: rotate(-5deg);}
-
 ul.wikigalleryimg li a:hover { -webkit-transform: scale(1.25); -moz-transform: scale(1.25); transform: scale(1.25); -webkit-box-shadow: 0 3px 6px rgba(0,0,0,.5); -moz-box-shadow: 0 3px 6px rgba(0,0,0,.5); position: relative; z-index: 5; }
 
-div.wikigallery { background-color: #f8f8f8; padding:3em;}
+div.wikigallery { background-color: #F5FBFF; padding:1em;}
 
