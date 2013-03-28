@@ -762,7 +762,7 @@ ul.wikigalleryimg a {
  width: auto; 
  padding: 10px 10px 15px; 
  text-align: center; 
- font-family: "Marker Felt", "Comic Sans", Arial, sans-serif; 
+ font-family: "Marker Felt", "Comic Sans MS", cursive, sans-serif; 
  text-decoration: none; 
  color: #333; 
  font-size: 18px;
@@ -775,6 +775,8 @@ box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 
  
  -webkit-transform: rotate(-2deg); -moz-transform: rotate(-2deg); transform: rotate(-2deg); 
  -webkit-transition: -webkit-transform .15s linear; 
+ -moz-transition: -moz-transform .05s linear; 
+
 }
 ul.wikigalleryimg img { display: block; border: 1px solid #dddddd; margin-bottom: 12px; }
 ul.wikigalleryimg a:after { content: attr(title); }

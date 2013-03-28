@@ -24,10 +24,10 @@ CREATE TABLE gwiki_pages (
 
   PRIMARY KEY (gwiki_id, active),
   KEY activekey (active,keyword),
-  KEY keyword (keyword)
+  KEY keyword (keyword),
   KEY parent (active,parent_page),
   KEY pageset (active,page_set_home),
-  KEY lastmod (active,lastmodified)
+  KEY lastmod (active,lastmodified),
   KEY pageindex (active,show_in_index,display_keyword)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 

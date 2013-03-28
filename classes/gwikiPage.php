@@ -11,7 +11,7 @@
 * @package    gwiki
 * @version    $Id$
 */
-// TODO look for places wher freeRecordSet($result) should be added
+// TODO look for places where freeRecordSet($result) should be added
 
 if (!defined("XOOPS_ROOT_PATH")) die("Root path not defined");
 
@@ -422,6 +422,7 @@ class gwikiPage {
 				$sql='SELECT group_prefix_id FROM '.$xoopsDB->prefix('gwiki_group_prefix').' WHERE prefix_id = \''.$prefix['prefix_id'].'\' AND group_id '.$groupwhere;
 				$result = $xoopsDB->query($sql);
 				$rows=$xoopsDB->getRowsNum($result);
+				$xoopsDB->freeRecordSet($result);
 				if($rows) { // prefix is assigned to one or more of user's groups
 					if(($edit_pfx || $create_pfx) && $this->gwiki_id) $mayEdit=true;
 					if($create_pfx && !($this->gwiki_id)) $mayEdit=true;
@@ -823,6 +824,7 @@ class gwikiPage {
 			$link=sprintf('<a href="%s" title="%s">%s%s</a>', $url, $title, $display_keyword, '');
 			$body.='<li>'.$link.' : '.$title.'</li>';
 		}
+		$xoopsDB->freeRecordSet($result);
 		if($tablayout) {
 			$body.='</ul></div></div>';
 		}
@@ -867,6 +869,7 @@ class gwikiPage {
 			$body.='<li>'.$link.' : '.$title.'</li>';
 
 		}
+		$xoopsDB->freeRecordSet($result);
 		if($body!='') $body.='</ul>';
 		return $body."\n\n";
 	}
