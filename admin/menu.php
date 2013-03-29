@@ -13,7 +13,7 @@ $adminmenu[] = array(
 
 $adminmenu[] = array(
 	'title'	=> _MI_GWIKI_PAGES ,
-	'link'	=> 'admin/pages.php?op=manage' ,
+	'link'	=> 'admin/pages.php' ,
 	'icon'	=> 'images/admin/manage.png'
 ) ;
 
