@@ -7,6 +7,8 @@ if(typeof ajaxGwikiLoad != 'function'){
 
 	window.ajaxGwikiLoad = function(keyword,bid) {
 		ajaxGwikiStackPush(keyword,bid);
+		var el=document.getElementById("wikiajaxblock"+bid);
+		el.innerHTML='<img src="<{$block.modurl}>/images/loading-anim.gif" alt="Loading" />';
 		// alert(keyword+bid);
 		var split=keyword.split('#');
 		keyword=split[0];
@@ -74,7 +76,7 @@ if(typeof ajaxGwikiLoad != 'function'){
 }
 </script>
 <div class="wikiblock">
-<div id="wikiajaxblock<{$block.bid}>" class="wikiajaxblock<{if $block.remotewiki}> wikiajaxremotewiki<{/if}>"><img src="<{$block.modurl}>/images/loading-anim.gif" alt="Loading" /></div>
+<div id="wikiajaxblock<{$block.bid}>" class="wikiajaxblock<{if $block.remotewiki}> wikiajaxremotewiki<{/if}>"> </div>
 </div>
 <div class="wikiblocknav">
 <a href="javascript:ajaxGwikiLoad('<{$block.keyword}>','<{$block.bid}>');"><img src="<{$block.modurl}>/images/homeicon.png" alt="<{$block.display_keyword}>" title="<{$block.display_keyword}>" /></a> 
