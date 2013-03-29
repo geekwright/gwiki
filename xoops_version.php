@@ -238,7 +238,7 @@ $modversion['blocks'][] = array(
 	'description' =>  _MI_GWIKI_BL_RELATED_DESC,
 	'show_func' => 'b_gwiki_related_show',
 	'edit_func' => 'b_gwiki_related_edit',
-	'options' => '1|',
+	'options' => '1||0',
 	'template' => 'gwiki_relatedblock.html');
 
 ?>
