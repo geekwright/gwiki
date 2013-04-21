@@ -1449,6 +1449,10 @@ class gwikiPage {
 		$search[]  = "#'#";
 		$replace[] = "\\'";
 
+		// nowiki - tilde escape
+		$search[]  = "#~([^ \t\r\n\v\f])#Ue";
+		$replace[] = '$this->noWikiHold("inline",\'\\1\')';
+		
 		// nowiki content gwiki style
 		$search[]  = "#{nowiki}(.*){endnowiki}#Umsie";
 		$replace[] = '$this->noWikiHold("inline",\'\\1\')';
@@ -1514,11 +1518,11 @@ class gwikiPage {
 		$replace[] = "<tt class=\"wikitt\">\\1</tt>";
 
 		// color ~~color:xxx~~
-		$search[]  = "#~{2}(\#{0,1}[0-9A-Za-z]*):(.*?)(~{2}|(?=\n\n))#s";
+		$search[]  = "#!{2}(\#{0,1}[0-9A-Za-z]*):(.*?)(!{2}|(?=\n\n))#s";
 		$replace[] = "<span style=\"color:\\1;\">\\2</span>";
 
 		// color ~~color,background:xxx~~
-		$search[]  = "#~{2}(\#{0,1}[0-9A-Za-z]*),(\#{0,1}[0-9A-Za-z]*):(.*?)(~{2}|(?=\n\n))#s";
+		$search[]  = "#!{2}(\#{0,1}[0-9A-Za-z]*),(\#{0,1}[0-9A-Za-z]*):(.*?)(!{2}|(?=\n\n))#s";
 		$replace[] = "<span style=\"color:\\1; background-color:\\2;\">\\3</span>";
 
 		// forced line break creole style \\, just a bare break tag
