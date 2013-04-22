@@ -163,6 +163,8 @@ switch($strategy) {
 	    $im = imagecreatefromstring($data);
 	    unset($data);
 	    $ti = ImageCreateTrueColor($thumb_width, $thumb_height);
+	    imagealphablending($ti, false);
+		imagesavealpha($ti,true);
 	    ImageCopyResampled($ti, $im, 0, 0, 0, 0, $thumb_width, $thumb_height, $img_width, $img_height);
 		imagedestroy($im);
 		if($img_type=='jpg') imagejpeg($ti, $thumbname, 80);
