@@ -786,3 +786,10 @@ ul.wikigalleryimg li:nth-child(11n) a { position: relative; left: -5px; top: 3px
 ul.wikigalleryimg li a:hover { -webkit-transform: scale(1.25); -moz-transform: scale(1.25); transform: scale(1.25); -webkit-box-shadow: 0 3px 6px rgba(0,0,0,.5); -moz-box-shadow: 0 3px 6px rgba(0,0,0,.5); position: relative; z-index: 5; }
 
 div.wikigallery { background-color: #F5FBFF; padding:1em;}
+
+.wikiparenref { }
+.wikinumref { text-decoration: none; vertical-align: super; }
+.wikicitelist { }
+.wikicitenumitem { text-indent: 3em; }
+.wikicitenum { font-weight: bold; }
+.wikiciteparenitem { margin-left: 3em; text-indent: -3em; }

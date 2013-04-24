@@ -73,6 +73,9 @@ class gwikiPage {
 	private $tocQueue = array();                   // track headers for toc
 	private $tocIndex = 0;
 	
+	private $refQueue = array();                   // track reference
+	private $refIndex = 0;
+	
 	// Out Of Bounds data - not cleared with resetPage
 	private $pageIndexPrefix='';	// current prefix for the pageindex
 
@@ -149,6 +152,8 @@ class gwikiPage {
 		$this->attachments=array();
 		$this->tocQueue = array();
 		$this->tocIndex = 0;
+		$this->refQueue = array();
+		$this->refIndex = 0;
 	}
 
 	public function escapeForDB($value)
@@ -281,6 +286,8 @@ class gwikiPage {
 		if(empty($this->display_keyword)) $this->display_keyword=$page;
 		$this->tocQueue = array();
 		$this->tocIndex = 0;
+		$this->refQueue = array();
+		$this->refIndex = 0;
 		$this->search_body=strip_tags($this->renderPage());
 		$this->toc_cache=serialize($this->tocQueue);
 		$this->gwiki_version = $this->gwikiVersion;		// new revisions always for current engine
@@ -1354,6 +1361,58 @@ class gwikiPage {
 		return $list;
 	}
 	
+	private function renderRef($refinfo,$source)
+	{
+		$first_ref=false;
+		$refs=explode('|',trim($refinfo).'|||');
+		$rq['id']=$refs[0];
+		$rq['first']=$refs[1];
+		$rq['source']=$source;
+		$refid=(-1);
+		if(!empty($rq['id'])) {
+			foreach($this->refQueue as $i=>$v) {
+				if($v['id']==$rq['id']) $refid=$i;
+			}
+		}
+		if($refid==(-1)) {		
+			$refid=$this->refIndex;
+			$first_ref=true;
+			$this->refQueue[$this->refIndex] = $rq;
+			$this->refIndex += 1;
+		}
+		$paren_ref=false;
+		if(!empty($this->refQueue[$refid]['first'])) $paren_ref=true;
+		if($paren_ref) {
+			$ref_text=$this->refQueue[$refid]['id'];
+			if($first_ref) {
+				$ref_text=$this->refQueue[$refid]['first'];
+			}
+			$r='<span class="wikiparenref"><a href="#ref'.$refid.'">('.$ref_text.')</a></span>';
+		} else {
+			$r='<span class="wikinumref"><a href="#ref'.$refid.'">'.($refid+1).'</a></span>';			
+		}
+		return $r;
+	}
+	
+	private function renderRefList()
+	{
+		$r='<div class="wikicitelist">';
+
+		foreach($this->refQueue as $i=>$v) {
+			$refid=$i;
+			if(empty($v['first'])) {
+				$r .= '<div class="wikicitenumitem" id="ref'.$refid.'"><span class="wikicitenum">'.($refid+1).'. </span>'.$v['source']."</div>\n";
+			}
+			else {
+				$r .= '<div class="wikiciteparenitem" id="ref'.$refid.'">'.$v['source']."</div>\n";
+			}
+		}
+
+		$r .= '</div>';
+
+		return $r;
+	}
+	
 	private function renderBox($type,$title,$body)
 	{
 		// make sure we have a valid type
@@ -1561,6 +1620,14 @@ class gwikiPage {
 		$search[]  = "#{folded ([^\"<\n]+?)?}(.*?){endfolded}#sie";
 		$replace[] = '$this->renderBox(\'folded\',\'\\1\',\'\\2\')';
 
+		// reference {ref id|first-ref}source{endref}
+		$search[]  = "#{ref( [^\"<\n]+?)?}(.*?){endref}#sie";
+		$replace[] = '$this->renderRef(\'\\1\',\'\\2\')';
+		
+		// forced line break blog [[br]] or gwiki {break} styles, themed - by default clear all
+		$search[]  = "#({reflist})#ie";
+		$replace[] = '$this->renderRefList()';
+
 		// Links - Note that nothing between the <a> and </a> will be parsed further, so these happen late in the process.
 		// urls - smells like a link
 //		$search[]  = "#(?<![\"\[])((http|https|ftp|ftps)://.{2,}\..*)([,.?!:;]?\s)#Uie";
@@ -1584,7 +1651,7 @@ class gwikiPage {
 		}
 
 		// =====headings up to 5 levels
-		$search[]  = "#(^|\s)(={1,5})([^=].*[^=])(={0,5})\s*$#Ume";
+		$search[]  = "#(^|\s)(={1,5})([^=]{1,})(={0,5})\s*$#Ume";
 		$replace[] = '$this->renderHeader(\'\\3\',\'\\2\')';
 		//$replace[] = "\n<h6>\\2</h6>\n";
 
