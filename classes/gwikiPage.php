@@ -75,6 +75,7 @@ class gwikiPage {
 	
 	private $refQueue = array();                   // track reference
 	private $refIndex = 0;
+	private $refShown = false;
 	
 	// Out Of Bounds data - not cleared with resetPage
 	private $pageIndexPrefix='';	// current prefix for the pageindex
@@ -154,6 +155,7 @@ class gwikiPage {
 		$this->tocIndex = 0;
 		$this->refQueue = array();
 		$this->refIndex = 0;
+		$this->refShown=false;
 	}
 
 	public function escapeForDB($value)
@@ -1367,6 +1369,7 @@ class gwikiPage {
 		$refs=explode('|',trim($refinfo).'|||');
 		$rq['id']=$refs[0];
 		$rq['first']=$refs[1];
+		$rq['repeat']=$refs[2];
 		$rq['source']=$source;
 		$refid=(-1);
 		if(!empty($rq['id'])) {
@@ -1383,9 +1386,11 @@ class gwikiPage {
 		$paren_ref=false;
 		if(!empty($this->refQueue[$refid]['first'])) $paren_ref=true;
 		if($paren_ref) {
-			$ref_text=$this->refQueue[$refid]['id'];
-			if($first_ref) {
-				$ref_text=$this->refQueue[$refid]['first'];
+			$ref_text=$this->refQueue[$refid]['first'];
+			if(!$first_ref) {
+				if(!empty($this->refQueue[$refid]['repeat'])) {
+					$ref_text=$this->refQueue[$refid]['repeat'];
+				}
 			}
 			$r='<span class="wikiparenref"><a href="#ref'.$refid.'">('.$ref_text.')</a></span>';
 		} else {
@@ -1396,6 +1401,7 @@ class gwikiPage {
 	
 	private function renderRefList()
 	{
+		$this->refShown=true;
 		$r='<div class="wikicitelist">';
 
 		foreach($this->refQueue as $i=>$v) {
@@ -1489,6 +1495,7 @@ class gwikiPage {
 		$this->renderedPage='';
 		$this->noWikiQueue=array();
 		$this->noWikiIndex=0;
+		$this->refShown=false;
 		
 		if(empty($title)) $title=$this->title;
 		$this->renderHeader($title,''); // do first because title should always be #toc0 - set in template
@@ -1700,6 +1707,7 @@ class gwikiPage {
 		$replace[] = '$this->noWikiEmit("$1")';
 
 		$body=preg_replace($search, $replace, trim($body)."\n");
+		if($this->refShown==false && $this->refIndex>0) $body.=$this->renderRefList();
 		$body=stripslashes($this->convertEntities($body));
 
 		$this->renderedPage=$body;

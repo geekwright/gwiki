@@ -790,6 +790,6 @@ div.wikigallery { background-color: #F5FBFF; padding:1em;}
 .wikiparenref { }
 .wikinumref { text-decoration: none; vertical-align: super; }
 .wikicitelist { }
-.wikicitenumitem { text-indent: 3em; }
+.wikicitenumitem { margin-bottom: 0.5em; text-indent: 3em; }
 .wikicitenum { font-weight: bold; }
-.wikiciteparenitem { margin-left: 3em; text-indent: -3em; }
+.wikiciteparenitem { margin-bottom: 0.5em; margin-left: 3em; text-indent: -3em; }
