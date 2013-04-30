@@ -370,7 +370,7 @@ class gwikiPage {
 		return $result;
 	}
 
-	// get the next higher page_set_order for a given page_set_home
+	// get the next higher unused page_set_order for a given page_set_home
 	private function getNextPageSetOrder($page_set_home) {
 		global $xoopsDB;
 
@@ -1055,7 +1055,7 @@ class gwikiPage {
 
 		$q_page=$this->escapeForDB($page);
 
-		$sql  = 'SELECT keyword, display_keyword, page_set_home, page_set_order, toc_cache ';
+		$sql  = 'SELECT gwiki_id, keyword, display_keyword, page_set_home, page_set_order, toc_cache ';
 		$sql .= ' FROM '.$xoopsDB->prefix('gwiki_pages');
 		$sql .= " WHERE active=1 and keyword='{$q_page}' ";
 	
@@ -1068,7 +1068,7 @@ class gwikiPage {
 				$page=$row['page_set_home']; // this is passed back up to caller!
 				$q_page=$this->escapeForDB($row['page_set_home']);
 				$xoopsDB->freeRecordSet($result);
-				$sql  = 'SELECT keyword, display_keyword, page_set_home, page_set_order, toc_cache ';
+				$sql  = 'SELECT gwiki_id, keyword, display_keyword, page_set_home, page_set_order, toc_cache ';
 				$sql .= ' FROM '.$xoopsDB->prefix('gwiki_pages');
 				$sql .= " WHERE active=1 and page_set_home='{$q_page}' ";
 				$sql .= " ORDER BY page_set_order, keyword ";
@@ -1627,15 +1627,6 @@ class gwikiPage {
 		$search[]  = "#{folded ([^\"<\n]+?)?}(.*?){endfolded}#sie";
 		$replace[] = '$this->renderBox(\'folded\',\'\\1\',\'\\2\')';
 
-		// reference {ref id|first-ref}source{endref}
-		$search[]  = "#{ref( [^\"<\n]+?)?}(.*?){endref}#sie";
-		$replace[] = '$this->renderRef(\'\\1\',\'\\2\')';
-		
-		// forced line break blog [[br]] or gwiki {break} styles, themed - by default clear all
-		$search[]  = "#({reflist})#ie";
-		$replace[] = '$this->renderRefList()';
-
-		// Links - Note that nothing between the <a> and </a> will be parsed further, so these happen late in the process.
 		// urls - smells like a link
 //		$search[]  = "#(?<![\"\[])((http|https|ftp|ftps)://.{2,}\..*)([,.?!:;]?\s)#Uie";
 		$search[]  = "#(?<=\s)((http|https|ftp|ftps)://.{2,}\..*)(?=[,.?!:;]{0,1}\s)#Uie";
@@ -1670,9 +1661,14 @@ class gwikiPage {
 		$search[]  = "#^(\. .*\n)+#me";
 		$replace[] = '"<pre>".preg_replace("#^.#m", "", "$0")."</pre>\n"';
 
-		// x
-//		$search[]  = "#\{(PageIndex|RecentChanges)\}#ie";
-//		$replace[] = '$this->renderIndex("$1")';
+		// reference {ref id|first-ref}source{endref}
+		$search[]  = "#{ref( [^\"<\n]+?)?}(.*?){endref}#sie";
+		$replace[] = '$this->renderRef(\'\\1\',\'\\2\')';
+		
+		// forced line break blog [[br]] or gwiki {break} styles, themed - by default clear all
+		$search[]  = "#({reflist})#ie";
+		$replace[] = '$this->renderRefList()';
+
 
 		// index or change list {pageindex prefix}
 		$search[]  = "#{(PageIndex|RecentChanges)([^\"<\n]+?)?}#sie";
