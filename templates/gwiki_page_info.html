@@ -27,17 +27,20 @@
 <p class="itemInfo"><{$smarty.const._MD_GWIKI_PAGE}>: <strong><{$gwiki.keyword}></strong> <{if $gwiki.pageFound}>- <{$smarty.const._MD_GWIKI_LASTMODIFIED}> <span class="itemPostDate"><{$gwiki.revisiontime}></span> <{$smarty.const._MD_GWIKI_BY}> <span class="itemPoster"><{$gwiki.author}><{/if}></span>
 <{if $gwiki.mayEdit}>
 <span style="margin-left:2em;">
-  <{if $gwiki.admin_lock}><img src="<{$gwiki.modurl}>/images/lockedicon.png" alt="<{$smarty.const._MD_GWIKI_PAGE_IS_LOCKED}>" title="<{$smarty.const._MD_GWIKI_PAGE_IS_LOCKED}>" />
-  <{else}><a href="<{$gwiki.modurl}>/edit.php?page=<{$gwiki.keyword}>&op=edit#gwikiform"><img src="<{$gwiki.modurl}>/images/editicon.png" alt="<{$smarty.const._EDIT}>" title="<{$smarty.const._EDIT}>" /></a>
-          <{if $gwiki.ineditor}>
-          <a onclick="toggleDiv('wikiimageedit'); return false;"><img src="<{$gwiki.modurl}>/images/imageicon.png" alt="<{$smarty.const._MD_GWIKI_IMAGES}>" title="<{$smarty.const._MD_GWIKI_IMAGES}>" /></a>
-          <a onclick="toggleDiv('wikifileedit'); return false;"><img src="<{$gwiki.modurl}>/images/attachicon.png" alt="<{$smarty.const._MD_GWIKI_ATTACHMENT_EDIT}>" title="<{$smarty.const._MD_GWIKI_ATTACHMENT_EDIT}>" /></a>
-          <a onclick="bigWindow(1); return false;"><img src="<{$gwiki.modurl}>/images/fullscreenicon.png" alt="<{$smarty.const._MD_GWIKI_FULLSCREEN_EDIT}>" title="<{$smarty.const._MD_GWIKI_FULLSCREEN_EDIT}>" /></a>
-          <a onclick="helpwindow();return false;"><img src="<{$gwiki.modurl}>/images/helpicon.png" alt="<{$smarty.const._MD_GWIKI_WIKI_EDIT_HELP}>" title="<{$smarty.const._MD_GWIKI_WIKI_EDIT_HELP}>" /></a>
-          <{/if}>
-  <{/if}>
-  <a href="<{$gwiki.modurl}>/history.php?page=<{$gwiki.keyword}>"><img src="<{$gwiki.modurl}>/images/historyicon.png" alt="<{$smarty.const._MD_GWIKI_HISTORY}>" title="<{$smarty.const._MD_GWIKI_HISTORY}>" /></a>
-  <a href="<{$gwiki.modurl}>/source.php?page=<{$gwiki.keyword}>" target="_blank"><img src="<{$gwiki.modurl}>/images/texticon.png" alt="<{$smarty.const._MD_GWIKI_SOURCE}>" title="<{$smarty.const._MD_GWIKI_SOURCE}>" /></a>
-  </span>
+	<{if $gwiki.admin_lock}><img src="<{$gwiki.modurl}>/images/lockedicon.png" alt="<{$smarty.const._MD_GWIKI_PAGE_IS_LOCKED}>" title="<{$smarty.const._MD_GWIKI_PAGE_IS_LOCKED}>" />
+	<{else}><a href="<{$gwiki.modurl}>/edit.php?page=<{$gwiki.keyword}>&op=edit#gwikiform"><img src="<{$gwiki.modurl}>/images/editicon.png" alt="<{$smarty.const._EDIT}>" title="<{$smarty.const._EDIT}>" /></a>
+		<{if $gwiki.ineditor}>
+			<{if $gwiki.pageset.first.link}>
+				<a href="<{$gwiki.modurl}>/sortpageset.php?page=<{$gwiki.keyword}>" target="_blank"><img src="<{$gwiki.modurl}>/images/sorticon.png" alt="<{$smarty.const._MD_GWIKI_SORT_PAGE_FORM}>" title="<{$smarty.const._MD_GWIKI_SORT_PAGE_FORM}>" /></a>
+			<{/if}>
+			<a onclick="toggleDiv('wikiimageedit'); return false;"><img src="<{$gwiki.modurl}>/images/imageicon.png" alt="<{$smarty.const._MD_GWIKI_IMAGES}>" title="<{$smarty.const._MD_GWIKI_IMAGES}>" /></a>
+			<a onclick="toggleDiv('wikifileedit'); return false;"><img src="<{$gwiki.modurl}>/images/attachicon.png" alt="<{$smarty.const._MD_GWIKI_ATTACHMENT_EDIT}>" title="<{$smarty.const._MD_GWIKI_ATTACHMENT_EDIT}>" /></a>
+			<a onclick="bigWindow(1); return false;"><img src="<{$gwiki.modurl}>/images/fullscreenicon.png" alt="<{$smarty.const._MD_GWIKI_FULLSCREEN_EDIT}>" title="<{$smarty.const._MD_GWIKI_FULLSCREEN_EDIT}>" /></a>
+			<a onclick="helpwindow();return false;"><img src="<{$gwiki.modurl}>/images/helpicon.png" alt="<{$smarty.const._MD_GWIKI_WIKI_EDIT_HELP}>" title="<{$smarty.const._MD_GWIKI_WIKI_EDIT_HELP}>" /></a>
+		<{/if}>
+	<{/if}>
+	<a href="<{$gwiki.modurl}>/history.php?page=<{$gwiki.keyword}>"><img src="<{$gwiki.modurl}>/images/historyicon.png" alt="<{$smarty.const._MD_GWIKI_HISTORY}>" title="<{$smarty.const._MD_GWIKI_HISTORY}>" /></a>
+	<a href="<{$gwiki.modurl}>/source.php?page=<{$gwiki.keyword}>" target="_blank"><img src="<{$gwiki.modurl}>/images/texticon.png" alt="<{$smarty.const._MD_GWIKI_SOURCE}>" title="<{$smarty.const._MD_GWIKI_SOURCE}>" /></a>
+</span>
 <{/if}>
 <{/if}>

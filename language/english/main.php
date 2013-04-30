@@ -147,5 +147,17 @@ define('_MD_GWIKI_PAGENAV_PREV', 'Previous');
 define('_MD_GWIKI_PAGENAV_FIRST', 'First');
 define('_MD_GWIKI_PAGENAV_LAST', 'Last');
 
+// sort
+define('_MD_GWIKI_SORT_UP', 'Move Up');
+define('_MD_GWIKI_SORT_DOWN', 'Move Down');
+define('_MD_GWIKI_SORT_REVERSE', 'Reverse');
+define('_MD_GWIKI_SORT_SAVE', 'Save');
+define('_MD_GWIKI_SORT_ACTIONS', 'Actions');
+define('_MD_GWIKI_SORT_EMPTY', 'Nothing to Sort');
+
+define('_MD_GWIKI_SORT_PAGE_SELECT', 'Select a Page to Move');
+define('_MD_GWIKI_SORT_PAGE_FORM', 'Reorder Pages in a Page Set');
+define('_MD_GWIKI_SORT_PAGES', 'Pages');
+
 }
 ?>

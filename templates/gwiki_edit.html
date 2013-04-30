@@ -100,7 +100,7 @@
 </div>
 <div class="wikiimagedetail">
 <form id="insertimage">
-<{$smarty.const._MD_GWIKI_IMAGES_INSERT_TITLE}>
+<{$smarty.const._MD_GWIKI_IMAGES_INSERT_TITLE}><br />
 <{$smarty.const._MD_GWIKI_IMAGES_ALIGN}><select id="wikiimage_align" name="align">
   <option value=""><{$smarty.const._MD_GWIKI_IMAGES_ALIGN_NONE}></option>
   <option value="left"><{$smarty.const._MD_GWIKI_IMAGES_ALIGN_LEFT}></option>
@@ -139,7 +139,7 @@
 <br /><span class="wikieditfile_fieldname"><{$smarty.const._MD_GWIKI_FILES_TYPE}></span> <span id="wikieditfile_type" class="wikieditfile_field" /> </span>
 <br /><span class="wikieditfile_fieldname"><{$smarty.const._MD_GWIKI_FILES_SIZE}></span> <span id="wikieditfile_size" class="wikieditfile_field" /> </span>
 <br /><span class="wikieditfile_fieldname"><{$smarty.const._MD_GWIKI_FILES_DATE}></span> <span id="wikieditfile_date" class="wikieditfile_field" /> </span>
-<br /><span class="wikieditfile_fieldname"><{$smarty.const._MD_GWIKI_FILES_DESCRIPTION}></span> <span class="wikieditfile_field" style="display: inline-block; vertical-align: top;"> <textarea id="wikieditfile_description" name="wikieditfile_description" rows="3" cols="50" onchange="fileFieldEventHandler('change','wikieditfile_description');" onfocus="fileFieldEventHandler('focus','wikieditfile_description');"> </textarea></span>
+<br /><span class="wikieditfile_fieldname"><{$smarty.const._MD_GWIKI_FILES_DESCRIPTION}></span> <span class="wikieditfile_field" style="display: inline-block; vertical-align: top;"> <textarea id="wikieditfile_description" name="wikieditfile_description" rows="3" cols="40" onchange="fileFieldEventHandler('change','wikieditfile_description');" onfocus="fileFieldEventHandler('focus','wikieditfile_description');"> </textarea></span>
 <br /><span class="wikieditfile_fieldname"><{$smarty.const._MD_GWIKI_FILES_USER}></span> <span id="wikieditfile_userlink" class="wikieditfile_field" /> </span>
 <br /><br />
 <div id="wikiedit_buttons">
