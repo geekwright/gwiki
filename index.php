@@ -80,7 +80,7 @@ if ($pfx) {
 		$xoTheme->addMeta('meta','description',htmlspecialchars($pageX['meta_description'], ENT_QUOTES,null,false));
 	}
 	$title=$pageX['title'];
-	if(empty($title)) $title=$myts->htmlSpecialChars($xoopsModule->name());
+	if(empty($title)) $title=htmlspecialchars($xoopsModule->name());
 	$xoopsTpl->assign('xoops_pagetitle', $title);
 	$xoopsTpl->assign('icms_pagetitle', $title);
 	if(!empty($message)) $xoopsTpl->assign('message', $message);

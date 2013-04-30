@@ -8,5 +8,5 @@ if (file_exists('language/'.$xoopsConfig['language'].'/modinfo.php')) {
     include_once 'language/english/modinfo.php';
 }
 
-$myts = MyTextSanitizer::getInstance();
+//$myts = MyTextSanitizer::getInstance();
 ?>

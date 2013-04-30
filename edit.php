@@ -136,8 +136,8 @@ $result=false;
 if (($op == "preview") && isset($id)) {
     $result=intval($id);
     $pagestatmessage=_MD_GWIKI_PAGENOTSAVED;
-    $title = $myts->stripSlashesGPC($title);
-    $body = $myts->stripSlashesGPC($body);
+    //$title = $myts->stripSlashesGPC($title);
+    //$body = $myts->stripSlashesGPC($body);
 } else {
 	//print_r($pageX);
 	if($pageX['pageFound']) {

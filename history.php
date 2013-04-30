@@ -95,7 +95,7 @@ function setRevision($page, $id)
 	$xoTheme->addStylesheet(XOOPS_URL.'/modules/'.$dir.'/module.css');
 	$title=_MD_GWIKI_HISTORY_TITLE;
 	$xoopsTpl->assign('title', $title.' : '.$page);
-	if(empty($title)) $title=$myts->htmlSpecialChars($xoopsModule->name());
+	if(empty($title)) $title=htmlspecialchars($xoopsModule->name());
 	$xoopsTpl->assign('xoops_pagetitle', $title);
 	$xoopsTpl->assign('icms_pagetitle', $title);
 	if(!empty($message)) $xoopsTpl->assign('message', $message);
