@@ -2,7 +2,7 @@
 /**
  * wiki page anywhere - call it anything, put it anywhere
  *
- * @copyright		geekwright, LLC
+ * @copyright	geekwright, LLC
  * @license		GNU General Public License (GPL) V2 or greater
  * @since		1.0
  * @author		Richard Griffith richard@geekwright.com
@@ -10,13 +10,23 @@
  * @version		$Id$
  */
 
-// adjust these two lines to reflect your installation
+// ******************************************************************
+// adjust these next few lines to reflect your installation
 include_once '../../../mainfile.php';
 $dir = 'gwiki';  // wiki module directory
 
 // $_GET variables we use
 $page = isset($_GET['page'])?cleaner($_GET['page']):null;
 $highlight = isset($_GET['query'])?cleaner($_GET['query']):null;
+
+// build a URL template to point wiki links to this script
+$script = (!empty($_SERVER['HTTPS']))
+	? "https://".$_SERVER['SERVER_NAME'].parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) 
+	: "http://".$_SERVER['SERVER_NAME'].parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$ourWikiLinkURL=$script.'?page=%s';
+
+// normally, adjustments to the remaining code are not required
+// ******************************************************************
 
 function cleaner($string) {
 	$string=stripcslashes($string);
@@ -45,11 +55,6 @@ global $xoopsConfig;
 	}
 }
 
-
-	$script = (!empty($_SERVER['HTTPS']))
-		? "https://".$_SERVER['SERVER_NAME'].parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) 
-		: "http://".$_SERVER['SERVER_NAME'].parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-	
 	// Access module configs from outside module:
 	$module_handler = xoops_gethandler('module');
 	$module         = $module_handler->getByDirname($dir);
@@ -62,7 +67,7 @@ global $xoopsConfig;
 
 	$wikiPage = new gwikiPage;
 	$wikiPage->setRecentCount($moduleConfig['number_recent']);
-	$wikiPage->setWikiLinkURL($script.'?page=%s');
+	$wikiPage->setWikiLinkURL($ourWikiLinkURL);
 
 	if(empty($page)) $page=$wikiPage->wikiHomePage;
 
