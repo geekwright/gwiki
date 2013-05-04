@@ -20,10 +20,10 @@ function post_clean_request($url, $params)
         isset($parts['port'])?$parts['port']:80,
         $errno, $errstr, 30);
 
-    $out = "POST ".$parts['path']." HTTP/1.1\r\n";
-    $out.= "Host: ".$parts['host']."\r\n";
+    $out = 'POST '.$parts['path']." HTTP/1.1\r\n";
+    $out.= 'Host: '.$parts['host']."\r\n";
     $out.= "Content-Type: application/x-www-form-urlencoded\r\n";
-    $out.= "Content-Length: ".strlen($post_string)."\r\n";
+    $out.= 'Content-Length: '.strlen($post_string)."\r\n";
     $out.= "Connection: Close\r\n\r\n";
     if (isset($post_string)) $out.= $post_string;
 
@@ -47,7 +47,7 @@ EOT;
 	if(!empty($_GET['start'])) $start=intval($_GET['start']);
 	if(!empty($_GET['like'])) $like=cleaner($_GET['like']);
 
-	$sql="SELECT COUNT(*) FROM ".$xoopsDB->prefix('gwiki_pageids');
+	$sql='SELECT COUNT(*) FROM '.$xoopsDB->prefix('gwiki_pageids');
 	if(!empty($like)) $sql.=" WHERE keyword LIKE '{$like}%' ";
 	$result = $xoopsDB->query($sql);
 	if ($result) {
@@ -75,7 +75,7 @@ EOT;
 		echo '<tr class="'.(($i % 2)?"even":"odd").'"><td><a href="pages.php?page='.$page.'&op=history">'.$page.'</a></td>' .
 			'<td>'.htmlspecialchars($title, ENT_QUOTES).'</td>'.
 			'<td>'.$revs.'</td>'.
-			'<td><a href="../index.php?page='.$page.'">'._AD_GWIKI_VIEW.'</a> | <a href="pages.php?page='.$page.'&op=history">'._AD_GWIKI_HISTORY.'</a>'.$lockaction.' | <a href="pages.php?page='.$page.'&op=delete">'._DELETE.'</a></td></tr>';
+			'<td><a href="pages.php?page='.$page.'&op=display">'._AD_GWIKI_VIEW.'</a> | <a href="pages.php?page='.$page.'&op=history">'._AD_GWIKI_HISTORY.'</a>'.$lockaction.' | <a href="pages.php?page='.$page.'&op=delete">'._DELETE.'</a></td></tr>';
 	}
 	if ($i == 0) {
 		echo '<tr class="odd"><td colspan="3">'._AD_GWIKI_EMPTYWIKI.'</td></tr>';
@@ -139,6 +139,7 @@ function showPage($page, $id)
 
     $wikiPage->setWikiLinkURL('pages.php?page=%s&op=history');
     $wikiPage->getPage($page,$id);
+    if(empty($id)) $id=$wikiPage->gwiki_id;
 
     adminTableStart(_AD_GWIKI_SHOWPAGE,1);
     echo '<tr><td width="100%" >';
@@ -359,56 +360,58 @@ if(isset($_POST['id'])) $id = intval($_POST['id']);
 //if(isset($_POST[''])) $ = intval($_POST['']);
 
 switch ($op) {
-case "history":
+case 'history':
     showHistory($page);
     break;
 
-case "display":
-    showPage($page, $_GET["id"]);
+case 'display':
+	if(!empty($_GET['id'])) $id=intval($_GET['id']);
+	else $id=null;
+    showPage($page, $id);
     break;
 
-case "restore":
+case 'restore':
     $success = setRevision($page, $id);
-    redirect_header("pages.php?page=$page&op=history", 2, ($success)?_MD_GWIKI_DBUPDATED:_MD_GWIKI_ERRORINSERT);
+    redirect_header('pages.php?page=$page&op=history', 2, ($success)?_MD_GWIKI_DBUPDATED:_MD_GWIKI_ERRORINSERT);
     break;
 
-case "fix":
-    confirmAction('fix', $page, intval($_GET["id"]));
+case 'fix':
+    confirmAction('fix', $page, intval($_GET['id']));
     break;
 
-case "fixit":
+case 'fixit':
     $success = fixRevision($page, $id);
-    redirect_header("pages.php?page=$page&op=history", 2, ($success)?_MD_GWIKI_DBUPDATED:_MD_GWIKI_ERRORINSERT);
+    redirect_header('pages.php?page=$page&op=history', 2, ($success)?_MD_GWIKI_DBUPDATED:_MD_GWIKI_ERRORINSERT);
     break;
 
-case "tool":
-    showPageTool($page, intval($_GET["id"]));
+case 'tool':
+    showPageTool($page, intval($_GET['id']));
     break;
 
-case "toolupdate":
+case 'toolupdate':
     $success = pageToolUpdate($page, $id);
     $message = $success ? _MD_GWIKI_DBUPDATED : _MD_GWIKI_ERRORINSERT ;
     $op='';
     showPages($message);
     break;
 
-case "delete":
+case 'delete':
     confirmAction('delete',$page);
     break;
 
-case "deleteit":
+case 'deleteit':
 //  mark all versions inactive -- these will disappear as they age and the database is cleaned
     $sql = "UPDATE ".$xoopsDB->prefix('gwiki_pages')." SET active = 0 WHERE keyword='{$page}' ";
 
     $success = $xoopsDB->query($sql);
-    redirect_header("pages.php?op=manage", 2, ($success)?_MD_GWIKI_DBUPDATED:_MD_GWIKI_ERRORINSERT);
+    redirect_header('pages.php?op=manage', 2, ($success)?_MD_GWIKI_DBUPDATED:_MD_GWIKI_ERRORINSERT);
     break;
 
-case "clean":
+case 'clean':
     confirmAction('clean');
     break;
 
-case "cleanit":
+case 'cleanit':
 	// delete inactive pages older than config option retain_days
 	$retaindays=intval($xoopsModuleConfig['retain_days']);
 	if($retaindays>0) {
@@ -425,26 +428,26 @@ case "cleanit":
 	showPages($message);
 	break;
 
-case "lock":
+case 'lock':
     confirmAction('lock',$page);
     break;
 
-case "lockit":
+case 'lockit':
     $sql = "UPDATE ".$xoopsDB->prefix('gwiki_pages')." SET admin_lock = 1 WHERE keyword='{$page}' ";
 
     $success = $xoopsDB->query($sql);
-    redirect_header("pages.php?op=manage", 2, ($success)?_MD_GWIKI_DBUPDATED:_MD_GWIKI_ERRORINSERT);
+    redirect_header('pages.php?op=manage', 2, ($success)?_MD_GWIKI_DBUPDATED:_MD_GWIKI_ERRORINSERT);
     break;
 
-case "unlock":
+case 'unlock':
     confirmAction('unlock',$page);
     break;
 
-case "unlockit":
+case 'unlockit':
     $sql = "UPDATE ".$xoopsDB->prefix('gwiki_pages')." SET admin_lock = 0 WHERE keyword='{$page}' ";
 
     $success = $xoopsDB->query($sql);
-    redirect_header("pages.php?op=manage", 2, ($success)?_MD_GWIKI_DBUPDATED:_MD_GWIKI_ERRORINSERT);
+    redirect_header('pages.php?op=manage', 2, ($success)?_MD_GWIKI_DBUPDATED:_MD_GWIKI_ERRORINSERT);
     break;
 
 case 'partition':
@@ -457,7 +460,7 @@ case 'partitionit':
     showPages($message);
     break;
 
-case "manage":
+case 'manage':
 default:
     showPages();
     break;
