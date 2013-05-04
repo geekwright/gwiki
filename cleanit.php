@@ -1,5 +1,5 @@
 <?php
-	trigger_error("Clean Invoked");
+//	trigger_error("Clean Invoked");
 include '../../mainfile.php';
 	if(empty($_POST['check'])) { // this is set by the admin page option, not by a regular call
 		$xoopsOption['template_main'] = 'gwiki_view.html';
