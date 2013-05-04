@@ -1448,7 +1448,7 @@ class gwikiPage {
 			$etooltip='<span>'._MD_GWIKI_FOLDED_TT.'</span>';
 		}
 
-		$ret = '<div class="wiki'.$type.$eclass.'"'.$ejs.'><div class="wiki'.$type.'icon"></div><div class="wiki'.$type.'title">'.$title.$etooltip.'</div><div class="wiki'.$type.'inner">'.$body.'<br clear="all" /></div></div>';
+		$ret = '<div class="wiki'.$type.$eclass.'"'.$ejs.'><div class="wiki'.$type.'icon"></div><div class="wiki'.$type.'title">'.$title.$etooltip.'</div><div class="wiki'.$type.'inner">'.$body.'<br clear="all" /></div></div>'."\n\n";
 		return $ret;
 	}
 	
@@ -1623,7 +1623,7 @@ class gwikiPage {
 		$search[]  = "#{code ([^\"<\n]+?)?}(.*?){endcode}#sie";
 		$replace[] = '$this->renderBox(\'code\',\'\\1\',\'<pre>\\2</pre>\')';
 
-		// folded box {warning title}xxx{endwarning}
+		// folded box {folded title}xxx{endfolded}
 		$search[]  = "#{folded ([^\"<\n]+?)?}(.*?){endfolded}#sie";
 		$replace[] = '$this->renderBox(\'folded\',\'\\1\',\'\\2\')';
 
