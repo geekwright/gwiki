@@ -9,7 +9,7 @@ define('_MD_GWIKI_PREVIEW','Preview');
 define('_MD_GWIKI_EDITPAGE','Edit Wiki Page');
 define('_MD_GWIKI_TITLE','Title');
 define('_MD_GWIKI_BODY','Content');
-define('_MD_GWIKI_DISPLAY_KEYWORD','Display Keyword');
+define('_MD_GWIKI_DISPLAY_KEYWORD','Display Page Name');
 define('_MD_GWIKI_PAGE_SET_HOME','Page Set Home');
 define('_MD_GWIKI_PAGE_SET_ORDER','Page Set Order');
 define('_MD_GWIKI_PARENT_PAGE','Parent Page');

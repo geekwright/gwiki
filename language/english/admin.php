@@ -1,7 +1,7 @@
 <?php
 if (!defined('_AD_GWIKI_ADMINTITLE')) {
 define('_AD_GWIKI_ADMINTITLE','Wiki Administration');
-define('_AD_GWIKI_KEYWORD','Keyword');
+define('_AD_GWIKI_KEYWORD','Page Name');
 define('_AD_GWIKI_REVISIONS','Revs.');
 define('_AD_GWIKI_MODIFIED','Modification date');
 define('_AD_GWIKI_AUTHOR','Author');
@@ -36,7 +36,7 @@ define('_AD_GWIKI_CONFIRM', 'Please Confirm');
 define('_AD_GWIKI_SHOWPAGE', 'Wiki Page');
 define('_AD_GWIKI_NO_ACTIVE_PAGE','*deleted*');
 define('_AD_GWIKI_PAGENAV', 'Page: ');
-define('_AD_GWIKI_KEYWORD_FILTER', 'Keyword Filter: ');
+define('_AD_GWIKI_KEYWORD_FILTER', 'Page Name Filter: ');
 
 // about and menu strings
 define('_AD_GW_ABOUT_ABOUT', 'About');
