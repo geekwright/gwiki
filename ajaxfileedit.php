@@ -16,21 +16,16 @@ $uploadurl=XOOPS_URL."/uploads/{$dir}/";
 $newfile = (isset($_SERVER['HTTP_X_FILENAME']) ? $_SERVER['HTTP_X_FILENAME'] : false);
 $jsondata = (isset($_SERVER['HTTP_X_JSONDATA']) ? $_SERVER['HTTP_X_JSONDATA'] : false);
 
-// initialize white and black lists
-$whitelist=array();$blacklist=array();
-
-$blconfig=$xoopsModuleConfig['attach_ext_blacklist'];
+// initialize whitelist
+$whitelist=array();
 $wlconfig=$xoopsModuleConfig['attach_ext_whitelist'];
+//$wlconfig='txt,pdf,doc,docx,xls,rtf,zip';
 
-//$blconfig='ini,php,phtml,php4,php3,php5,phps,pl,pm,t,pod,ap,asa,asax,ascx,ashx,asmx,asp,aspx,asr,axd';
-//$wlconfig='pdf,doc,docx,xls,rtf,zip';
-
-// use whitelist if specified, if not use blacklist if specified
+// populate whitelist
 if(!empty($wlconfig)) $whitelist=explode(',',$wlconfig);
-else if(!empty($blconfig)) $blacklist=explode(',',$blconfig);
 
 function getExtensionInfo($filename) {
-global $blacklist, $whitelist;
+global $whitelist;
 
 	$fi=array();
 	
@@ -62,10 +57,8 @@ global $blacklist, $whitelist;
 	else $ext=strtolower($path_parts['extension']);
 	//=$path_parts['filename'];
 
-	// if no name, on blacklist or not on whitelist reject
-	if(empty($path_parts['filename']) || 
-		(!empty($blacklist) && array_search($ext,$blacklist)!==false) || 
-		(!empty($whitelist) && array_search($ext,$whitelist)===false) )
+	// if no name, or not on whitelist reject
+	if(empty($path_parts['filename']) || array_search($ext,$whitelist)===false) 
 		{ return false; }
 
 	if (empty($ext)) $fi['file_icon']='_blank';

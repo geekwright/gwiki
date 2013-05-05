@@ -141,23 +141,14 @@ $modversion['config'][]= array(
 	'valuetype' => 'int',
 	'default' => 60,
 	'options' => array() );
-	
-$modversion['config'][]= array(
-	'name' => 'attach_ext_blacklist',
-	'title' => '_MI_GWIKI_ATTACH_EXT_BLACKLIST',
-	'description' => '_MI_GWIKI_ATTACH_EXT_BLACKLIST_DESC',
-	'formtype' => 'textbox',
-	'valuetype' => 'text',
-	'default' => '', //'ini,php,phtml,php4,php3,php5,phps,pl,pm,t,pod,ap,asa,asax,ascx,ashx,asmx,asp,aspx,asr,axd,jsp,jspx',
-	'options' => array() );
-	
+
 $modversion['config'][]= array(
 	'name' => 'attach_ext_whitelist',
 	'title' => '_MI_GWIKI_ATTACH_EXT_WHITELIST',
 	'description' => '_MI_GWIKI_ATTACH_EXT_WHITELIST_DESC',
 	'formtype' => 'textbox',
 	'valuetype' => 'text',
-	'default' => 'pdf,doc,docx,xls,ppt,jpg,jpeg,png',
+	'default' => 'txt,pdf,doc,docx,xls,ppt,jpg,jpeg,png',
 	'options' => array() );
 	
 $modversion['config'][]= array(
