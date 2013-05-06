@@ -17,7 +17,7 @@ if (isset($_GET['nsid'])) { // prefix
 	if($nsid>=0) {
 		$pfx=getPrefixFromId($nsid);
 		if(empty($page)) {
-			if($pfx['prefix_auto_name']) $page=date('Y-m-d'); // TODO should this be a config item?
+			if($pfx['prefix_auto_name']) $page=date('Y-m-d-His'); // TODO should this be a config item?
 			else $page=$pfx['prefix_home'];
 		}
 		$page=$pfx['prefix'].':'.$page;
