@@ -119,6 +119,7 @@ global $xoopsUser,$xoopsDB;
 	$sql.= $xoopsDB->prefix('gwiki_group_prefix').' g ';
 	$sql.= ' WHERE group_id '.$groupwhere;
 	$sql.= ' AND p.prefix_id = g.prefix_id';
+	$sql.= ' ORDER BY prefix ';
 	$prefixes=array();
 	$result = $xoopsDB->query($sql);
 	$first=true;
