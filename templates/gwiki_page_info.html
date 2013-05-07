@@ -31,7 +31,7 @@
 	<{else}><a href="<{$gwiki.modurl}>/edit.php?page=<{$gwiki.keyword}>&op=edit#gwikiform"><img src="<{$gwiki.modurl}>/images/editicon.png" alt="<{$smarty.const._EDIT}>" title="<{$smarty.const._EDIT}>" /></a>
 		<{if $gwiki.ineditor}>
 			<{if $gwiki.pageset.first.link}>
-				<a href="<{$gwiki.modurl}>/sortpageset.php?page=<{$gwiki.keyword}>" target="_blank"><img src="<{$gwiki.modurl}>/images/sorticon.png" alt="<{$smarty.const._MD_GWIKI_SORT_PAGE_FORM}>" title="<{$smarty.const._MD_GWIKI_SORT_PAGE_FORM}>" /></a>
+				<a href="<{$gwiki.modurl}>/sortpageset.php?page=<{$gwiki.keyword}>" target="_self"><img src="<{$gwiki.modurl}>/images/sorticon.png" alt="<{$smarty.const._MD_GWIKI_SORT_PAGE_FORM}>" title="<{$smarty.const._MD_GWIKI_SORT_PAGE_FORM}>" /></a>
 			<{/if}>
 			<a onclick="toggleDiv('wikiimageedit'); return false;"><img src="<{$gwiki.modurl}>/images/imageicon.png" alt="<{$smarty.const._MD_GWIKI_IMAGES}>" title="<{$smarty.const._MD_GWIKI_IMAGES}>" /></a>
 			<a onclick="toggleDiv('wikifileedit'); return false;"><img src="<{$gwiki.modurl}>/images/attachicon.png" alt="<{$smarty.const._MD_GWIKI_ATTACHMENT_EDIT}>" title="<{$smarty.const._MD_GWIKI_ATTACHMENT_EDIT}>" /></a>
