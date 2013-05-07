@@ -15,8 +15,8 @@
 
 if (!defined("XOOPS_ROOT_PATH")) die("Root path not defined");
 
-define ('_WIKI_CAMELCASE_REGEX','(([A-Z]{1,}[a-z0-9\:]+){2,}\d*)');
-define ('_WIKI_KEYWORD_REGEX','([A-Za-z0-9.\:-]{1,})');
+define ('_WIKI_CAMELCASE_REGEX','(([A-Z]{1,}[a-z\x80-\xff0-9\:]+){2,}\d*)');
+define ('_WIKI_KEYWORD_REGEX','([A-Za-z\x80-\xff0-9.\:-]{1,})');
 
 class gwikiPage {
 	//------------------------------------------------------------
@@ -993,7 +993,7 @@ class gwikiPage {
 			$linktext=trim(substr($source,$pos+1));
 		}
 
-		if(preg_match('/^([A-Za-z0-9.:\- ]){2,}$/',$link)) { 
+		if(preg_match('/^([A-Za-z\x80-\xff0-9.:\- ]){2,}$/',$link)) { 
 			//$link=str_replace (' ', '', $link);
 			if(empty($linktext)) $ret=$this->wikiLink($link);
 //			else $ret=$this->wikiLink($link,$linktext);
