@@ -8,7 +8,8 @@
 }
 */
 .wikipage p, .wikiblock p { 
-	margin-bottom: 2em; 
+	margin-top: 1em; 
+	margin-bottom: 1em; 
 }
 
 .wikipage h2, .wikiblock h2 { 
