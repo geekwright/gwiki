@@ -14,16 +14,17 @@
 // adjust these next few lines to reflect your installation
 include_once '../../../mainfile.php';
 $dir = 'gwiki';  // wiki module directory
+$pagevar = 'page'; // what is our page variable name?
 
 // $_GET variables we use
-$page = isset($_GET['page'])?cleaner($_GET['page']):null;
+$page = isset($_GET[$pagevar])?cleaner($_GET[$pagevar]):null;
 $highlight = isset($_GET['query'])?cleaner($_GET['query']):null;
 
 // build a URL template to point wiki links to this script
 $script = (!empty($_SERVER['HTTPS']))
 	? "https://".$_SERVER['SERVER_NAME'].parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) 
 	: "http://".$_SERVER['SERVER_NAME'].parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$ourWikiLinkURL=$script.'?page=%s';
+$ourWikiLinkURL=$script.'?'.$pagevar.'=%s';
 
 // normally, adjustments to the remaining code are not required
 // ******************************************************************
