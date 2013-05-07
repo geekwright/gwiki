@@ -3,8 +3,8 @@ include "header.php";
 include_once XOOPS_ROOT_PATH.'/class/xoopsformloader.php';
 
 global $xoTheme, $xoopsTpl;
-//echo $_SERVER['HTTP_REFERER'];
-// $_GET variables we use
+
+// $_GET and $_POST variables we use
 if (isset($_GET['page']))  $page = cleaner($_GET['page']);
 if (isset($_POST['page'])) $page = cleaner($_POST['page']);
 
@@ -12,7 +12,8 @@ if(isset($_GET['op'])) $op = strtolower(cleaner($_GET['op']));
 if(isset($_POST['op'])) $op = strtolower(cleaner($_POST['op']));
 if(empty($op) || ($op!='preview' && $op!='edit' && $op!='insert')) $op = "edit"; // get a valid op
 
-if (isset($_GET['nsid'])) { // prefix
+// namespace id (prefix_id) is set by newpage block, turn it into a full page name
+if (isset($_GET['nsid'])) {
 	$nsid=intval($_GET['nsid']);
 	if($nsid>=0) {
 		$pfx=getPrefixFromId($nsid);
