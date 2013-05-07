@@ -107,7 +107,7 @@ function showHistory($page)
     adminTableStart(_AD_GWIKI_ADMINTITLE.' : '.$page,4);
     echo '<tr><th>'._MD_GWIKI_TITLE.'</th><th width="20%">'._AD_GWIKI_MODIFIED.'</th><th width="10%">'._AD_GWIKI_AUTHOR.'</th><th width="30%">'._AD_GWIKI_ACTION.'</th></tr>';
     
-    $sql = "SELECT gwiki_id, title, body, lastmodified, uid, active, FROM_UNIXTIME(lastmodified) FROM ".$xoopsDB->prefix('gwiki_pages')." WHERE keyword='$page' ORDER BY active DESC, lastmodified DESC";
+    $sql = "SELECT gwiki_id, title, body, lastmodified, uid, active, FROM_UNIXTIME(lastmodified) FROM ".$xoopsDB->prefix('gwiki_pages')." WHERE keyword='{$page}' ORDER BY active DESC, lastmodified DESC";
     $result = $xoopsDB->query($sql);
     
     for ($i = 0; $i < $xoopsDB->getRowsNum($result); $i++) {
@@ -144,7 +144,7 @@ function showPage($page, $id)
     adminTableStart(_AD_GWIKI_SHOWPAGE,1);
     echo '<tr><td width="100%" >';
     echo '<div style="width: 94%; margin: 2em;">';
-    echo '<p style="padding-bottom: 2px; border-bottom: 1px solid #000000;">'._MD_GWIKI_PAGE.": <strong>$page</strong> - "._MD_GWIKI_LASTMODIFIED." <i>".date($xoopsModuleConfig['date_format'], $wikiPage->lastmodified)."</i> "._MD_GWIKI_BY." <i>".$wikiPage->getUserName($wikiPage->uid)."</i></p>";
+    echo '<p style="padding-bottom: 2px; border-bottom: 1px solid #000000;">'._MD_GWIKI_PAGE.": <strong>{$page}</strong> - "._MD_GWIKI_LASTMODIFIED." <i>".date($xoopsModuleConfig['date_format'], $wikiPage->lastmodified)."</i> "._MD_GWIKI_BY." <i>".$wikiPage->getUserName($wikiPage->uid)."</i></p>";
     
     echo '<div id="wikipage"><h1 class="wikititle" id="toc0">' . htmlspecialchars($wikiPage->title) . '</h1>';
     echo $wikiPage->renderPage();
@@ -171,7 +171,7 @@ function showPageTool($page, $id)
     $wikiPage->setWikiLinkURL("javascript:alert('%s');");
     $wikiPage->getPage($page,$id);
 
-$form = new XoopsThemeForm(_AD_GWIKI_PAGETOOLS.": $page", "gwikiform", "pages.php?page=$page");
+$form = new XoopsThemeForm(_AD_GWIKI_PAGETOOLS.": {$page}", "gwikiform", "pages.php?page={$page}");
 $form->addElement(new XoopsFormSelectUser( 'user', 'uid', true, $wikiPage->uid ));
 $form->addElement(new XoopsFormDateTime( _MD_GWIKI_LASTMODIFIED, 'lastmodified', $size = 15, $wikiPage->lastmodified ));
 $form->addElement(new XoopsFormHidden('op', 'toolupdate'));
@@ -185,7 +185,7 @@ $form->addElement(new XoopsFormButton("", "submit", _SUBMIT, "submit"));
     adminTableStart(_AD_GWIKI_PAGETOOLS,1);
     echo '<tr><td width="100%" >';
     echo '<div style="width: 94%; margin: 2em;">';
-    echo '<p style="padding-bottom: 2px; border-bottom: 1px solid #000000;">'._MD_GWIKI_PAGE.": <strong>$page</strong> - "._MD_GWIKI_LASTMODIFIED." <i>".date($xoopsModuleConfig['date_format'], $wikiPage->lastmodified)."</i> "._MD_GWIKI_BY." <i>".$wikiPage->getUserName($wikiPage->uid)."</i></p>";
+    echo '<p style="padding-bottom: 2px; border-bottom: 1px solid #000000;">'._MD_GWIKI_PAGE.": <strong>{$page}</strong> - "._MD_GWIKI_LASTMODIFIED." <i>".date($xoopsModuleConfig['date_format'], $wikiPage->lastmodified)."</i> "._MD_GWIKI_BY." <i>".$wikiPage->getUserName($wikiPage->uid)."</i></p>";
     echo $form->render();    
     echo '<br /><div id="wikipage" style="height: 120px; overflow: auto;" ><h1 class="wikititle" id="toc0">' . htmlspecialchars($wikiPage->title) . '</h1>';
     echo $wikiPage->renderPage();
@@ -265,7 +265,7 @@ function getRevision($page, $id)
 {
     global $xoopsDB;
     
-    $sql = "SELECT title, body, lastmodified, uid FROM ".$xoopsDB->prefix('gwiki_pages')." WHERE gwiki_id='$id' AND keyword='$page'";
+    $sql = "SELECT title, body, lastmodified, uid FROM ".$xoopsDB->prefix('gwiki_pages')." WHERE gwiki_id='{$id}' AND keyword='{$page}'";
     $result = $xoopsDB->query($sql);
     
     return $xoopsDB->fetchRow($result);
@@ -291,7 +291,7 @@ function fixRevision($page, $id)
     
     $result=setRevision($page, $id);
     if($result) {
-      $sql = "DELETE FROM ".$xoopsDB->prefix('gwiki_pages')." WHERE keyword='$page' AND active=0 ";
+      $sql = "DELETE FROM ".$xoopsDB->prefix('gwiki_pages')." WHERE keyword='{$page}' AND active=0 ";
       $result=$xoopsDB->query($sql);
     }
     
@@ -372,7 +372,7 @@ case 'display':
 
 case 'restore':
     $success = setRevision($page, $id);
-    redirect_header('pages.php?page=$page&op=history', 2, ($success)?_MD_GWIKI_DBUPDATED:_MD_GWIKI_ERRORINSERT);
+    redirect_header('pages.php?page='.$page.'&op=history', 2, ($success)?_MD_GWIKI_DBUPDATED:_MD_GWIKI_ERRORINSERT);
     break;
 
 case 'fix':
