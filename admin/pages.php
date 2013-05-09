@@ -83,6 +83,7 @@ EOT;
 
 	$endarray[_AD_GWIKI_CLEANUPDB]='pages.php?op=clean';
 	$endarray[_AD_GWIKI_PARTITION]='pages.php?op=partition';
+	$endarray[_AD_GWIKI_ADD_HELP]='pages.php?op=addhelp';
 	// set up pagenav
 	$pager='';
 	if ($total > $limit) {
@@ -248,9 +249,14 @@ function confirmAction($action, $keyword = '', $id = -1)
 			$confMsg=sprintf(_AD_GWIKI_CONFIRM_UNLOCK,$keyword);
 			break;
 		case 'partition':
-			echo '<input type="hidden" name="page" value="'.$keyword.'" />';
+//			echo '<input type="hidden" name="page" value="'.$keyword.'" />';
 			echo '<input type="hidden" id="op" name="op" value="partitionit" />';
 			$confMsg=_AD_GWIKI_CONFIRM_PARTITION;
+			break;
+		case 'addhelp':
+//			echo '<input type="hidden" name="page" value="'.$keyword.'" />';
+			echo '<input type="hidden" id="op" name="op" value="addhelpit" />';
+			$confMsg=_AD_GWIKI_CONFIRM_ADD_HELP;
 			break;
 	}
 
@@ -326,6 +332,17 @@ function createPartitions()
 		if($result) $message=_AD_GWIKI_PARTITION_OK;
 		else $message=_AD_GWIKI_PARTITION_FAILED;
 	}
+	return $message;
+}
+
+function createHelpPages($page)
+{
+	global $xoopsDB;
+	
+	$result=$xoopsDB->queryFromFile(dirname(__FILE__).'/helppages.sql');
+	if($result) $message=_AD_GWIKI_ADD_HELP_OK;
+	else $message=_AD_GWIKI_ADD_HELP_FAILED;
+
 	return $message;
 }
 
@@ -457,6 +474,15 @@ case 'partition':
 
 case 'partitionit':
     $message=createPartitions();
+    showPages($message);
+    break;
+
+case 'addhelp':
+    confirmAction('addhelp','');
+    break;
+
+case 'addhelpit':
+    $message=createHelpPages();
     showPages($message);
     break;
 

@@ -16,12 +16,15 @@ define('_AD_GWIKI_UNLOCK', 'Unlock');
 define('_AD_GWIKI_DELETE', 'Delete');
 define('_AD_GWIKI_PARTITION', 'Partition');
 define('_AD_GWIKI_PAGETOOLS', 'Tools');
+define('_AD_GWIKI_ADD_HELP', 'Add Help Pages');
 
 define('_AD_GWIKI_EMPTYWIKI','No pages have been created, so far.');
 define('_AD_GWIKI_CLEANUPDB','Clean up the database');
 define('_AD_GWIKI_PARTITION_ALREADY','The table is already partitioned.');
 define('_AD_GWIKI_PARTITION_OK','Partitioning completed.');
 define('_AD_GWIKI_PARTITION_FAILED','Partitioning failed.');
+define('_AD_GWIKI_ADD_HELP_OK','Adding help pages completed.');
+define('_AD_GWIKI_ADD_HELP_FAILED','Adding help pages failed.');
 
 define('_AD_GWIKI_CONFIRM_DEL','Do you really want to delete this Wiki page: %s?');
 define('_AD_GWIKI_CONFIRM_FIX','Do you really want to fix this Wiki page: %s?');
@@ -29,6 +32,7 @@ define('_AD_GWIKI_CONFIRM_CLEAN','Do you really want to clean up the database?')
 define('_AD_GWIKI_CONFIRM_LOCK','Do you really want to lock this Wiki page: %s?');
 define('_AD_GWIKI_CONFIRM_UNLOCK','Do you really want to unlock this Wiki page: %s?');
 define('_AD_GWIKI_CONFIRM_PARTITION','Do you really want to partition the gwiki_pages table?');
+define('_AD_GWIKI_CONFIRM_ADD_HELP','Do you really want to add/refresh the wiki help pages?');
 
 define('_AD_GWIKI_ADMENU_PREF', 'Preferences');
 define('_AD_GWIKI_ADMENU_GOMOD', 'Go To Module');
