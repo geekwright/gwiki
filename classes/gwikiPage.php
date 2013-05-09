@@ -932,10 +932,19 @@ class gwikiPage {
 	{
 
 		$this->noWikiIndex += 1;
-		if($type=='block') {
-			$this->noWikiQueue[$this->noWikiIndex]="<pre>\n{$source}\n</pre>";
+		switch ($type) {
+			case 'block':
+				$this->noWikiQueue[$this->noWikiIndex]="<pre>\n{$source}\n</pre>";
+				break;
+			case 'wcinline':
+				$this->noWikiQueue[$this->noWikiIndex]='<span class="wikinoinline">'.$source.'</span>';
+				break;
+			case 'inline':
+			default:
+				$this->noWikiQueue[$this->noWikiIndex]=$source;
+				break;
 		}
-		else $this->noWikiQueue[$this->noWikiIndex]=$source;
+		
 		$ret="{PdNlNw:{$this->noWikiIndex}}";
 
 		return $ret;
@@ -1529,7 +1538,7 @@ class gwikiPage {
 		
 		// nowiki content inline creole style
 		$search[]  = "#{{{(.*)}}}#Ue";
-		$replace[] = '$this->noWikiHold("inline",\'\\1\')';
+		$replace[] = '$this->noWikiHold("wcinline",\'\\1\')';
 		
 		// automatically nowiki content of code box - {code title}xxx{endcode}
 		$search[]  = "#({code [^\"<\n]+?})(.*?)({endcode})#sie";
@@ -1569,7 +1578,7 @@ class gwikiPage {
 
 		// underline __xxx__
 		$search[]  = "#_{2}(.*?)(_{2}|(?=\n\n))#s";
-		$replace[] = "<u class=\"wikiu\">\\1</u>";
+		$replace[] = "<span class=\"wikiu\">\\1</span>";
 
 		// superscript ^^xxx^^
 		$search[]  = "#\^{2}(.*?)(\^{2}|(?=\n\n))#s";
@@ -1581,13 +1590,13 @@ class gwikiPage {
 
 		// monospace ##xxx##
 		$search[]  = "#\#{2}(.*?)(\#{2}|(?=\n\n))#s";
-		$replace[] = "<tt class=\"wikitt\">\\1</tt>";
+		$replace[] = "<span class=\"wikitt\">\\1</span>";
 
-		// color ~~color:xxx~~
+		// color !!color:xxx!!
 		$search[]  = "#!{2}(\#{0,1}[0-9A-Za-z]*):(.*?)(!{2}|(?=\n\n))#s";
 		$replace[] = "<span style=\"color:\\1;\">\\2</span>";
 
-		// color ~~color,background:xxx~~
+		// color !!color,background:xxx!!
 		$search[]  = "#!{2}(\#{0,1}[0-9A-Za-z]*),(\#{0,1}[0-9A-Za-z]*):(.*?)(!{2}|(?=\n\n))#s";
 		$replace[] = "<span style=\"color:\\1; background-color:\\2;\">\\3</span>";
 
@@ -1649,7 +1658,7 @@ class gwikiPage {
 		}
 
 		// =====headings up to 5 levels
-		$search[]  = "#(^|\s)(={1,5})([^=]{1,})(={0,5})\s*$#Ume";
+		$search[]  = "#(^|\s)(={1,5})([^=].*[^=])(={0,5})\s*$#Ume";
 		$replace[] = '$this->renderHeader(\'\\3\',\'\\2\')';
 		//$replace[] = "\n<h6>\\2</h6>\n";
 

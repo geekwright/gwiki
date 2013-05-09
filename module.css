@@ -486,12 +486,13 @@ ul.wikitoclist > li { list-style: none; }
  * .wikiem
  * .wikihr
  * .wikidel
- * .wikiu
  * .wikisup
  * .wikisub
  */
 
-.wikitt {white-space: pre;}
+.wikiu  { text-decoration:underline; }
+.wikitt { font-family:monospace; white-space: pre; }
+.wikinoinline { font-family:monospace; white-space: pre; }
 
 #gwikiformpageedit { display:inherit; }
 #gwikiformmetaedit { display:none; }
@@ -676,10 +677,10 @@ span.wikieditfile_field  {
 .wikifoldedtitle
 {
 	margin-left: 1.2em;
-/*  margin-top: 24px; */
 	font-size: 120%;
 	font-weight: bold;
 	text-align: left;
+	height: 1.2em;
 }
 
 .wikifoldedtitle span
@@ -696,7 +697,7 @@ span.wikieditfile_field  {
 
 .wikifoldedtitle:hover span
 {
-	display: inline;
+	display: inline-block;
 }
 
 .wikifolded>.wikifoldedicon
