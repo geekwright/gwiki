@@ -290,7 +290,18 @@ class gwikiPage {
 		$this->tocIndex = 0;
 		$this->refQueue = array();
 		$this->refIndex = 0;
-		$this->search_body=strip_tags($this->renderPage());
+
+		// eliminate things we don't want in search page because they
+		// are misleading and/or change outside of the page itself
+		$search[]  = "#{(PageIndex|RecentChanges)([^\"<\n]+?)?}#si";
+		$replace[] = '';
+		$search[]  = "#\{toc\}#i";
+		$replace[] = '';
+		$search[]  = "#\{pagesettoc\}#i";
+		$replace[] = '';
+		$tempbody=preg_replace($search, $replace, $this->body)."\n\n";
+
+		$this->search_body=strip_tags($this->renderPage($tempbody));
 		$this->toc_cache=serialize($this->tocQueue);
 		$this->gwiki_version = $this->gwikiVersion;		// new revisions always for current engine
 		
