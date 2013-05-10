@@ -25,7 +25,7 @@ $highlight = isset($_GET['query'])?cleaner($_GET['query']):null;
 
 // if we get a naked or external prefix, try and do something useful
 $pfx=$wikiPage->getPrefix($page);
-if ($pfx) {
+if ($pfx && $pfx['defined']) {
 	$page=$pfx['actual_page'];
 	if($pfx['prefix_is_external']) {
 		header("Location: {$pfx['actual_page']}");
