@@ -335,7 +335,7 @@ function createPartitions()
 	return $message;
 }
 
-function createHelpPages($page)
+function createHelpPages()
 {
 	global $xoopsDB;
 	
