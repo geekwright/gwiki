@@ -37,6 +37,7 @@
 <{if $gwiki.mayEdit}> | <a href="javascript:restoreGwikiRevision('<{$revision.keyword}>','<{$revision.gwiki_id}>');" title="<{$smarty.const._MD_GWIKI_HISTORY_RESTORE_TT}>" ><{$smarty.const._AD_GWIKI_RESTORE}></a>
  | <a href="<{$gwiki.modurl}>/edit.php?op=edit&page=<{$revision.keyword}>&id=<{$revision.gwiki_id}>" title="<{$smarty.const._EDIT}>" ><{$smarty.const._EDIT}></a>
 <{/if}>
+ | <a href="<{$gwiki.modurl}>/showdiff.php?page=<{$revision.keyword}>&id=<{$revision.gwiki_id}>" title="<{$smarty.const._MD_GWIKI_HISTORY_DIFF_TT}>" ><{$smarty.const._MD_GWIKI_HISTORY_DIFF}></a>
 </td>
 </tr>
 <{/foreach}>
@@ -47,7 +48,6 @@
 </table><br />
 <{/if}>
 <{include file="db:gwiki_page_info.html"}>
-
 <script>
 window.ajaxGwikiPageView = function(keyword,id,elid) {
 	// alert(keyword+bid);
@@ -70,6 +70,9 @@ window.ajaxGwikiPageView = function(keyword,id,elid) {
 	xmlhttp.send();
 }
 window.ajaxGwikiView = function(keyword,id) {
+	var fid=document.getElementById('diffnid');
+	fid.value = id;
+
 	ajaxGwikiPageView(keyword,id,'wikibase');
 
 	// try to make sure the top of the just changed content is visible
@@ -96,6 +99,9 @@ window.ajaxGwikiCompare = function(keyword,id) {
 	var el=document.getElementById('wikibase');
 	if(el.innerHTML=='') ajaxGwikiView(keyword,0);
 	
+	var fid=document.getElementById('diffid');
+	fid.value = id;
+
 	ajaxGwikiPageView(keyword,id,'wikicomp');
 	// try to make sure the top of the just changed content is visible
 	// find the top of our div
@@ -136,6 +142,12 @@ window.restoreGwikiRevision = function(keyword,id) {
 <h3><{$smarty.const._MD_GWIKI_HISTORY_COMPARE}></h3>
 <div id="wikicomp"></div>
 </div>
+<form id="difform" name="diffform" action="showdiff.php" method="get">
+<input type="hidden" id="diffpage" name="page" value="<{$gwiki.keyword}>" />
+<input type="hidden" id="diffnid" name="nid" value="" />
+<input type="hidden" id="diffid" name="id" value="" />
+<input type="submit" value="<{$smarty.const._MD_GWIKI_HISTORY_DIFF}>" />
+</form>
 <{if $gwiki.mayEdit}>
 <form id="restoreform" name="restoreform" action="history.php" method="post">
 <input type="hidden" id="op" name="op" value="restore" />
@@ -146,3 +158,4 @@ window.restoreGwikiRevision = function(keyword,id) {
 <{if isset($debug)}>
 <div><{$debug}></div>
 <{/if}>
+<{include file='db:system_notification_select.html'}>
