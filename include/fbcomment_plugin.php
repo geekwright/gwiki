@@ -5,24 +5,25 @@ if (!defined("XOOPS_ROOT_PATH"))  die("Root path not defined");
 *
 * This file is part of gwiki - geekwright wiki
 *
-* @copyright  Copyright © 2010 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
 * @package    gwiki
-* @version    $Id: gwlotoPrintJob.php 4 2010-09-11 02:19:21Z rgriffith $
+* @version    $Id$
 */
-/*
- * example plugin for tadgallery
- 	$metas['fb:admins'] = $admins;
-	$metas['fb:app_id'] = $appid;
 
-	$metas['og:type']=$type;
-	$metas['og:url']=$oururl;
-	$metas['og:title']=$title;
-	$metas['og:description']=$description;
-	$metas['og:image']=$image;
-	$metas['og:site_name'] = $sitename;
+/*
+ * Open Graph Meta Tags we can set here:
+ * 
+ *   $metas['fb:admins'] = $admins;
+ *   $metas['fb:app_id'] = $appid;
+ *   $metas['og:type']=$type;
+ *   $metas['og:url']=$oururl;
+ *   $metas['og:title']=$title;
+ *   $metas['og:description']=$description;
+ *   $metas['og:image']=$image;
+ *   $metas['og:site_name'] = $sitename;
  *
  */
  
@@ -45,7 +46,7 @@ global $xoopsDB;
 	}
 
 	if(isset($plugin_env['page'])) {
-		// connonicalize our url with our rules
+		// cononicalize our url with our rules
 		// - page needs to be case insensitve (AbCde and AbcDe yield the same page)
 		$keyword=strtolower($plugin_env['page']);
 		// - strip any OOB data
@@ -67,11 +68,7 @@ global $xoopsDB;
 			$newscript=$ourscript[0].'?page='.$keyword;
 		}
 		$metas['og:url']=$newscript;
-/*
-SELECT title, meta_description, search_body, image_file FROM gwwiki_gwiki_pages p 
-left join gwwiki_gwiki_page_images i on p.keyword=i.keyword and use_to_represent = 1 
-where p.keyword = 'sheep' and active=1
-*/
+
 		$wikitable=$xoopsDB->prefix('gwiki_pages');
 		$imagetable=$xoopsDB->prefix('gwiki_page_images');
 		$sql = "SELECT title, meta_description, search_body, image_file FROM {$wikitable} p ";
