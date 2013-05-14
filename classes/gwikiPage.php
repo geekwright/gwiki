@@ -829,7 +829,8 @@ class gwikiPage {
 			$display_keyword=$content['display_keyword'];
 			if(empty($display_keyword)) $display_keyword=$content['keyword'];
 			if(!$simplelayout) {
-				$testletter=strtoupper(substr($display_keyword,0,1));
+//				$testletter=strtoupper(substr($display_keyword,0,1));
+				$testletter=mb_strtoupper(mb_substr($display_keyword,0,1,'UTF-8'),'UTF-8');
 				if($lastletter=='') {
 					$lastletter=$testletter;
 					$body.="<h3>{$lastletter}</h3><ul>";
