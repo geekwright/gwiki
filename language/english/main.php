@@ -59,6 +59,8 @@ define('_MD_GWIKI_HISTORY_VIEW', 'View');
 define('_MD_GWIKI_HISTORY_VIEW_TT', 'Show in '._MD_GWIKI_HISTORY_VIEW.' pane.');
 define('_MD_GWIKI_HISTORY_RESTORE_TT', 'Make this page revision the active version.');
 define('_MD_GWIKI_EMPTY_TITLE', '*empty*');
+define('_MD_GWIKI_HISTORY_DIFF', 'Diff');
+define('_MD_GWIKI_HISTORY_DIFF_TT', 'Display diff from this revision.');
 
 define('_MD_GWIKI_PAGE_CREATE_TT', 'Create page %s');
 define('_MD_GWIKI_PAGE_EXT_LINK_TT', 'This off-site link opens in new window.');
@@ -158,6 +160,8 @@ define('_MD_GWIKI_SORT_EMPTY', 'Nothing to Sort');
 define('_MD_GWIKI_SORT_PAGE_SELECT', 'Select a Page to Move');
 define('_MD_GWIKI_SORT_PAGE_FORM', 'Reorder Pages in a Page Set');
 define('_MD_GWIKI_SORT_PAGES', 'Pages');
+
+define('_MD_GWIKI_DIFF_TITLE', 'Diff: %s');
 
 }
 ?>
