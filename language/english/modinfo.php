@@ -64,5 +64,41 @@ define('_MI_GWIKI_BL_PAGESET_TOC_DESC', 'Display Table of Contents for a Page Se
 define('_MI_GWIKI_BL_RELATED', 'Related Pages');
 define('_MI_GWIKI_BL_RELATED_DESC', 'Display Related Pages');
 
+// notification categories
+define ('_MI_GWIKI_NOTIFY_GLOBAL', 'Entire Wiki');
+define ('_MI_GWIKI_NOTIFY_GLOBAL_DESC', 'Notification options that apply to the entire wiki.');
+
+define ('_MI_GWIKI_NOTIFY_PAGE_CAT', 'Individual Page');
+define ('_MI_GWIKI_NOTIFY_PAGE_CAT_DESC', 'Notification options that apply to a single wiki page.');
+
+define ('_MI_GWIKI_NOTIFY_NS_CAT', 'Namespace');
+define ('_MI_GWIKI_NOTIFY_NS_CAT_DESC', 'Notification options that apply to a whole namespace.');
+
+// notification events
+define ('_MI_GWIKI_NOTIFY_GLOBAL_NEW_PAGE', 'New Wiki Page');
+define ('_MI_GWIKI_NOTIFY_GLOBAL_NEW_PAGE_CAPTION', 'Notify me whenever anyone creates a new page in the wiki.');
+define ('_MI_GWIKI_NOTIFY_GLOBAL_NEW_PAGE_DESC', 'Receive notification when a new page is created.');
+define ('_MI_GWIKI_NOTIFY_GLOBAL_NEW_PAGE_SUBJECT', '[{X_SITENAME}] auto-notify : new wiki page created');
+
+define ('_MI_GWIKI_NOTIFY_GLOBAL_UPD_PAGE', 'Updated Wiki Page');
+define ('_MI_GWIKI_NOTIFY_GLOBAL_UPD_PAGE_CAPTION', 'Notify me whenever anyone updates a page in the wiki.');
+define ('_MI_GWIKI_NOTIFY_GLOBAL_UPD_PAGE_DESC', 'Receive notification when a page is updated.');
+define ('_MI_GWIKI_NOTIFY_GLOBAL_UPD_PAGE_SUBJECT', '[{X_SITENAME}] auto-notify : wiki page updated');
+
+define ('_MI_GWIKI_NOTIFY_PAGE_UPD_PAGE', 'Watch Wiki Page');
+define ('_MI_GWIKI_NOTIFY_PAGE_UPD_PAGE_CAPTION', 'Notify me whenever anyone updates this wiki page.');
+define ('_MI_GWIKI_NOTIFY_PAGE_UPD_PAGE_DESC', 'Receive notification when this page is updated.');
+define ('_MI_GWIKI_NOTIFY_PAGE_UPD_PAGE_SUBJECT', '[{X_SITENAME}] auto-notify : watched page updated');
+
+define ('_MI_GWIKI_NOTIFY_NS_NEW_PAGE', 'New Page in Namespace');
+define ('_MI_GWIKI_NOTIFY_NS_NEW_PAGE_CAPTION', 'Notify me whenever anyone creates a new page in this namespace.');
+define ('_MI_GWIKI_NOTIFY_NS_NEW_PAGE_DESC', 'Receive notification when a new page is created in this namespace.');
+define ('_MI_GWIKI_NOTIFY_NS_NEW_PAGE_SUBJECT', '[{X_SITENAME}] auto-notify : new wiki page created in {NAMESPACE}');
+
+define ('_MI_GWIKI_NOTIFY_NS_UPD_PAGE', 'Updated Page in Namespace');
+define ('_MI_GWIKI_NOTIFY_NS_UPD_PAGE_CAPTION', 'Notify me whenever anyone updates a page in this namespace.');
+define ('_MI_GWIKI_NOTIFY_NS_UPD_PAGE_DESC', 'Receive notification when a page is updated.');
+define ('_MI_GWIKI_NOTIFY_NS_UPD_PAGE_SUBJECT', '[{X_SITENAME}] auto-notify : page updated in {NAMESPACE}');
+
 }
 ?>

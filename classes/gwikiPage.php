@@ -61,9 +61,11 @@ class gwikiPage {
 	private $tocAnchorFmt='#%s';
 	private $imageLib=array();
 	private $useCamelCase;
-	
+
+	private $module_id;
+
 	private $wikiDir;				// dirname of the gwiki module
-	private $gwikiVersion=1;			// wiki syntax version for future backward compatability
+	private $gwikiVersion=1;		// wiki syntax version for future backward compatability
 	
 	private $highlightArg;
 	
@@ -110,6 +112,7 @@ class gwikiPage {
 		$this->imageLib = explode(',',$moduleConfig['imagelib_pages']);
 		$this->useCamelCase = $moduleConfig['allow_camelcase'];
 		$this->defaultThumbSize = $moduleConfig['default_thumb_size'];
+		$this->module_id = $module_id;
 
 		if(!defined('_MI_GWIKI_WIKIHOME')) $this->loadLanguage('modinfo',$dir);
 		if(!defined('_MD_GWIKI_PAGE_PERM_EDIT_ANY_NUM')) $this->loadLanguage('main',$dir);
@@ -253,7 +256,7 @@ class gwikiPage {
 		$keyword=$this->escapeForDB($keyword);
 		$sql = "SELECT keyword FROM ".$xoopsDB->prefix('gwiki_pages')." WHERE keyword='{$keyword}' AND active=1 ";
 		$result = $xoopsDB->query($sql);
-		if ($content = $xoopsDB->fetcharray($result)) {
+		if ($content = $xoopsDB->fetchArray($result)) {
 			$keyword=$content['keyword'];
 		} else {
 			$keyword=$this->makeKeyword($keyword);
@@ -312,8 +315,11 @@ class gwikiPage {
 
 		// this will usually fail (duplicate)
 		$sql = 'INSERT INTO '.$xoopsDB->prefix('gwiki_pageids')." (keyword, created) VALUES('{$page}', UNIX_TIMESTAMP())";
-		$xoopsDB->query($sql);
-		
+		$result=$xoopsDB->query($sql);
+		if($result) {
+			$page_id=$xoopsDB->getInsertId();
+			$this->page_id=$page_id;
+		}		
 		if($leave_inactive) {
 			// allow a save that is not activated (for conflict management, and maybe more)
 			$this->active=0;
@@ -348,6 +354,7 @@ class gwikiPage {
 			$sql = 'UPDATE '.$xoopsDB->prefix('gwiki_pages')." SET active = 0 WHERE keyword='{$page}' and active = 1 ";
 			$result=$xoopsDB->query($sql);
 			if($result) {
+				$previous_rows=$xoopsDB->getAffectedRows();
 				$this->active=1;
 				$sql = 'INSERT INTO '.$xoopsDB->prefix('gwiki_pages');
 				$sql .= ' (keyword, display_keyword, title, body, parent_page, page_set_home, page_set_order, meta_description, meta_keywords';
@@ -374,6 +381,27 @@ class gwikiPage {
 				if($result) {
 					$result=$xoopsDB->getInsertId();
 					$this->gwiki_id=$result;
+					$notification_handler =& xoops_gethandler('notification');
+					$tags['PAGE_NAME']=$page;
+					$tags['PAGE_TITLE']=$this->title;
+					if(empty($tags['PAGE_TITLE'])) $tags['PAGE_TITLE']=$this->display_keyword;
+					if(empty($tags['PAGE_TITLE'])) $tags['PAGE_TITLE']=$this->page;
+					$tags['PAGE_LINK']=sprintf($this->wikiLinkURL,$page);
+					$tags['NAMESPACE']=$this->currentprefix;
+
+					if($previous_rows<1) {
+						// only for new
+						$notification_handler->triggerEvent ('global',0,'new_page' , $tags, array(), $this->module_id);
+						if($this->currentprefixid) { // have namespace
+							$notification_handler->triggerEvent ('namespace', $this->currentprefixid, 'new_ns_page' , $tags, array(), $this->module_id);
+						}
+					}
+					// for all cases (new is also an update)
+					$notification_handler->triggerEvent ('page',$this->page_id,'page_watch' , $tags, array(), $this->module_id);
+					$notification_handler->triggerEvent ('global',0,'upd_page', $tags, array(), $this->module_id);
+					if($this->currentprefixid) { // have namespace
+						$notification_handler->triggerEvent ('namespace', $this->currentprefixid, 'upd_ns_page' , $tags, array(), $this->module_id);
+					}
 				}
 			}
 		}
@@ -825,7 +853,7 @@ class gwikiPage {
     
 		$lastletter='';
 		if($simplelayout) $body .= '<ul>';
-		while ($content = $xoopsDB->fetcharray($result)) {
+		while ($content = $xoopsDB->fetchArray($result)) {
 			$display_keyword=$content['display_keyword'];
 			if(empty($display_keyword)) $display_keyword=$content['keyword'];
 			if(!$simplelayout) {
@@ -873,7 +901,7 @@ class gwikiPage {
 		$result = $xoopsDB->query($sql);
     
 		$lastdate='';
-		while ($content = $xoopsDB->fetcharray($result)) {
+		while ($content = $xoopsDB->fetchArray($result)) {
 			$testdate=substr($content['fmtlastmodified'],0,10);
 			if($lastdate=='') {
 				$lastdate=$testdate;
@@ -1198,7 +1226,7 @@ class gwikiPage {
 			$sql  = 'SELECT * FROM '.$xoopsDB->prefix('gwiki_page_images').' WHERE keyword=\''.$this->escapeForDB($page).'\' ';
 			$sql .= ' AND image_name=\''.$this->escapeForDB($name).'\' ';
 			$result = $xoopsDB->query($sql);
-			if ($image = $xoopsDB->fetcharray($result)) {
+			if ($image = $xoopsDB->fetchArray($result)) {
 				return $image;
 			}
 		}

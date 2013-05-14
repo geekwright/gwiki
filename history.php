@@ -45,6 +45,8 @@ function setRevision($page, $id)
 		$pageX['revisiontime']=date($wikiPage->dateFormat,$pageX['lastmodified']);
 		$pageX['mayEdit'] = $mayEdit;
 		$pageX['pageFound'] = true;
+		$_GET['page_id']=$wikiPage->page_id;
+		$_GET['nsid'] = $wikiPage->currentprefixid;
 	}
 	else {
 		if (!$mayEdit) redirect_header("index.php?page=$page", 2, _MD_GWIKI_PAGENOTFOUND);
@@ -84,8 +86,7 @@ function setRevision($page, $id)
 	$pageX['moddir']  = $dir;
 	$pageX['modpath'] = XOOPS_ROOT_PATH .'/modules/' . $dir;
 	$pageX['modurl']  = XOOPS_URL .'/modules/' . $dir;
-
-
+	
 	$xoopsOption['template_main'] = 'gwiki_history.html';
 	include XOOPS_ROOT_PATH."/header.php";
 

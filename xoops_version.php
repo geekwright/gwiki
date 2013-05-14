@@ -54,6 +54,92 @@ $modversion['comments'] = array(
 	'itemName' => 'page_id',
 	'pageName' => 'index.php');
 
+// notification
+$modversion['hasNotification'] = 1;
+
+$modversion['notification']['lookup_file'] = 'include/notification.inc.php';
+$modversion['notification']['lookup_func'] = 'gwiki_notify_iteminfo';
+
+$modversion['notification']['category'][1]=array(
+	'name' => 'global',
+	'title' => _MI_GWIKI_NOTIFY_GLOBAL,
+	'description' => _MI_GWIKI_NOTIFY_GLOBAL_DESC,
+	'subscribe_from' => array('index.php')
+);
+
+$modversion['notification']['category'][]=array(
+	'name' => 'page',
+	'title' =>  _MI_GWIKI_NOTIFY_PAGE_CAT,
+	'description' =>  _MI_GWIKI_NOTIFY_PAGE_CAT_DESC,
+	'subscribe_from' => array('index.php','history.php'),
+	'item_name' => 'page_id',
+	'allow_bookmark' => 1
+);
+
+$modversion['notification']['category'][]=array(
+	'name' => 'namespace',
+	'title' =>  _MI_GWIKI_NOTIFY_NS_CAT,
+	'description' =>  _MI_GWIKI_NOTIFY_NS_CAT_DESC,
+	'subscribe_from' => array('index.php'),
+	'item_name' => 'nsid',
+	'allow_bookmark' => 0
+);
+
+$modversion['notification']['event'][1]=array(
+	'name' => 'new_page',
+	'category' => 'global',
+	'title' => _MI_GWIKI_NOTIFY_GLOBAL_NEW_PAGE,
+	'caption' => _MI_GWIKI_NOTIFY_GLOBAL_NEW_PAGE_CAPTION,
+	'description' => _MI_GWIKI_NOTIFY_GLOBAL_NEW_PAGE_DESC,
+	'mail_template' => 'notify_global_new_page',
+	'mail_subject' => _MI_GWIKI_NOTIFY_GLOBAL_NEW_PAGE_SUBJECT
+	// 'admin_only' => 1
+);
+
+$modversion['notification']['event'][]=array(
+	'name' => 'upd_page',
+	'category' => 'global',
+	'title' => _MI_GWIKI_NOTIFY_GLOBAL_UPD_PAGE,
+	'caption' => _MI_GWIKI_NOTIFY_GLOBAL_UPD_PAGE_CAPTION,
+	'description' => _MI_GWIKI_NOTIFY_GLOBAL_UPD_PAGE_DESC,
+	'mail_template' => 'notify_global_upd_page',
+	'mail_subject' => _MI_GWIKI_NOTIFY_GLOBAL_UPD_PAGE_SUBJECT
+	// 'admin_only' => 1
+);
+
+$modversion['notification']['event'][]=array(
+	'name' => 'page_watch',
+	'category' => 'page',
+	'title' => _MI_GWIKI_NOTIFY_PAGE_UPD_PAGE,
+	'caption' => _MI_GWIKI_NOTIFY_PAGE_UPD_PAGE_CAPTION,
+	'description' => _MI_GWIKI_NOTIFY_PAGE_UPD_PAGE_DESC,
+	'mail_template' => 'notify_page_upd_page',
+	'mail_subject' => _MI_GWIKI_NOTIFY_PAGE_UPD_PAGE_SUBJECT
+	// 'admin_only' => 1
+);
+
+$modversion['notification']['event'][]=array(
+	'name' => 'new_ns_page',
+	'category' => 'namespace',
+	'title' => _MI_GWIKI_NOTIFY_NS_NEW_PAGE,
+	'caption' => _MI_GWIKI_NOTIFY_NS_NEW_PAGE_CAPTION,
+	'description' => _MI_GWIKI_NOTIFY_NS_NEW_PAGE_DESC,
+	'mail_template' => 'notify_namespace_new_page',
+	'mail_subject' => _MI_GWIKI_NOTIFY_NS_NEW_PAGE_SUBJECT
+	// 'admin_only' => 1
+);
+
+$modversion['notification']['event'][]=array(
+	'name' => 'upd_ns_page',
+	'category' => 'namespace',
+	'title' => _MI_GWIKI_NOTIFY_NS_UPD_PAGE,
+	'caption' => _MI_GWIKI_NOTIFY_NS_UPD_PAGE_CAPTION,
+	'description' => _MI_GWIKI_NOTIFY_NS_UPD_PAGE_DESC,
+	'mail_template' => 'notify_namespace_upd_page',
+	'mail_subject' => _MI_GWIKI_NOTIFY_NS_UPD_PAGE_SUBJECT
+	// 'admin_only' => 1
+);
+
 // Templates
 $modversion['templates'][1] = array(
 	'file' => 'gwiki_view.html',

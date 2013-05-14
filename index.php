@@ -65,6 +65,8 @@ if ($pfx && $pfx['defined']) {
 	$pageX['modurl']  = XOOPS_URL .'/modules/' . $dir;
 	if(!empty($attachments)) $pageX['attachments']  = prepOut($attachments);
 
+	$_GET['page_id']=$wikiPage->page_id;
+	$_GET['nsid'] = $wikiPage->currentprefixid;
 
 	$xoopsOption['template_main'] = $wikiPage->getTemplateName(); // 'gwiki_view.html';
 	include XOOPS_ROOT_PATH."/header.php";
@@ -85,8 +87,6 @@ if ($pfx && $pfx['defined']) {
 	$xoopsTpl->assign('icms_pagetitle', $title);
 	if(!empty($message)) $xoopsTpl->assign('message', $message);
 	if(!empty($err_message)) $xoopsTpl->assign('err_message', $err_message);
-	
-	$_GET['page_id']=$wikiPage->page_id;
 
 	include XOOPS_ROOT_PATH.'/include/comment_view.php';
 
