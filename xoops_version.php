@@ -1,6 +1,6 @@
 <?php
 $modversion['name']        = _MI_GWIKI_NAME;
-$modversion['version']     = '0.97';
+$modversion['version']     = '1.00';
 $modversion['description'] = _MI_GWIKI_DESC;
 $modversion['author']      = 'Richard Griffith';
 $modversion['credits']     = "Adapted from Simon \"zeniko\" B&uuml;nzli's wikimod";
@@ -17,7 +17,7 @@ $modversion['license_url'] = substr($modversion['license_url'],strpos($modversio
 $modversion['release_date']     = '2013/01/08';
 $modversion['module_website_url'] = 'geekwright.com';
 $modversion['module_website_name'] = 'geekwright, LLC';
-$modversion['module_status'] = "Alpha";
+$modversion['module_status'] = "Beta";
 $modversion['min_php']='5.2';
 $modversion['min_xoops']='2.5';
 $modversion['system_menu'] = 1;

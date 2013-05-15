@@ -11,3 +11,5 @@ multiple collaborative efforts, each with their own policies.
 
 Documentation is supplied as wiki pages which can be optionally loaded 
 into the wiki by the module administrator.
+
+Although nearing release, this is still a work in progress.

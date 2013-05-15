@@ -1,7 +1,7 @@
 gwiki ChangeLog
 
-=== gwiki Module 1.0 ===
-Release date: 2013
+=== gwiki Module 1.0 beta ===
+Release date: May 2013
 
 * initial release
 
