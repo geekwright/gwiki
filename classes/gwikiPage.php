@@ -4,14 +4,13 @@
 *
 * This file is part of gwiki - geekwright wiki
 *
-* @copyright  Copyright © 2010 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
 * @package    gwiki
 * @version    $Id$
 */
-// TODO look for places where freeRecordSet($result) should be added
 
 if (!defined("XOOPS_ROOT_PATH")) die("Root path not defined");
 

@@ -1,17 +1,14 @@
 <?php
 /**
-* sortreports.php - change display order of reports within a topic
+* sortpageset.php - change order of pages within a page set
 *
-* This file is part of gwreports - geekwright Reports
-*
-* @copyright  Copyright © 2011 geekwright, LLC. All rights reserved. 
-* @license    gwreports/docs/license.txt  GNU General Public License (GPL)
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
-* @package    gwreports
-* @version    $Id: sortreports.php 54 2013-04-07 03:15:56Z rgriffith $
+* @package    gwiki
+* @version    $Id$
 */
-
 include "header.php";
 global $xoTheme, $xoopsTpl;
 global $wikiPage;

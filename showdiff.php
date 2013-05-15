@@ -1,4 +1,14 @@
 <?php
+/**
+* showdiff.php - show diff between two revisions of a page
+*
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
+* @since      1.0
+* @author     Richard Griffith <richard@geekwright.com>
+* @package    gwiki
+* @version    $Id$
+*/
 include "header.php";
 require_once 'include/Diff.php';
 global $xoTheme, $xoopsTpl;

@@ -1,4 +1,14 @@
 <?php
+/**
+* testing/gen.php - rough tool to generate pages for testing
+*
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
+* @since      1.0
+* @author     Richard Griffith <richard@geekwright.com>
+* @package    gwiki
+* @version    $Id$
+*/
 include_once '../../../mainfile.php';
 $xoopsOption['template_main'] = 'gwiki_view.html';
 include XOOPS_ROOT_PATH."/header.php";

@@ -1,4 +1,16 @@
 <?php
+/**
+* include/search.inc.php - search gwiki pages
+*
+* This file is part of gwiki - geekwright wiki
+*
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
+* @since      1.0
+* @author     Richard Griffith <richard@geekwright.com>
+* @package    gwiki
+* @version    $Id$
+*/
 function gwiki_search($queryarray, $andor, $limit, $offset, $userid, $prefix=null)
 {
 	global $xoopsDB;

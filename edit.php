@@ -1,4 +1,14 @@
 <?php
+/**
+* edit.php - edit a wiki page
+*
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
+* @since      1.0
+* @author     Richard Griffith <richard@geekwright.com>
+* @package    gwiki
+* @version    $Id$
+*/
 include "header.php";
 include_once XOOPS_ROOT_PATH.'/class/xoopsformloader.php';
 
@@ -137,8 +147,6 @@ $result=false;
 if (($op == "preview") && isset($id)) {
     $result=intval($id);
     $pagestatmessage=_MD_GWIKI_PAGENOTSAVED;
-    //$title = $myts->stripSlashesGPC($title);
-    //$body = $myts->stripSlashesGPC($body);
 } else {
 	//print_r($pageX);
 	if($pageX['pageFound']) {

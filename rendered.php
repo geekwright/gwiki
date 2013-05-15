@@ -1,4 +1,14 @@
 <?php
+/**
+* rendered.php - return rendered page as text file
+*
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
+* @since      1.0
+* @author     Richard Griffith <richard@geekwright.com>
+* @package    gwiki
+* @version    $Id$
+*/
 include '../../mainfile.php';
 $xoopsLogger->activated = false;
 include_once "include/functions.php";

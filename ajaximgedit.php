@@ -1,4 +1,14 @@
 <?php
+/**
+* ajaximgedit.php - backend upload images and update image info
+*
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
+* @since      1.0
+* @author     Richard Griffith <richard@geekwright.com>
+* @package    gwiki
+* @version    $Id$
+*/
 include '../../mainfile.php';
 $xoopsLogger->activated = false;
 // provide error logging for our sanity in debugging ajax use (won't see xoops logger)

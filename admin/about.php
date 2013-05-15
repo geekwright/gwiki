@@ -2,11 +2,11 @@
 /**
 * admin/about.php
 *
-* @copyright  Copyright © 2012 geekwright, LLC. All rights reserved. 
-* @license    fbcomment/docs/license.txt  GNU General Public License (GPL)
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
-* @package    fbcomment
+* @package    gwiki
 * @version    $Id$
 */
 

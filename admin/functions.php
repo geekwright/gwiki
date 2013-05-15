@@ -2,12 +2,12 @@
 /**
 * functions.php - admin area functions
 *
-* @copyright  Copyright © 2012 geekwright, LLC. All rights reserved. 
-* @license    fbcomment/docs/license.txt  GNU General Public License (GPL)
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
-* @package    fbcomment
-* @version    $Id: functions.php 2 2011-04-02 01:29:53Z rgriffith $
+* @package    gwiki
+* @version    $Id$
 */
 
 if (!defined("XOOPS_ROOT_PATH")) die("Root path not defined");

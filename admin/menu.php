@@ -1,4 +1,14 @@
 <?php
+/**
+* admin/menu.php - menu array for building admin menus
+*
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
+* @since      1.0
+* @author     Richard Griffith <richard@geekwright.com>
+* @package    gwiki
+* @version    $Id$
+*/
 $adminmenu[1] = array(
 	'title'	=> _MI_GWIKI_ADMAIN ,
 	'link'	=> 'admin/index.php' ,

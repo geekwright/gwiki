@@ -1,14 +1,14 @@
 <?php
-/*
- * blocks
- *
- * @copyright	Geekwright, LLC http://geekwright.com
- * @license	GNU General Public License (GPL)
- * @since	1.0
- * @author	Richard Griffith richard@geekwright.com
- * @package	gwiki
- * @version	$Id$
- */
+/**
+* blocks/blocks.php
+*
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
+* @since      1.0
+* @author     Richard Griffith <richard@geekwright.com>
+* @package    gwiki
+* @version    $Id$
+*/
 
 if (!defined('XOOPS_ROOT_PATH')){ exit(); }
 

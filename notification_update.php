@@ -1,5 +1,5 @@
 <?php
-// $Id: notification_update.php,v 1.1.6.1 2005/01/06 22:54:44 praedator Exp $
+// $Id$
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                    Copyright (c) 2000 XOOPS.org                           //

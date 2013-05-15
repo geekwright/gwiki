@@ -1,4 +1,16 @@
 <?php
+/**
+* include/functions.php - gwiki untility functions
+*
+* This file is part of gwiki - geekwright wiki
+*
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
+* @since      1.0
+* @author     Richard Griffith <richard@geekwright.com>
+* @package    gwiki
+* @version    $Id$
+*/
 if (!defined("XOOPS_ROOT_PATH"))  die("Root path not defined");
 $dir = basename( dirname ( dirname( __FILE__ ) ) ) ;
 include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';

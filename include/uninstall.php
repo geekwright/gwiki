@@ -2,11 +2,13 @@
 /**
 * uninstall.php - cleanup on module uninstall
 *
-* @copyright  Copyright © 2012 geekwright, LLC. All rights reserved. 
-* @license    qr/docs/license.txt  GNU General Public License (GPL)
-* @since      1.2
+* This file is part of gwiki - geekwright wiki
+*
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
+* @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
-* @package    qr
+* @package    gwiki
 * @version    $Id$
 */
 
@@ -16,7 +18,6 @@ function xoops_module_uninstall_gwiki(&$module) {
 // global $xoopsDB,$xoopsConfig;
 
 	// nothing to do yet
-	//$module->setErrors("Uninstall Process Completed");
 	return true;
 }
 

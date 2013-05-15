@@ -1,4 +1,16 @@
 <?php
+/**
+* include/notification.inc.php - notification lookup
+*
+* This file is part of gwiki - geekwright wiki
+*
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
+* @since      1.0
+* @author     Richard Griffith <richard@geekwright.com>
+* @package    gwiki
+* @version    $Id$
+*/
 if ( !defined('GWIKI_NOTIFY_ITEMINFO') ) {
 define('GWIKI_NOTIFY_ITEMINFO', 1);
 
@@ -14,9 +26,6 @@ function gwiki_notify_iteminfo($category, $item_id)
 	$module_id      =  $module->getVar('mid');
 	$config_handler =& xoops_gethandler('config');
 	$moduleConfig   =& $config_handler->getConfigsByCat(0, $module->getVar('mid'));
-
-//	$this->wikiLinkURL = $moduleConfig['wikilink_template'];
-//	$this->wikiHomePage = $moduleConfig['wiki_home_page'];
 
 	switch ($category) {
 		case 'page':

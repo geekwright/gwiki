@@ -1,5 +1,4 @@
 <?php
-if (!defined("XOOPS_ROOT_PATH"))  die("Root path not defined");
 /**
 * include/fbcomment_plugin.php - supply gwiki meta data open graph style for fbcomment module
 *
@@ -12,7 +11,7 @@ if (!defined("XOOPS_ROOT_PATH"))  die("Root path not defined");
 * @package    gwiki
 * @version    $Id$
 */
-
+if (!defined("XOOPS_ROOT_PATH"))  die("Root path not defined");
 /*
  * Open Graph Meta Tags we can set here:
  * 

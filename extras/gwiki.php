@@ -1,14 +1,14 @@
 <?php
 /**
- * wiki page anywhere - call it anything, put it anywhere
- *
- * @copyright	geekwright, LLC
- * @license		GNU General Public License (GPL) V2 or greater
- * @since		1.0
- * @author		Richard Griffith richard@geekwright.com
- * @package		gwiki
- * @version		$Id$
- */
+* wiki page anywhere - call it anything, put it anywhere
+*
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
+* @since      1.0
+* @author     Richard Griffith <richard@geekwright.com>
+* @package    gwiki
+* @version    $Id$
+*/
 
 // ******************************************************************
 // adjust these next few lines to reflect your installation
