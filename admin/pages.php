@@ -408,7 +408,7 @@ case 'fix':
 
 case 'fixit':
     $success = fixRevision($page, $id);
-    redirect_header('pages.php?page=$page&op=history', 2, ($success)?_MD_GWIKI_DBUPDATED:_MD_GWIKI_ERRORINSERT);
+    redirect_header('pages.php?page='.$page.'&op=history', 2, ($success)?_MD_GWIKI_DBUPDATED:_MD_GWIKI_ERRORINSERT);
     break;
 
 case 'tool':
