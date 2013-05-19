@@ -29,7 +29,7 @@ global $wikiPage;
 		echo '<div class="wikipage">'."\n";
 		echo '<h1 class="wikititle" id="toc0">'.$wikiPage->title."</h1>\n";
 		echo $wikiPage->renderPage();
-		echo "\r\n";
+		echo "\n</div>\n";
 	}
 	else {
 		redirect_header(sprintf($wikiPage->getWikiLinkURL(),$wikiPage->wikiHomePage), 2, _MD_GWIKI_PAGENOTFOUND_ERR);
