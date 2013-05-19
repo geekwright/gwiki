@@ -1537,6 +1537,18 @@ class gwikiPage {
 		return $body;
 	}
 
+	public function renderBlockquote($source)
+	{
+		$src = str_replace("\n", ' ', preg_replace("#^> #m", "", $source));
+		return '<blockquote class=\"wikiquote\">'.$src."</blockquote>\n";
+	}
+
+	public function renderPreformat($source)
+	{
+		$src = preg_replace("#^. #m", "", $source);
+		return '<pre>'.$src."</pre>\n";
+	}
+	
 	public function renderPage($body=NULL,$title=NULL)
 	{
 		if(empty($body)) $body=$this->body;
@@ -1587,7 +1599,7 @@ class gwikiPage {
 		$search[]  = "#^(\+{2})(.*)(?=\n\n|\Z)#Usm";
 		$replace[] = "<center class=\"wikicenter\">\n\\2\n</center>\n";
 
-		// >>> indent up to 5 levels
+		// : indent up to 5 levels
 		$search[]  = "#^(\:{1,5})\s(.*)(?=\n\n|\Z)#Usme";
 		$replace[] = '$this->renderIndent(\'\\2\',\'\\1\')';
 
@@ -1693,21 +1705,21 @@ class gwikiPage {
 		//                "#^([A-Z][a-z\:]+){2,}\d*$#" - Could be between whitespace on either end or between > on start and/or < on end
 		if($this->useCamelCase) {
 			$search[]  = "#(?<=\s|>)"._WIKI_CAMELCASE_REGEX."(?=\s|</l|</t)#e";
-			$replace[] = '$this->wikiLink("$1")';
+			$replace[] = '$this->wikiLink(\'\\1\')';
 		}
 
 		// =====headings up to 5 levels
-		$search[]  = "#(^|\s)(={1,5})([^=].*[^=])(={0,5})\s*$#Ume";
+		$search[]  = "#(^\s{0,})(={1,5})([^=].*[^=])(={0,5})\s*$#Ume";
 		$replace[] = '$this->renderHeader(\'\\3\',\'\\2\')';
 		//$replace[] = "\n<h6>\\2</h6>\n";
 
 		// blockquote > xxx
 		$search[]  = "#^(> .*\n)+#me";
-		$replace[] = '"<blockquote class=\"wikiquote\">".str_replace("\n", " ", preg_replace("#^> #m", "", "$0"))."</blockquote>\n"';
+		$replace[] = '$this->renderBlockquote(\'\\0\')';
 
 		// preformated  .xxx
 		$search[]  = "#^(\. .*\n)+#me";
-		$replace[] = '"<pre>".preg_replace("#^.#m", "", "$0")."</pre>\n"';
+		$replace[] = '$this->renderPreformat(\'\\0\')';
 
 		// reference {ref id|first-ref}source{endref}
 		$search[]  = "#{ref( [^\"<\n]+?)?}(.*?){endref}#sie";
@@ -1748,7 +1760,7 @@ class gwikiPage {
 		
 		// restore cached nowiki content, all styles (if you need to use {PdNlNw:#} in your page, put it in a nowiki tag) 
 		$search[] = "#{PdNlNw:([0-9]{1,})}#e";
-		$replace[] = '$this->noWikiEmit("$1")';
+		$replace[] = '$this->noWikiEmit(\'\\1\')';
 
 		$body=preg_replace($search, $replace, trim($body)."\n");
 		if($this->refShown==false && $this->refIndex>0) $body.=$this->renderRefList();
