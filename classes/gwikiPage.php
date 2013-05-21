@@ -1607,10 +1607,6 @@ class gwikiPage {
 		$search[]  = "#^( *[*\#]{1,} (.*)\n)+#me";
 		$replace[] = '$this->renderLists(\'\\0\')';
 		
-		// tables
-		$search[]  = "#^( *\|((.*)\|){1,}\s*\n)+#me";
-		$replace[] = '$this->renderTables(\'\\0\')';
-		
 		// bold **xxx**
 		$search[]  = "#\*{2}(.*?)(\*{2}|(?=\n\n))#s";
 		$replace[] = "<strong class=\"wikistrong\">\\1</strong>";
@@ -1753,6 +1749,10 @@ class gwikiPage {
 		// more anchor - indicates end of teaser/summary
 		$search[]  = "#\{more\}#i";
 		$replace[] = '<span id="more"></span>';
+		
+		// tables
+		$search[]  = "#^( *\|((.*)\|){1,}\s*\n)+#me";
+		$replace[] = '$this->renderTables(\'\\0\')';
 		
 		// paragraph on 2 consecutive newlines
 		$search[]  = "#\n{2}#";
