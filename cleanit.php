@@ -41,6 +41,26 @@ global $xoopsDB;
 	$result = $xoopsDB->queryF($sql);
 	$cnt=$xoopsDB->getAffectedRows();
 	if($cnt>0) {
+		$sql  = 'SELECT image_file FROM '.$xoopsDB->prefix('gwiki_page_images');
+		$sql .= ' WHERE keyword NOT IN (SELECT keyword from '.$xoopsDB->prefix('gwiki_pages').')';
+		$result = $xoopsDB->query($sql);
+		while($f = $xoopsDB->fetchArray($result)) {
+			unlink(XOOPS_ROOT_PATH.'/uploads/'.$dir.'/'.$f['image_file']);
+		}
+		$sql  = 'DELETE FROM '.$xoopsDB->prefix('gwiki_page_images');
+		$sql .= ' WHERE keyword NOT IN (SELECT keyword from '.$xoopsDB->prefix('gwiki_pages').')';
+		$result = $xoopsDB->queryF($sql);
+
+		$sql  = 'SELECT file_path FROM '.$xoopsDB->prefix('gwiki_page_files');
+		$sql .= ' WHERE keyword NOT IN (SELECT keyword from '.$xoopsDB->prefix('gwiki_pages').')';
+		$result = $xoopsDB->query($sql);
+		while($f = $xoopsDB->fetchArray($result)) {
+			unlink(XOOPS_ROOT_PATH.'/uploads/'.$dir.'/'.$f['file_path']);
+		}
+		$sql  = 'DELETE FROM '.$xoopsDB->prefix('gwiki_page_files');
+		$sql .= ' WHERE keyword NOT IN (SELECT keyword from '.$xoopsDB->prefix('gwiki_pages').')';
+		$result = $xoopsDB->queryF($sql);
+
 		$sql = 'DELETE FROM '.$xoopsDB->prefix('gwiki_pageids').' WHERE keyword NOT IN (SELECT keyword from '.$xoopsDB->prefix('gwiki_pages').')';
 		$result = $xoopsDB->queryF($sql);
 		$sql = 'OPTIMIZE TABLE '.$xoopsDB->prefix('gwiki_pages');
