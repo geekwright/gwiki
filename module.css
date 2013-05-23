@@ -814,3 +814,92 @@ div.wikigallery { background-color: #F5FBFF; padding:1em;}
 .wikidiffadd { color:#47823D; background-color: #BBEBB3;}
 .wikidiffdel { color:#FF0000; background-color: #FFCACA;}
 .wikidiffsame { color: grey; }
+
+div.wikieditor-buttontray
+{
+	display:inline-block;
+	background:#ddd;
+	margin:1px 5px 1px 0;
+	padding:1px;
+	border:1px solid #aaa;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px;
+	-moz-background-clip:padding;
+	-webkit-background-clip:padding-box;
+	background-clip:padding-box;
+}
+div.wikieditor-buttontray{
+	border-bottom:1px solid #95a9c3;
+	background:#dee8f5;
+	background:-moz-linear-gradient(top,#dee8f5 0,#c7d8ed 29%,#ccdcee 61%,#c0d8ef 100%);
+	background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#dee8f5),color-stop(29%,#c7d8ed),color-stop(61%,#ccdcee),color-stop(100%,#c0d8ef));
+	background:-webkit-linear-gradient(top,#dee8f5 0,#c7d8ed 29%,#ccdcee 61%,#c0d8ef 100%);background:-o-linear-gradient(top,#dee8f5 0,#c7d8ed 29%,#ccdcee 61%,#c0d8ef 100%);background:-ms-linear-gradient(top,#dee8f5 0,#c7d8ed 29%,#ccdcee 61%,#c0d8ef 100%);background:linear-gradient(to bottom,#dee8f5 0,#c7d8ed 29%,#ccdcee 61%,#c0d8ef 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dee8f5',endColorstr='#c0d8ef',GradientType=0);
+}
+.wikieditor-button
+{
+	float:left;
+	cursor:pointer;
+	padding:3px 5px;
+	width:16px;
+	height:20px;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px;
+	-moz-background-clip:padding;
+	-webkit-background-clip:padding-box;
+	background-clip:padding-box;
+	text-indent:-9999px;
+}
+.wikieditor-button div{background-image:url('images/edittoolicons.png');background-repeat:no-repeat;width:16px;height:16px}
+.wikieditor-button-nowiki div{background-position:0 0}
+.wikieditor-button-link div{background-position:0 -16px}
+.wikieditor-button-underline div{background-position:0 -48px}
+.wikieditor-button-superscript div{background-position:0 -96px}
+.wikieditor-button-subscript div{background-position:0 -112px}
+.wikieditor-button-strike div{background-position:0 -128px}
+.wikieditor-button-quote div{background-position:0 -224px}
+.wikieditor-button-header div{background-position:0 -240px}
+.wikieditor-button-orderedlist div{background-position:0 -288px}
+.wikieditor-button-italic div{background-position:0 -368px}
+.wikieditor-button-image div{background-position:0 -384px}
+.wikieditor-button-horizontalrule div{background-position:0 -400px}
+.wikieditor-button-indent div{background-position:0 -448px}
+.wikieditor-button-code div{background-position:0 -544px}
+.wikieditor-button-center div{background-position:0 -560px}
+.wikieditor-button-bulletlist div{background-position:0 -576px}
+.wikieditor-button-bold div{background-position:0 -592px}
+/*
+.wikieditor-button-unlink div{background-position:0 -32px}
+.wikieditor-button-time div{background-position:0 -64px}
+.wikieditor-button-table div{background-position:0 -80px}
+.wikieditor-button-source div{background-position:0 -144px}
+.wikieditor-button-size div{background-position:0 -160px}
+.wikieditor-button-rtl div{background-position:0 -176px}
+.wikieditor-button-right div{background-position:0 -192px}
+.wikieditor-button-removeformat div{background-position:0 -208px}
+.wikieditor-button-pastetext div{background-position:0 -256px}
+.wikieditor-button-paste div{background-position:0 -272px}
+.wikieditor-button-maximize div{background-position:0 -304px}
+.wikieditor-button-ltr div{background-position:0 -320px}
+.wikieditor-button-left div{background-position:0 -336px}
+.wikieditor-button-justify div{background-position:0 -352px}
+.wikieditor-button-format div{background-position:0 -416px}
+.wikieditor-button-font div{background-position:0 -432px}
+.wikieditor-button-email div{background-position:0 -464px}
+.wikieditor-button-date div{background-position:0 -480px}
+.wikieditor-button-cut div{background-position:0 -496px}
+.wikieditor-button-copy div{background-position:0 -512px}
+.wikieditor-button-color div{background-position:0 -528px}
+*/
+.wikieditor-button:hover,.wikieditor-button:active,.wikieditor-button.active{background:#fff;-webkit-box-shadow:inset 1px 1px 0 rgba(0,0,0,0.3),inset -1px 0 rgba(0,0,0,0.3),inset 0 -1px 0 rgba(0,0,0,0.2);-moz-box-shadow:inset 1px 1px 0 rgba(0,0,0,0.3),inset -1px 0 rgba(0,0,0,0.3),inset 0 -1px 0 rgba(0,0,0,0.2);box-shadow:inset 1px 1px 0 rgba(0,0,0,0.3),inset -1px 0 rgba(0,0,0,0.3),inset 0 -1px 0 rgba(0,0,0,0.2)}
+.wikieditor-button div{margin:2px 0;padding:0;overflow:hidden;line-height:0;font-size:0;color:transparent}
+
+.wikieditor-button{height:16px;padding:3px 4px;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;-moz-background-clip:padding;-webkit-background-clip:padding-box;background-clip:padding-box;-webkit-box-shadow:inset 0 1px #d5e3f1,inset 0 -1px #e3edfb,inset 1px 0 #cddcef,inset -1px 0 #b8ceea;-moz-box-shadow:inset 0 1px #d5e3f1,inset 0 -1px #e3edfb,inset 1px 0 #cddcef,inset -1px 0 #b8ceea;box-shadow:inset 0 1px #d5e3f1,inset 0 -1px #e3edfb,inset 1px 0 #cddcef,inset -1px 0 #b8ceea}
+.wikieditor-button:first-child{-webkit-border-radius:4px 0 0 4px;-moz-border-radius:4px 0 0 4px;border-radius:4px 0 0 4px;-moz-background-clip:padding;-webkit-background-clip:padding-box;background-clip:padding-box}
+.wikieditor-button:last-child{-webkit-border-radius:0 4px 4px 0;-moz-border-radius:0 4px 4px 0;border-radius:0 4px 4px 0;-moz-background-clip:padding;-webkit-background-clip:padding-box;background-clip:padding-box}
+.wikieditor-button div{margin:0}
+.wikieditor-button.active{background:#fbdbb5;background:-moz-linear-gradient(top,#fbdbb5 11%,#feb456 29%,#fdeb9f 99%);background:-webkit-gradient(linear,left top,left bottom,color-stop(11%,#fbdbb5),color-stop(29%,#feb456),color-stop(99%,#fdeb9f));background:-webkit-linear-gradient(top,#fbdbb5 11%,#feb456 29%,#fdeb9f 99%);background:-o-linear-gradient(top,#fbdbb5 11%,#feb456 29%,#fdeb9f 99%);background:-ms-linear-gradient(top,#fbdbb5 11%,#feb456 29%,#fdeb9f 99%);background:linear-gradient(top,#fbdbb5 11%,#feb456 29%,#fdeb9f 99%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fbdbb5',endColorstr='#fdeb9f',GradientType=0);-webkit-box-shadow:inset 0 1px #ebd1b4,inset 0 -1px #ffe47f,inset -1px 0 #b8ceea;-moz-box-shadow:inset 0 1px #ebd1b4,inset 0 -1px #ffe47f,inset -1px 0 #b8ceea;box-shadow:inset 0 1px #ebd1b4,inset 0 -1px #ffe47f,inset -1px 0 #b8ceea}
+.wikieditor-button:hover{background:#fef7d5;background:-moz-linear-gradient(top,#fef7d5 0,#fae5a9 42%,#ffd048 42%,#ffe59f 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#fef7d5),color-stop(42%,#fae5a9),color-stop(42%,#ffd048),color-stop(100%,#ffe59f));background:-webkit-linear-gradient(top,#fef7d5 0,#fae5a9 42%,#ffd048 42%,#ffe59f 100%);background:-o-linear-gradient(top,#fef7d5 0,#fae5a9 42%,#ffd048 42%,#ffe59f 100%);background:-ms-linear-gradient(top,#fef7d5 0,#fae5a9 42%,#ffd048 42%,#ffe59f 100%);background:linear-gradient(to bottom,#fef7d5 0,#fae5a9 42%,#ffd048 42%,#ffe59f 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fef7d5',endColorstr='#ffe59f',GradientType=0);-webkit-box-shadow:inset 0 1px #fffbe8,inset -1px 0 #ffefc4,inset 0 -1px #fff9cc;-moz-box-shadow:inset 0 1px #fffbe8,inset -1px 0 #ffefc4,inset 0 -1px #fff9cc;box-shadow:inset 0 1px #fffbe8,inset -1px 0 #ffefc4,inset 0 -1px #fff9cc}
+.wikieditor-button:active{background:#e7a66d;background:-moz-linear-gradient(top,#e7a66d 0,#fcb16d 1%,#ff8d05 42%,#ffc450 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#e7a66d),color-stop(1%,#fcb16d),color-stop(42%,#ff8d05),color-stop(100%,#ffc450));background:-webkit-linear-gradient(top,#e7a66d 0,#fcb16d 1%,#ff8d05 42%,#ffc450 100%);background:-o-linear-gradient(top,#e7a66d 0,#fcb16d 1%,#ff8d05 42%,#ffc450 100%);background:-ms-linear-gradient(top,#e7a66d 0,#fcb16d 1%,#ff8d05 42%,#ffc450 100%);background:linear-gradient(to bottom,#e7a66d 0,#fcb16d 1%,#ff8d05 42%,#ffc450 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#e7a66d',endColorstr='#ffc450',GradientType=0);-webkit-box-shadow:inset 0 1px 1px #7b6645,inset 0 -1px #d19c33;-moz-box-shadow:inset 0 1px 1px #7b6645,inset 0 -1px #d19c33;box-shadow:inset 0 1px 1px #7b6645,inset 0 -1px #d19c33}
+.wikieditor-button.active:hover{background:#dba368;background:-moz-linear-gradient(top,#dba368 0,#ffbd79 4%,#fea335 34%,#ffc64c 66%,#fee069 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#dba368),color-stop(4%,#ffbd79),color-stop(34%,#fea335),color-stop(66%,#ffc64c),color-stop(100%,#fee069));background:-webkit-linear-gradient(top,#dba368 0,#ffbd79 4%,#fea335 34%,#ffc64c 66%,#fee069 100%);background:-o-linear-gradient(top,#dba368 0,#ffbd79 4%,#fea335 34%,#ffc64c 66%,#fee069 100%);background:-ms-linear-gradient(top,#dba368 0,#ffbd79 4%,#fea335 34%,#ffc64c 66%,#fee069 100%);background:linear-gradient(to bottom,#dba368 0,#ffbd79 4%,#fea335 34%,#ffc64c 66%,#fee069 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dba368',endColorstr='#fee069',GradientType=0);-webkit-box-shadow:inset 0 1px 1px #9e8255,inset 0 -1px #fcce6b;-moz-box-shadow:inset 0 1px 1px #9e8255,inset 0 -1px #fcce6b;box-shadow:inset 0 1px 1px #9e8255,inset 0 -1px #fcce6b}

@@ -143,10 +143,12 @@ if(isset($_POST['leave_inactive'])) $leave_inactive = intval($_POST['leave_inact
 
 
 $pagestatmessage='';
+$pagechanged='';
 $result=false;
 if (($op == "preview") && isset($id)) {
     $result=intval($id);
     $pagestatmessage=_MD_GWIKI_PAGENOTSAVED;
+	$pagechanged='yes';
 } else {
 	//print_r($pageX);
 	if($pageX['pageFound']) {
@@ -206,12 +208,19 @@ case "preview":
 	$form->addElement(new XoopsFormHidden('page', $page));
 	$form->addElement(new XoopsFormHidden('id', $wikiPage->getCurrentId($page)));
 	$form->addElement(new XoopsFormHidden('uid', $uid));
+	$form->addElement(new XoopsFormHidden('pagechanged', $pagechanged));
        
 	$form->addElement(new XoopsFormText(_MD_GWIKI_TITLE, "title", 40, 250, $title));
-	$form->addElement(new XoopsFormTextArea(_MD_GWIKI_BODY, 'body', htmlspecialchars($body), 20, 80));
+	$form->addElement(new XoopsFormLabel('', '', 'gwikieditbuttons')); // edit buttons added in template
+	
+	$form_edit_body=new XoopsFormTextArea(_MD_GWIKI_BODY, 'body', htmlspecialchars($body), 20, 80);
+	$form_edit_body->setExtra("onclick='setWikiChanged();'");
+	$form->addElement($form_edit_body);
 
 	$btn_tray = new XoopsFormElementTray('', ' ','gwikiformpage1');
-	$btn_tray->addElement(new XoopsFormButton("", "submit", _MD_GWIKI_SUBMIT, "submit"));
+	$submit_btn = new XoopsFormButton("", "submit", _MD_GWIKI_SUBMIT, "submit");
+	$submit_btn->setExtra("onclick='prepForSubmit();'");
+	$btn_tray->addElement($submit_btn);
 
 	$metadata_btn = new XoopsFormButton("", "metaedit", _MD_GWIKI_EDIT_SHOW_META, "button");
 	$metadata_btn->setExtra("onclick=".
@@ -220,7 +229,7 @@ case "preview":
 	$btn_tray->addElement($metadata_btn);
   
 	$preview_btn = new XoopsFormButton("", "preview", _PREVIEW, "button");
-	$preview_btn->setExtra("onclick='document.forms.gwikiform.op.value=\"preview\"; document.forms.gwikiform.action=document.forms.gwikiform.action+\"#wikipage\"; document.forms.gwikiform.submit.click();'");
+	$preview_btn->setExtra("onclick='prepForPreview();'");
 	$btn_tray->addElement($preview_btn);
     
 	$cancel_btn = new XoopsFormButton("", "cancel", _CANCEL, "button");

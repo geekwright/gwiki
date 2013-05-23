@@ -21,7 +21,37 @@
         <{if $element.hidden != true}>
         <tr>
             <td class="head"><{$element.caption}></td>
-            <td class="<{cycle values="even,odd"}>"><{$element.body}></td>
+            <td class="<{cycle values="even,odd"}>">
+			<{if $element.name == 'gwikieditbuttons'}>
+<div class="wikieditor-buttontray">
+<a onclick="addSimpleMarkup('**','**'); return false;" title="bold" class="wikieditor-button wikieditor-button-bold"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('//','//'); return false;" class="wikieditor-button wikieditor-button-italic"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('__','__'); return false;" class="wikieditor-button wikieditor-button-underline"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('--','--'); return false;" class="wikieditor-button wikieditor-button-strike"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup(',,',',,'); return false;" class="wikieditor-button wikieditor-button-subscript"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('^^','^^'); return false;" class="wikieditor-button wikieditor-button-superscript"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('##','##'); return false;" class="wikieditor-button wikieditor-button-code"><div>&nbsp;</div></a>
+</div>
+
+<div class="wikieditor-buttontray">
+<a onclick="addSimpleMarkup('[[',']]'); return false;" class="wikieditor-button wikieditor-button-link"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('{{','}}'); return false;" class="wikieditor-button wikieditor-button-image"><div>&nbsp;</div></a>
+</div>
+
+<div class="wikieditor-buttontray">
+<a onclick="addSimpleMarkup('\n= ',''); return false;" class="wikieditor-button wikieditor-button-header"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n> ',''); return false;" class="wikieditor-button wikieditor-button-quote"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n: ',''); return false;" class="wikieditor-button wikieditor-button-indent"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n----\n',''); return false;" class="wikieditor-button wikieditor-button-horizontalrule"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n* ',''); return false;" class="wikieditor-button wikieditor-button-bulletlist"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n# ',''); return false;" class="wikieditor-button wikieditor-button-orderedlist"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n++ ',''); return false;" class="wikieditor-button wikieditor-button-center"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('{{{','}}}'); return false;" class="wikieditor-button wikieditor-button-nowiki"><div>&nbsp;</div></a>
+</div>
+			<{else}>
+				<{$element.body}>
+			<{/if}>
+            </td>
         </tr>
         <{else}>
         <{$element.body}>
@@ -29,7 +59,7 @@
         <{if $element.name == 'gwikiformpage1'}>
         </tbody>
         <tbody id="gwikiformmetaedit">
-	<{/if}>
+		<{/if}>
     <{/foreach}>
     </tbody>
     <!-- end of form elements loop -->
@@ -37,14 +67,41 @@
 <div id="bigeditdiv" style="z-index:3000; display:none; background-color:white;">
    <div style="height:36px; width:100%; background-color:grey; text-align: right; border:0px; margin-right: 1em;">
    <!--  full window editor Toolbar goes here -->
-   <span style="display: inline-block; vertical-align: middle; margin-top: 6px; margin-right: 2em;">
+<span style="float: left; display: inline-block; vertical-align: middle; margin-top: 6px; margin-left: 1em;">
+<div class="wikieditor-buttontray">
+<a onclick="addSimpleMarkup('**','**'); return false;" title="bold" class="wikieditor-button wikieditor-button-bold"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('//','//'); return false;" class="wikieditor-button wikieditor-button-italic"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('__','__'); return false;" class="wikieditor-button wikieditor-button-underline"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('--','--'); return false;" class="wikieditor-button wikieditor-button-strike"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup(',,',',,'); return false;" class="wikieditor-button wikieditor-button-subscript"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('^^','^^'); return false;" class="wikieditor-button wikieditor-button-superscript"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('##','##'); return false;" class="wikieditor-button wikieditor-button-code"><div>&nbsp;</div></a>
+</div>
+
+<div class="wikieditor-buttontray">
+<a onclick="addSimpleMarkup('[[',']]'); return false;" class="wikieditor-button wikieditor-button-link"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('{{','}}'); return false;" class="wikieditor-button wikieditor-button-image"><div>&nbsp;</div></a>
+</div>
+
+<div class="wikieditor-buttontray">
+<a onclick="addSimpleMarkup('\n= ',''); return false;" class="wikieditor-button wikieditor-button-header"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n> ',''); return false;" class="wikieditor-button wikieditor-button-quote"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n: ',''); return false;" class="wikieditor-button wikieditor-button-indent"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n----\n',''); return false;" class="wikieditor-button wikieditor-button-horizontalrule"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n* ',''); return false;" class="wikieditor-button wikieditor-button-bulletlist"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n# ',''); return false;" class="wikieditor-button wikieditor-button-orderedlist"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n++ ',''); return false;" class="wikieditor-button wikieditor-button-center"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('{{{','}}}'); return false;" class="wikieditor-button wikieditor-button-nowiki"><div>&nbsp;</div></a>
+</div>
+</span>
+   <span style="float:right; display: inline-block; vertical-align: middle; margin-top: 6px; margin-right: 2em;">
    <a onclick="toggleDiv('wikiimageedit'); return false;"><img src="<{$gwiki.modurl}>/images/imageicon.png" alt="<{$smarty.const._MD_GWIKI_IMAGES}>" title="<{$smarty.const._MD_GWIKI_IMAGES}>" /></a>
    <a onclick="toggleDiv('wikifileedit'); return false;"><img src="<{$gwiki.modurl}>/images/attachicon.png" alt="<{$smarty.const._MD_GWIKI_ATTACHMENT_EDIT}>" title="<{$smarty.const._MD_GWIKI_ATTACHMENT_EDIT}>" /></a>
    <a onclick="helpwindow();return false;"><img src="<{$gwiki.modurl}>/images/helpicon.png" alt="<{$smarty.const._MD_GWIKI_WIKI_EDIT_HELP}>" title="<{$smarty.const._MD_GWIKI_WIKI_EDIT_HELP}>" /></a>
    <a onclick="bigWindow(0); return false;"><img src="<{$gwiki.modurl}>/images/closeicon.png" alt="<{$smarty.const._MD_GWIKI_FULLSCREEN_EXIT}>" title="<{$smarty.const._MD_GWIKI_FULLSCREEN_EDIT}>" /></a>
    </span>
    </div>
-   <textarea id="editfield" style="width:100%; height:94%; overflow:auto; border:0px; margin-right: 1em;"> </textarea>
+   <textarea id="editfield" onclick="setWikiChanged();" style="width:100%; height:94%; overflow:auto; border:0px; margin-right: 1em;"> </textarea>
 </div>
 </form>
 </div>
@@ -168,6 +225,24 @@ function idEditField() {
 	else return (document.getElementById("body"));
 }
 
+function addSimpleMarkup(openmarkup,closemarkup) {
+	var e=idEditField();
+	var start = e.selectionStart;
+	var end = e.selectionEnd;
+	var sel = e.value.substring(start, end);
+	
+	if(start==end) {
+		insertAtCursor(e,openmarkup+closemarkup);
+		var delta=0-closemarkup.length;
+		moveCaretPosition(e,delta);
+	}
+	else {
+		insertAtCursor(e,openmarkup+sel+closemarkup);
+	}
+	e.focus();
+	return true;
+} 
+
 function addImageMarkup() {
 	var image_id=document.getElementById("wikiimage_id").value;
 	var image_name=	document.getElementById("wikieditimg_name").value;
@@ -196,6 +271,7 @@ function addImageMarkup() {
 } 
 
 function insertAtCursor(myField, myValue) {
+	setWikiChanged();
 //IE support
 	if (document.selection) {
 		myField.focus();
@@ -261,44 +337,43 @@ function setCaretPosition(ctrl, pos)
 
 function viewport()
 {
-var e = window
-, a = 'inner';
-if ( !( 'innerWidth' in window ) )
-{
-a = 'client';
-e = document.documentElement || document.body;
-}
-return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
+	var e = window, a = 'inner';
+	if ( !( 'innerWidth' in window ) )
+	{
+		a = 'client';
+		e = document.documentElement || document.body;
+	}
+	return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
 }
 
 function bigWindow(op)
 {
-var w=viewport();
-var e = document.getElementById("bigeditdiv");
-var f1 = document.getElementById("body");
-var f2 = document.getElementById("editfield");
-if(op==1) {
-f2.value=f1.value;
-e.style.display="block";
-e.style.position="fixed";
-var basewidth=w.width;
-e.style.width=basewidth+"px";
-var baseheight=w.height;
-e.style.height=baseheight+"px";
-e.style.left=0;
-e.style.top=0;
-e.style.zIndex="3000";
-f2.style.width=(basewidth-20)+"px";
-f2.style.height=(baseheight-36-20)+"px";
-setCaretPosition(f2,getCaretPosition(f1));
-f2.focus();
-}
-else {
-f1.value=f2.value;
-setCaretPosition(f1,getCaretPosition(f2));
-f1.focus ();
-e.style.display="none";
-}
+	var w=viewport();
+	var e = document.getElementById("bigeditdiv");
+	var f1 = document.getElementById("body");
+	var f2 = document.getElementById("editfield");
+	if(op==1) {
+		f2.value=f1.value;
+		e.style.display="block";
+		e.style.position="fixed";
+		var basewidth=w.width;
+		e.style.width=basewidth+"px";
+		var baseheight=w.height;
+		e.style.height=baseheight+"px";
+		e.style.left=0;
+		e.style.top=0;
+		e.style.zIndex="3000";
+		f2.style.width=(basewidth-20)+"px";
+		f2.style.height=(baseheight-36-20)+"px";
+		setCaretPosition(f2,getCaretPosition(f1));
+		f2.focus();
+	}
+	else {
+		f1.value=f2.value;
+		setCaretPosition(f1,getCaretPosition(f2));
+		f1.focus ();
+		e.style.display="none";
+	}
 
 }
 
@@ -490,7 +565,6 @@ function fieldEventHandler(event,field) {
 	xhr.setRequestHeader("X_JSONDATA", x_jsondata);
 	xhr.send();
 }
-
 
 /*
 taken from
@@ -957,5 +1031,37 @@ Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
 	}
 
 })();
+
+// support for warning on exit with unsaved changes
+if(document.getElementById("pagechanged").value=="yes") {
+	setWikiChanged();
+}
+
+function prepForSubmit()
+{
+	window.wikiChanged = false;
+}
+
+function prepForPreview()
+{
+	window.wikiChanged = false;
+	document.forms.gwikiform.op.value="preview";
+	document.forms.gwikiform.action=document.forms.gwikiform.action+"#wikipage";
+	document.forms.gwikiform.submit.click();
+}
+
+function setWikiChanged()
+{
+    window.wikiChanged = true;
+}
+
+window.addEventListener("beforeunload", function (e) {
+	if(window.wikiChanged){
+		var confirmationMessage = "<{$smarty.const._MD_GWIKI_PAGENOTSAVED}>";
+ 
+		(e || window.event).returnValue = confirmationMessage;     //Gecko + IE
+		return confirmationMessage;            //Webkit, Safari, Chrome etc.
+	}
+});
 
 </script>
