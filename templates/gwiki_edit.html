@@ -23,30 +23,34 @@
             <td class="head"><{$element.caption}></td>
             <td class="<{cycle values="even,odd"}>">
 			<{if $element.name == 'gwikieditbuttons'}>
-<div class="wikieditor-buttontray">
-<a onclick="addSimpleMarkup('**','**'); return false;" title="bold" class="wikieditor-button wikieditor-button-bold"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('//','//'); return false;" class="wikieditor-button wikieditor-button-italic"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('__','__'); return false;" class="wikieditor-button wikieditor-button-underline"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('--','--'); return false;" class="wikieditor-button wikieditor-button-strike"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup(',,',',,'); return false;" class="wikieditor-button wikieditor-button-subscript"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('^^','^^'); return false;" class="wikieditor-button wikieditor-button-superscript"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('##','##'); return false;" class="wikieditor-button wikieditor-button-code"><div>&nbsp;</div></a>
+<div class="wikieditor-buttontray"  id="wikieditor-buttons-reg">
+<a onclick="addSimpleMarkup('**','**'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_BOLD}>" class="wikieditor-button wikieditor-button-bold"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('//','//'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_ITALIC}>" class="wikieditor-button wikieditor-button-italic"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('__','__'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_UNDERLINE}>" class="wikieditor-button wikieditor-button-underline"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('--','--'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_STRIKE}>" class="wikieditor-button wikieditor-button-strike"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup(',,',',,'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_SUBSCRIPT}>" class="wikieditor-button wikieditor-button-subscript"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('^^','^^'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_SUPERSCRIPT}>" class="wikieditor-button wikieditor-button-superscript"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('##','##'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_CODE}>" class="wikieditor-button wikieditor-button-code"><div>&nbsp;</div></a>
+<a onclick="buttonGetParams(event,'wikieditor-popform-color'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_COLOR}>" class="wikieditor-button wikieditor-button-color"><div>&nbsp;</div></a>
 </div>
 
 <div class="wikieditor-buttontray">
-<a onclick="addSimpleMarkup('[[',']]'); return false;" class="wikieditor-button wikieditor-button-link"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('{{','}}'); return false;" class="wikieditor-button wikieditor-button-image"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('[[',']]'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_LINK}>" class="wikieditor-button wikieditor-button-link"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('{{','}}'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_IMAGE}>" class="wikieditor-button wikieditor-button-image"><div>&nbsp;</div></a>
 </div>
 
 <div class="wikieditor-buttontray">
-<a onclick="addSimpleMarkup('\n= ',''); return false;" class="wikieditor-button wikieditor-button-header"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('\n> ',''); return false;" class="wikieditor-button wikieditor-button-quote"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('\n: ',''); return false;" class="wikieditor-button wikieditor-button-indent"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('\n----\n',''); return false;" class="wikieditor-button wikieditor-button-horizontalrule"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('\n* ',''); return false;" class="wikieditor-button wikieditor-button-bulletlist"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('\n# ',''); return false;" class="wikieditor-button wikieditor-button-orderedlist"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('\n++ ',''); return false;" class="wikieditor-button wikieditor-button-center"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('{{{','}}}'); return false;" class="wikieditor-button wikieditor-button-nowiki"><div>&nbsp;</div></a>
+<a onclick="buttonGetParams(event,'wikieditor-popform-header'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_HEADER}>" class="wikieditor-button wikieditor-button-header"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\\\\',''); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_LINEBREAK}>" class="wikieditor-button wikieditor-button-linebreak"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n> ',''); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_QUOTE}>" class="wikieditor-button wikieditor-button-quote"><div>&nbsp;</div></a>
+<a onclick="buttonGetParams(event,'wikieditor-popform-indent'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_INDENT}>" class="wikieditor-button wikieditor-button-indent"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n----\n',''); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_HORIZONTALRULE}>" class="wikieditor-button wikieditor-button-horizontalrule"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n* ',''); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_BULLETLIST}>" class="wikieditor-button wikieditor-button-bulletlist"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n# ',''); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_ORDEREDLIST}>" class="wikieditor-button wikieditor-button-orderedlist"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n++ ',''); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_CENTER}>" class="wikieditor-button wikieditor-button-center"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('{{{','}}}'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_NOWIKI}>" class="wikieditor-button wikieditor-button-nowiki"><div>&nbsp;</div></a>
+<a onclick="buttonGetParams(event,'wikieditor-popform-boxes'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_BOXES}>" class="wikieditor-button wikieditor-button-boxes"><div>&nbsp;</div></a>
+<a onclick="buttonGetParams(event,'wikieditor-popform-ref'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_REFERENCE}>" class="wikieditor-button wikieditor-button-ref"><div>&nbsp;</div></a>
 </div>
 			<{else}>
 				<{$element.body}>
@@ -68,30 +72,34 @@
    <div style="height:36px; width:100%; background-color:grey; text-align: right; border:0px; margin-right: 1em;">
    <!--  full window editor Toolbar goes here -->
 <span style="float: left; display: inline-block; vertical-align: middle; margin-top: 6px; margin-left: 1em;">
-<div class="wikieditor-buttontray">
-<a onclick="addSimpleMarkup('**','**'); return false;" title="bold" class="wikieditor-button wikieditor-button-bold"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('//','//'); return false;" class="wikieditor-button wikieditor-button-italic"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('__','__'); return false;" class="wikieditor-button wikieditor-button-underline"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('--','--'); return false;" class="wikieditor-button wikieditor-button-strike"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup(',,',',,'); return false;" class="wikieditor-button wikieditor-button-subscript"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('^^','^^'); return false;" class="wikieditor-button wikieditor-button-superscript"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('##','##'); return false;" class="wikieditor-button wikieditor-button-code"><div>&nbsp;</div></a>
+<div class="wikieditor-buttontray"  id="wikieditor-buttons-big">
+<a onclick="addSimpleMarkup('**','**'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_BOLD}>" class="wikieditor-button wikieditor-button-bold"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('//','//'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_ITALIC}>" class="wikieditor-button wikieditor-button-italic"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('__','__'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_UNDERLINE}>" class="wikieditor-button wikieditor-button-underline"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('--','--'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_STRIKE}>" class="wikieditor-button wikieditor-button-strike"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup(',,',',,'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_SUBSCRIPT}>" class="wikieditor-button wikieditor-button-subscript"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('^^','^^'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_SUPERSCRIPT}>" class="wikieditor-button wikieditor-button-superscript"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('##','##'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_CODE}>" class="wikieditor-button wikieditor-button-code"><div>&nbsp;</div></a>
+<a onclick="buttonGetParams(event,'wikieditor-popform-color'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_COLOR}>" class="wikieditor-button wikieditor-button-color"><div>&nbsp;</div></a>
 </div>
 
 <div class="wikieditor-buttontray">
-<a onclick="addSimpleMarkup('[[',']]'); return false;" class="wikieditor-button wikieditor-button-link"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('{{','}}'); return false;" class="wikieditor-button wikieditor-button-image"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('[[',']]'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_LINK}>" class="wikieditor-button wikieditor-button-link"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('{{','}}'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_IMAGE}>" class="wikieditor-button wikieditor-button-image"><div>&nbsp;</div></a>
 </div>
 
 <div class="wikieditor-buttontray">
-<a onclick="addSimpleMarkup('\n= ',''); return false;" class="wikieditor-button wikieditor-button-header"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('\n> ',''); return false;" class="wikieditor-button wikieditor-button-quote"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('\n: ',''); return false;" class="wikieditor-button wikieditor-button-indent"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('\n----\n',''); return false;" class="wikieditor-button wikieditor-button-horizontalrule"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('\n* ',''); return false;" class="wikieditor-button wikieditor-button-bulletlist"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('\n# ',''); return false;" class="wikieditor-button wikieditor-button-orderedlist"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('\n++ ',''); return false;" class="wikieditor-button wikieditor-button-center"><div>&nbsp;</div></a>
-<a onclick="addSimpleMarkup('{{{','}}}'); return false;" class="wikieditor-button wikieditor-button-nowiki"><div>&nbsp;</div></a>
+<a onclick="buttonGetParams(event,'wikieditor-popform-header'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_HEADER}>" class="wikieditor-button wikieditor-button-header"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\\\\',''); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_LINEBREAK}>" class="wikieditor-button wikieditor-button-linebreak"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n> ',''); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_QUOTE}>" class="wikieditor-button wikieditor-button-quote"><div>&nbsp;</div></a>
+<a onclick="buttonGetParams(event,'wikieditor-popform-indent'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_INDENT}>" class="wikieditor-button wikieditor-button-indent"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n----\n',''); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_HORIZONTALRULE}>" class="wikieditor-button wikieditor-button-horizontalrule"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n* ',''); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_BULLETLIST}>" class="wikieditor-button wikieditor-button-bulletlist"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n# ',''); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_ORDEREDLIST}>" class="wikieditor-button wikieditor-button-orderedlist"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('\n++ ',''); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_CENTER}>" class="wikieditor-button wikieditor-button-center"><div>&nbsp;</div></a>
+<a onclick="addSimpleMarkup('{{{','}}}'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_NOWIKI}>" class="wikieditor-button wikieditor-button-nowiki"><div>&nbsp;</div></a>
+<a onclick="buttonGetParams(event,'wikieditor-popform-boxes'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_BOXES}>" class="wikieditor-button wikieditor-button-boxes"><div>&nbsp;</div></a>
+<a onclick="buttonGetParams(event,'wikieditor-popform-ref'); return false;" title="<{$smarty.const._MD_GWIKI_EDIT_BTN_REFERENCE}>" class="wikieditor-button wikieditor-button-ref"><div>&nbsp;</div></a>
 </div>
 </span>
    <span style="float:right; display: inline-block; vertical-align: middle; margin-top: 6px; margin-right: 2em;">
@@ -108,7 +116,6 @@
 <{include file="db:gwiki_page_info.html"}>
 
 <{if $gwiki.preview}><p class="itemInfo"><{$smarty.const._MD_GWIKI_PAGE}>: <strong><{$gwiki.keyword}></strong> - <{$smarty.const._MD_GWIKI_PREVIEW}></p>
-
 <div id="wikipage" class="wikipage">
 <h1 class="wikititle" id="toc0"><{$gwiki.title}></h1>
 <{$gwiki.body}>
@@ -212,17 +219,243 @@
 </td></tr></table>
 </div>
 
+<div id="wikieditor-popform-color" class="wikieditor-param-container">
+<div class="wikieditor-param-top"><{$smarty.const._MD_GWIKI_EDIT_BTN_COLOR}></div>
+<form>
+<span class="wikieditor-param-title"><{$smarty.const._MD_GWIKI_EDPOP_PRMT_COLOR}></span>
+<span class="wikieditor-param-value">
+<select name="popformcolor">
+<option value=""><{$smarty.const._MD_GWIKI_EDPOP_CLR_DEFAULT}></option>
+<option value="aqua"><{$smarty.const._MD_GWIKI_EDPOP_CLR_AQUA}></option>
+<option value="black"><{$smarty.const._MD_GWIKI_EDPOP_CLR_BLACK}></option>
+<option value="blue"><{$smarty.const._MD_GWIKI_EDPOP_CLR_BLUE}></option>
+<option value="fuchsia"><{$smarty.const._MD_GWIKI_EDPOP_CLR_FUCHSIA}></option>
+<option value="gray"><{$smarty.const._MD_GWIKI_EDPOP_CLR_GRAY}></option>
+<option value="green"><{$smarty.const._MD_GWIKI_EDPOP_CLR_GREEN}></option>
+<option value="lime"><{$smarty.const._MD_GWIKI_EDPOP_CLR_LIME}></option>
+<option value="maroon"><{$smarty.const._MD_GWIKI_EDPOP_CLR_MAROON}></option>
+<option value="navy"><{$smarty.const._MD_GWIKI_EDPOP_CLR_NAVY}></option>
+<option value="olive"><{$smarty.const._MD_GWIKI_EDPOP_CLR_OLIVE}></option>
+<option value="orange"><{$smarty.const._MD_GWIKI_EDPOP_CLR_ORANGE}></option>
+<option value="purple"><{$smarty.const._MD_GWIKI_EDPOP_CLR_PURPLE}></option>
+<option value="red"><{$smarty.const._MD_GWIKI_EDPOP_CLR_RED}></option>
+<option value="silver"><{$smarty.const._MD_GWIKI_EDPOP_CLR_SILVER}></option>
+<option value="teal"><{$smarty.const._MD_GWIKI_EDPOP_CLR_TEAL}></option>
+<option value="white"><{$smarty.const._MD_GWIKI_EDPOP_CLR_WHITE}></option>
+<option value="yellow"><{$smarty.const._MD_GWIKI_EDPOP_CLR_YELLOW}></option>
+</select>
+</span></br>
+<span class="wikieditor-param-title"><{$smarty.const._MD_GWIKI_EDPOP_PRMT_BGCOLOR}></span>
+<span class="wikieditor-param-value">
+<select name="popformbgcolor">
+<option value=""><{$smarty.const._MD_GWIKI_EDPOP_CLR_DEFAULT}></option>
+<option value="aqua"><{$smarty.const._MD_GWIKI_EDPOP_CLR_AQUA}></option>
+<option value="black"><{$smarty.const._MD_GWIKI_EDPOP_CLR_BLACK}></option>
+<option value="blue"><{$smarty.const._MD_GWIKI_EDPOP_CLR_BLUE}></option>
+<option value="fuchsia"><{$smarty.const._MD_GWIKI_EDPOP_CLR_FUCHSIA}></option>
+<option value="gray"><{$smarty.const._MD_GWIKI_EDPOP_CLR_GRAY}></option>
+<option value="green"><{$smarty.const._MD_GWIKI_EDPOP_CLR_GREEN}></option>
+<option value="lime"><{$smarty.const._MD_GWIKI_EDPOP_CLR_LIME}></option>
+<option value="maroon"><{$smarty.const._MD_GWIKI_EDPOP_CLR_MAROON}></option>
+<option value="navy"><{$smarty.const._MD_GWIKI_EDPOP_CLR_NAVY}></option>
+<option value="olive"><{$smarty.const._MD_GWIKI_EDPOP_CLR_OLIVE}></option>
+<option value="orange"><{$smarty.const._MD_GWIKI_EDPOP_CLR_ORANGE}></option>
+<option value="purple"><{$smarty.const._MD_GWIKI_EDPOP_CLR_PURPLE}></option>
+<option value="red"><{$smarty.const._MD_GWIKI_EDPOP_CLR_RED}></option>
+<option value="silver"><{$smarty.const._MD_GWIKI_EDPOP_CLR_SILVER}></option>
+<option value="teal"><{$smarty.const._MD_GWIKI_EDPOP_CLR_TEAL}></option>
+<option value="white"><{$smarty.const._MD_GWIKI_EDPOP_CLR_WHITE}></option>
+<option value="yellow"><{$smarty.const._MD_GWIKI_EDPOP_CLR_YELLOW}></option>
+</select>
+</span></br>
+<span class="wikieditor-param-title"> </span>
+<span class="wikieditor-param-value"><button type="button" onclick="processPopFormColor(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button> 
+<button type="button" onclick="closeAllParams();"><{$smarty.const.MD_GWIKI_EDIT_BTN_CANCEL}></button>
+</span><br />
+<span class="wikieditor-param-bottom"></span>
+</form>
+</div>
+
+<div id="wikieditor-popform-header" class="wikieditor-param-container">
+<div class="wikieditor-param-top"><{$smarty.const._MD_GWIKI_EDIT_BTN_HEADER}></div>
+<form>
+<span class="wikieditor-param-title"><{$smarty.const._MD_GWIKI_EDPOP_PRMT_HEADER}></span>
+<span class="wikieditor-param-value">
+<select name="popformheader">
+<option value="1"><{$smarty.const._MD_GWIKI_EDPOP_HEAD_1}></option>
+<option value="2"><{$smarty.const._MD_GWIKI_EDPOP_HEAD_2}></option>
+<option value="3"><{$smarty.const._MD_GWIKI_EDPOP_HEAD_3}></option>
+<option value="4"><{$smarty.const._MD_GWIKI_EDPOP_HEAD_4}></option>
+<option value="5"><{$smarty.const._MD_GWIKI_EDPOP_HEAD_5}></option>
+</select>
+</span></br>
+<span class="wikieditor-param-title"> </span>
+<span class="wikieditor-param-value"><button type="button" onclick="processPopFormHeader(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button> 
+<button type="button" onclick="closeAllParams();"><{$smarty.const.MD_GWIKI_EDIT_BTN_CANCEL}></button>
+</span><br />
+</form>
+<span class="wikieditor-param-bottom"></span>
+</div>
+
+<div id="wikieditor-popform-indent" class="wikieditor-param-container">
+<div class="wikieditor-param-top"><{$smarty.const._MD_GWIKI_EDIT_BTN_INDENT}></div>
+<form>
+<span class="wikieditor-param-title"><{$smarty.const._MD_GWIKI_EDPOP_PRMT_INDENT}></span>
+<span class="wikieditor-param-value">
+<select name="popformindent">
+<option value="1"><{$smarty.const._MD_GWIKI_EDPOP_INDENT_1}></option>
+<option value="2"><{$smarty.const._MD_GWIKI_EDPOP_INDENT_2}></option>
+<option value="3"><{$smarty.const._MD_GWIKI_EDPOP_INDENT_3}></option>
+<option value="4"><{$smarty.const._MD_GWIKI_EDPOP_INDENT_4}></option>
+<option value="5"><{$smarty.const._MD_GWIKI_EDPOP_INDENT_5}></option>
+</select>
+</span></br>
+<span class="wikieditor-param-title"> </span>
+<span class="wikieditor-param-value"><button type="button" onclick="processPopFormIndent(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button> 
+<button type="button" onclick="closeAllParams();"><{$smarty.const.MD_GWIKI_EDIT_BTN_CANCEL}></button>
+</span><br />
+</form>
+<span class="wikieditor-param-bottom"></span>
+</div>
+
+<div id="wikieditor-popform-boxes" class="wikieditor-param-container">
+<div class="wikieditor-param-top"><{$smarty.const._MD_GWIKI_EDIT_BTN_BOXES}></div>
+<form>
+<span class="wikieditor-param-title"><{$smarty.const._MD_GWIKI_EDPOP_PRMT_BXTYPE}></span>
+<span class="wikieditor-param-value">
+<select name="popformboxtype">
+<option value="code"><{$smarty.const._MD_GWIKI_EDPOP_BXTYPE_CODE}></option>
+<option value="folded"><{$smarty.const._MD_GWIKI_EDPOP_BXTYPE_FOLD}></option>
+<option value="info"><{$smarty.const._MD_GWIKI_EDPOP_BXTYPE_INFO}></option>
+<option value="note"><{$smarty.const._MD_GWIKI_EDPOP_BXTYPE_NOTE}></option>
+<option value="tip"><{$smarty.const._MD_GWIKI_EDPOP_BXTYPE_TIP}></option>
+<option value="warning"><{$smarty.const._MD_GWIKI_EDPOP_BXTYPE_WARN}></option>
+</select>
+</span></br>
+<span class="wikieditor-param-title">Title:</span> <span class="wikieditor-param-value"><input name="popformboxtitle" type="text" size="12">
+</span><br />
+<span class="wikieditor-param-title"> </span>
+<span class="wikieditor-param-value"><button type="button" onclick="processPopFormBoxes(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button> 
+<button type="button" onclick="closeAllParams();"><{$smarty.const.MD_GWIKI_EDIT_BTN_CANCEL}></button>
+</span><br />
+</form>
+<span class="wikieditor-param-bottom"></span>
+</div>
+
+<div id="wikieditor-popform-ref" class="wikieditor-param-container">
+<div class="wikieditor-param-top"><{$smarty.const._MD_GWIKI_EDIT_BTN_REFERENCE}></div>
+<form>
+<div class="wikieditor-param-prompt"><{$smarty.const._MD_GWIKI_EDPOP_XPRMT_REF1}></div>
+<span class="wikieditor-param-title"><{$smarty.const._MD_GWIKI_EDPOP_PRMT_REF_ID}></span> <span class="wikieditor-param-value"><input name="popformrefid" type="text" size="12">
+</span><br />
+<div class="wikieditor-param-prompt"><{$smarty.const._MD_GWIKI_EDPOP_XPRMT_REF2}></div>
+<span class="wikieditor-param-title"><{$smarty.const._MD_GWIKI_EDPOP_PRMT_REF_FIRST}></span> <span class="wikieditor-param-value"><input name="popformreffirst" type="text" size="12">
+</span><br />
+<span class="wikieditor-param-title"><{$smarty.const._MD_GWIKI_EDPOP_PRMT_REF_REPEAT}></span> <span class="wikieditor-param-value"><input name="popformrefrepeat" type="text" size="12">
+</span><br />
+<span class="wikieditor-param-title"> </span>
+<span class="wikieditor-param-value"><button type="button" onclick="processPopFormRef(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button> 
+<button type="button" onclick="closeAllParams();"><{$smarty.const.MD_GWIKI_EDIT_BTN_CANCEL}></button>
+</span><br />
+</form>
+<span class="wikieditor-param-bottom"></span>
+</div>
+
 <script>
 // some misc script things 
 function helpwindow() {
 	window.open('<{$gwiki.modurl}>/language/<{$smarty.const._MD_GWIKI_WIKI_HELP_DIR}>/help/wikihelp.html','1359403524804','width=400,height=680,toolbar=0,menubar=1,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
 }
 
+function buttonGetParams(trigger,formname)
+{
+	closeAllParams();
+    var theEvent = trigger ? trigger : window.event;
+    var web=idEditButtons();
+	var rect = web.getBoundingClientRect();
+	var formwin=document.getElementById(formname);
+	formwin.style.position="fixed";
+	formwin.style.left=(theEvent.clientX - 128) + "px";
+	formwin.style.top= rect.bottom + "px"; 
+	formwin.style.display="block";
+}
+
+function closeAllParams() {
+	document.getElementById('wikieditor-popform-color').style.display="none";
+	document.getElementById('wikieditor-popform-header').style.display="none";
+	document.getElementById('wikieditor-popform-indent').style.display="none";
+	document.getElementById('wikieditor-popform-boxes').style.display="none";
+	document.getElementById('wikieditor-popform-ref').style.display="none";
+}
+
+function processPopFormColor(form) {
+	var fg = form.popformcolor.value;
+	var bg = form.popformbgcolor.value;
+	var openmarkup = "!!" + fg;
+	if(bg!="") openmarkup = openmarkup + "," + bg;
+	openmarkup = openmarkup + ":";
+	var closemarkup = "!!";
+	addSimpleMarkup(openmarkup,closemarkup);
+}
+
+function processPopFormHeader(form) {
+	var openmarkup = "\n=";
+	for (var i=0;i<(form.popformheader.value-1);i++)
+	{ 
+		openmarkup = openmarkup + "=";
+	}
+	openmarkup = openmarkup + " ";
+	var closemarkup = "";
+	addSimpleMarkup(openmarkup,closemarkup);
+}
+
+function processPopFormIndent(form) {
+	var openmarkup = "\n:";
+	for (var i=0;i<(form.popformindent.value-1);i++)
+	{ 
+		openmarkup = openmarkup + ":";
+	}
+	openmarkup = openmarkup + " ";
+
+	var closemarkup = "";
+	addSimpleMarkup(openmarkup,closemarkup);
+}
+
+function processPopFormBoxes(form) {
+	var openmarkup = "{"+form.popformboxtype.value+" "+form.popformboxtitle.value+"}";
+	var closemarkup = "{end"+form.popformboxtype.value+"}";
+	addSimpleMarkup(openmarkup,closemarkup);
+	form.popformboxtitle.value='';
+}
+
+function processPopFormRef(form) {
+	var openmarkup = "{ref";
+	if(form.popformrefid.value!="") { openmarkup = openmarkup+" "+form.popformrefid.value;}
+	if(form.popformreffirst.value!="") {
+		if(form.popformrefid.value=="") { openmarkup = openmarkup+" ";}
+		openmarkup = openmarkup + "|" + form.popformreffirst.value;
+		if(form.popformrefrepeat.value!="") {
+			openmarkup = openmarkup + "|" + form.popformrefrepeat.value;
+		}
+	}
+	openmarkup = openmarkup + "}";
+	var closemarkup = "{endref}";
+	addSimpleMarkup(openmarkup,closemarkup);
+	form.popformreffirst.value='';
+	form.popformrefrepeat.value='';
+}
+
+function idEditButtons() {
+	var e = document.getElementById("bigeditdiv");
+	if (e.style.display=='block') return (document.getElementById("wikieditor-buttons-big"));
+	return (document.getElementById('wikieditor-buttons-reg'));
+}
+
 // we have 2 editor textareas - one normal, one full screen. Figure out which one is active and return it
 function idEditField() {
 	var e = document.getElementById("bigeditdiv");
 	if (e.style.display=='block') return (document.getElementById("editfield"));
-	else return (document.getElementById("body"));
+	return (document.getElementById("body"));
 }
 
 function addSimpleMarkup(openmarkup,closemarkup) {
@@ -240,6 +473,7 @@ function addSimpleMarkup(openmarkup,closemarkup) {
 		insertAtCursor(e,openmarkup+sel+closemarkup);
 	}
 	e.focus();
+	closeAllParams();
 	return true;
 } 
 
@@ -348,6 +582,7 @@ function viewport()
 
 function bigWindow(op)
 {
+	closeAllParams();
 	var w=viewport();
 	var e = document.getElementById("bigeditdiv");
 	var f1 = document.getElementById("body");

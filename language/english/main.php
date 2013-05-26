@@ -20,10 +20,10 @@ define('_MD_GWIKI_LEAVE_INACTIVE','Leave Inactive on Save');
 define('_MD_GWIKI_AUTHOR', 'Author');
 define('_MD_GWIKI_ATTACHMENT_LIST', 'Attachments');
 
-define('_MD_GWIKI_PAGENOTFOUND',"This page doesn't exist yet.");
-define('_MD_GWIKI_PAGENOTFOUND_ERR',"That page doesn't exist.");
+define('_MD_GWIKI_PAGENOTFOUND','This page doesn\'t exist yet.');
+define('_MD_GWIKI_PAGENOTFOUND_ERR','That page doesn\'t exist.');
 define('_MD_GWIKI_NO_PAGE_PERMISSION', 'You do not have the authority to edit that page.');
-define('_MD_GWIKI_PAGENOTSAVED',"This page has not been saved yet.");
+define('_MD_GWIKI_PAGENOTSAVED','This page has not been saved yet.');
 define('_MD_GWIKI_DBUPDATED','Database successfully updated!');
 define('_MD_GWIKI_ERRORINSERT','Error while updating database!');
 define('_MD_GWIKI_EDITCONFLICT','Conflicting modifications! - Changes were saved but not made the active revision. Review page history and resolve any conflicts.');
@@ -162,6 +162,86 @@ define('_MD_GWIKI_SORT_PAGE_FORM', 'Reorder Pages in a Page Set');
 define('_MD_GWIKI_SORT_PAGES', 'Pages');
 
 define('_MD_GWIKI_DIFF_TITLE', 'Diff: %s');
+
+// editor toolbar buttons
+define('_MD_GWIKI_EDIT_BTN_BOLD','Bold');
+define('_MD_GWIKI_EDIT_BTN_BOXES','Boxes');
+define('_MD_GWIKI_EDIT_BTN_BULLETLIST','Bullet List');
+define('_MD_GWIKI_EDIT_BTN_CENTER','Center');
+define('_MD_GWIKI_EDIT_BTN_CODE','Monospace');
+define('_MD_GWIKI_EDIT_BTN_COLOR','Color');
+define('_MD_GWIKI_EDIT_BTN_HEADER','Header');
+define('_MD_GWIKI_EDIT_BTN_HORIZONTALRULE','Horizontal Rule');
+define('_MD_GWIKI_EDIT_BTN_INDENT','Indent');
+define('_MD_GWIKI_EDIT_BTN_IMAGE','Image URL');
+define('_MD_GWIKI_EDIT_BTN_ITALIC','Italic');
+define('_MD_GWIKI_EDIT_BTN_LINEBREAK','Line Break');
+define('_MD_GWIKI_EDIT_BTN_LINK','Link');
+define('_MD_GWIKI_EDIT_BTN_NOWIKI','No Wiki');
+define('_MD_GWIKI_EDIT_BTN_ORDEREDLIST','Numbered List');
+define('_MD_GWIKI_EDIT_BTN_QUOTE','Quote');
+define('_MD_GWIKI_EDIT_BTN_REFERENCE','Reference');
+define('_MD_GWIKI_EDIT_BTN_STRIKE','Strike through');
+define('_MD_GWIKI_EDIT_BTN_SUBSCRIPT','Subscript');
+define('_MD_GWIKI_EDIT_BTN_SUPERSCRIPT','Superscript');
+define('_MD_GWIKI_EDIT_BTN_UNDERLINE','Underline');
+
+define('_MD_GWIKI_EDPOP_PRMT_COLOR','Color:');
+
+define('_MD_GWIKI_EDPOP_CLR_DEFAULT','(default)');
+define('_MD_GWIKI_EDPOP_CLR_AQUA','Aqua');
+define('_MD_GWIKI_EDPOP_CLR_BLACK','Black');
+define('_MD_GWIKI_EDPOP_CLR_BLUE','Blue');
+define('_MD_GWIKI_EDPOP_CLR_FUCHSIA','Fuchsia');
+define('_MD_GWIKI_EDPOP_CLR_GRAY','Gray');
+define('_MD_GWIKI_EDPOP_CLR_GREEN','Green');
+define('_MD_GWIKI_EDPOP_CLR_LIME','Lime');
+define('_MD_GWIKI_EDPOP_CLR_MAROON','Maroon');
+define('_MD_GWIKI_EDPOP_CLR_NAVY','Navy');
+define('_MD_GWIKI_EDPOP_CLR_OLIVE','Olive');
+define('_MD_GWIKI_EDPOP_CLR_ORANGE','Orange');
+define('_MD_GWIKI_EDPOP_CLR_PURPLE','Purple');
+define('_MD_GWIKI_EDPOP_CLR_RED','Red');
+define('_MD_GWIKI_EDPOP_CLR_SILVER','Silver');
+define('_MD_GWIKI_EDPOP_CLR_TEAL','Teal');
+define('_MD_GWIKI_EDPOP_CLR_WHITE','White');
+define('_MD_GWIKI_EDPOP_CLR_YELLOW','Yellow');
+
+define('_MD_GWIKI_EDPOP_PRMT_BGCOLOR','Background:');
+
+define('MD_GWIKI_EDIT_BTN_INSERT','Insert');
+define('MD_GWIKI_EDIT_BTN_CANCEL','Cancel');
+
+define('_MD_GWIKI_EDPOP_PRMT_HEADER','Header:');
+define('_MD_GWIKI_EDPOP_HEAD_1','Level 1');
+define('_MD_GWIKI_EDPOP_HEAD_2','Level 2');
+define('_MD_GWIKI_EDPOP_HEAD_3','Level 3');
+define('_MD_GWIKI_EDPOP_HEAD_4','Level 4');
+define('_MD_GWIKI_EDPOP_HEAD_5','Level 5');
+
+define('_MD_GWIKI_EDPOP_PRMT_INDENT','Indent:');
+
+define('_MD_GWIKI_EDPOP_INDENT_1','Indent 1x');
+define('_MD_GWIKI_EDPOP_INDENT_2','Indent 2x');
+define('_MD_GWIKI_EDPOP_INDENT_3','Indent 3x');
+define('_MD_GWIKI_EDPOP_INDENT_4','Indent 4x');
+define('_MD_GWIKI_EDPOP_INDENT_5','Indent 5x');
+
+define('_MD_GWIKI_EDPOP_PRMT_BXTYPE','Box Type:');
+
+define('_MD_GWIKI_EDPOP_BXTYPE_CODE','Code');
+define('_MD_GWIKI_EDPOP_BXTYPE_FOLD','Folded');
+define('_MD_GWIKI_EDPOP_BXTYPE_INFO','Information');
+define('_MD_GWIKI_EDPOP_BXTYPE_NOTE','Note');
+define('_MD_GWIKI_EDPOP_BXTYPE_TIP','Tip');
+define('_MD_GWIKI_EDPOP_BXTYPE_WARN','Warning');
+
+define('_MD_GWIKI_EDPOP_PRMT_REF_ID','Id:');
+
+define('_MD_GWIKI_EDPOP_PRMT_REF_FIRST','First:');
+define('_MD_GWIKI_EDPOP_PRMT_REF_REPEAT','Repeat:');
+define('_MD_GWIKI_EDPOP_XPRMT_REF1','Specify <i>Id</i> to use a reference more than once.');
+define('_MD_GWIKI_EDPOP_XPRMT_REF2','Use <i>First</i> for a parenthetical reference. Use <i>Repeat</i> for shortened version when used again.');
 
 }
 ?>
