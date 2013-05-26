@@ -988,6 +988,21 @@ class gwikiPage {
 
 		return $ret;
 	}
+	
+	private function noWikiHoldBlock($matches)
+	{
+		return $this->noWikiHold('block',$matches/*[1]*/);
+	}
+
+	private function noWikiHoldInline($matches)
+	{
+		return $this->noWikiHold('inline',$matches/*[1]*/);
+	}
+
+	private function noWikiHoldWCInline($matches/*[1]*/)
+	{
+		return $this->noWikiHold('wcinline',$matches/*[1]*/);
+	}
 
 	private function noWikiEmit($index)
 	{
@@ -1577,23 +1592,23 @@ class gwikiPage {
 
 		// nowiki - tilde escape
 		$search[]  = "#~([^ \t\r\n\v\f])#Ue";
-		$replace[] = '$this->noWikiHold("inline",\'\\1\')';
+		$replace[] = '$this->noWikiHoldInline(\'\\1\')';
 		
 		// nowiki content gwiki style
 		$search[]  = "#{nowiki}(.*){endnowiki}#Umsie";
-		$replace[] = '$this->noWikiHold("inline",\'\\1\')';
+		$replace[] = '$this->noWikiHoldInline(\'\\1\')';
 
 		// nowiki content block creole style (a nowiki that forces a style, how odd.)
 		$search[]  = "#^{{{\n(.*)^}}}\n#Umsie";
-		$replace[] = '$this->noWikiHold("block",\'\\1\')';
+		$replace[] = '$this->noWikiHoldBlock(\'\\1\')';
 		
 		// nowiki content inline creole style
 		$search[]  = "#{{{(.*)}}}#Ue";
-		$replace[] = '$this->noWikiHold("wcinline",\'\\1\')';
+		$replace[] = '$this->noWikiHoldWCInline(\'\\1\')';
 		
 		// automatically nowiki content of code box - {code title}xxx{endcode}
 		$search[]  = "#({code [^\"<\n]+?})(.*?)({endcode})#sie";
-		$replace[] = '\'\\1\'.$this->noWikiHold("inline",\'\\2\').\'\\3\'';
+		$replace[] = '\'\\1\'.$this->noWikiHold("block",\'\\2\').\'\\3\'';
 
 		// center ++ xxx
 		$search[]  = "#^(\+{2})(.*)(?=\n\n|\Z)#Usm";
@@ -1660,28 +1675,28 @@ class gwikiPage {
 		$replace[] = '$this->renderImage(\'\\1\')';
 
 		// info box {info title}xxx{endinfo}
-		$search[]  = "#{info ([^\"<\n]+?)?}(.*?){endinfo}#sie";
-		$replace[] = '$this->renderBox(\'info\',\'\\1\',\'\\2\')';
+		$search[]  = "#{(info) ([^\"<\n]+?)?}(.*?){endinfo}#sie";
+		$replace[] = '$this->renderBox(\'\\1\',\'\\2\',\'\\3\')';
 
 		// note box {note title}xxx{endnote}
-		$search[]  = "#{note ([^\"<\n]+?)?}(.*?){endnote}#sie";
-		$replace[] = '$this->renderBox(\'note\',\'\\1\',\'\\2\')';
+		$search[]  = "#{(note) ([^\"<\n]+?)?}(.*?){endnote}#sie";
+		$replace[] = '$this->renderBox(\'\\1\',\'\\2\',\'\\3\')';
 
 		// tip box {tip title}xxx{endtip}
-		$search[]  = "#{tip ([^\"<\n]+?)?}(.*?){endtip}#sie";
-		$replace[] = '$this->renderBox(\'tip\',\'\\1\',\'\\2\')';
+		$search[]  = "#{(tip) ([^\"<\n]+?)?}(.*?){endtip}#sie";
+		$replace[] = '$this->renderBox(\'\\1\',\'\\2\',\'\\3\')';
 
 		// warning box {warning title}xxx{endwarning}
-		$search[]  = "#{warning ([^\"<\n]+?)?}(.*?){endwarning}#sie";
-		$replace[] = '$this->renderBox(\'warn\',\'\\1\',\'\\2\')';
+		$search[]  = "#{(warn)ing ([^\"<\n]+?)?}(.*?){endwarning}#sie";
+		$replace[] = '$this->renderBox(\'\\1\',\'\\2\',\'\\3\')';
 
 		// code (preformatted) box {code title}xxx{endcode}
-		$search[]  = "#{code ([^\"<\n]+?)?}(.*?){endcode}#sie";
-		$replace[] = '$this->renderBox(\'code\',\'\\1\',\'<pre>\\2</pre>\')';
+		$search[]  = "#{(code) ([^\"<\n]+?)?}(.*?){endcode}#sie";
+		$replace[] = '$this->renderBox(\'\\1\',\'\\2\',\'\\3\')';
 
 		// folded box {folded title}xxx{endfolded}
-		$search[]  = "#{folded ([^\"<\n]+?)?}(.*?){endfolded}#sie";
-		$replace[] = '$this->renderBox(\'folded\',\'\\1\',\'\\2\')';
+		$search[]  = "#{(folded) ([^\"<\n]+?)?}(.*?){endfolded}#sie";
+		$replace[] = '$this->renderBox(\'\\1\',\'\\2\',\'\\3\')';
 
 		// urls - smells like a link
 //		$search[]  = "#(?<![\"\[])((http|https|ftp|ftps)://.{2,}\..*)([,.?!:;]?\s)#Uie";
