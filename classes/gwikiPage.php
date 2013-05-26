@@ -71,10 +71,10 @@ class gwikiPage {
 	private $noWikiQueue = array();		// hold no wiki content during rendering
 	private $noWikiIndex = 0;
 	
-	private $tocQueue = array();                   // track headers for toc
+	private $tocQueue = array();        // track headers for toc
 	private $tocIndex = 0;
 	
-	private $refQueue = array();                   // track reference
+	private $refQueue = array();        // track reference
 	private $refIndex = 0;
 	private $refShown = false;
 	
@@ -766,6 +766,11 @@ class gwikiPage {
 		return sprintf('<a href="%s" title="%s">%s%s</a>', $url, $title, $display_keyword, $newpage);
 	}
 
+	private function wikiCCLink($matches)
+	{
+		return $this->wikiLink($matches[1]);
+	}
+
 	private function getIndexTabs()
 	{
 		global $xoopsDB ,$wikiPage;
@@ -923,9 +928,10 @@ class gwikiPage {
 		return $body."\n\n";
 	}
 
-	private function renderIndex($type,$parms)
+	private function renderIndex($matches)
 	{
-		$parms=trim($parms);
+		$type=$matches[1];
+		$parms=trim($matches[2]);
 		if(strcasecmp($type,'RecentChanges')===0) return $this->recentIndex($parms);
 		if(strcasecmp($type,'PageIndex')==0) return $this->pageIndex($parms);
 		return false;
@@ -991,26 +997,33 @@ class gwikiPage {
 	
 	private function noWikiHoldBlock($matches)
 	{
-		return $this->noWikiHold('block',$matches/*[1]*/);
+		return $this->noWikiHold('block',$matches[1]);
 	}
 
 	private function noWikiHoldInline($matches)
 	{
-		return $this->noWikiHold('inline',$matches/*[1]*/);
+		return $this->noWikiHold('inline',$matches[1]);
 	}
 
-	private function noWikiHoldWCInline($matches/*[1]*/)
+	private function noWikiHoldWCInline($matches)
 	{
-		return $this->noWikiHold('wcinline',$matches/*[1]*/);
+		return $this->noWikiHold('wcinline',$matches[1]);
 	}
 
-	private function noWikiEmit($index)
+	private function noWikiHoldCode($matches)
 	{
+		return $matches[1].$this->noWikiHold("block",$matches[2]).$matches[3];
+	}
+
+	private function noWikiEmit($matches)
+	{
+		$index=$matches[1];
 		return $this->noWikiQueue[$index];
 	}
 
-	private function renderTables($source)
+	private function renderTables($matches)
 	{
+		$source=$matches[0];
 		$rowcnt=0;
 		$table="<table class=\"wikitable\">\n";
 		$rows=explode("\n",$source);
@@ -1042,9 +1055,9 @@ class gwikiPage {
 		return $table;
 	}
 
-	private function renderLink($source)
+	private function renderLink($matches)
 	{
-		$source=trim($source);
+		$source=trim($matches[1]);
 		$pos=strpos($source,'|');
 		//if($pos===false) $pos=strpos($source,' ');
 		if($pos===false) { // no delimter - whole thing is the link
@@ -1082,8 +1095,10 @@ class gwikiPage {
 		return $ret;
 	}
 
-	private function renderHeader($source,$level)
+	private function renderHeader($matches)
 	{
+		$source=$matches[3];
+		$level=$matches[2];
 		$level=strlen($level)+1;
 		$this->tocQueue[$this->tocIndex] = array('level'=>$level, 'name'=>$source);
 		$toc="\n<h".$level.' id="'.$this->tocIdPrefix.$this->tocIndex.'" >'.$source.'</h'.$level.">\n";
@@ -1091,14 +1106,16 @@ class gwikiPage {
 		return $toc; 
 	}
 
-	private function renderIndent($source,$level)
+	private function renderIndent($matches)
 	{
+		$source=$matches[2];
+		$level=$matches[1];
 		$level=strlen($level);
 		$ret="\n<div class=\"wikiindent{$level}\">\n{$source}\n</div>";
 		return $ret; 
 	}
 
-	private function renderToc()
+	private function renderToc($matches)
 	{
 		$tocq=$this->tocQueue;
 		$toc='';
@@ -1154,6 +1171,11 @@ class gwikiPage {
 		}
 		$xoopsDB->freeRecordSet($result);
 		return($toc);
+	}
+
+	public function renderPageSetTocWrapper($matches)
+	{
+		return $this->renderPageSetToc($this->keyword, 6);
 	}
 
 	public function renderPageSetToc(&$page,$level,$tocclass='wikitocpage')
@@ -1254,9 +1276,9 @@ class gwikiPage {
 		//   image_file
 	}
 
-	private function renderImage($source)
+	private function renderImage($matches)
 	{
-		$source=trim($source);
+		$source=trim($matches[1]);
 		$pos=strpos($source,'|');
 		//if($pos===false) $pos=strpos($source,' ');
 		if($pos===false) { // no delimter - whole thing is the image url
@@ -1343,10 +1365,11 @@ class gwikiPage {
 		return $ret;
 	}
 
-	private function renderGallery($source)
+	private function renderGallery($matches)
 	{
 		global $xoopsDB;
 
+		$source=$matches[1];
 		$maxpx=intval(trim($source));
 		if($maxpx<10) $maxpx=$this->defaultThumbSize;
 		$page=$this->keyword;
@@ -1374,9 +1397,9 @@ class gwikiPage {
 		return $body;
 	}
 
-	private function renderLists($source)
+	private function renderLists($matches)
 	{
-		$lines=explode("\n",$source);
+		$lines=explode("\n",$matches[0]);
 		$last='';
 		foreach($lines as $i => $line) {
 			$line=ltrim($line);
@@ -1426,8 +1449,10 @@ class gwikiPage {
 		return $list;
 	}
 	
-	private function renderRef($refinfo,$source)
+	private function renderRef($matches)
 	{
+		$refinfo=$matches[1];
+		$source=$matches[2];
 		$first_ref=false;
 		$refs=explode('|',trim($refinfo).'|||');
 		$rq['id']=$refs[0];
@@ -1462,7 +1487,7 @@ class gwikiPage {
 		return $r;
 	}
 	
-	private function renderRefList()
+	private function renderRefList($matches)
 	{
 		$this->refShown=true;
 		$r='<div class="wikicitelist">';
@@ -1482,8 +1507,11 @@ class gwikiPage {
 		return $r;
 	}
 	
-	private function renderBox($type,$title,$body)
+	private function renderBox($matches)
 	{
+		$type=$matches[1];
+		$title=$matches[2];
+		$body=$matches[3];
 		// make sure we have a valid type
 		$type=strtolower($type);
 		if(!($type=='code' || $type=='info' || $type=='info' || $type=='note' || $type=='tip' || $type=='warn' || $type=='folded' )) $type='info';
@@ -1552,15 +1580,15 @@ class gwikiPage {
 		return $body;
 	}
 
-	public function renderBlockquote($source)
+	private function renderBlockquote($matches)
 	{
-		$src = str_replace("\n", ' ', preg_replace("#^> #m", "", $source));
+		$src = str_replace("\n", ' ', preg_replace("#^> #m", "", $matches[0]));
 		return '<blockquote class=\"wikiquote\">'.$src."</blockquote>\n";
 	}
 
-	public function renderPreformat($source)
+	private function renderPreformat($matches)
 	{
-		$src = preg_replace("#^. #m", "", $source);
+		$src = preg_replace("#^. #m", "", $matches[0]);
 		return '<pre>'.$src."</pre>\n";
 	}
 	
@@ -1573,219 +1601,257 @@ class gwikiPage {
 		$this->refShown=false;
 		
 		if(empty($title)) $title=$this->title;
-		$this->renderHeader($title,''); // do first because title should always be #toc0 - set in template
+		$this->renderHeader(array('','','',$title)); // do first because title should always be #toc0 - set in template
 		
-		$search = array();
-		$replace = array();
+//		$search = array();
+//		$replace = array();
+		$body=trim($body)."\n";
 
 		// eliminate double line endings
-		$search[]  = "#\r\n?#";
-		$replace[] = "\n";
+		$search  = "#\r\n?#";
+		$replace = "\n";
+		$body=preg_replace($search, $replace, $body);
 
 		// neuter html tags
-		$search[]  = "#<#";
-		$replace[] = "&lt;";
+		$search  = "#<#";
+		$replace = "&lt;";
+		$body=preg_replace($search, $replace, $body);
 
 		// neuter single quotes
-		$search[]  = "#'#";
-		$replace[] = "\\'";
+		$search  = "#'#";
+		$replace = "\\'";
+		$body=preg_replace($search, $replace, $body);
 
 		// nowiki - tilde escape
-		$search[]  = "#~([^ \t\r\n\v\f])#Ue";
-		$replace[] = '$this->noWikiHoldInline(\'\\1\')';
-		
+		$search  = "#~([^ \t\r\n\v\f])#U";
+		$replace = array($this,'noWikiHoldInline');
+		$body=preg_replace_callback($search, $replace, $body);
+
 		// nowiki content gwiki style
-		$search[]  = "#{nowiki}(.*){endnowiki}#Umsie";
-		$replace[] = '$this->noWikiHoldInline(\'\\1\')';
+		$search  = "#{nowiki}(.*){endnowiki}#Umsi";
+		$replace = array($this,'noWikiHoldInline');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// nowiki content block creole style (a nowiki that forces a style, how odd.)
-		$search[]  = "#^{{{\n(.*)^}}}\n#Umsie";
-		$replace[] = '$this->noWikiHoldBlock(\'\\1\')';
+		$search  = "#^{{{\n(.*)^}}}\n#Umsi";
+		$replace = array($this,'noWikiHoldBlock');
+		$body=preg_replace_callback($search, $replace, $body);
 		
 		// nowiki content inline creole style
-		$search[]  = "#{{{(.*)}}}#Ue";
-		$replace[] = '$this->noWikiHoldWCInline(\'\\1\')';
+		$search  = "#{{{(.*)}}}#U";
+		$replace = array($this,'noWikiHoldWCInline');
+		$body=preg_replace_callback($search, $replace, $body);
 		
 		// automatically nowiki content of code box - {code title}xxx{endcode}
-		$search[]  = "#({code [^\"<\n]+?})(.*?)({endcode})#sie";
-		$replace[] = '\'\\1\'.$this->noWikiHold("block",\'\\2\').\'\\3\'';
+		$search  = "#({code [^\"<\n]+?})(.*?)({endcode})#si";
+		$replace = array($this,'noWikiHoldCode');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// center ++ xxx
-		$search[]  = "#^(\+{2})(.*)(?=\n\n|\Z)#Usm";
-		$replace[] = "<center class=\"wikicenter\">\n\\2\n</center>\n";
+		$search  = "#^(\+{2})(.*)(?=\n\n|\Z)#Usm";
+		$replace = "<center class=\"wikicenter\">\n\\2\n</center>\n";
+		$body=preg_replace($search, $replace, $body);
 
 		// : indent up to 5 levels
-		$search[]  = "#^(\:{1,5})\s(.*)(?=\n\n|\Z)#Usme";
-		$replace[] = '$this->renderIndent(\'\\2\',\'\\1\')';
+		$search  = "#^(\:{1,5})\s(.*)(?=\n\n|\Z)#Usm";
+		$replace = array($this,'renderIndent');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// lists
-		$search[]  = "#^( *[*\#]{1,} (.*)\n)+#me";
-		$replace[] = '$this->renderLists(\'\\0\')';
+		$search  = "#^( *[*\#]{1,} (.*)\n)+#m";
+		$replace = array($this,'renderLists');
+		$body=preg_replace_callback($search, $replace, $body);
 		
 		// bold **xxx**
-		$search[]  = "#\*{2}(.*?)(\*{2}|(?=\n\n))#s";
-		$replace[] = "<strong class=\"wikistrong\">\\1</strong>";
+		$search  = "#\*{2}(.*?)(\*{2}|(?=\n\n))#s";
+		$replace = "<strong class=\"wikistrong\">\\1</strong>";
+		$body=preg_replace($search, $replace, $body);
 
 		// italic //xxx//
-		$search[]  = "#(?<![:])/{2}(.*?[^:])(/{2}|(?=\n\n))#s";
-		$replace[] = "<em class=\"wikiem\">\\1</em>";
+		$search  = "#(?<![:])/{2}(.*?[^:])(/{2}|(?=\n\n))#s";
+		$replace = "<em class=\"wikiem\">\\1</em>";
+		$body=preg_replace($search, $replace, $body);
 
 		// horizontal rule ---- (not an empty strikethru; creole says 4 or more so this needs to go first)
-		$search[]  = "#^-{4,}$#m";
-		$replace[] = "\n<hr  class=\"wikihr\"/>\n";
+		$search  = "#^-{4,}$#m";
+		$replace = "\n<hr  class=\"wikihr\"/>\n";
+		$body=preg_replace($search, $replace, $body);
 
 		// strikethru --xxx-- (this does NOT cross lines, as '--' is a common typographic convention
-		$search[]  = "#-{2}(.*?)(-{2})#";
-		$replace[] = "<del class=\"wikidel\">\\1</del>";
+		$search  = "#-{2}(.*?)(-{2})#";
+		$replace = "<del class=\"wikidel\">\\1</del>";
+		$body=preg_replace($search, $replace, $body);
 
 		// underline __xxx__
-		$search[]  = "#_{2}(.*?)(_{2}|(?=\n\n))#s";
-		$replace[] = "<span class=\"wikiu\">\\1</span>";
+		$search  = "#_{2}(.*?)(_{2}|(?=\n\n))#s";
+		$replace = "<span class=\"wikiu\">\\1</span>";
+		$body=preg_replace($search, $replace, $body);
 
 		// superscript ^^xxx^^
-		$search[]  = "#\^{2}(.*?)(\^{2}|(?=\n\n))#s";
-		$replace[] = "<sup class=\"wikisup\">\\1</sup>";
+		$search  = "#\^{2}(.*?)(\^{2}|(?=\n\n))#s";
+		$replace = "<sup class=\"wikisup\">\\1</sup>";
+		$body=preg_replace($search, $replace, $body);
 
 		// subscript ,,xxx,,
-		$search[]  = "#,{2}(.*?)(,{2}|(?=\n\n))#s";
-		$replace[] = "<sub class=\"wikisub\">\\1</sub>";
+		$search  = "#,{2}(.*?)(,{2}|(?=\n\n))#s";
+		$replace = "<sub class=\"wikisub\">\\1</sub>";
+		$body=preg_replace($search, $replace, $body);
 
 		// monospace ##xxx##
-		$search[]  = "#\#{2}(.*?)(\#{2}|(?=\n\n))#s";
-		$replace[] = "<span class=\"wikitt\">\\1</span>";
+		$search  = "#\#{2}(.*?)(\#{2}|(?=\n\n))#s";
+		$replace = "<span class=\"wikitt\">\\1</span>";
+		$body=preg_replace($search, $replace, $body);
 
 		// color !!color:xxx!!
-		$search[]  = "#!{2}(\#{0,1}[0-9A-Za-z]*):(.*?)(!{2}|(?=\n\n))#s";
-		$replace[] = "<span style=\"color:\\1;\">\\2</span>";
+		$search  = "#!{2}(\#{0,1}[0-9A-Za-z]*):(.*?)(!{2}|(?=\n\n))#s";
+		$replace = "<span style=\"color:\\1;\">\\2</span>";
+		$body=preg_replace($search, $replace, $body);
 
 		// color !!color,background:xxx!!
-		$search[]  = "#!{2}(\#{0,1}[0-9A-Za-z]*),(\#{0,1}[0-9A-Za-z]*):(.*?)(!{2}|(?=\n\n))#s";
-		$replace[] = "<span style=\"color:\\1; background-color:\\2;\">\\3</span>";
+		$search  = "#!{2}(\#{0,1}[0-9A-Za-z]*),(\#{0,1}[0-9A-Za-z]*):(.*?)(!{2}|(?=\n\n))#s";
+		$replace = "<span style=\"color:\\1; background-color:\\2;\">\\3</span>";
+		$body=preg_replace($search, $replace, $body);
 
 		// forced line break creole style \\, just a bare break tag
-		$search[]  = "#(\\\{2})#i";
-		$replace[] = '<br />';
+		$search  = "#(\\\{2})#i";
+		$replace = '<br />';
+		$body=preg_replace($search, $replace, $body);
 
 		// forced line break blog [[br]] or gwiki {break} styles, themed - by default clear all
-		$search[]  = "#(\[\[BR\]\]|{break})#i";
-		$replace[] = '<br class="wikibreak" />';
+		$search  = "#(\[\[BR\]\]|{break})#i";
+		$replace = '<br class="wikibreak" />';
+		$body=preg_replace($search, $replace, $body);
 
 		// image {{image url|alt text|align|max width in pixels}}
-		$search[]  = "#\{{2}(.*)\}{2}#Ume";
-		$replace[] = '$this->renderImage(\'\\1\')';
+		$search  = "#\{{2}(.*)\}{2}#Um";
+		$replace = array($this,'renderImage');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// info box {info title}xxx{endinfo}
-		$search[]  = "#{(info) ([^\"<\n]+?)?}(.*?){endinfo}#sie";
-		$replace[] = '$this->renderBox(\'\\1\',\'\\2\',\'\\3\')';
+		$search  = "#{(info) ([^\"<\n]+?)?}(.*?){endinfo}#si";
+		$replace = array($this,'renderBox');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// note box {note title}xxx{endnote}
-		$search[]  = "#{(note) ([^\"<\n]+?)?}(.*?){endnote}#sie";
-		$replace[] = '$this->renderBox(\'\\1\',\'\\2\',\'\\3\')';
+		$search  = "#{(note) ([^\"<\n]+?)?}(.*?){endnote}#si";
+		$replace = array($this,'renderBox');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// tip box {tip title}xxx{endtip}
-		$search[]  = "#{(tip) ([^\"<\n]+?)?}(.*?){endtip}#sie";
-		$replace[] = '$this->renderBox(\'\\1\',\'\\2\',\'\\3\')';
+		$search  = "#{(tip) ([^\"<\n]+?)?}(.*?){endtip}#si";
+		$replace = array($this,'renderBox');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// warning box {warning title}xxx{endwarning}
-		$search[]  = "#{(warn)ing ([^\"<\n]+?)?}(.*?){endwarning}#sie";
-		$replace[] = '$this->renderBox(\'\\1\',\'\\2\',\'\\3\')';
+		$search  = "#{(warn)ing ([^\"<\n]+?)?}(.*?){endwarning}#si";
+		$replace = array($this,'renderBox');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// code (preformatted) box {code title}xxx{endcode}
-		$search[]  = "#{(code) ([^\"<\n]+?)?}(.*?){endcode}#sie";
-		$replace[] = '$this->renderBox(\'\\1\',\'\\2\',\'\\3\')';
+		$search  = "#{(code) ([^\"<\n]+?)?}(.*?){endcode}#si";
+		$replace = array($this,'renderBox');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// folded box {folded title}xxx{endfolded}
-		$search[]  = "#{(folded) ([^\"<\n]+?)?}(.*?){endfolded}#sie";
-		$replace[] = '$this->renderBox(\'\\1\',\'\\2\',\'\\3\')';
+		$search  = "#{(folded) ([^\"<\n]+?)?}(.*?){endfolded}#si";
+		$replace = array($this,'renderBox');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// urls - smells like a link
-//		$search[]  = "#(?<![\"\[])((http|https|ftp|ftps)://.{2,}\..*)([,.?!:;]?\s)#Uie";
-		$search[]  = "#(?<=\s)((http|https|ftp|ftps)://.{2,}\..*)(?=[,.?!:;]{0,1}\s)#Uie";
-		$replace[] = '$this->renderLink(\'\\1\')';
+		$search  = "#(?<=\s)((http|https|ftp|ftps)://.{2,}\..*)(?=[,.?!:;]{0,1}\s)#Ui";
+		$replace = array($this,'renderLink');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// link [[link|linktext]]
-		$search[]  = "#\[{2}(.*)\]{2}#Ume";
-		$replace[] = '$this->renderLink(\'\\1\')';
+		$search  = "#\[{2}(.*)\]{2}#Um";
+		$replace = array($this,'renderLink');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// email xxx@example.com
-		$search[]="#(?<=\s)([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4})(?=\s)#i";
-//		$search[]  = "#([\w.-]+@[\w.-]+)(?![\w.]*(\">|<))#";
-		$replace[] = '<a href="mailto:\\1">\\1</a>';
+		$search  ="#(?<=\s)([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4})(?=\s)#i";
+		$replace = '<a href="mailto:\\1">\\1</a>';
+		$body=preg_replace($search, $replace, $body);
 
 		// CamelCase wiki link
 		//                "#^([A-Z][a-z\:]+){2,}\d*$#" - Could be between whitespace on either end or between > on start and/or < on end
 		if($this->useCamelCase) {
-			$search[]  = "#(?<=\s|>)"._WIKI_CAMELCASE_REGEX."(?=\s|</l|</t)#e";
-			$replace[] = '$this->wikiLink(\'\\1\')';
+			$search  = "#(?<=\s|>)"._WIKI_CAMELCASE_REGEX."(?=\s|</l|</t)#";
+			$replace = array($this,'wikiCCLink');
+			$body=preg_replace_callback($search, $replace, $body);
 		}
 
 		// =====headings up to 5 levels
-		$search[]  = "#(^\s{0,})(={1,5})([^=].*[^=])(={0,5})\s*$#Ume";
-		$replace[] = '$this->renderHeader(\'\\3\',\'\\2\')';
-		//$replace[] = "\n<h6>\\2</h6>\n";
+		$search  = "#(^\s{0,})(={1,5})([^=].*[^=])(={0,5})\s*$#Um";
+		$replace = array($this,'renderHeader');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// blockquote > xxx
-		$search[]  = "#^(> .*\n)+#me";
-		$replace[] = '$this->renderBlockquote(\'\\0\')';
+		$search  = "#^(> .*\n)+#m";
+		$replace = array($this,'renderBlockquote');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// preformated  .xxx
-		$search[]  = "#^(\. .*\n)+#me";
-		$replace[] = '$this->renderPreformat(\'\\0\')';
+		$search  = "#^(\. .*\n)+#m";
+		$replace = array($this,'renderPreformat');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// reference {ref id|first-ref}source{endref}
-		$search[]  = "#{ref( [^\"<\n]+?)?}(.*?){endref}#sie";
-		$replace[] = '$this->renderRef(\'\\1\',\'\\2\')';
-		
-		// forced line break blog [[br]] or gwiki {break} styles, themed - by default clear all
-		$search[]  = "#({reflist})#ie";
-		$replace[] = '$this->renderRefList()';
+		$search  = "#{ref( [^\"<\n]+?)?}(.*?){endref}#si";
+		$replace = array($this,'renderRef');
+		$body=preg_replace_callback($search, $replace, $body);
 
+		// forced line break blog [[br]] or gwiki {break} styles, themed - by default clear all
+		$search  = "#({reflist})#i";
+		$replace = array($this,'renderRefList');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// index or change list {pageindex prefix}
-		$search[]  = "#{(PageIndex|RecentChanges)([^\"<\n]+?)?}#sie";
-		$replace[] = '$this->renderIndex(\'\\1\',\'\\2\')';
+		$search  = "#{(PageIndex|RecentChanges)([^\"<\n]+?)?}#si";
+		$replace = array($this,'renderIndex');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// table of contents
-		$search[]  = "#\{toc\}#ie";
-		$replace[] = '$this->renderToc()';
-		
+		$search  = "#\{toc\}#i";
+		$replace = array($this, 'renderToc');
+		$body=preg_replace_callback($search, $replace, $body);
+
 		// page set table of contents
-		$search[]  = "#\{pagesettoc\}#ie";
-		$replace[] = '$this->renderPageSetToc($this->keyword,6)';
+		$search  = "#\{pagesettoc\}#i";
+		$replace = array($this,'renderPageSetTocWrapper');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// image gallery {gallery size}
-		$search[]  = "#{gallery([^\"<\n]+?)?}#sie";
-		$replace[] = '$this->renderGallery(\'\\1\')';
-
-		// page set navigation
-		//$search[]  = "#\{pagesetnav\}#ie";
-		//$replace[] = '$this->renderPageSetNav($this->keyword)';
+		$search  = "#{gallery([^\"<\n]+?)?}#si";
+		$replace = array($this,'renderGallery');
+		$body=preg_replace_callback($search, $replace, $body);
 
 		// more anchor - indicates end of teaser/summary
-		$search[]  = "#\{more\}#i";
-		$replace[] = '<span id="more"></span>';
+		$search  = "#\{more\}#i";
+		$replace = '<span id="more"></span>';
+		$body=preg_replace($search, $replace, $body);
 		
 		// tables
-		$search[]  = "#^( *\|((.*)\|){1,}\s*\n)+#me";
-		$replace[] = '$this->renderTables(\'\\0\')';
-		
+		$search  = "#^( *\|((.*)\|){1,}\s*\n)+#m";
+		$replace = array($this,'renderTables');
+		$body=preg_replace_callback($search, $replace, $body);
+
 		// paragraph on 2 consecutive newlines
-		$search[]  = "#\n{2}#";
-		$replace[] = "\n<p>";
+		$search  = "#\n{2}#";
+		$replace = "\n<p>";
+		$body=preg_replace($search, $replace, $body);
 		
 		// restore cached nowiki content, all styles (if you need to use {PdNlNw:#} in your page, put it in a nowiki tag) 
-		$search[] = "#{PdNlNw:([0-9]{1,})}#e";
-		$replace[] = '$this->noWikiEmit(\'\\1\')';
+		$search = "#{PdNlNw:([0-9]{1,})}#";
+		$replace = array($this,'noWikiEmit');
+		$body=preg_replace_callback($search, $replace, $body);
 
-		$body=preg_replace($search, $replace, trim($body)."\n");
-		if($this->refShown==false && $this->refIndex>0) $body.=$this->renderRefList();
+		if($this->refShown==false && $this->refIndex>0) $body.=$this->renderRefList(null);
 		$body=stripslashes($this->convertEntities($body));
 
 		$this->renderedPage=$body;
 		
 		return $this->renderedPage;
 	}
-
 
 }
 
