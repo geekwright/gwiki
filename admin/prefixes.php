@@ -11,6 +11,7 @@
 */
 include 'header.php';
 if(!$xoop25plus) adminmenu(5);
+else echo $moduleAdmin->addNavigation('prefixes.php');
 
 // return groups and current permissions for a prefix as an array of options for a form select
 function getPrefixGroups($pid)

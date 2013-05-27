@@ -15,6 +15,7 @@ include_once '../include/functions.php';
 include_once XOOPS_ROOT_PATH.'/class/xoopsformloader.php';
 
 if(!$xoop25plus) adminmenu(3);
+else echo $moduleAdmin->addNavigation('pages.php');
 
 function post_clean_request($url, $params)
 {
@@ -128,7 +129,8 @@ function showHistory($page)
         echo '<td>'.$modified.($active?'*':'').'</td>';
         echo '<td>'.$wikiPage->getUserName($uid).'</td>';
         echo '<td><a href="pages.php?page='.$page.'&op=display&id='.$id.'">'._AD_GWIKI_VIEW.'</a> | <a href="javascript:restoreRevision(\''.$id.'\');">'._AD_GWIKI_RESTORE.'</a> ';
-        echo ' | <a href="pages.php?page='.$page.'&op=fix&id='.$id.'">'._AD_GWIKI_FIX.'</a> | <a href="pages.php?page='.$page.'&op=tool&id='.$id.'">'._AD_GWIKI_PAGETOOLS.'</a></td></tr>';
+        echo ' | <a href="pages.php?page='.$page.'&op=fix&id='.$id.'">'._AD_GWIKI_FIX.'</a> | <a href="pages.php?page='.$page.'&op=tool&id='.$id.'">'._AD_GWIKI_PAGETOOLS.'</a>';
+        echo ' | <a href="../edit.php?page='.$page.'&id='.$id.'">'._EDIT.'</a> </td></tr>';
     }
     if ($i == 0) {
         echo '<tr class="odd"><td colspan="4">'._MD_GWIKI_PAGENOTFOUND.'</td></tr>';

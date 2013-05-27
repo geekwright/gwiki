@@ -11,6 +11,7 @@
 */
 include 'header.php';
 if(!$xoop25plus) adminmenu(7);
+else echo $moduleAdmin->addNavigation('recent.php');
 
 global $xoopsModule, $xoopsConfig;
 

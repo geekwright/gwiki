@@ -13,6 +13,7 @@ include 'header.php';
 //include_once '../include/functions.php';
 
 if(!$xoop25plus) adminmenu(6);
+else echo $moduleAdmin->addNavigation('attachments.php');
 
 function cleaner($string,$trim=true) {
 //	$string=stripcslashes($string);

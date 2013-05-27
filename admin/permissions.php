@@ -11,6 +11,8 @@
 */
 include 'header.php';
 if(!$xoop25plus) adminmenu(4);
+else echo $moduleAdmin->addNavigation('permissions.php');
+
 
 global $xoopsModule, $xoopsConfig;
 
