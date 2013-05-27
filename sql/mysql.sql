@@ -98,3 +98,12 @@ CREATE TABLE gwiki_page_files (
   PRIMARY KEY (file_id),
   UNIQUE KEY (keyword, file_name)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+CREATE TABLE gwiki_pagelinks (
+  from_keyword varchar(128) NOT NULL DEFAULT '',
+  to_keyword varchar(128) NOT NULL DEFAULT '',
+
+  PRIMARY KEY (from_keyword, to_keyword),
+  KEY (to_keyword),
+  KEY (from_keyword)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;

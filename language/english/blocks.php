@@ -26,9 +26,10 @@ define('_MB_GWIKI_WIKIPAGESET_LEVELS' , 'Levels of TOC to show:');
 define('_MB_GWIKI_RELATED' , 'Relation Page:');
 define('_MB_GWIKI_RELATED_DESC' , '(Leave blank to derive from current page.)');
 define('_MB_GWIKI_RELATED_COUNT' , 'Max Number of Pages');
-define('_MB_GWIKI_RELATED_SORT' , 'Sort Related Pages by');
+define('_MB_GWIKI_RELATED_SORT' , 'Sort Pages by');
 define('_MB_GWIKI_RELATED_SORT_HITS' , 'Popularity');
 define('_MB_GWIKI_RELATED_SORT_DATE' , 'Recently Updated');
+define('_MB_GWIKI_RELATED_SORT_ALPHA' , 'Alphabetic');
 define('_MB_GWIKI_RANDOM_PAGE' , 'Show a Random Page');
 define('_MB_GWIKI_RANDOM_PAGE_DESC' , '(The Page to Load will be used as a prefix pattern to limit selections. Leave blank to include all pages.)');
 

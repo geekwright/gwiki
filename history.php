@@ -31,24 +31,10 @@ if($mayEdit) {
 	if (isset($_POST['page']) && isset($_POST['id']) && isset($_POST['op']) && $_POST['op']=='restore') {
 		$page=cleaner($_POST['page']);
 		$id=intval($_POST['id']);
-		if($id) setRevision($page,$id);
+		if($id) $wikiPage->setRevision($page,$id);
 		$message=_MD_GWIKI_RESTORED;
         	redirect_header("history.php?page=$page", 2, $message);
 	}
-}
-
-function setRevision($page, $id)
-{
-    global $xoopsDB;
-    
-    $sql = "UPDATE ".$xoopsDB->prefix('gwiki_pages')." SET active = 0 WHERE keyword='{$page}' and active = 1 ";
-    $result=$xoopsDB->query($sql);
-    if($result) {
-      $sql = "UPDATE ".$xoopsDB->prefix('gwiki_pages')." SET active = 1 WHERE keyword='{$page}' AND gwiki_id='{$id}'";
-      $result=$xoopsDB->query($sql);
-    }
-
-    return $result;
 }
 
 	if($pageX) {

@@ -63,6 +63,8 @@ define('_MI_GWIKI_BL_PAGESET_TOC', 'Page Set TOC');
 define('_MI_GWIKI_BL_PAGESET_TOC_DESC', 'Display Table of Contents for a Page Set');
 define('_MI_GWIKI_BL_RELATED', 'Related Pages');
 define('_MI_GWIKI_BL_RELATED_DESC', 'Display Related Pages');
+define('_MI_GWIKI_BL_LINKSHERE', 'What Links Here');
+define('_MI_GWIKI_BL_LINKSHERE_DESC', 'Display wiki vpages that link to this page.');
 
 // notification categories
 define ('_MI_GWIKI_NOTIFY_GLOBAL', 'Entire Wiki');

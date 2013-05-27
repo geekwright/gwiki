@@ -158,7 +158,16 @@ if($old_version<100) {
 			' ADD KEY lastmod (active,lastmodified), ADD KEY pageindex (active,show_in_index,display_keyword) ';
 	$xoopsDB->queryF($sql);
 }
-	
+if($old_version<101) {
+	$sql  = 'CREATE TABLE IF NOT EXISTS '.$xoopsDB->prefix('gwiki_pagelinks').' (';
+	$sql .=	' from_keyword varchar(128) NOT NULL DEFAULT \'\',';
+	$sql .=	' to_keyword varchar(128) NOT NULL DEFAULT \'\',';
+	$sql .=	' PRIMARY KEY (from_keyword, to_keyword),';
+	$sql .=	' KEY (to_keyword),';
+	$sql .=	' KEY (from_keyword)';
+	$sql .=	') ENGINE=MyISAM  DEFAULT CHARSET=utf8;';
+	$xoopsDB->queryF($sql);
+}
 	return !$error;
 }
 

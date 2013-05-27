@@ -38,19 +38,8 @@ global $xoopsConfig,$xoTheme;
 		$block['display_keyword']=$options[0];
 	}
 
-
-//	if(!defined('_MI_GWIKI_NAME')) {
-//		$langfile=XOOPS_ROOT_PATH.'/modules/'.$dir.'/language/'.$xoopsConfig['language'].'/modinfo.php';
-//		if (!file_exists($langfile)) {
-//			$langfile=XOOPS_ROOT_PATH.'/modules/'.$dir.'/language/english/modinfo.php';
-//		}
-//		include_once $langfile;
-//	}
 	$xoTheme->addStylesheet(XOOPS_URL.'/modules/'.$dir.'/module.css');
 
-//		$wikiPage->setWikiLinkURL("javascript:ajaxGwikiLoad('%s','{$options[1]}');");
-//		$block['rendered']='<h1 class="wikititle">'.$block['title'].'</h1>' . $wikiPage->renderPage();
-		
 	$block['bid']=$options[1]; // we use our block id to make a (quasi) unique div id
 		
 	$block['moddir']  = $dir;
@@ -113,7 +102,6 @@ global $xoopsUser,$xoopsDB;
 	if(is_array($groups)) $groupwhere=' IN ('.implode(', ',$groups).') ';
 	else $groupwhere=" = '".$groups."'";
 
-//	$sql = 'SELECT distinct prefix FROM '.$xoopsDB->prefix('gwiki_group_prefix').' WHERE group_id '.$groupwhere;
 	$sql = 'SELECT distinct p.prefix_id, prefix FROM ';
 	$sql.= $xoopsDB->prefix('gwiki_prefix').' p, ';
 	$sql.= $xoopsDB->prefix('gwiki_group_prefix').' g ';
@@ -129,7 +117,7 @@ global $xoopsUser,$xoopsDB;
 		$prefixes[] = $myrow;
 	}
 
-	 // make sure we have som edit/create permission. We need full keyword to be certain, so let edit sort it out.
+	 // make sure we have some edit/create permission. We need full keyword to be certain, so let edit sort it out.
 	$mayEdit = ($edit_any || $create_any || $edit_pfx || $create_pfx);
 	if($mayEdit) {
 		$block['moddir']  = $dir;
@@ -299,8 +287,6 @@ global $xoopsDB,$xoTheme;
 		}
 	}
 
-
-//	$block['body']='WHAT?'; // print_r($page,true);
 	return $block;
 }
 
@@ -461,6 +447,82 @@ function b_gwiki_related_edit($options) {
 	$form .= _MB_GWIKI_RELATED_SORT . ' <select id="options[2]" name="options[2]">';
 	$form .= '<option value="0"'.(intval($options[2])==0?' selected':'').'>'._MB_GWIKI_RELATED_SORT_DATE.'</option>';
 	$form .= '<option value="1"'.(intval($options[2])==1?' selected':'').'>'._MB_GWIKI_RELATED_SORT_HITS.'</option>';
+	$form .= '</select><br />';
+	return $form;
+}
+
+function b_gwiki_linkshere_show($options) {
+global $xoTheme, $xoopsDB;
+
+	$block=false;
+
+	$dir = basename( dirname ( dirname( __FILE__ ) ) ) ;
+	include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
+	$wikiPage = new gwikiPage;
+
+	
+	if (isset($_GET['page'])) {
+		$page = $_GET['page'];
+		if (get_magic_quotes_gpc()) $page=stripslashes($page);
+		$page=html_entity_decode($page);
+		$page=trim($page);
+		$page=$wikiPage->getOOBFromKeyword($page); 
+		$q_page=$wikiPage->escapeForDB($page);
+	}
+
+	if(empty($page)) return false;
+
+	$limit=intval($options[0]);
+	if($limit<0) $limit=0;
+
+	$sort=intval($options[1]);
+	if($sort<0) $sort=0;
+	if($sort>2) $sort=2;
+	
+	$relatedsort=' display_keyword, ';
+	if($sort==1) $relatedsort=' lastmodified DESC, hit_count DESC, ';
+	if($sort==2) $relatedsort=' hit_count DESC, lastmodified DESC, ';
+	
+	$q_page=$wikiPage->escapeForDB($page);
+
+	$sql  = 'SELECT keyword, display_keyword, title, lastmodified, uid, page_id, created, hit_count ';
+	$sql .= ' FROM '.$xoopsDB->prefix('gwiki_pages');
+	$sql .= ' natural left join ' .$xoopsDB->prefix('gwiki_pageids') ;
+	$sql .= ' left join ' .$xoopsDB->prefix('gwiki_pagelinks') . ' on from_keyword = keyword ' ;
+	$sql .= " WHERE active=1 and to_keyword = '{$q_page}' ";
+	$sql .= " ORDER BY {$relatedsort} keyword ";
+	
+	$linkshere=false;
+	if($limit) 	$result = $xoopsDB->query($sql,$limit,0);
+	else 	    $result = $xoopsDB->query($sql);
+	while($row = $xoopsDB->fetchArray($result)) {
+		$row['pageurl'] = sprintf($wikiPage->getWikiLinkURL(),$row['keyword']);
+		$row['pagelink'] = sprintf('<a href="%s" title="%s">%s</a>', $row['pageurl'], htmlspecialchars($row['title'],ENT_COMPAT), $row['title']);
+		$linkshere[]=$row;
+	}
+	$xoopsDB->freeRecordSet($result);
+
+	if($linkshere) {
+		$block['linkshere']=$linkshere;
+		
+		$xoTheme->addStylesheet(XOOPS_URL.'/modules/'.$dir.'/module.css');
+
+		$block['keyword']=$page;
+		$block['moddir']  = $dir;
+		$block['modpath'] = XOOPS_ROOT_PATH .'/modules/' . $dir;
+		$block['modurl']  = XOOPS_URL .'/modules/' . $dir;
+	}
+		
+	return $block;
+}
+
+function b_gwiki_linkshere_edit($options) {
+
+	$form  = _MB_GWIKI_RELATED_COUNT. ' <input type="text" value="'.$options[0].'"id="options[0]" name="options[0]" /><br />';
+	$form .= _MB_GWIKI_RELATED_SORT . ' <select id="options[1]" name="options[1]">';
+	$form .= '<option value="0"'.(intval($options[1])==0?' selected':'').'>'._MB_GWIKI_RELATED_SORT_ALPHA.'</option>';
+	$form .= '<option value="1"'.(intval($options[1])==1?' selected':'').'>'._MB_GWIKI_RELATED_SORT_DATE.'</option>';
+	$form .= '<option value="2"'.(intval($options[1])==2?' selected':'').'>'._MB_GWIKI_RELATED_SORT_HITS.'</option>';
 	$form .= '</select><br />';
 	return $form;
 }

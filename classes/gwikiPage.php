@@ -78,6 +78,8 @@ class gwikiPage {
 	private $refIndex = 0;
 	private $refShown = false;
 	
+	private $wikiPageLinks = array();	// link in current page
+	
 	// Out Of Bounds data - not cleared with resetPage
 	private $pageIndexPrefix='';	// current prefix for the pageindex
 
@@ -158,6 +160,7 @@ class gwikiPage {
 		$this->refQueue = array();
 		$this->refIndex = 0;
 		$this->refShown=false;
+		$this->wikiPageLinks=array();
 	}
 
 	public function escapeForDB($value)
@@ -292,6 +295,7 @@ class gwikiPage {
 		$this->tocIndex = 0;
 		$this->refQueue = array();
 		$this->refIndex = 0;
+		$this->wikiPageLinks=array();
 
 		// eliminate things we don't want in search page because they
 		// are misleading and/or change outside of the page itself
@@ -380,6 +384,9 @@ class gwikiPage {
 				if($result) {
 					$result=$xoopsDB->getInsertId();
 					$this->gwiki_id=$result;
+					
+					$this->updatePageLinks();
+
 					$notification_handler =& xoops_gethandler('notification');
 					$tags['PAGE_NAME']=$page;
 					$tags['PAGE_TITLE']=$this->title;
@@ -406,6 +413,42 @@ class gwikiPage {
 		}
 
 		return $result;
+	}
+
+	// update gwiki_pagelinks table - expects $page to be current
+	private function updatePageLinks($render=false) {
+		global $xoopsDB;
+
+		if($render) {
+			// eliminate things we don't want in search page because they
+			// are misleading and/or change outside of the page itself
+			$search[]  = "#{(PageIndex|RecentChanges)([^\"<\n]+?)?}#si";
+			$replace[] = '';
+			$search[]  = "#\{toc\}#i";
+			$replace[] = '';
+			$search[]  = "#\{pagesettoc\}#i";
+			$replace[] = '';
+			$tempbody=preg_replace($search, $replace, $this->body)."\n\n";
+
+			$this->renderPage($tempbody);
+		}
+		$page = $this->escapeForDB($this->keyword);
+
+		$sql  = 'DELETE FROM '.$xoopsDB->prefix('gwiki_pagelinks');
+		$sql .= ' WHERE from_keyword = \''.$page.'\'';
+		$result=$xoopsDB->query($sql);
+
+		if(!empty($this->wikiPageLinks)) {
+			$sql='INSERT INTO '.$xoopsDB->prefix('gwiki_pagelinks').' (from_keyword, to_keyword) VALUES ';
+			$values='';
+			foreach($this->wikiPageLinks as $i=>$v) {
+				if(!empty($values)) $values.=', ';
+				$values.='(\''.$page.'\', \''.$this->escapeForDB($i).'\')';
+			}
+			$sql.=$values;
+			$result=$xoopsDB->query($sql);
+		}
+		return;
 	}
 
 	// get the next higher unused page_set_order for a given page_set_home
@@ -549,6 +592,27 @@ class gwikiPage {
 		$result=$xoopsDB->queryF($sql);
 		// nothing to do if it fails
 		return $xoopsDB->getAffectedRows();
+	}
+	
+	public function setRevision($keyword, $id)
+	{
+		global $xoopsDB;
+
+		$keyword=$this->escapeForDB($keyword);
+		$id=intval($id);
+		
+		$page=$this->getPage($keyword,$id);
+		if(!$page) return false;
+ 
+		$sql = "UPDATE ".$xoopsDB->prefix('gwiki_pages')." SET active = 0 WHERE keyword='{$keyword}' and active = 1 ";
+		$result=$xoopsDB->query($sql);
+
+		$sql = "UPDATE ".$xoopsDB->prefix('gwiki_pages')." SET active = 1 WHERE keyword='{$keyword}' AND gwiki_id='{$id}'";
+		$result=$xoopsDB->query($sql);
+
+		$this->updatePageLinks(true);
+
+		return $result;
 	}
 
 	public function getPage($keyword,$id=NULL)
@@ -731,7 +795,6 @@ class gwikiPage {
 				if($altkey) $linktext = $altkey;
 				else $linktext = $org_keyword;
 				$linktext=stripslashes($linktext);
-				//$linktext=$this->noWikiHold('inline',$linktext);
 				$ret='<a href="'.$link.'" target="_blank" title="'._MD_GWIKI_PAGE_EXT_LINK_TT.'">'.$linktext.'<span class="wikiextlink"> </span></a>';
 				return $ret;
 			}
@@ -759,8 +822,8 @@ class gwikiPage {
 		if(!empty($altkey)) $display_keyword=$altkey;
 		$title=htmlspecialchars($title);
 		$display_keyword=stripslashes($display_keyword);
-		//$display_keyword=htmlspecialchars($display_keyword);
-		//$display_keyword=$this->noWikiHold('inline',$display_keyword);
+
+		@$this->wikiPageLinks[$keyword]+=1;	// track where this page links
 
 		$url=sprintf($this->wikiLinkURL,$keyword);
 		return sprintf('<a href="%s" title="%s">%s%s</a>', $url, $title, $display_keyword, $newpage);
@@ -1059,10 +1122,21 @@ class gwikiPage {
 	{
 		$source=trim($matches[1]);
 		$pos=strpos($source,'|');
-		//if($pos===false) $pos=strpos($source,' ');
+		
 		if($pos===false) { // no delimter - whole thing is the link
 			$link=$source;
 			$linktext='';
+			// handle the pathological case of a possesive of a person page.
+			// Creole test includes "[[Ward Cunningham's]]" which leads to a
+			// wiki page WardCunningham. Included in spirit of compatibility.
+			if(substr($link,-2)=="'s") {
+				$templink=substr($link,0,strlen($link)-3); // quote is slashed
+				// only if a wiki page
+				if(preg_match('/^([A-Za-z\x80-\xff0-9.:\- ]){2,}$/',$templink)) {
+					$linktext=$link;
+					$link=$templink;
+				}
+			}
 		}
 		else {
 			$link=trim(substr($source,0,$pos));
@@ -1237,6 +1311,12 @@ class gwikiPage {
 		$pageset['last']=array( 'link' => sprintf($this->getWikiLinkURL(),$toc[$last]['keyword']),
 								'text' => htmlentities($toc[$last]['display_keyword'],ENT_QUOTES),
 								'desc' => _MD_GWIKI_PAGENAV_LAST);
+
+		if(strcasecmp($toc[$first]['keyword'],$page)===0) $pageset['first']['link']='javascript:void(0)';
+		if(strcasecmp($toc[$prev]['keyword'],$page)===0) $pageset['prev']['link']='javascript:void(0)';
+		if(strcasecmp($toc[$home]['keyword'],$page)===0) $pageset['home']['link']='javascript:void(0)';
+		if(strcasecmp($toc[$next]['keyword'],$page)===0) $pageset['next']['link']='javascript:void(0)';
+		if(strcasecmp($toc[$last]['keyword'],$page)===0) $pageset['last']['link']='javascript:void(0)';
 
 		return($pageset);
 	}
@@ -1605,7 +1685,7 @@ class gwikiPage {
 		
 //		$search = array();
 //		$replace = array();
-		$body=trim($body)."\n";
+		$body=$body."\n";
 
 		// eliminate double line endings
 		$search  = "#\r\n?#";
@@ -1849,7 +1929,7 @@ class gwikiPage {
 		$body=stripslashes($this->convertEntities($body));
 
 		$this->renderedPage=$body;
-		
+
 		return $this->renderedPage;
 	}
 

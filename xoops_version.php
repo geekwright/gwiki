@@ -17,7 +17,7 @@ $modversion['license_url'] = substr($modversion['license_url'],strpos($modversio
 $modversion['release_date']     = '2013/01/08';
 $modversion['module_website_url'] = 'geekwright.com';
 $modversion['module_website_name'] = 'geekwright, LLC';
-$modversion['module_status'] = "Beta";
+$modversion['module_status'] = "Beta2";
 $modversion['min_php']='5.2';
 $modversion['min_xoops']='2.5';
 $modversion['system_menu'] = 1;
@@ -32,7 +32,7 @@ $modversion['tables'][] = 'gwiki_prefix';
 $modversion['tables'][] = 'gwiki_template';
 $modversion['tables'][] = 'gwiki_page_images';
 $modversion['tables'][] = 'gwiki_page_files';
-//$modversion['tables'][] = '';
+$modversion['tables'][] = 'gwiki_pagelinks';
 
 // Administration tools
 $modversion['hasAdmin'] = 1;
@@ -318,4 +318,12 @@ $modversion['blocks'][] = array(
 	'options' => '1||0',
 	'template' => 'gwiki_relatedblock.html');
 
+$modversion['blocks'][] = array(
+	'file' => 'blocks.php',
+	'name' => _MI_GWIKI_BL_LINKSHERE,
+	'description' =>  _MI_GWIKI_BL_LINKSHERE_DESC,
+	'show_func' => 'b_gwiki_linkshere_show',
+	'edit_func' => 'b_gwiki_linkshere_edit',
+	'options' => '0|0',
+	'template' => 'gwiki_linkshere.html');
 ?>

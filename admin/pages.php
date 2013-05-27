@@ -287,25 +287,12 @@ function getRevision($page, $id)
     return $xoopsDB->fetchRow($result);
 }
 
-function setRevision($page, $id)
-{
-    global $xoopsDB;
-    
-    $sql = "UPDATE ".$xoopsDB->prefix('gwiki_pages')." SET active = 0 WHERE keyword='{$page}' and active = 1 ";
-    $result=$xoopsDB->query($sql);
-    if($result) {
-      $sql = "UPDATE ".$xoopsDB->prefix('gwiki_pages')." SET active = 1 WHERE keyword='{$page}' AND gwiki_id='{$id}'";
-      $result=$xoopsDB->query($sql);
-    }
-
-    return $result;
-}
 
 function fixRevision($page, $id)
 {
-    global $xoopsDB;
+    global $xoopsDB, $wikiPage;
     
-    $result=setRevision($page, $id);
+    $result=$wikiPage->setRevision($page, $id);
     if($result) {
       $sql = "DELETE FROM ".$xoopsDB->prefix('gwiki_pages')." WHERE keyword='{$page}' AND active=0 ";
       $result=$xoopsDB->query($sql);
@@ -398,7 +385,7 @@ case 'display':
     break;
 
 case 'restore':
-    $success = setRevision($page, $id);
+    $success = $wikiPage->setRevision($page, $id);
     redirect_header('pages.php?page='.$page.'&op=history', 2, ($success)?_MD_GWIKI_DBUPDATED:_MD_GWIKI_ERRORINSERT);
     break;
 
