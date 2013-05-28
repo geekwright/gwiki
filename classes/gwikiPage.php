@@ -622,7 +622,7 @@ class gwikiPage {
 		$this->resetPage();
 		$this->keyword= $keyword;
 		$prefix = $this->getPrefix($keyword);
-		if($prefix) {
+		if($prefix && $prefix['defined']) {
 			$this->currentprefix = $prefix['prefix'];
 			$this->currentprefixid = $prefix['prefix_id'];
 			$this->currenttemplateid = $prefix['prefix_template_id'];
