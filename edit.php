@@ -249,7 +249,10 @@ case "preview":
 	$form->addElement(new XoopsFormRadioYN(_MD_GWIKI_SHOW_IN_INDEX, "show_in_index", intval($show_in_index)));
 	$form->addElement(new XoopsFormRadioYN(_MD_GWIKI_LEAVE_INACTIVE, "leave_inactive", intval($leave_inactive)));
 	$btn_tray2 = new XoopsFormElementTray('', ' ','gwikiformpage2');
-	$btn_tray2->addElement(new XoopsFormButton("", "submit2", _MD_GWIKI_SUBMIT, "submit"));
+
+	$submit_btn2 = new XoopsFormButton('', 'submit2', _MD_GWIKI_SUBMIT, 'submit');
+	$submit_btn2->setExtra("onclick='prepForSubmit();'");
+	$btn_tray2->addElement($submit_btn2);
 
 	$bodydata_btn = new XoopsFormButton("", "bodyedit", _MD_GWIKI_EDIT_SHOW_BODY, "button");
 	$bodydata_btn->setExtra("onclick=".
@@ -258,7 +261,7 @@ case "preview":
 	$btn_tray2->addElement($bodydata_btn);
     
 	$preview_btn2 = new XoopsFormButton("", "preview2", _PREVIEW, "button");
-	$preview_btn2->setExtra("onclick='document.forms.gwikiform.op.value=\"preview\"; document.forms.gwikiform.action=document.forms.gwikiform.action+\"#wikipage\"; document.forms.gwikiform.submit.click();'");
+	$preview_btn2->setExtra("onclick='prepForPreview();'");
 	$btn_tray2->addElement($preview_btn2);
     
 	$cancel_btn2 = new XoopsFormButton("", "cancel2", _CANCEL, "button");
@@ -271,6 +274,7 @@ case "preview":
 
     $form->assign($xoopsTpl);
     $xoopsTpl->assign('gwiki', $pageX);
+    $xoopsTpl->assign('showwizard',empty($body));
     break;
 
 }
