@@ -76,50 +76,11 @@ global $xoopsUser,$xoopsDB;
 	$block=false;
 
 	$dir = basename( dirname ( dirname( __FILE__ ) ) ) ;
-	
 	include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
+
 	$wikiPage = new gwikiPage;
-
-	$module_handler = xoops_gethandler('module');
-	$module         = $module_handler->getByDirname($dir);
-	$module_id = $module->getVar('mid');
-	// $config_handler =& xoops_gethandler('config');
-	// $moduleConfig   =& $config_handler->getConfigsByCat(0, $module->getVar('mid'));
-
-	if (is_object($xoopsUser)) {
-		$groups = $xoopsUser->getGroups();
-	} else {
-		$groups = XOOPS_GROUP_ANONYMOUS;
-	}
-
-	$gperm_handler =& xoops_gethandler('groupperm');
-
-	$edit_any = $gperm_handler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_EDIT_ANY_NUM, $groups, $module_id);
-	$edit_pfx = $gperm_handler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_EDIT_PFX_NUM, $groups, $module_id);
-	$create_any = $gperm_handler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_CREATE_ANY_NUM, $groups, $module_id);
-	$create_pfx = $gperm_handler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_CREATE_PFX_NUM, $groups, $module_id);
-
-	if(is_array($groups)) $groupwhere=' IN ('.implode(', ',$groups).') ';
-	else $groupwhere=" = '".$groups."'";
-
-	$sql = 'SELECT distinct p.prefix_id, prefix FROM ';
-	$sql.= $xoopsDB->prefix('gwiki_prefix').' p, ';
-	$sql.= $xoopsDB->prefix('gwiki_group_prefix').' g ';
-	$sql.= ' WHERE group_id '.$groupwhere;
-	$sql.= ' AND p.prefix_id = g.prefix_id';
-	$sql.= ' ORDER BY prefix ';
-	$prefixes=array();
-	$result = $xoopsDB->query($sql);
-	$first=true;
-	while($myrow = $xoopsDB->fetchArray($result)) {
-		if($first && $create_any) $prefixes[]=array('prefix_id'=>-1, 'prefix'=>'');
-		$first=false;
-		$prefixes[] = $myrow;
-	}
-
-	 // make sure we have some edit/create permission. We need full keyword to be certain, so let edit sort it out.
-	$mayEdit = ($edit_any || $create_any || $edit_pfx || $create_pfx);
-	if($mayEdit) {
+	$prefixes=$wikiPage->getUserNamespaces();
+	if($prefixes) {
 		$block['moddir']  = $dir;
 		$block['modpath'] = XOOPS_ROOT_PATH .'/modules/' . $dir;
 		$block['modurl']  = XOOPS_URL .'/modules/' . $dir;
