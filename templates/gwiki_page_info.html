@@ -30,6 +30,9 @@
 	<{if $gwiki.admin_lock}><img src="<{$gwiki.modurl}>/images/lockedicon.png" alt="<{$smarty.const._MD_GWIKI_PAGE_IS_LOCKED}>" title="<{$smarty.const._MD_GWIKI_PAGE_IS_LOCKED}>" />
 	<{else}>
 		<{if $gwiki.ineditor}>
+			<{if $showwizard}>
+				<a href="<{$gwiki.modurl}>/wizard.php?page=<{$gwiki.keyword}>"><img src="<{$gwiki.modurl}>/images/wizardicon.png" alt="<{$smarty.const._MD_GWIKI_IMAGES}>" title="<{$smarty.const._MD_GWIKI_WIZARD}>" /></a>
+			<{/if}>
 			<a onclick="toggleDiv('wikiimageedit'); return false;"><img src="<{$gwiki.modurl}>/images/imageicon.png" alt="<{$smarty.const._MD_GWIKI_IMAGES}>" title="<{$smarty.const._MD_GWIKI_IMAGES}>" /></a>
 			<a onclick="toggleDiv('wikifileedit'); return false;"><img src="<{$gwiki.modurl}>/images/attachicon.png" alt="<{$smarty.const._MD_GWIKI_ATTACHMENT_EDIT}>" title="<{$smarty.const._MD_GWIKI_ATTACHMENT_EDIT}>" /></a>
 			<a onclick="bigWindow(1); return false;"><img src="<{$gwiki.modurl}>/images/fullscreenicon.png" alt="<{$smarty.const._MD_GWIKI_FULLSCREEN_EDIT}>" title="<{$smarty.const._MD_GWIKI_FULLSCREEN_EDIT}>" /></a>

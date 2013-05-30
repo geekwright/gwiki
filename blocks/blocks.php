@@ -73,6 +73,7 @@ function b_gwiki_wikiblock_edit($options) {
 function b_gwiki_newpage_show($options) {
 global $xoopsUser,$xoopsDB;
 
+	if(!isset($options[0])) $options[0]=0;
 	$block=false;
 
 	$dir = basename( dirname ( dirname( __FILE__ ) ) ) ;
@@ -85,6 +86,8 @@ global $xoopsUser,$xoopsDB;
 		$block['modpath'] = XOOPS_ROOT_PATH .'/modules/' . $dir;
 		$block['modurl']  = XOOPS_URL .'/modules/' . $dir;
 		$block['prefixes']  = $prefixes;
+		if($options[0]) $block['action']='wizard.php';
+		else $block['action']='edit.php';
 	}
 	else $block=false;
 
@@ -92,7 +95,15 @@ global $xoopsUser,$xoopsDB;
 }
 
 function b_gwiki_newpage_edit($options) {
-	return '';
+	if(!isset($options[0])) $options[0]=0;
+	$form  = '';
+	$form .= _MB_GWIKI_NEWPAGE_USE_WIZARD . ' <input type="radio" name="options[0]" value="1" ';
+	if($options[0]) $form .='checked="checked"'; 
+	$form .=' />&nbsp;'._YES.'&nbsp;<input type="radio" name="options[0]" value="0" ';
+	if(!$options[0]) $form .='checked="checked"'; 
+	$form .= ' />&nbsp;'._NO.'<br /><br />';
+
+	return $form;
 }
 
 function b_gwiki_teaserblock_show($options) {

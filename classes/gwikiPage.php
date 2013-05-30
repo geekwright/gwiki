@@ -585,7 +585,7 @@ class gwikiPage {
 		$result = $xoopsDB->query($sql);
 		$first=true;
 		while($myrow = $xoopsDB->fetchArray($result)) {
-		if($first && $create_any) $prefixes[]=array('prefix_id'=>-1, 'prefix'=>'');
+		if($first && $create_any) $prefixes[]=array('prefix_id'=>-1, 'prefix'=>' ');
 			$first=false;
 			$prefixes[] = $myrow;
 		}

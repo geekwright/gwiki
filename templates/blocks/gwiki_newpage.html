@@ -1,7 +1,7 @@
 <!-- block contains moddir,modpath,modurl,prefixes (array of prefix_id,prefix for each namespace user can edit) -->
 <div class="wikiblocknewpage">
 <table>
-<form action="<{$block.modurl}>/edit.php#gwikieditor" id="newwikipageform" name="newwikipageform" method="get">
+<form action="<{$block.modurl}>/<{$block.action}>" id="newwikipageform" name="newwikipageform" method="get">
 <{if is_array($block.prefixes)}>
  <{if count($block.prefixes) > 0 }>
   <tr><td style="font-size:75%"><{$smarty.const._MB_GWIKI_PICK_NAMESPACE}></td><td><select name="nsid">

@@ -157,6 +157,10 @@ $modversion['templates'][] = array(
 	'file' => 'gwiki_page_info.html',
 	'description' => 'gwiki - Page Info and Tool Bar');
 
+$modversion['templates'][] = array(
+	'file' => 'gwiki_utility.html',
+	'description' => 'gwiki - for utility programs');
+
 // Search
 $modversion['hasSearch'] = 1;
 $modversion['search'] = array(
@@ -262,6 +266,14 @@ $modversion['config'][]= array(
 	'valuetype' => 'int',
 	'default' => 150 );
 	
+$modversion['config'][]= array(
+	'name' => 'template_namespace',
+	'title' => '_MI_GWIKI_WIZARD_TEMPLATES',
+	'description' => '_MI_GWIKI_WIZARD_TEMPLATES_DESC',
+	'formtype' => 'textbox',
+	'valuetype' => 'text',
+	'default' => '' );
+	
 
 // Blocks
 $modversion['blocks'][1] = array(
@@ -279,7 +291,7 @@ $modversion['blocks'][] = array(
 	'description' =>  _MI_GWIKI_BL_NEWPAGE_DESC,
 	'show_func' => 'b_gwiki_newpage_show',
 	'edit_func' => 'b_gwiki_newpage_edit',
-	'options' => array(),
+	'options' => '1',
 	'template' => 'gwiki_newpage.html');
 
 $modversion['blocks'][] = array(

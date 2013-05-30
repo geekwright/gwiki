@@ -1,0 +1,50 @@
+<script>
+function setRadioButton(id) {
+	var radiobtn = document.getElementById(id);
+	radiobtn.checked = true;
+}
+</script>
+<{if isset($err_message)}>
+<hr />
+<div class="errorMsg"><{$err_message}></div>
+<hr />
+<{/if}>
+<{if isset($message)}>
+<hr />
+<div class="resultMsg"><{$message}></div>
+<hr />
+<{/if}>
+<div  id="gwikieditor" class="wikipage">
+<div id="wikiwizard">
+<div class="wikiwizard_title">
+<{if isset($gwizardform)}><{$gwizardform.title}><{else}><{$title}><{/if}>
+</div>
+<table><tr><td style="vertical-align:top;">
+<div class="wikiwizard_logo"><img src="images/wizardlogo.png" alt="logo" /></div>
+</td><td>
+<div class="wikiwizard_content">
+<{if isset($body)}>
+<{$body}>
+<{/if}>
+<{if isset($gwizardform)}>
+<form id="<{$gwizardform.name}>" name="<{$gwizardform.name}>" action="<{$gwizardform.action}>" method="<{$gwizardform.method}>" <{$gwizardform.extra}>>
+    <!-- start of form elements loop -->
+    <{foreach item=element from=$gwizardform.elements}>
+        <{if $element.hidden != true}>
+			<h3><{$element.caption}></h3>
+			<{$element.body}>
+        <{else}>
+			<{$element.body}>
+        <{/if}>
+    <{/foreach}>
+    <!-- end of form elements loop -->
+</form>
+<{/if}>
+</div>
+</td></tr></table>
+<br clear="all">
+</div>
+<{include file="db:gwiki_page_info.html"}>
+</div>
+<{if empty($hideInfoBar)}>
+<{/if}>
