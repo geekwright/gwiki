@@ -73,14 +73,15 @@ EOT;
 	}
 	echo '<tr><th width="15%">'._AD_GWIKI_KEYWORD.'</th><th>'._MD_GWIKI_TITLE.'</th><th width="5%">'._AD_GWIKI_REVISIONS.'</th><th width="30%">'._AD_GWIKI_ACTION.'</th></tr>';
  	$sqlwhere=''; if(!empty($like)) $sqlwhere=" WHERE t1.keyword LIKE '{$like}%' ";   
-	$sql = 'SELECT t1.keyword, COUNT(*), t2.title, t2.admin_lock FROM '.$xoopsDB->prefix('gwiki_pages').' t1 '.
+	$sql = 'SELECT t1.keyword, COUNT(*), t2.title, t2.admin_lock, t2.active FROM '.$xoopsDB->prefix('gwiki_pages').' t1 '.
 		' LEFT JOIN '.$xoopsDB->prefix('gwiki_pages').' t2 on t1.keyword = t2.keyword and t2.active = 1 '.
 		$sqlwhere.' GROUP BY keyword ';
 	$result = $xoopsDB->query($sql, $limit, $start);
     
 	for ($i = 0; $i < $xoopsDB->getRowsNum($result); $i++) {
-		list($page, $revs, $title, $lock) = $xoopsDB->fetchRow($result);
-		if(empty($title)) $title=_AD_GWIKI_NO_ACTIVE_PAGE;
+		list($page, $revs, $title, $lock, $active) = $xoopsDB->fetchRow($result);
+		if(empty($active)) $title=_AD_GWIKI_NO_ACTIVE_PAGE;
+		//if(empty($title)) $title=_AD_GWIKI_NO_ACTIVE_PAGE;
 		if($lock) $lockaction=' | <a href="pages.php?page='.$page.'&op=unlock">'._AD_GWIKI_UNLOCK.'</a>';
 		else $lockaction=' | <a href="pages.php?page='.$page.'&op=lock">'._AD_GWIKI_LOCK.'</a>';
 		echo '<tr class="'.(($i % 2)?"even":"odd").'"><td><a href="pages.php?page='.$page.'&op=history">'.$page.'</a></td>' .
