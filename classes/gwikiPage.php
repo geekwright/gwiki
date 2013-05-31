@@ -551,7 +551,7 @@ class gwikiPage {
 	}
 
 	// get array of prefixes user can edit
-	public function getUserNamespaces() {
+	public function getUserNamespaces($createonly=false) {
 		global $xoopsUser,$xoopsDB;
 
 		$dir = $this->wikiDir;
@@ -592,6 +592,7 @@ class gwikiPage {
 
 		// make sure we have some edit/create permission. We need full keyword to be certain, so let edit sort it out.
 		$mayEdit = ($edit_any || $create_any || $edit_pfx || $create_pfx);
+		if($createonly) $mayEdit = ($create_any || $create_pfx);
 		if($mayEdit) {
 			return $prefixes;
 		}
