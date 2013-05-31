@@ -274,6 +274,13 @@ $modversion['config'][]= array(
 	'valuetype' => 'text',
 	'default' => '' );
 	
+$modversion['config'][]= array(
+	'name' => 'auto_name_format',
+	'title' => '_MI_GWIKI_AUTO_NAME_FORMAT',
+	'description' => '_MI_GWIKI_AUTO_NAME_FORMAT_DESC',
+	'formtype' => 'textbox',
+	'valuetype' => 'text',
+	'default' => 'Y-m-d-His' );
 
 // Blocks
 $modversion['blocks'][1] = array(

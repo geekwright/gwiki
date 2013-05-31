@@ -33,6 +33,8 @@ define('_MI_GWIKI_DEFAULT_THUMB_SIZE','Default Thumbnail Size');
 define('_MI_GWIKI_DEFAULT_THUMB_SIZE_DESC','Default maximal pixel dimension for thumbnail cache.');
 define('_MI_GWIKI_WIZARD_TEMPLATES','Wizard Templates Namespace');
 define('_MI_GWIKI_WIZARD_TEMPLATES_DESC','Pages in this namespace will be used as templates in the Create Page Wizard. Leave blank to disable templates in the wizard.');
+define('_MI_GWIKI_AUTO_NAME_FORMAT','Format for Automatic Names');
+define('_MI_GWIKI_AUTO_NAME_FORMAT_DESC','Format string passed to PHP date() function to generate page names for namespaces configured for automatic naming.');
 
 // Wiki special pages
 // Change these names, if you want a different homepage and error page

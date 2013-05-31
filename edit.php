@@ -28,7 +28,7 @@ if (isset($_GET['nsid'])) {
 	if($nsid>=0) {
 		$pfx=getPrefixFromId($nsid);
 		if(empty($page)) {
-			if($pfx['prefix_auto_name']) $page=date('Y-m-d-His'); // TODO should this be a config item?
+			if($pfx['prefix_auto_name']) $page=date($xoopsModuleConfig['auto_name_format']);
 			else $page=$pfx['prefix_home'];
 		}
 		$page=$pfx['prefix'].':'.$page;
