@@ -49,7 +49,7 @@ function obtainPage()
 global $wikiPage, $xoopsTpl, $token;
 
 	$wikiPage = new gwikiPage;
-	$prefixes=$wikiPage->getUserNamespaces();
+	$prefixes=$wikiPage->getUserNamespaces(true);
 	if($prefixes) {
 		$options=array();
 		foreach($prefixes as $p) {
@@ -73,11 +73,11 @@ global $wikiPage, $xoopsTpl, $token;
 	$form->addElement(new XoopsFormText(_MD_GWIKI_WIZARD_PAGE_NAME, 'page', 20, 120, $page));
 	
 	$btn_tray = new XoopsFormElementTray('', ' ','gwizardformtray');
-	$submit_btn = new XoopsFormButton("", "wikiwizard_submit", _MD_GWIKI_WIZARD_NEWPAGE_SUBMIT, "submit");
+	$submit_btn = new XoopsFormButton("", "wikiwizard_submit", _MD_GWIKI_WIZARD_CONTINUE, "submit");
 //	$submit_btn->setExtra("onclick='prepForSubmit();'");
 	$btn_tray->addElement($submit_btn);
     
-	$cancel_btn = new XoopsFormButton("", "wikiwizard_cancel", _CANCEL, "button");
+	$cancel_btn = new XoopsFormButton("", "wikiwizard_cancel", _MD_GWIKI_WIZARD_CANCEL, "button");
 	$cancel_btn->setExtra(' onclick="document.location.href=\'index.php\';"');
 	$btn_tray->addElement($cancel_btn);
 
@@ -96,16 +96,16 @@ global $wikiPage, $xoopsTpl, $token;
 	$form->setExtra(' enctype="multipart/form-data" ');
 
 	$caption = _MD_GWIKI_IMPORTHTML_FILE;
-	$form->addElement(new XoopsFormFile($caption, 'import_file',100000),false);
+	$form->addElement(new XoopsFormFile($caption, 'import_file',200000),false);
 	$form->addElement(new XoopsFormLabel('', _MD_GWIKI_IMPORTHTML_FORM_DESC, 'instructions'));
 
 	$form->addElement(new XoopsFormTextArea(_MD_GWIKI_IMPORTHTML_TEXT, 'import_html', htmlspecialchars($import_html), 10, 40));
 	$btn_tray = new XoopsFormElementTray('', ' ','gwizardformtray');
-	$submit_btn = new XoopsFormButton("", "wikiwizard_submit", _MD_GWIKI_WIZARD_NEWPAGE_SUBMIT, "submit");
+	$submit_btn = new XoopsFormButton("", "wikiwizard_submit", _MD_GWIKI_WIZARD_CONTINUE, "submit");
 //	$submit_btn->setExtra("onclick='prepForSubmit();'");
 	$btn_tray->addElement($submit_btn);
     
-	$cancel_btn = new XoopsFormButton("", "wikiwizard_cancel", _CANCEL, "button");
+	$cancel_btn = new XoopsFormButton("", "wikiwizard_cancel", _MD_GWIKI_WIZARD_CANCEL, "button");
 	$cancel_btn->setExtra(" onclick='history.back();'");
 	$btn_tray->addElement($cancel_btn);
 
@@ -308,6 +308,22 @@ global $wikiPage, $xoopsDB;
 	return false;
 }
 
+function doGallery()
+{
+global $wikiPage, $xoopsDB;
+
+	$page=$wikiPage->keyword;
+	$url=XOOPS_URL.'/modules/'.$wikiPage->getWikiDir().'/edit.php';
+
+	$params=array(
+		'page' => $page,
+		'op' => 'preview',
+		'body' => '{gallery}' );
+
+	redirect_by_post_request($url, $params);
+
+}
+
 function doCopy($page,$templatename)
 {
 global $wikiPage, $xoopsDB;
@@ -359,6 +375,43 @@ global $wikiPage, $xoopsDB;
 	return $pages;
 }
 
+function galleryForm()
+{
+global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
+
+	$page=$wikiPage->keyword;
+	$title=_MD_GWIKI_WIZARD_GALLERY_SELECT;
+	$body=array();
+	$body[] = '<div class="wikiimagedetail">';
+	$body[] = '<form id="wikieditimg_form" action="ajaximgedit.php" method="POST" enctype="multipart/form-data">';
+	$body[] = '<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="2000000" />';
+	$body[] = '<input type="hidden" id="page" name="page" value="'.$page.'" />';
+	$body[] = '<div id="wikieditimg_dd">';
+	$body[] = '<img name="wikieditimg_img" id="wikieditimg_img" class="wikieditimg" src="images/blank.png" />';
+	$body[] = '<br /><span id="wikieditimg_dd_msg">'._MD_GWIKI_IMAGES_DROPHERE.'</span>';
+	$body[] = '<div id="gwikiimgform_nofiledrag">'._MD_GWIKI_IMAGES_PICKFILE.'<input type="file" id="wikieditimg_fileselect" name="fileselect[]"  multiple="multiple"/></div>';
+	$body[] = '<div id="wikieditimg_progress"></div>';
+	$body[] = '</div>';
+	$body[] = '</form>';
+	$body[] = '</div>';
+	$body[] = '<form id="gwizardform" name="gwizardform" action="wizard.php" method="POST">';
+	$body[] = '<table class="wikiwizard_table">';
+	$body[] = '<tr><td></td><td><hr /></td></tr>';
+	$body[] = '<tr><td> </td><td>';
+	$body[] = '<input type="hidden" name="page" value="'.$page.'">';
+	$body[] = '<input type="hidden" name="op" value="addgallery">';
+	$body[] = '<input type="submit" class="formButton" name="wikiwizard_submit" id="wikiwizard_submit" value="'._MD_GWIKI_WIZARD_CONTINUE.'" />';
+	$body[] = '<input type="button" class="formButton" name="wikiwizard_cancel" id="wikiwizard_cancel" value="'._MD_GWIKI_WIZARD_CANCEL.'" onclick="document.location.href=\'wizard.php\';" />';
+	$body[] = '</td></tr>';
+	$body[] = '</table>';
+	$body[] = '</form>';
+
+
+	$xoopsTpl->assign('body', implode("\n",$body));
+	$xoopsTpl->assign('title', $title);
+	return true;
+}
+
 function chooseWizard()
 {
 global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
@@ -371,8 +424,8 @@ global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
 		if($templates) {
 			$wizopts[]=array(
 				'name' => 'template',
-				'title'=> 'Create from Template',
-				'description'=>'Template verbage',
+				'title'=> _MD_GWIKI_WIZARD_TEMPLATE_TITLE,
+				'description'=> _MD_GWIKI_WIZARD_TEMPLATE_DESC,
 				'options'=> array(
 						array('type'=>'select', 'prompt'=>'', 'name'=>'templatename', 'values'=>$templates)
 					)
@@ -382,29 +435,29 @@ global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
 
 	$wizopts[]=array(
 		'name' => 'copy',
-		'title'=> 'Copy an existing page',
-		'description'=>'Copy verbage',
+		'title'=> _MD_GWIKI_WIZARD_COPY_TITLE,
+		'description'=> _MD_GWIKI_WIZARD_COPY_DESC,
 		'options'=> array(
-			array('type'=>'text', 'prompt'=>'Page to Copy', 'name'=>'copykeyword', 'values'=>'')
+			array('type'=>'text', 'prompt'=>_MD_GWIKI_WIZARD_COPY_PAGE, 'name'=>'copykeyword', 'values'=>'')
 		)
 	);
 
 	$wizopts[]=array(
 		'name' => 'importhtml',
-		'title'=> 'Import from HTML',
-		'description'=>'HTML verbage',
+		'title'=> _MD_GWIKI_WIZARD_HTML_TITLE,
+		'description'=>_MD_GWIKI_WIZARD_HTML_DESC,
 		'options'=>null
 	);
 
 	$wizopts[]=array(
 		'name' => 'gallery',
-		'title'=> 'Create and Image Gallery',
-		'description'=>'Gallery verbage',
+		'title'=> _MD_GWIKI_WIZARD_GALLERY_TITLE,
+		'description'=>_MD_GWIKI_WIZARD_GALLERY_DESC,
 		'options'=>null
 	);
 
 	$page=$wikiPage->keyword;
-	$title='How do you want to build your page?';
+	$title=_MD_GWIKI_WIZARD_OPTIONS_TITLE;
 	$body=array();
 	$body[] = '<form id="gwizardform" name="gwizardform" action="wizard.php" method="POST">';
 	$body[] = '<table class="wikiwizard_table">';
@@ -434,8 +487,8 @@ global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
 	}
 	$body[] = '<tr><td> </td><td>';
 	$body[] = '<input type="hidden" name="page" value="'.$page.'">';
-	$body[] = '<input type="submit" class="formButton" name="wikiwizard_submit" id="wikiwizard_submit" value="Continue" />';
-	$body[] = '<input type="button" class="formButton" name="wikiwizard_cancel" id="wikiwizard_cancel" value="Cancel" onclick="document.location.href=\'wizard.php\';" />';
+	$body[] = '<input type="submit" class="formButton" name="wikiwizard_submit" id="wikiwizard_submit" value="'._MD_GWIKI_WIZARD_CONTINUE.'" />';
+	$body[] = '<input type="button" class="formButton" name="wikiwizard_cancel" id="wikiwizard_cancel" value="'._MD_GWIKI_WIZARD_CANCEL.'" onclick="document.location.href=\'wizard.php\';" />';
 	$body[] = '</td></tr>';
 	$body[] = '</table>';
 	$body[] = '</form>';
@@ -457,7 +510,7 @@ global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
 		if($nsid>=0) {
 			$pfx=getPrefixFromId($nsid);
 			if(empty($page)) {
-				if($pfx['prefix_auto_name']) $page=date('Y-m-d-His'); // TODO should this be a config item?
+				if($pfx['prefix_auto_name']) $page=date($xoopsModuleConfig['auto_name_format']);
 				else $page=$pfx['prefix_home'];
 			}
 			$page=$pfx['prefix'].':'.$page;
@@ -534,6 +587,12 @@ global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
 		case 'copy':
 			doCopy($page,$copykeyword);
 			chooseWizard();
+			break;
+		case 'gallery':
+			galleryForm();
+			break;
+		case 'addgallery':
+			doGallery();
 			break;
 		default:
 			chooseWizard();
