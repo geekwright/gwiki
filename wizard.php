@@ -96,7 +96,7 @@ global $wikiPage, $xoopsTpl, $token;
 	$form->setExtra(' enctype="multipart/form-data" ');
 
 	$caption = _MD_GWIKI_IMPORTHTML_FILE;
-	$form->addElement(new XoopsFormFile($caption, 'import_file',200000),false);
+	$form->addElement(new XoopsFormFile($caption, 'import_file',$wikiPage->getMaxUploadSize()),false);
 	$form->addElement(new XoopsFormLabel('', _MD_GWIKI_IMPORTHTML_FORM_DESC, 'instructions'));
 
 	$form->addElement(new XoopsFormTextArea(_MD_GWIKI_IMPORTHTML_TEXT, 'import_html', htmlspecialchars($import_html), 10, 40));
@@ -384,11 +384,11 @@ global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
 	$body=array();
 	$body[] = '<div class="wikiimagedetail">';
 	$body[] = '<form id="wikieditimg_form" action="ajaximgedit.php" method="POST" enctype="multipart/form-data">';
-	$body[] = '<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="2000000" />';
+	$body[] = '<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="'.$wikiPage->getMaxUploadSize().'" />';
 	$body[] = '<input type="hidden" id="page" name="page" value="'.$page.'" />';
 	$body[] = '<div id="wikieditimg_dd">';
-	$body[] = '<img name="wikieditimg_img" id="wikieditimg_img" class="wikieditimg" src="images/blank.png" />';
-	$body[] = '<br /><span id="wikieditimg_dd_msg">'._MD_GWIKI_IMAGES_DROPHERE.'</span>';
+//	$body[] = '<img name="wikieditimg_img" id="wikieditimg_img" class="wikieditimg" src="images/blank.png" /><br />';
+	$body[] = '<span id="wikieditimg_dd_msg">'._MD_GWIKI_IMAGES_DROPHERE.'</span>';
 	$body[] = '<div id="gwikiimgform_nofiledrag">'._MD_GWIKI_IMAGES_PICKFILE.'<input type="file" id="wikieditimg_fileselect" name="fileselect[]"  multiple="multiple"/></div>';
 	$body[] = '<div id="wikieditimg_progress"></div>';
 	$body[] = '</div>';
@@ -505,17 +505,10 @@ global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
 		$page = cleaner($_POST['page']);
 	}
 	// namespace id (prefix_id) is set by newpage block, turn it into a full page name
-	if (isset($_REQUEST['nsid'])) {
-		$nsid=intval($_REQUEST['nsid']);
-		if($nsid>=0) {
-			$pfx=getPrefixFromId($nsid);
-			if(empty($page)) {
-				if($pfx['prefix_auto_name']) $page=date($xoopsModuleConfig['auto_name_format']);
-				else $page=$pfx['prefix_home'];
-			}
-			$page=$pfx['prefix'].':'.$page;
-		}
+	if (isset($_GET['nsid'])) {
+		$page = $wikiPage->makeKeywordFromPrefix(intval($_GET['nsid']),$page);
 	}
+
 	$op='';
 	if (isset($_POST['op'])) {
 		$op=cleaner($_POST['op']);
