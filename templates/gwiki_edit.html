@@ -269,7 +269,7 @@
 </select>
 </span></br>
 <span class="wikieditor-param-title"> </span>
-<span class="wikieditor-param-value"><button type="button" onclick="processPopFormColor(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button> 
+<span class="wikieditor-param-value"><button type="button" onclick="processPopFormColor(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button>
 <button type="button" onclick="closeAllParams();"><{$smarty.const.MD_GWIKI_EDIT_BTN_CANCEL}></button>
 </span><br />
 <span class="wikieditor-param-bottom"></span>
@@ -290,7 +290,7 @@
 </select>
 </span></br>
 <span class="wikieditor-param-title"> </span>
-<span class="wikieditor-param-value"><button type="button" onclick="processPopFormHeader(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button> 
+<span class="wikieditor-param-value"><button type="button" onclick="processPopFormHeader(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button>
 <button type="button" onclick="closeAllParams();"><{$smarty.const.MD_GWIKI_EDIT_BTN_CANCEL}></button>
 </span><br />
 </form>
@@ -311,7 +311,7 @@
 </select>
 </span></br>
 <span class="wikieditor-param-title"> </span>
-<span class="wikieditor-param-value"><button type="button" onclick="processPopFormIndent(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button> 
+<span class="wikieditor-param-value"><button type="button" onclick="processPopFormIndent(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button>
 <button type="button" onclick="closeAllParams();"><{$smarty.const.MD_GWIKI_EDIT_BTN_CANCEL}></button>
 </span><br />
 </form>
@@ -335,7 +335,7 @@
 <span class="wikieditor-param-title">Title:</span> <span class="wikieditor-param-value"><input name="popformboxtitle" type="text" size="12">
 </span><br />
 <span class="wikieditor-param-title"> </span>
-<span class="wikieditor-param-value"><button type="submit" onclick="processPopFormBoxes(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button> 
+<span class="wikieditor-param-value"><button type="submit" onclick="processPopFormBoxes(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button>
 <button type="button" onclick="closeAllParams();"><{$smarty.const.MD_GWIKI_EDIT_BTN_CANCEL}></button>
 </span><br />
 </form>
@@ -354,7 +354,7 @@
 <span class="wikieditor-param-title"><{$smarty.const._MD_GWIKI_EDPOP_PRMT_REF_REPEAT}></span> <span class="wikieditor-param-value"><input name="popformrefrepeat" type="text" size="12">
 </span><br />
 <span class="wikieditor-param-title"> </span>
-<span class="wikieditor-param-value"><button type="submit" onclick="processPopFormRef(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button> 
+<span class="wikieditor-param-value"><button type="submit" onclick="processPopFormRef(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button>
 <button type="button" onclick="closeAllParams();"><{$smarty.const.MD_GWIKI_EDIT_BTN_CANCEL}></button>
 </span><br />
 </form>
@@ -362,7 +362,7 @@
 </div>
 
 <script>
-// some misc script things 
+// some misc script things
 function helpwindow() {
 	window.open('<{$gwiki.modurl}>/language/<{$smarty.const._MD_GWIKI_WIKI_HELP_DIR}>/help/wikihelp.html','1359403524804','width=400,height=680,toolbar=0,menubar=1,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
 }
@@ -376,7 +376,7 @@ function buttonGetParams(trigger,formname)
 	var formwin=document.getElementById(formname);
 	formwin.style.position="fixed";
 	formwin.style.left=(theEvent.clientX - 128) + "px";
-	formwin.style.top= rect.bottom + "px"; 
+	formwin.style.top= rect.bottom + "px";
 	formwin.style.display="block";
 }
 
@@ -401,7 +401,7 @@ function processPopFormColor(form) {
 function processPopFormHeader(form) {
 	var openmarkup = "\n=";
 	for (var i=0;i<(form.popformheader.value-1);i++)
-	{ 
+	{
 		openmarkup = openmarkup + "=";
 	}
 	openmarkup = openmarkup + " ";
@@ -412,7 +412,7 @@ function processPopFormHeader(form) {
 function processPopFormIndent(form) {
 	var openmarkup = "\n:";
 	for (var i=0;i<(form.popformindent.value-1);i++)
-	{ 
+	{
 		openmarkup = openmarkup + ":";
 	}
 	openmarkup = openmarkup + " ";
@@ -463,7 +463,7 @@ function addSimpleMarkup(openmarkup,closemarkup) {
 	var start = e.selectionStart;
 	var end = e.selectionEnd;
 	var sel = e.value.substring(start, end);
-	
+
 	if(start==end) {
 		insertAtCursor(e,openmarkup+closemarkup);
 		var delta=0-closemarkup.length;
@@ -475,7 +475,7 @@ function addSimpleMarkup(openmarkup,closemarkup) {
 	e.focus();
 	closeAllParams();
 	return true;
-} 
+}
 
 function addImageMarkup() {
 	var image_id=document.getElementById("wikiimage_id").value;
@@ -502,7 +502,7 @@ function addImageMarkup() {
 	toggleDiv('wikiimageedit');
 	e.focus();
 	return true;
-} 
+}
 
 function insertAtCursor(myField, myValue) {
 	setWikiChanged();
@@ -519,6 +519,8 @@ function insertAtCursor(myField, myValue) {
 		myField.value = myField.value.substring(0, startPos)
 		+ myValue
 		+ myField.value.substring(endPos, myField.value.length);
+		var pos=startPos;
+		myField.setSelectionRange(pos,pos)
 	} else {
 		myField.value += myValue;
 	}
@@ -531,29 +533,29 @@ function moveCaretPosition(myField,delta) {
 
 // enable a full screen textarea for editing
 function getCaretPosition (ctrl) {
- 
+
 	var CaretPos = 0;
 	// IE Support
 	if (document.selection) {
- 
+
 		ctrl.focus ();
 		var Sel = document.selection.createRange ();
- 
+
 		Sel.moveStart ('character', -ctrl.value.length);
- 
+
 		CaretPos = Sel.text.length;
 	}
 	// Firefox support
 	else if (ctrl.selectionStart || ctrl.selectionStart == '0')
 		CaretPos = ctrl.selectionStart;
- 
+
 	return (CaretPos);
- 
+
 }
 
 function setCaretPosition(ctrl, pos)
 {
- 
+
 	if(ctrl.setSelectionRange)
 	{
 		ctrl.focus();
@@ -658,11 +660,11 @@ function toggleDiv(id) {
 		}
 		ele.style.display = "block";
 	}
-} 
+}
 function hideDiv(id) {
 	var ele = document.getElementById(id);
 	ele.style.display = "none";
-} 
+}
 
 function clearImageDetail() {
 	document.getElementById("wikiimage_id").value='0';
@@ -677,13 +679,13 @@ function clearImageDetail() {
 	document.getElementById("wikieditimg_name").className = 'wikifield_input_reset';
 	document.getElementById("wikieditimg_alttext").className = 'wikifield_input_reset';
 	ClearOutput();
-} 
+}
 
 
 function getImageListById(imageid) {
 
 	clearImageDetail();
-	
+
 	document.getElementById("wikiimage_id").value=window.imageList[imageid].image_id;
 	document.getElementById("wikieditimg_name").value=window.imageList[imageid].image_name;
 	document.getElementById("wikieditimg_alttext").value=window.imageList[imageid].image_alt_text;
@@ -691,7 +693,7 @@ function getImageListById(imageid) {
 
 	document.getElementById("wikieditimg_img").src=window.imageList[imageid].link;
 
-} 
+}
 
 
 function fetchImageList() {
@@ -719,12 +721,12 @@ function fetchImageList() {
 
 	xmlhttp.open("GET","ajaximglist.php?page="+document.getElementById('imagelib').value,true); // +'&cachekill=' + Math.random()
 	xmlhttp.send();
-} 
+}
 
 
 function serializeImageDetail() {
 	var image = new Object;
-	
+
 	image.page=document.getElementById("page").value;
 	image.image_id=document.getElementById("wikiimage_id").value;
 	image.image_name=document.getElementById("wikieditimg_name").value;
@@ -742,7 +744,7 @@ function deleteImageDetail() {
 		deletereq.image_id=document.getElementById("wikiimage_id").value;
 		deletereq.op='delete';
 		var x_jsondata = JSON.stringify(deletereq);
-		
+
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function(e) {
 			if (xhr.readyState == 4) {
@@ -762,15 +764,15 @@ function deleteImageDetail() {
 		xhr.setRequestHeader("X_JSONDATA", x_jsondata);
 		xhr.send();
 	}
-} 
+}
 
 function newImageDetail() {
 	clearImageDetail();
-} 
+}
 
 function updateImageDetail() {
 	alert("To be completed");
-} 
+}
 
 // handles all the individual field changes
 function fieldEventHandler(event,field) {
@@ -780,7 +782,7 @@ function fieldEventHandler(event,field) {
 	}
 
 	var x_jsondata = serializeImageDetail();
-	
+
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(e) {
 		if (xhr.readyState == 4) {
@@ -865,13 +867,13 @@ Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
 		var o = document.getElementById("wikieditimg_progress")
 		var progress = o.appendChild(document.createElement("p"));
 		progress.appendChild(document.createTextNode(file.name));
-		
+
 		if (file.size > document.getElementById("MAX_FILE_SIZE").value) {
 			progress.className = "toobig";
 			return;
 		}
 		var x_jsondata = serializeImageDetail();
-		
+
 		var xhr = new XMLHttpRequest();
 		if (xhr.upload && (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/gif")) {
 
@@ -982,13 +984,13 @@ function clearFileDetail() {
 	document.getElementById("wikieditfile_progress").innerHTML='';
 	document.getElementById("wikieditfile_description").className = 'wikifield_input_reset';
 	fileClearOutput();
-} 
+}
 
 
 function getFileListById(fileid) {
 
 	clearFileDetail();
-	
+
 	document.getElementById("wikifile_id").value=window.fileList[fileid].file_id;
 	document.getElementById("wikieditfile_name").innerHTML=window.fileList[fileid].file_name;
 	document.getElementById("wikieditfile_userlink").innerHTML=window.fileList[fileid].userlink;
@@ -998,7 +1000,7 @@ function getFileListById(fileid) {
 	document.getElementById("wikieditfile_description").value=window.fileList[fileid].file_description;
 	document.getElementById("wikieditfile_img").src=window.fileList[fileid].iconlink;
 
-} 
+}
 
 
 function fetchFileList() {
@@ -1026,12 +1028,12 @@ function fetchFileList() {
 
 	xmlhttp.open("GET","ajaxfilelist.php?page=<{$gwiki.keyword}>",true);
 	xmlhttp.send();
-} 
+}
 
 
 function serializeFileDetail() {
 	var file = new Object;
-	
+
 	file.page=document.getElementById("page").value;
 	file.file_id=document.getElementById("wikifile_id").value;
 	file.file_description=document.getElementById("wikieditfile_description").value;
@@ -1049,7 +1051,7 @@ function deleteFileDetail() {
 		deletereq.file_id=document.getElementById("wikifile_id").value;
 		deletereq.op='delete';
 		var x_jsondata = JSON.stringify(deletereq);
-		
+
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function(e) {
 			if (xhr.readyState == 4) {
@@ -1069,15 +1071,15 @@ function deleteFileDetail() {
 		xhr.setRequestHeader("X_JSONDATA", x_jsondata);
 		xhr.send();
 	}
-} 
+}
 
 function newFileDetail() {
 	clearFileDetail();
-} 
+}
 
 function updateFileDetail() {
 	alert("To be completed");
-} 
+}
 
 // handles all the individual field changes
 function fileFieldEventHandler(event,field) {
@@ -1087,7 +1089,7 @@ function fileFieldEventHandler(event,field) {
 	}
 
 	var x_jsondata = serializeFileDetail();
-	
+
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(e) {
 		if (xhr.readyState == 4) {
@@ -1173,13 +1175,13 @@ Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
 		var o = document.getElementById("wikieditfile_progress")
 		var progress = o.appendChild(document.createElement("p"));
 		progress.appendChild(document.createTextNode(file.name));
-		
+
 		if (file.size > document.getElementById("MAX_FILE_SIZE").value) {
 			progress.className = "toobig";
 			return;
 		}
 		var x_jsondata = serializeFileDetail();
-		
+
 		var xhr = new XMLHttpRequest();
 		if (xhr.upload) { // && (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/gif")) {
 
@@ -1197,7 +1199,7 @@ Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
 						var ajaxreturn=JSON.parse(xhr.responseText);
 						if(typeof(ajaxreturn.file_id)!='undefined') {
 							document.getElementById("wikifile_id").value=ajaxreturn.file_id;
-							
+
 	document.getElementById("wikieditfile_name").innerHTML=ajaxreturn.file_name;
 	document.getElementById("wikieditfile_userlink").innerHTML=ajaxreturn.userlink;
 	document.getElementById("wikieditfile_type").innerHTML=ajaxreturn.file_type;
@@ -1293,7 +1295,7 @@ function setWikiChanged()
 window.addEventListener("beforeunload", function (e) {
 	if(window.wikiChanged){
 		var confirmationMessage = "<{$smarty.const._MD_GWIKI_PAGENOTSAVED}>";
- 
+
 		(e || window.event).returnValue = confirmationMessage;     //Gecko + IE
 		return confirmationMessage;            //Webkit, Safari, Chrome etc.
 	}
