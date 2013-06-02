@@ -2,7 +2,7 @@
 /**
 * wizard.php - wiki page creation wizard
 *
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
@@ -20,7 +20,8 @@ $token=0;
 
 function redirect_by_post_request($url, $params)
 {
-    
+global $xoopsLogger;
+
     $cookie_string='';
     foreach($_COOKIE as $key => $val) {
 		if(empty($cookie_string)) $cookie_string='Cookie:';
@@ -38,6 +39,8 @@ function redirect_by_post_request($url, $params)
 
 	$context = stream_context_create($opts);
 
+	$xoopsLogger->activated = false;
+	ob_clean();
 	$fp = fopen($url, 'r', false, $context);
 	fpassthru($fp);
 	fclose($fp);
@@ -63,20 +66,20 @@ global $wikiPage, $xoopsTpl, $token;
 	}
 
 	$page='';
-	
+
 	$form = new XoopsThemeForm(_MD_GWIKI_WIZARD_NEWPAGE_PROMPT, 'gwizardform', 'wizard.php', 'POST', $token);
 
 	$form_ns_select=new XoopsFormSelect(_MD_GWIKI_WIZARD_PICK_NAMESPACE, 'nsid'); //, [mixed $value = null], [int $size = 1], [bool $multiple = false]  )
 	$form_ns_select->addOptionArray($options);
 	$form->addElement($form_ns_select);
-	
+
 	$form->addElement(new XoopsFormText(_MD_GWIKI_WIZARD_PAGE_NAME, 'page', 20, 120, $page));
-	
+
 	$btn_tray = new XoopsFormElementTray('', ' ','gwizardformtray');
 	$submit_btn = new XoopsFormButton("", "wikiwizard_submit", _MD_GWIKI_WIZARD_CONTINUE, "submit");
 //	$submit_btn->setExtra("onclick='prepForSubmit();'");
 	$btn_tray->addElement($submit_btn);
-    
+
 	$cancel_btn = new XoopsFormButton("", "wikiwizard_cancel", _MD_GWIKI_WIZARD_CANCEL, "button");
 	$cancel_btn->setExtra(' onclick="document.location.href=\'index.php\';"');
 	$btn_tray->addElement($cancel_btn);
@@ -104,7 +107,7 @@ global $wikiPage, $xoopsTpl, $token;
 	$submit_btn = new XoopsFormButton("", "wikiwizard_submit", _MD_GWIKI_WIZARD_CONTINUE, "submit");
 //	$submit_btn->setExtra("onclick='prepForSubmit();'");
 	$btn_tray->addElement($submit_btn);
-    
+
 	$cancel_btn = new XoopsFormButton("", "wikiwizard_cancel", _MD_GWIKI_WIZARD_CANCEL, "button");
 	$cancel_btn->setExtra(" onclick='history.back();'");
 	$btn_tray->addElement($cancel_btn);
@@ -123,6 +126,7 @@ function showDOMNode(&$out, DOMNode $domNode,$nest,$lt,$ld,$nop) {
         switch ($node->nodeName) {
 			case 'a':
 				$h=$node->getAttribute('href');
+				$h=str_replace(array("\n","\r"),'',$h);
 				if(!empty($h)) {
 					$out.='[['.$h.'|';
 					if($node->hasChildNodes()) { showDOMNode($out, $node,$nest+1,$lt,$ld,1); }
@@ -244,7 +248,7 @@ function showDOMNode(&$out, DOMNode $domNode,$nest,$lt,$ld,$nop) {
 				if($node->hasChildNodes()) { showDOMNode($out, $node,$nest+1,$lt,$ld,$nop); }
 				break;
 		}
-    }    
+    }
 }
 
 function doImportHTML($page,$import_html,$dir)
@@ -270,6 +274,11 @@ function doImportHTML($page,$import_html,$dir)
 	}
 
 	if(!empty($import)) {
+		// the "--" mark is common in text, but gets interpreted as strike
+		$search  = "#(?<=\s)(-{2})(?=\s)#";
+		$replace = "~\\1";
+		$import=preg_replace($search, $replace, $import);
+
 		$doc = new DOMDocument();
 		$doc->loadHTML($import);
 		$domlist=$doc->getElementsByTagName('body');
@@ -505,8 +514,8 @@ global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
 		$page = cleaner($_POST['page']);
 	}
 	// namespace id (prefix_id) is set by newpage block, turn it into a full page name
-	if (isset($_GET['nsid'])) {
-		$page = $wikiPage->makeKeywordFromPrefix(intval($_GET['nsid']),$page);
+	if (isset($_REQUEST['nsid'])) {
+		$page = $wikiPage->makeKeywordFromPrefix(intval($_REQUEST['nsid']),$page);
 	}
 
 	$op='';
@@ -528,6 +537,7 @@ global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
 	if(empty($page)) {
 		$pageX=false;
 		$op="page";
+		$mayEdit=false;
 	}
 	else {
 		$pageX = $wikiPage->getPage($page);
@@ -596,7 +606,7 @@ global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
 	$title=_MD_GWIKI_WIZARD;
 	$xoopsTpl->assign('xoops_pagetitle', $title);
 	$xoopsTpl->assign('icms_pagetitle', $title);
-	
+
 	$xoopsTpl->assign('gwiki', $pageX);
 
 	if(!empty($err_message)) $xoopsTpl->assign('err_message',$err_message);
