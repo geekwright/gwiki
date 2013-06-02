@@ -60,6 +60,7 @@ class gwikiPage {
 	private $tocAnchorFmt='#%s';
 	private $imageLib=array();
 	private $useCamelCase;
+	private $autoNameFormat;
 
 	private $module_id;
 
@@ -113,6 +114,7 @@ class gwikiPage {
 		$this->imageLib = explode(',',$moduleConfig['imagelib_pages']);
 		$this->useCamelCase = $moduleConfig['allow_camelcase'];
 		$this->defaultThumbSize = $moduleConfig['default_thumb_size'];
+		$this->autoNameFormat = $moduleConfig['auto_name_format'];
 		$this->module_id = $module_id;
 
 		if(!defined('_MI_GWIKI_WIKIHOME')) $this->loadLanguage('modinfo',$dir);
@@ -189,6 +191,22 @@ class gwikiPage {
 		return $this->wikiDir;
 	}
 
+	public function getMaxUploadSize()
+	{
+		$val = trim(ini_get(upload_max_filesize));
+		$last = strtolower($val[strlen($val)-1]);
+		switch($last) {
+			// The 'G' modifier is available since PHP 5.1.0
+			case 'g':
+				$val *= 1024;
+			case 'm':
+				$val *= 1024;
+			case 'k':
+				$val *= 1024;
+		}
+		return $val;
+	}
+
 	public function setTocFormat($prefix,$linkformat)
 	{
 		$this->tocIdPrefix=$prefix;
@@ -213,7 +231,20 @@ class gwikiPage {
 		}
 		return $keyword;
 	}
-	
+
+	public function makeKeywordFromPrefix($nsid,$page)
+	{
+		if($nsid>=0) {
+			$pfx=$this->getPrefixFromId($nsid);
+			if(empty($page)) {
+				if($pfx['prefix_auto_name']) $page=date($this->autoNameFormat);
+				else $page=$pfx['prefix_home'];
+			}
+			$page=$pfx['prefix'].':'.$page;
+		}
+		return $page;
+	}
+
 	/**
 	* Capture out of bounds data traveling with keyword. Such data is sent
 	* in keyword(oob) construct. This function processes any oob data and
@@ -780,6 +811,18 @@ class gwikiPage {
 		return $prefix;
 	}
 	
+	public function getPrefixFromId($pid)
+	{
+	global $xoopsDB;
+
+		$sql = 'SELECT * FROM '.$xoopsDB->prefix('gwiki_prefix').' WHERE prefix_id ='.$pid;
+		$result = $xoopsDB->query($sql);
+		while($myrow = $xoopsDB->fetchArray($result)) {
+			return $myrow;
+		}
+		return '';
+	}
+
 	public function getTemplateName()
 	{
 		if($this->currenttemplateid) {

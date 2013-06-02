@@ -24,15 +24,7 @@ if(empty($op) || ($op!='preview' && $op!='edit' && $op!='insert')) $op = "edit";
 
 // namespace id (prefix_id) is set by newpage block, turn it into a full page name
 if (isset($_GET['nsid'])) {
-	$nsid=intval($_GET['nsid']);
-	if($nsid>=0) {
-		$pfx=getPrefixFromId($nsid);
-		if(empty($page)) {
-			if($pfx['prefix_auto_name']) $page=date($xoopsModuleConfig['auto_name_format']);
-			else $page=$pfx['prefix_home'];
-		}
-		$page=$pfx['prefix'].':'.$page;
-	}
+	$page = $wikiPage->makeKeywordFromPrefix(intval($_GET['nsid']),$page);
 }
 if(empty($page)) $page=$wikiPage->wikiHomePage;
 
@@ -87,6 +79,7 @@ if(isset($_POST['leave_inactive'])) $leave_inactive = intval($_POST['leave_inact
 	$pageX['modurl']  = XOOPS_URL .'/modules/' . $dir;
 	$pageX['ineditor']  = true;
 	$pageX['imglib'] = $wikiPage->getImageLib($page);
+	$pageX['maxsize'] = $wikiPage->getMaxUploadSize();
 
 	if (!$mayEdit) {
 		$err_message=_MD_GWIKI_NO_PAGE_PERMISSION;

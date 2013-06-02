@@ -141,7 +141,7 @@
 <h2><{$smarty.const._MD_GWIKI_IMAGES_DETAIL}></h2>
 <div class="wikiimagedetail">
 <form id="wikieditimg_form" action="ajaximgedit.php" method="POST" enctype="multipart/form-data">
-<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="2000000" />
+<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="<{$gwiki.maxsize}>" />
 <input type="hidden" id="page" name="page" value="<{$gwiki.keyword}>" />
 <input type="hidden" id="wikiimage_id" name="image_id" value="0" />
 
@@ -189,7 +189,7 @@
 <h2><{$smarty.const._MD_GWIKI_FILES_DETAIL}></h2>
 <div class="wikifiledetail">
 <form id="wikieditfile_form" action="ajaxfileedit.php" method="POST" enctype="multipart/form-data">
-<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="2000000" />
+<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="<{$gwiki.maxsize}>" />
 <input type="hidden" id="page" name="page" value="<{$gwiki.keyword}>" />
 <input type="hidden" id="wikifile_id" name="file_id" value="0" />
 
@@ -320,7 +320,7 @@
 
 <div id="wikieditor-popform-boxes" class="wikieditor-param-container">
 <div class="wikieditor-param-top"><{$smarty.const._MD_GWIKI_EDIT_BTN_BOXES}></div>
-<form>
+<form action="#" onsubmit="return false;">
 <span class="wikieditor-param-title"><{$smarty.const._MD_GWIKI_EDPOP_PRMT_BXTYPE}></span>
 <span class="wikieditor-param-value">
 <select name="popformboxtype">
@@ -335,7 +335,7 @@
 <span class="wikieditor-param-title">Title:</span> <span class="wikieditor-param-value"><input name="popformboxtitle" type="text" size="12">
 </span><br />
 <span class="wikieditor-param-title"> </span>
-<span class="wikieditor-param-value"><button type="button" onclick="processPopFormBoxes(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button> 
+<span class="wikieditor-param-value"><button type="submit" onclick="processPopFormBoxes(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button> 
 <button type="button" onclick="closeAllParams();"><{$smarty.const.MD_GWIKI_EDIT_BTN_CANCEL}></button>
 </span><br />
 </form>
@@ -344,7 +344,7 @@
 
 <div id="wikieditor-popform-ref" class="wikieditor-param-container">
 <div class="wikieditor-param-top"><{$smarty.const._MD_GWIKI_EDIT_BTN_REFERENCE}></div>
-<form>
+<form action="#" onsubmit="return false;">
 <div class="wikieditor-param-prompt"><{$smarty.const._MD_GWIKI_EDPOP_XPRMT_REF1}></div>
 <span class="wikieditor-param-title"><{$smarty.const._MD_GWIKI_EDPOP_PRMT_REF_ID}></span> <span class="wikieditor-param-value"><input name="popformrefid" type="text" size="12">
 </span><br />
@@ -354,7 +354,7 @@
 <span class="wikieditor-param-title"><{$smarty.const._MD_GWIKI_EDPOP_PRMT_REF_REPEAT}></span> <span class="wikieditor-param-value"><input name="popformrefrepeat" type="text" size="12">
 </span><br />
 <span class="wikieditor-param-title"> </span>
-<span class="wikieditor-param-value"><button type="button" onclick="processPopFormRef(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button> 
+<span class="wikieditor-param-value"><button type="submit" onclick="processPopFormRef(this.form);"><{$smarty.const.MD_GWIKI_EDIT_BTN_INSERT}></button> 
 <button type="button" onclick="closeAllParams();"><{$smarty.const.MD_GWIKI_EDIT_BTN_CANCEL}></button>
 </span><br />
 </form>

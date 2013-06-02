@@ -29,18 +29,6 @@ function cleaner($string,$trim=true) {
 	return $string;
 }
 
-function getPrefixFromId($pid)
-{
-global $xoopsDB;
-
-	$sql = 'SELECT * FROM '.$xoopsDB->prefix('gwiki_prefix').' WHERE prefix_id ='.$pid;
-	$result = $xoopsDB->query($sql);
-	while($myrow = $xoopsDB->fetchArray($result)) {
-		return $myrow;
-	}
-	return '';
-}
-
 function loadLanguage($name, $domain = '',$language = null)
 {
 global $xoopsConfig;
