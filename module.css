@@ -3,29 +3,29 @@
 * Module: gwiki
 */
 
-/*.wikipage, .wikiblock { 
-	font-family: Sans-Serif; 
+/*.wikipage, .wikiblock {
+	font-family: Sans-Serif;
 }
 */
-.wikipage p, .wikiblock p { 
-	margin-top: 1em; 
-	margin-bottom: 1em; 
+.wikipage p, .wikiblock p {
+	margin-top: 1em;
+	margin-bottom: 1em;
 }
 
-.wikipage h2, .wikiblock h2 { 
+.wikipage h2, .wikiblock h2 {
 	font-size: 160%;
 	font-weight: bold;
-	margin-bottom: 1em; 
+	margin-bottom: 1em;
 }
 
-.wikipage h3, .wikiblock h3 { 
+.wikipage h3, .wikiblock h3 {
 	font-size: 130%;
 	font-weight: bold;
-	margin-bottom: 1em; 
+	margin-bottom: 1em;
 }
 
-img.wikiimage { 
-	margin: 0.5em; 
+img.wikiimage {
+	margin: 0.5em;
 	vertical-align: top;
 }
 
@@ -91,14 +91,14 @@ ol.wikiolist > li > ol > li > ol > li > ol > li {
 .wikititle {
 	font-size: 180%;
 	font-weight: bold;
-	margin-bottom: 1em; 
+	margin-bottom: 1em;
 }
 
 .wikinewpage:before
 {
 	content: "(?)";
 }
-.wikinewpage 
+.wikinewpage
 {
 	color: #666;
 	background-color: inherit;
@@ -110,7 +110,7 @@ ol.wikiolist > li > ol > li > ol > li > ol > li {
 span.wikiextlink
 {
 	background-image:url('images/extlinkicon.png');
-	background-position: left top; 
+	background-position: left top;
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 1em;
@@ -148,7 +148,7 @@ span.wikiextlink
 	margin-top: 0;
 	margin-left: 3em;
 	margin-right: 2em;
-	margin-bottom: 2em; 
+	margin-bottom: 2em;
 	text-align: left;
 	clear:both;
 }
@@ -163,9 +163,9 @@ span.wikiextlink
 }
 
 .wikinoteicon
-{ 
-	background: url(images/noteicon.png) no-repeat center; 
-	width: 64px; 
+{
+	background: url(images/noteicon.png) no-repeat center;
+	width: 64px;
 	height: 64px;
 	float: left;
 }
@@ -189,7 +189,7 @@ span.wikiextlink
 	margin-top: 0;
 	margin-left: 3em;
 	margin-right: 2em;
-	margin-bottom: 2em; 
+	margin-bottom: 2em;
 	text-align: left;
 	clear:both;
 }
@@ -204,9 +204,9 @@ span.wikiextlink
 }
 
 .wikiinfoicon
-{ 
-	background: url(images/infoicon.png) no-repeat center; 
-	width: 64px; 
+{
+	background: url(images/infoicon.png) no-repeat center;
+	width: 64px;
 	height: 64px;
 	float: left;
 }
@@ -230,7 +230,7 @@ span.wikiextlink
 	margin-top: 0;
 	margin-left: 3em;
 	margin-right: 2em;
-	margin-bottom: 2em; 
+	margin-bottom: 2em;
 	text-align: left;
 	clear:both;
 }
@@ -245,9 +245,9 @@ span.wikiextlink
 }
 
 .wikiwarnicon
-{ 
-	background: url(images/warnicon.png) no-repeat center; 
-	width: 64px; 
+{
+	background: url(images/warnicon.png) no-repeat center;
+	width: 64px;
 	height: 64px;
 	float: left;
 }
@@ -271,7 +271,7 @@ span.wikiextlink
 	margin-top: 0;
 	margin-left: 3em;
 	margin-right: 2em;
-	margin-bottom: 2em; 
+	margin-bottom: 2em;
 	text-align: left;
 	clear:both;
 }
@@ -286,9 +286,9 @@ span.wikiextlink
 }
 
 .wikitipicon
-{ 
-	background: url(images/tipicon.png) no-repeat center; 
-	width: 64px; 
+{
+	background: url(images/tipicon.png) no-repeat center;
+	width: 64px;
 	height: 64px;
 	float: left;
 }
@@ -312,7 +312,7 @@ span.wikiextlink
 	margin-top: 0;
 	margin-left: 3em;
 	margin-right: 2em;
-	margin-bottom: 2em; 
+	margin-bottom: 2em;
 	text-align: left;
 	clear:both;
 	max-height:400px;
@@ -329,9 +329,9 @@ span.wikiextlink
 }
 
 .wikicodeicon
-{ 
-	background: url(images/codeicon.png) no-repeat center; 
-	width: 64px; 
+{
+	background: url(images/codeicon.png) no-repeat center;
+	width: 64px;
 	height: 64px;
 	float: left;
 }
@@ -358,8 +358,8 @@ span.wikiextlink
 	background-color: yellow;
 }
 
-#wikibase, #wikicomp 
-{ 
+#wikibase, #wikicomp
+{
 	width:100%;
 	height : 250px;
 	overflow : auto;
@@ -450,7 +450,7 @@ span.wikiextlink
 .wikitoclevel6 { margin-left: 5em; }
 ul.wikitoclist > li { list-style: none; }
 .wikitoc a { color: #383838; }
-.wikitocheader { 
+.wikitocheader {
 	font-size: 125%;
 	font-weight: bold;
 	color: #333311;
@@ -485,7 +485,7 @@ ul.wikitoclist > li { list-style: none; }
 .wikibreak   { clear:both;}
 .wikimore { display:block; padding-top:1em; clear: both; font-size: 75%; vertical-align: sub;}
 
-/* 
+/*
  * .wikistrong
  * .wikiem
  * .wikihr
@@ -506,7 +506,12 @@ ul.wikitoclist > li { list-style: none; }
 	font-size: 130%;
 	font-weight: bold;
 	text-align: center;
-	background-image: url('images/panel.jpg');
+	/*background-image: url('images/panel.jpg');*/
+	background-image: linear-gradient(bottom, rgb(214,214,214) 17%, rgb(255,255,255) 88%);
+	background-image: -o-linear-gradient(bottom, rgb(214,214,214) 17%, rgb(255,255,255) 88%);
+	background-image: -moz-linear-gradient(bottom, rgb(214,214,214) 17%, rgb(255,255,255) 88%);
+	background-image: -webkit-linear-gradient(bottom, rgb(214,214,214) 17%, rgb(255,255,255) 88%);
+	background-image: -ms-linear-gradient(bottom, rgb(214,214,214) 17%, rgb(255,255,255) 88%);
 	background-repeat: repeat-x;
 	border-style: outset;
 	border-width: thin;
@@ -515,11 +520,11 @@ ul.wikitoclist > li { list-style: none; }
 	padding-top: .3em;
 	padding-bottom: .4em;
 }
-#wikiimageedit h2, #wikifileedit h2 { 
+#wikiimageedit h2, #wikifileedit h2 {
 	padding-left: 1.4em;
 }
-#wikiimageedit, #wikifileedit { 
-	display: none; 
+#wikiimageedit, #wikifileedit {
+	display: none;
 	width:90%;
 	position: absolute; /* fixed;*/
 	background-color: #eeeeee;
@@ -600,7 +605,15 @@ span.wikieditfile_field  {
 	margin: 2px 0;
 	border: 1px inset #446;
 	border-radius: 5px;
+	background: yellow none 0 0 no-repeat;
+}
+
+#wikieditimg_progress p.sending, #wikieditfile_progress p.sending
+{
 	background: #eee url("images/progress.png") 100% 0 repeat-y;
+}
+#wikieditimg_progress p.sending:before, #wikieditfile_progress p.sending:before {
+	content: "Sending ";
 }
 
 #wikieditimg_progress p.success, #wikieditfile_progress p.success
@@ -689,7 +702,7 @@ span.wikieditfile_field  {
 
 .wikifoldedtitle span
 {
-	background: #FFFFAA; 
+	background: #FFFFAA;
 	border: 1px solid #FFAD33;
 	position: relative;
 	z-index: 99;
@@ -705,17 +718,17 @@ span.wikieditfile_field  {
 }
 
 .wikifolded>.wikifoldedicon
-{ 
-	background: url(images/foldedicon.png) no-repeat center; 
-	width: 16px; 
+{
+	background: url(images/foldedicon.png) no-repeat center;
+	width: 16px;
 	height: 16px;
 	float: left;
 }
 
 .wikiunfolded>.wikifoldedicon
-{ 
-	background: url(images/unfoldedicon.png) no-repeat center; 
-	width: 16px; 
+{
+	background: url(images/unfoldedicon.png) no-repeat center;
+	width: 16px;
 	height: 16px;
 	float: left;
 }
@@ -752,7 +765,7 @@ div.wikiindextabs ul { list-style-type: none; padding-left: 0.2em;}
 div.wikiindextabs ul li { }
 div.wikiindextabs ul li a { background-color: #C6DDFA; width: 36px; display:block; border: 1px solid grey; border-radius: 3px; text-align: center; }
 div.wikiindextabs ul li a:hover { background-color: #B2C7E1; border: 1px solid black; text-decoration: none; }
-#wikiindextabactive a { background-color: #ffffff; border: 1px solid black; border-right: 0px; border-top-right-radius:0px; 
+#wikiindextabactive a { background-color: #ffffff; border: 1px solid black; border-right: 0px; border-top-right-radius:0px;
 border-bottom-right-radius:0px;}
 /* .wikiindextabinactive a { background-color: #B0C4DE; border: 1px solid black; border-right: 0px; } */
 div.wikiindexbody { display: table-cell; }
@@ -760,15 +773,15 @@ div.wikiindexbody { display: table-cell; }
 ul.wikigalleryimg li { display: inline-block; }
 ul.wikigalleryimg a {
 	background: #fff;
-	display: inline; 
-	float: left; 
-	margin: 0 0 27px 30px; 
-	width: auto; 
-	padding: 10px 10px 15px; 
-	text-align: center; 
-	font-family: "Marker Felt", "Comic Sans MS", cursive, sans-serif; 
-	text-decoration: none; 
-	color: #333; 
+	display: inline;
+	float: left;
+	margin: 0 0 27px 30px;
+	width: auto;
+	padding: 10px 10px 15px;
+	text-align: center;
+	font-family: Angelina, "Marker Felt", "Comic Sans MS", cursive, sans-serif;
+	text-decoration: none;
+	color: #333;
 	font-size: 18px;
 	zoom:1; /* This enables hasLayout, which is required for older IE browsers */
 	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(color='#b0b0b0', Direction=135, Strength=3)";
@@ -776,9 +789,9 @@ ul.wikigalleryimg a {
 	-webkit-box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 	-moz-box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 	box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-	-webkit-transform: rotate(-2deg); -moz-transform: rotate(-2deg); transform: rotate(-2deg); 
-	-webkit-transition: -webkit-transform .15s linear; 
-	-moz-transition: -moz-transform .05s linear; 
+	-webkit-transform: rotate(-2deg); -moz-transform: rotate(-2deg); transform: rotate(-2deg);
+	-webkit-transition: -webkit-transform .15s linear;
+	-moz-transition: -moz-transform .05s linear;
 }
 ul.wikigalleryimg img { display: block; border: 1px solid #dddddd; margin-bottom: 12px; }
 ul.wikigalleryimg a:after { content: attr(title); }
@@ -788,7 +801,7 @@ ul.wikigalleryimg li:nth-child(3n) a { -webkit-transform: none; position: relati
 ul.wikigalleryimg li:nth-child(5n) a { -webkit-transform: rotate(5deg); position: relative; right: 5px;  -moz-transform: rotate(5deg); transform: rotate(5deg);}
 ul.wikigalleryimg li:nth-child(8n) a { position: relative; right: 5px; top: 8px; }
 ul.wikigalleryimg li:nth-child(11n) a { position: relative; left: -5px; top: 3px; }
-		
+
 ul.wikigalleryimg li a:hover { -webkit-transform: scale(1.25); -moz-transform: scale(1.25); transform: scale(1.25); -webkit-box-shadow: 0 3px 6px rgba(0,0,0,.5); -moz-box-shadow: 0 3px 6px rgba(0,0,0,.5); position: relative; z-index: 5; }
 
 div.wikigallery { background-color: #F5FBFF; padding:1em;}
@@ -800,9 +813,9 @@ div.wikigallery { background-color: #F5FBFF; padding:1em;}
 .wikicitenum { font-weight: bold; }
 .wikiciteparenitem { margin-bottom: 0.5em; margin-left: 3em; text-indent: -3em; }
 
-.wikidiff 
-{ 
-	width:100%; 
+.wikidiff
+{
+	width:100%;
 	height : 450px;
 	overflow : auto;
 	border-style: solid;
@@ -908,7 +921,7 @@ div.wikieditor-buttontray{
 
 .wikieditor-param-top  { width: 100%; background-color: blue; color: white; text-align: center; line-height:160%}
 .wikieditor-param-bottom  { height:0.5em; display:block; }
-.wikieditor-param-container { 
+.wikieditor-param-container {
 	border: 1px solid black;
 	background-color: #fff;
 	border-radius:5px;
@@ -917,11 +930,12 @@ div.wikieditor-buttontray{
 	display: none;
 	z-index: 5000;
 }
+.wikieditor-param-value input[type="text"] { font-size: 8pt; }
 .wikieditor-param-prompt { width: 100%; text-align:left; font-size:75%; margin:0.2em;}
 .wikieditor-param-title { display: inline-table; width: 35%; margin: 0.25em; margin-left: 1em; font-weight: bold; text-align: right; }
 .wikieditor-param-value { width: 65%; margin: 0.25em; }
 
-#wikiwizard { 
+#wikiwizard {
 	width:90%;
 	background-color: #eeeeee;
 	border-style: solid;
@@ -980,3 +994,4 @@ div.wikiwizard_content  {margin:2em;}
 }
 .wikiwizard_table { border-spacing: 0.5em; }
 .wikiwizard_formcaption { font-size: 1.2em; font-weight: bold; }
+
