@@ -92,6 +92,7 @@ ol.wikiolist > li > ol > li > ol > li > ol > li {
 	font-size: 180%;
 	font-weight: bold;
 	margin-bottom: 1em;
+	line-height: 1em;
 }
 
 .wikinewpage:before
