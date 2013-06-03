@@ -506,21 +506,21 @@ function addImageMarkup() {
 
 function insertAtCursor(myField, myValue) {
 	setWikiChanged();
-//IE support
-	if (document.selection) {
-		myField.focus();
-		sel = document.selection.createRange();
-		sel.text = myValue;
-	}
-//MOZILLA/NETSCAPE support
-	else if (myField.selectionStart || myField.selectionStart == '0') {
+	// modern
+	if (myField.selectionStart || myField.selectionStart == '0') {
 		var startPos = myField.selectionStart;
 		var endPos = myField.selectionEnd;
 		myField.value = myField.value.substring(0, startPos)
 		+ myValue
 		+ myField.value.substring(endPos, myField.value.length);
 		var pos=startPos;
-		myField.setSelectionRange(pos,pos)
+		myField.setSelectionRange(pos,pos);
+	}
+	// try older IE
+	else if (document.selection) {
+		myField.focus();
+		sel = document.selection.createRange();
+		sel.text = myValue;
 	} else {
 		myField.value += myValue;
 	}
@@ -531,36 +531,34 @@ function moveCaretPosition(myField,delta) {
 	setCaretPosition(myField,getCaretPosition(myField)+delta);
 }
 
-// enable a full screen textarea for editing
 function getCaretPosition (ctrl) {
 
 	var CaretPos = 0;
-	// IE Support
-	if (document.selection) {
-
-		ctrl.focus ();
-		var Sel = document.selection.createRange ();
-
-		Sel.moveStart ('character', -ctrl.value.length);
-
-		CaretPos = Sel.text.length;
-	}
-	// Firefox support
-	else if (ctrl.selectionStart || ctrl.selectionStart == '0')
+	// modern
+	if (ctrl.selectionStart || ctrl.selectionStart == '0') {
 		CaretPos = ctrl.selectionStart;
+	}
+	// older IE
+	else if (document.selection) {
+		ctrl.focus ();
+		var sel = document.selection.createRange ();
+		sel.moveStart ('character', -ctrl.value.length);
+		CaretPos = sel.text.length;
+	}
 
 	return (CaretPos);
-
 }
 
 function setCaretPosition(ctrl, pos)
 {
 
+	// modern
 	if(ctrl.setSelectionRange)
 	{
 		ctrl.focus();
 		ctrl.setSelectionRange(pos,pos);
 	}
+	// older IE
 	else if (ctrl.createTextRange) {
 		var range = ctrl.createTextRange();
 		range.collapse(true);
@@ -570,7 +568,7 @@ function setCaretPosition(ctrl, pos)
 	}
 }
 
-
+// enable a full screen textarea for editing
 function viewport()
 {
 	var e = window, a = 'inner';
