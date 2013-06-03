@@ -2,7 +2,7 @@
 * module.css
 * Module: gwiki
 */
-
+@import url(http://fonts.googleapis.com/css?family=Just+Another+Hand);
 /*.wikipage, .wikiblock {
 	font-family: Sans-Serif;
 }
@@ -780,10 +780,11 @@ ul.wikigalleryimg a {
 	width: auto;
 	padding: 10px 10px 15px;
 	text-align: center;
-	font-family: Angelina, "Marker Felt", "Comic Sans MS", cursive, sans-serif;
+	font-family: 'Just Another Hand', "Comic Sans MS", cursive, sans-serif;
 	text-decoration: none;
 	color: #333;
-	font-size: 18px;
+	font-size: 16pt;
+	font-weight: normal;
 	zoom:1; /* This enables hasLayout, which is required for older IE browsers */
 	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(color='#b0b0b0', Direction=135, Strength=3)";
 	filter: progid:DXImageTransform.Microsoft.Shadow(color='#b0b0b0', Direction=135, Strength=3);
