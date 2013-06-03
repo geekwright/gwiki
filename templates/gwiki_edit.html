@@ -1290,13 +1290,15 @@ function setWikiChanged()
     window.wikiChanged = true;
 }
 
-window.addEventListener("beforeunload", function (e) {
-	if(window.wikiChanged){
-		var confirmationMessage = "<{$smarty.const._MD_GWIKI_PAGENOTSAVED}>";
+if(window.addEventListener) {
+	window.addEventListener("beforeunload", function (e) {
+		if(window.wikiChanged){
+			var confirmationMessage = "<{$smarty.const._MD_GWIKI_PAGENOTSAVED}>";
 
-		(e || window.event).returnValue = confirmationMessage;     //Gecko + IE
-		return confirmationMessage;            //Webkit, Safari, Chrome etc.
-	}
-});
+			(e || window.event).returnValue = confirmationMessage;     //Gecko + IE
+			return confirmationMessage;            //Webkit, Safari, Chrome etc.
+		}
+	});
+}
 
 </script>
