@@ -1741,13 +1741,21 @@ class gwikiPage {
 	public function renderTeaser($body=NULL,$title=NULL)
 	{
 		// chop body at more tag if it is set
-		// TODO - need a fallback if no {more} tag and length is above some threshold
+		$splitsize=400; // arbitrary size to use when no {more} tag
 		if(empty($body)) $body=$this->body;
 		$pos=stripos($body,'{more}');
+		if($pos===false && strlen($body)>$splitsize) {
+			$search  = "#\r\n?#";
+			$replace = "\n";
+			$body=preg_replace($search, $replace, $body);
+			$pos=stripos($body,"\n\n",$splitsize); // hopefully the end of a paragraph
+		}
+		trigger_error($pos);
 		if($pos!==false) {
 			$body=substr($body,0,$pos);
 			$url=sprintf($this->wikiLinkURL,$this->keyword);
 		}
+
 		$body=str_ireplace ('{toc}', '', $body);
 		$body=$this->renderPage($body,$title);
 		if($pos!==false) $body.='<a href="'.$url.'#more"><span class="wikimore">'._MD_GWIKI_MORE.'</span></a>';
