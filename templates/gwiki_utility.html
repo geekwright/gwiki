@@ -210,6 +210,7 @@ Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
 	}
 
 	// call initialization file
+if(document.getElementById("gwikiimgform_nofiledrag")) {
 	window.wikisaysdumbbrowser=true; // set to false when proven otherwise
 	window.fileUpCount = 0;
 	if (window.File && window.FileList && window.FileReader) {
@@ -218,6 +219,7 @@ Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
 		document.getElementById("gwikiimgform_nofiledrag").style.display='none';
 		document.getElementById("wikieditimg_dd_msg").innerHTML="";
 	}
+}
 
 })();
 </script>
