@@ -361,7 +361,7 @@
 <span class="wikieditor-param-bottom"></span>
 </div>
 
-<script>
+<script type="text/javascript" language="javascript">
 // some misc script things
 function helpwindow() {
 	window.open('<{$gwiki.modurl}>/language/<{$smarty.const._MD_GWIKI_WIKI_HELP_DIR}>/help/wikihelp.html','1359403524804','width=400,height=680,toolbar=0,menubar=1,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
@@ -460,17 +460,25 @@ function idEditField() {
 
 function addSimpleMarkup(openmarkup,closemarkup) {
 	var e=idEditField();
-	var start = e.selectionStart;
-	var end = e.selectionEnd;
-	var sel = e.value.substring(start, end);
+
+	if (e.selectionStart || e.selectionStart == '0') {
+		var start = e.selectionStart;
+		var end = e.selectionEnd;
+		var sel = e.value.substring(start, end);
+	}
+	else if (document.selection) {
+		var sel = window.SavedSelection.sel;
+		var start = window.SavedSelection.start;
+		var end = window.SavedSelection.end;
+		restoreSavedSelection(e);
+	}
 
 	if(start==end) {
-		insertAtCursor(e,openmarkup+closemarkup);
-		var delta=0-closemarkup.length;
-		moveCaretPosition(e,delta);
+		e.focus();
+		insertAtCursor(e,openmarkup,closemarkup);
 	}
 	else {
-		insertAtCursor(e,openmarkup+sel+closemarkup);
+		insertAtCursor(e,openmarkup+sel+closemarkup,'');
 	}
 	e.focus();
 	closeAllParams();
@@ -498,33 +506,39 @@ function addImageMarkup() {
 	}
 	markup = '{{' + image_name + markup + '}}';
 	var e=idEditField();
-	insertAtCursor(e,markup);
+	insertAtCursor(e,markup,'');
 	toggleDiv('wikiimageedit');
 	e.focus();
 	return true;
 }
 
-function insertAtCursor(myField, myValue) {
+function insertAtCursor(myField, openmarkup, closemarkup) {
 	setWikiChanged();
 	// modern
 	if (myField.selectionStart || myField.selectionStart == '0') {
 		var startPos = myField.selectionStart;
 		var endPos = myField.selectionEnd;
 		myField.value = myField.value.substring(0, startPos)
-		+ myValue
+		+ openmarkup + closemarkup
 		+ myField.value.substring(endPos, myField.value.length);
 		var pos=startPos;
 		myField.setSelectionRange(pos,pos);
+		moveCaretPosition(myField,openmarkup.length);
 	}
 	// try older IE
+	// do we need to adjust caret in these cases?
 	else if (document.selection) {
 		myField.focus();
+		pos=getCaretPosition(myField);
 		sel = document.selection.createRange();
-		sel.text = myValue;
+		var org = sel.text;
+		sel.text = openmarkup + closemarkup;
+		pos = pos + openmarkup.length;
+		setCaretPosition(myField, pos);
+		myField.focus();
 	} else {
-		myField.value += myValue;
+		myField.value += (openmarkup + closemarkup);
 	}
-	moveCaretPosition(myField,myValue.length);
 }
 
 function moveCaretPosition(myField,delta) {
@@ -541,9 +555,18 @@ function getCaretPosition (ctrl) {
 	// older IE
 	else if (document.selection) {
 		ctrl.focus ();
-		var sel = document.selection.createRange ();
-		sel.moveStart ('character', -ctrl.value.length);
-		CaretPos = sel.text.length;
+		/*
+		var bookmark = document.selection.createRange().getBookmark();
+		var slct = ctrl.createTextRange();
+		var bfr = slct.duplicate();
+		slct.moveToBookmark(bookmark);
+		bfr.setEndPoint("EndToStart", slct);
+		window.SavedSelection = {};
+		var start = bfr.text.length;
+		var end = start + slct.text.length;
+		//var sel = slct.text;
+		*/
+		CaretPos = getInputSelection(ctrl).start;
 	}
 
 	return (CaretPos);
@@ -559,13 +582,14 @@ function setCaretPosition(ctrl, pos)
 		ctrl.setSelectionRange(pos,pos);
 	}
 	// older IE
-	else if (ctrl.createTextRange) {
+	else setSelection(ctrl, pos, pos);
+		/*if (ctrl.createTextRange) {
 		var range = ctrl.createTextRange();
 		range.collapse(true);
 		range.moveEnd('character', pos);
 		range.moveStart('character', pos);
 		range.select();
-	}
+	} */
 }
 
 // enable a full screen textarea for editing
@@ -958,7 +982,6 @@ function fileOutput(msg) {
 	m.innerHTML = msg;
 }
 
-
 function fileClearOutput() {
 	var m = document.getElementById("wikieditfile_dd_msg");
 	if(window.wikisaysdumbbrowser==true) { m.innerHTML = ''; }
@@ -984,7 +1007,6 @@ function clearFileDetail() {
 	fileClearOutput();
 }
 
-
 function getFileListById(fileid) {
 
 	clearFileDetail();
@@ -999,7 +1021,6 @@ function getFileListById(fileid) {
 	document.getElementById("wikieditfile_img").src=window.fileList[fileid].iconlink;
 
 }
-
 
 function fetchFileList() {
 	document.getElementById("wikifilelist").innerHTML='<img id="loadanim" src="images/loading-anim.gif" />';
@@ -1027,7 +1048,6 @@ function fetchFileList() {
 	xmlhttp.open("GET","ajaxfilelist.php?page=<{$gwiki.keyword}>",true);
 	xmlhttp.send();
 }
-
 
 function serializeFileDetail() {
 	var file = new Object;
@@ -1107,7 +1127,6 @@ function fileFieldEventHandler(event,field) {
 	xhr.setRequestHeader("X_JSONDATA", x_jsondata);
 	xhr.send();
 }
-
 
 /*
 taken from
@@ -1301,4 +1320,111 @@ if(window.addEventListener) {
 	});
 }
 
+function saveSelectionOnblur(e) {
+/*		var bookmark = document.selection.createRange().getBookmark();
+		var slct = e.createTextRange();
+		var bfr = slct.duplicate();
+		slct.moveToBookmark(bookmark);
+		bfr.setEndPoint("EndToStart", slct);
+*/
+		var s=getInputSelection(e);
+		window.SavedSelection = {};
+		
+		window.SavedSelection.start = s.start;
+		window.SavedSelection.end = s.end;
+		window.SavedSelection.sel = s.val;
+		
+/*		window.SavedSelection.start = bfr.text.length;
+		window.SavedSelection.end = window.SavedSelection.start + slct.text.length;
+		window.SavedSelection.sel = slct.text;
+*/
+}
+
+function restoreSavedSelection(e) {
+	e.focus();
+/*	var range = e.createTextRange();
+	range.collapse(true);
+	range.moveEnd('character',window.SavedSelection.end);
+	range.moveStart('character',window.SavedSelection.start);
+	range.select();
+*/
+	setSelection(e, window.SavedSelection.start, window.SavedSelection.end);
+
+}
+
+function setEditOnblur() {
+	e = document.getElementById("editfield");
+	if (e.selectionStart || e.selectionStart == '0') {
+		return; // this is only for older IE
+	}
+	e.onbeforedeactivate=function(){ saveSelectionOnblur(e); };
+	b = document.getElementById("body");
+	b.onbeforedeactivate=function(){ saveSelectionOnblur(b); };
+}
+
+setEditOnblur();
+
+// from Tim Down on stackoverflow.com
+function getInputSelection(el) {
+	var start = 0, end = 0, normalizedValue, range, textInputRange, len, endRange;
+
+	if (typeof el.selectionStart == "number" && typeof el.selectionEnd == "number") {
+		start = el.selectionStart;
+		end = el.selectionEnd;
+	} else {
+		range = document.selection.createRange();
+
+		if (range && range.parentElement() == el) {
+			len = el.value.length;
+			normalizedValue = el.value.replace(/\r\n/g, "\n");
+
+			// Create a working TextRange that lives only in the input
+			textInputRange = el.createTextRange();
+			textInputRange.moveToBookmark(range.getBookmark());
+
+			// Check if the start and end of the selection are at the very end
+			// of the input, since moveStart/moveEnd doesn't return what we want
+			// in those cases
+			endRange = el.createTextRange();
+			endRange.collapse(false);
+
+			if (textInputRange.compareEndPoints("StartToEnd", endRange) > -1) {
+				start = end = len;
+			} else {
+				start = -textInputRange.moveStart("character", -len);
+				start += normalizedValue.slice(0, start).split("\n").length - 1;
+
+				if (textInputRange.compareEndPoints("EndToEnd", endRange) > -1) {
+					end = len;
+				} else {
+					end = -textInputRange.moveEnd("character", -len);
+					end += normalizedValue.slice(0, end).split("\n").length - 1;
+				}
+			}
+		}
+	}
+
+	return {
+		start: start,
+		end: end,
+		val: range.text
+	};
+}
+
+function offsetToRangeCharacterMove(el, offset) {
+    return offset - (el.value.slice(0, offset).split("\r\n").length - 1);
+}
+
+function setSelection(el, startOffset, endOffset) {
+    var range = el.createTextRange();
+    var startCharMove = offsetToRangeCharacterMove(el, startOffset);
+    range.collapse(true);
+    if (startOffset == endOffset) {
+        range.move("character", startCharMove);
+    } else {
+        range.moveEnd("character", offsetToRangeCharacterMove(el, endOffset));
+        range.moveStart("character", startCharMove);
+    }
+    range.select();
+}
 </script>
