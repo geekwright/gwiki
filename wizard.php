@@ -507,6 +507,7 @@ global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
 	return true;
 }
 
+	$page='';
 	if (isset($_GET['page'])) {
 		$page = cleaner($_GET['page']);
 	}
