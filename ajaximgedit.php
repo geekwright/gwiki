@@ -2,7 +2,7 @@
 /**
 * ajaximgedit.php - backend upload images and update image info
 *
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
@@ -44,14 +44,14 @@ global $xoopsDB, $uploadpath, $wikiPage;
 	// look up the name and delete the image file
 	$sql = "SELECT image_file FROM ".$xoopsDB->prefix('gwiki_page_images').
 	    " where image_id='{$q_image_id}' AND keyword = '{$q_keyword}' ";
-	
+
 	$result = $xoopsDB->query($sql);
 	if ($result) {
 		$rows=$xoopsDB->getRowsNum($result);
 		if($rows) {
 			$myrow=$xoopsDB->fetchArray($result);
 			if(!empty($myrow['image_file'])) {
-				$oldfilename=$uploadpath . '/'.$myrow['image_file'];
+				$oldfilename=$uploadpath.$myrow['image_file'];
 				unlink($oldfilename);
 			}
 		}
@@ -65,7 +65,7 @@ global $xoopsDB, $uploadpath, $wikiPage;
 	$cnt=$xoopsDB->getAffectedRows();
 	if($cnt) $input['message']=_MD_GWIKI_AJAX_IMGEDIT_DEL_OK;
 
-	
+
 	return $result;
 }
 
@@ -86,7 +86,7 @@ global $xoopsDB, $wikiPage;
 	if($q_use_to_represent) {
 		$sql = "UPDATE ".$xoopsDB->prefix('gwiki_page_images').
 			" set use_to_represent = 0 where keyword = '{$q_keyword}' ";
-	
+
 		$result = $xoopsDB->queryF($sql);
 	}
 
@@ -96,7 +96,7 @@ global $xoopsDB, $wikiPage;
 	$sql.= " , use_to_represent = '{$q_use_to_represent}' ";
 	if(!empty($q_image_file)) $sql.= " , image_file = '{$q_image_file}' ";
 	$sql.= " where image_id = '{$q_image_id}' ";
-	
+
 	$result = $xoopsDB->queryF($sql);
 	if(!$result) {
 		$input['message']=$xoopsDB->error();
@@ -105,7 +105,7 @@ global $xoopsDB, $wikiPage;
 	$cnt=$xoopsDB->getAffectedRows();
 	if(!$cnt) $input['message']=_MD_GWIKI_AJAX_IMGEDIT_NOT_DEFINED;
 	else $input['message']=_MD_GWIKI_AJAX_IMGEDIT_UPD_OK;
-	
+
 	if ($result && !$cnt && !empty($q_image_file)) { // database is OK but nothing to update - require image_file
 		$sql = "insert into ".$xoopsDB->prefix('gwiki_page_images');
 		$sql.= " (keyword, image_name, image_alt_text, use_to_represent, image_file) ";
@@ -122,17 +122,17 @@ global $xoopsDB, $wikiPage;
 function updateImage($newimage, &$input) {
 global $uploadpath,$xoopsDB;
 	// For now, images are stored in individual directories for each page.
-	// We can change the directory distribution later, as the entire path 
+	// We can change the directory distribution later, as the entire path
 	// relative to /uploads/gwiki/ ($relpath) is stored in the database.
 
-	// We get rid of any colons in the page name in case the filesystem has 
+	// We get rid of any colons in the page name in case the filesystem has
 	// issues with them. (undescore is illegal in page name, so it stays unique.)
 	$relpath='pages/'.str_replace ( ':', '_', $input['page']) .'/img/';
 	$ourpath=$uploadpath.$relpath;
 	@mkdir($ourpath,0755,true);
 	$tempfn = tempnam ( $ourpath, 'WIKIIMG_');
 	$image=file_get_contents('php://input');
-	file_put_contents($tempfn,$image); 
+	file_put_contents($tempfn,$image);
 
 	$ogimage_parts = pathinfo($newimage);
 
@@ -149,14 +149,14 @@ global $uploadpath,$xoopsDB;
 	$q_image_id=intval($input['image_id']);
 	$sql = "SELECT image_file FROM ".$xoopsDB->prefix('gwiki_page_images').
 	    " where image_id='{$q_image_id}' ";
-	
+
 	$result = $xoopsDB->query($sql);
 	if ($result) {
 		$rows=$xoopsDB->getRowsNum($result);
 		if($rows) {
 			$myrow=$xoopsDB->fetchArray($result);
 			if(!empty($myrow['image_file'])) {
-				$oldfilename=$uploadpath . '/'.$myrow['image_file'];
+				$oldfilename=$uploadpath . $myrow['image_file'];
 				unlink($oldfilename);
 			}
 			// update
@@ -186,7 +186,7 @@ global $uploadpath,$xoopsDB;
 	$input['page']=strtolower($wikiPage->normalizeKeyword($input['page']));
 	$pageX = $wikiPage->getPage($input['page']);
 	$mayEdit = $wikiPage->checkEdit();
-	
+
 	if(!$mayEdit) {
 		header("Status: 403 Forbidden - No Permission");
 		if(!$mayEdit) $out['message']=_MD_GWIKI_AJAX_IMGEDIT_NO_AUTH;
