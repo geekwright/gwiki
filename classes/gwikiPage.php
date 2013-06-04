@@ -614,10 +614,8 @@ class gwikiPage {
 		$sql.= ' ORDER BY prefix ';
 		$prefixes=array();
 		$result = $xoopsDB->query($sql);
-		$first=true;
+		if($create_any) $prefixes[]=array('prefix_id'=>-1, 'prefix'=>' ');
 		while($myrow = $xoopsDB->fetchArray($result)) {
-		if($first && $create_any) $prefixes[]=array('prefix_id'=>-1, 'prefix'=>' ');
-			$first=false;
 			$prefixes[] = $myrow;
 		}
 
