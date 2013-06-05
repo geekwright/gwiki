@@ -1748,7 +1748,6 @@ class gwikiPage {
 			$body=preg_replace($search, $replace, $body);
 			$pos=stripos($body,"\n\n",$splitsize); // hopefully the end of a paragraph
 		}
-		trigger_error($pos);
 		if($pos!==false) {
 			$body=substr($body,0,$pos);
 			$url=sprintf($this->wikiLinkURL,$this->keyword);
