@@ -1,5 +1,14 @@
 gwiki ChangeLog
 
+=== gwiki Module 1.0 beta2 ===
+Release date: June 05, 2013
+
+* editor toolbar to add basic wiki markup
+* page creation wizard
+* add what links here table and block
+* remove all PREG_REPLACE_EXEC uses
+* lots of little fixes and tweaks
+
 === gwiki Module 1.0 beta ===
 Release date: May 2013
 

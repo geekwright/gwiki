@@ -14,7 +14,7 @@ $modversion['dirname']     = basename( dirname( __FILE__ ) ) ;
 // things for ModuleAdmin() class
 $modversion['license_url'] = XOOPS_URL.'/modules/gwiki/docs/license.txt';
 $modversion['license_url'] = substr($modversion['license_url'],strpos($modversion['license_url'],'//')+2);
-$modversion['release_date']     = '2013/01/08';
+$modversion['release_date']     = '2013/06/05';
 $modversion['module_website_url'] = 'geekwright.com';
 $modversion['module_website_name'] = 'geekwright, LLC';
 $modversion['module_status'] = "Beta2";
@@ -194,7 +194,7 @@ $modversion['config'][]= array(
 	'valuetype' => 'int',
 	'default' => 10,
 	'options' => array('5' => 5, '10' => 10, '20' => 20, '50' => 50) );
-	
+
 $modversion['config'][]= array(
 	'name' => 'wikilink_template',
 	'title' => '_MI_GWIKI_LINK_TEMPLATE',
@@ -240,7 +240,7 @@ $modversion['config'][]= array(
 	'valuetype' => 'text',
 	'default' => 'txt,pdf,doc,docx,xls,ppt,jpg,jpeg,png',
 	'options' => array() );
-	
+
 $modversion['config'][]= array(
 	'name' => 'allow_origin',
 	'title' => '_MI_GWIKI_AJAX_ALLOW_ORIGIN',
@@ -265,7 +265,7 @@ $modversion['config'][]= array(
 	'formtype' => 'textbox',
 	'valuetype' => 'int',
 	'default' => 150 );
-	
+
 $modversion['config'][]= array(
 	'name' => 'template_namespace',
 	'title' => '_MI_GWIKI_WIZARD_TEMPLATES',
@@ -273,7 +273,7 @@ $modversion['config'][]= array(
 	'formtype' => 'textbox',
 	'valuetype' => 'text',
 	'default' => '' );
-	
+
 $modversion['config'][]= array(
 	'name' => 'auto_name_format',
 	'title' => '_MI_GWIKI_AUTO_NAME_FORMAT',
