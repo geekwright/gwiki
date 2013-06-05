@@ -1,0 +1,3 @@
+INSERT INTO `gwiki_pages`(`keyword`, `display_keyword`, `title`, `body`, `parent_page`, `page_set_home`, `page_set_order`, `meta_description`, `meta_keywords`, `lastmodified`, `uid`, `admin_lock`, `active`, `search_body`, `toc_cache`, `show_in_index`, `gwiki_version`) 
+SELECT `keyword`, `display_keyword`, `title`, `body`, `parent_page`, `page_set_home`, `page_set_order`, `meta_description`, `meta_keywords`, `lastmodified`, `uid`, `admin_lock`, `active`, `search_body`, `toc_cache`, `show_in_index`, `gwiki_version` FROM `gwwiki_gwiki_pages`
+WHERE active=1 and page_set_home='Help:Index'
