@@ -526,7 +526,6 @@ function insertAtCursor(myField, openmarkup, closemarkup) {
 		moveCaretPosition(myField,openmarkup.length);
 	}
 	// try older IE
-	// do we need to adjust caret in these cases?
 	else if (document.selection) {
 		myField.focus();
 		pos=getCaretPosition(myField);
@@ -546,7 +545,6 @@ function moveCaretPosition(myField,delta) {
 }
 
 function getCaretPosition (ctrl) {
-
 	var CaretPos = 0;
 	// modern
 	if (ctrl.selectionStart || ctrl.selectionStart == '0') {
@@ -555,26 +553,13 @@ function getCaretPosition (ctrl) {
 	// older IE
 	else if (document.selection) {
 		ctrl.focus ();
-		/*
-		var bookmark = document.selection.createRange().getBookmark();
-		var slct = ctrl.createTextRange();
-		var bfr = slct.duplicate();
-		slct.moveToBookmark(bookmark);
-		bfr.setEndPoint("EndToStart", slct);
-		window.SavedSelection = {};
-		var start = bfr.text.length;
-		var end = start + slct.text.length;
-		//var sel = slct.text;
-		*/
 		CaretPos = getInputSelection(ctrl).start;
 	}
-
 	return (CaretPos);
 }
 
 function setCaretPosition(ctrl, pos)
 {
-
 	// modern
 	if(ctrl.setSelectionRange)
 	{
@@ -582,14 +567,7 @@ function setCaretPosition(ctrl, pos)
 		ctrl.setSelectionRange(pos,pos);
 	}
 	// older IE
-	else setSelection(ctrl, pos, pos);
-		/*if (ctrl.createTextRange) {
-		var range = ctrl.createTextRange();
-		range.collapse(true);
-		range.moveEnd('character', pos);
-		range.moveStart('character', pos);
-		range.select();
-	} */
+	else { setSelection(ctrl, pos, pos); }
 }
 
 // enable a full screen textarea for editing
@@ -633,7 +611,6 @@ function bigWindow(op)
 		f1.focus ();
 		e.style.display="none";
 	}
-
 }
 
 // output status and other info
@@ -683,6 +660,7 @@ function toggleDiv(id) {
 		ele.style.display = "block";
 	}
 }
+
 function hideDiv(id) {
 	var ele = document.getElementById(id);
 	ele.style.display = "none";
@@ -703,7 +681,6 @@ function clearImageDetail() {
 	ClearOutput();
 }
 
-
 function getImageListById(imageid) {
 
 	clearImageDetail();
@@ -716,7 +693,6 @@ function getImageListById(imageid) {
 	document.getElementById("wikieditimg_img").src=window.imageList[imageid].link;
 
 }
-
 
 function fetchImageList() {
 	document.getElementById("wikiimagelist").innerHTML='<img id="loadanim" src="images/loading-anim.gif" />';
@@ -744,7 +720,6 @@ function fetchImageList() {
 	xmlhttp.open("GET","ajaximglist.php?page="+document.getElementById('imagelib').value,true); // +'&cachekill=' + Math.random()
 	xmlhttp.send();
 }
-
 
 function serializeImageDetail() {
 	var image = new Object;
@@ -1287,10 +1262,11 @@ Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
 })();
 
 // support for warning on exit with unsaved changes
-if(document.getElementById("pagechanged").value=="yes") {
+if(document.getElementById("pagechanged").value=="yes") { // set in php
 	setWikiChanged();
 }
 
+// ok to exit via submit or preview
 function prepForSubmit()
 {
 	window.wikiChanged = false;
@@ -1309,49 +1285,38 @@ function setWikiChanged()
     window.wikiChanged = true;
 }
 
-if(window.addEventListener) {
-	window.addEventListener("beforeunload", function (e) {
-		if(window.wikiChanged){
-			var confirmationMessage = "<{$smarty.const._MD_GWIKI_PAGENOTSAVED}>";
-
-			(e || window.event).returnValue = confirmationMessage;     //Gecko + IE
-			return confirmationMessage;            //Webkit, Safari, Chrome etc.
-		}
-	});
+function confirmExitEdit(e) {
+	if(window.wikiChanged){
+		var confirmationMessage = "<{$smarty.const._MD_GWIKI_PAGENOTSAVED}>";
+		(e || window.event).returnValue = confirmationMessage;     //Gecko + IE
+		return confirmationMessage;            //Webkit, Safari, Chrome etc.
+	}
 }
 
+if(window.addEventListener) {
+	window.addEventListener("beforeunload", confirmExitEdit);
+} else {
+	window.attachEvent("onbeforeunload", confirmExitEdit);
+}
+
+// start IE workarounds for selections, line endings, caret positioning
+// these are only used for IE8-
 function saveSelectionOnblur(e) {
-/*		var bookmark = document.selection.createRange().getBookmark();
-		var slct = e.createTextRange();
-		var bfr = slct.duplicate();
-		slct.moveToBookmark(bookmark);
-		bfr.setEndPoint("EndToStart", slct);
-*/
 		var s=getInputSelection(e);
 		window.SavedSelection = {};
-		
+
 		window.SavedSelection.start = s.start;
 		window.SavedSelection.end = s.end;
 		window.SavedSelection.sel = s.val;
-		
-/*		window.SavedSelection.start = bfr.text.length;
-		window.SavedSelection.end = window.SavedSelection.start + slct.text.length;
-		window.SavedSelection.sel = slct.text;
-*/
 }
 
 function restoreSavedSelection(e) {
 	e.focus();
-/*	var range = e.createTextRange();
-	range.collapse(true);
-	range.moveEnd('character',window.SavedSelection.end);
-	range.moveStart('character',window.SavedSelection.start);
-	range.select();
-*/
 	setSelection(e, window.SavedSelection.start, window.SavedSelection.end);
-
 }
 
+// use onbeforedeactivate to capture current selection, otherwise the
+// selection will be lost when the toolbar is used
 function setEditOnblur() {
 	e = document.getElementById("editfield");
 	if (e.selectionStart || e.selectionStart == '0') {
@@ -1364,42 +1329,37 @@ function setEditOnblur() {
 
 setEditOnblur();
 
-// from Tim Down on stackoverflow.com
+// adapted from code by Tim Down on stackoverflow.com
 function getInputSelection(el) {
 	var start = 0, end = 0, normalizedValue, range, textInputRange, len, endRange;
 
-	if (typeof el.selectionStart == "number" && typeof el.selectionEnd == "number") {
-		start = el.selectionStart;
-		end = el.selectionEnd;
-	} else {
-		range = document.selection.createRange();
+	range = document.selection.createRange();
 
-		if (range && range.parentElement() == el) {
-			len = el.value.length;
-			normalizedValue = el.value.replace(/\r\n/g, "\n");
+	if (range && range.parentElement() == el) {
+		len = el.value.length;
+		normalizedValue = el.value.replace(/\r\n/g, "\n");
 
-			// Create a working TextRange that lives only in the input
-			textInputRange = el.createTextRange();
-			textInputRange.moveToBookmark(range.getBookmark());
+		// Create a working TextRange that lives only in the input
+		textInputRange = el.createTextRange();
+		textInputRange.moveToBookmark(range.getBookmark());
 
-			// Check if the start and end of the selection are at the very end
-			// of the input, since moveStart/moveEnd doesn't return what we want
-			// in those cases
-			endRange = el.createTextRange();
-			endRange.collapse(false);
+		// Check if the start and end of the selection are at the very end
+		// of the input, since moveStart/moveEnd doesn't return what we want
+		// in those cases
+		endRange = el.createTextRange();
+		endRange.collapse(false);
 
-			if (textInputRange.compareEndPoints("StartToEnd", endRange) > -1) {
-				start = end = len;
+		if (textInputRange.compareEndPoints("StartToEnd", endRange) > -1) {
+			start = end = len;
+		} else {
+			start = -textInputRange.moveStart("character", -len);
+			start += normalizedValue.slice(0, start).split("\n").length - 1;
+
+			if (textInputRange.compareEndPoints("EndToEnd", endRange) > -1) {
+				end = len;
 			} else {
-				start = -textInputRange.moveStart("character", -len);
-				start += normalizedValue.slice(0, start).split("\n").length - 1;
-
-				if (textInputRange.compareEndPoints("EndToEnd", endRange) > -1) {
-					end = len;
-				} else {
-					end = -textInputRange.moveEnd("character", -len);
-					end += normalizedValue.slice(0, end).split("\n").length - 1;
-				}
+				end = -textInputRange.moveEnd("character", -len);
+				end += normalizedValue.slice(0, end).split("\n").length - 1;
 			}
 		}
 	}
@@ -1427,4 +1387,5 @@ function setSelection(el, startOffset, endOffset) {
     }
     range.select();
 }
+// end IE workarounds
 </script>
