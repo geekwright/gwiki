@@ -91,18 +91,87 @@ global $wikiPage, $xoopsTpl, $token;
 	return true;
 }
 
+function obtainImportText()
+{
+global $wikiPage, $xoopsTpl, $token;
+
+	$form = new XoopsThemeForm(_MD_GWIKI_IMPORT_TEXT_TITLE, 'gwizardform', 'wizard.php', 'POST', $token);
+	$form->setExtra(' enctype="multipart/form-data" ');
+
+	$caption = _MD_GWIKI_IMPORT_TEXT_FILE;
+	$form->addElement(new XoopsFormFile($caption, 'import_file',$wikiPage->getMaxUploadSize()),false);
+	$form->addElement(new XoopsFormLabel('', _MD_GWIKI_IMPORT_TEXT_FORM_DESC, 'instructions'));
+
+	$btn_tray = new XoopsFormElementTray('', ' ','gwizardformtray');
+	$submit_btn = new XoopsFormButton("", "wikiwizard_submit", _MD_GWIKI_WIZARD_CONTINUE, "submit");
+//	$submit_btn->setExtra("onclick='prepForSubmit();'");
+	$btn_tray->addElement($submit_btn);
+
+	$cancel_btn = new XoopsFormButton("", "wikiwizard_cancel", _MD_GWIKI_WIZARD_CANCEL, "button");
+	$cancel_btn->setExtra(" onclick='history.back();'");
+	$btn_tray->addElement($cancel_btn);
+
+	$form->addElement($btn_tray);
+	$form->addElement(new XoopsFormHidden('page', $wikiPage->keyword));
+	$form->addElement(new XoopsFormHidden('op', 'doimporttext'));
+
+    $form->assign($xoopsTpl);
+
+}
+
+function doImportText($page,$dir)
+{
+	$import='';
+	$pathname=XOOPS_ROOT_PATH.'/uploads/'.$dir.'/';
+	if(isset($_POST['xoops_upload_file'][0])) {
+		$filekey=$_POST['xoops_upload_file'][0];
+		if(isset($_FILES[$filekey]) && !$_FILES[$filekey]['error']) {
+			$zapus = array(' ', '/', '\\');
+			$filename = tempnam($pathname, 'IMPORTTEXT_');
+			if (move_uploaded_file($_FILES[$filekey]['tmp_name'], $filename)) {
+				$import = file_get_contents ($filename);
+				unlink($filename);
+			}
+			else {
+				return false;
+			}
+		}
+	}
+	if(empty($import)) {
+		return false;
+	}
+
+	if(!empty($import)) {
+		// the "--" mark is common in text, but gets interpreted as strike
+		//$search  = "#(?<=\s)(-{2})(?=\s)#";
+		//$replace = "~\\1";
+		//$import=preg_replace($search, $replace, $import);
+
+		$url=XOOPS_URL.'/modules/'.$dir.'/edit.php';
+
+		$params=array(
+			'page' => $page,
+			'op' => 'preview',
+			'body' => $import );
+
+		redirect_by_post_request($url, $params);
+		exit;
+	}
+	return false;
+}
+
 function obtainImportHTML($import_html='')
 {
 global $wikiPage, $xoopsTpl, $token;
 
-	$form = new XoopsThemeForm(_MD_GWIKI_IMPORTHTML_TITLE, 'gwizardform', 'wizard.php', 'POST', $token);
+	$form = new XoopsThemeForm(_MD_GWIKI_IMPORT_HTML_TITLE, 'gwizardform', 'wizard.php', 'POST', $token);
 	$form->setExtra(' enctype="multipart/form-data" ');
 
-	$caption = _MD_GWIKI_IMPORTHTML_FILE;
+	$caption = _MD_GWIKI_IMPORT_HTML_FILE;
 	$form->addElement(new XoopsFormFile($caption, 'import_file',$wikiPage->getMaxUploadSize()),false);
-	$form->addElement(new XoopsFormLabel('', _MD_GWIKI_IMPORTHTML_FORM_DESC, 'instructions'));
+	$form->addElement(new XoopsFormLabel('', _MD_GWIKI_IMPORT_HTML_FORM_DESC, 'instructions'));
 
-	$form->addElement(new XoopsFormTextArea(_MD_GWIKI_IMPORTHTML_TEXT, 'import_html', htmlspecialchars($import_html), 10, 40));
+	$form->addElement(new XoopsFormTextArea(_MD_GWIKI_IMPORT_HTML_TEXT, 'import_html', htmlspecialchars($import_html), 10, 40));
 	$btn_tray = new XoopsFormElementTray('', ' ','gwizardformtray');
 	$submit_btn = new XoopsFormButton("", "wikiwizard_submit", _MD_GWIKI_WIZARD_CONTINUE, "submit");
 //	$submit_btn->setExtra("onclick='prepForSubmit();'");
@@ -459,6 +528,13 @@ global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
 	);
 
 	$wizopts[]=array(
+		'name' => 'importtext',
+		'title'=> _MD_GWIKI_WIZARD_TEXT_TITLE,
+		'description'=>_MD_GWIKI_WIZARD_TEXT_DESC,
+		'options'=>null
+	);
+
+	$wizopts[]=array(
 		'name' => 'gallery',
 		'title'=> _MD_GWIKI_WIZARD_GALLERY_TITLE,
 		'description'=>_MD_GWIKI_WIZARD_GALLERY_DESC,
@@ -576,6 +652,13 @@ global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
 	switch ($op) {
 		case 'page':
 			obtainPage();
+			break;
+		case 'importtext':
+			obtainImportText();
+			break;
+		case 'doimporttext':
+			doImportText($page,$dir);
+			obtainImportText(); // if we come back, we failed so try again
 			break;
 		case 'importhtml':
 			obtainImportHTML($import_html);

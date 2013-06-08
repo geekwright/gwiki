@@ -251,11 +251,13 @@ define('_MD_GWIKI_WIZARD_PAGE_NAME','Page Name');
 define('_MD_GWIKI_WIZARD_CONTINUE','Continue');
 define('_MD_GWIKI_WIZARD_CANCEL','Cancel');
 
-define('_MD_GWIKI_IMPORTHTML_TITLE','Import HTML to Wiki Page');
-define('_MD_GWIKI_IMPORTHTML_FILE','HTML File');
-define('_MD_GWIKI_IMPORTHTML_TEXT','HTML Text');
-define('_MD_GWIKI_IMPORTHTML_FORM_DESC','Choose file above, or enter HTML text below.');
-define('_MD_GWIKI_IMPORTHTML_SUBMIT','Import');
+define('_MD_GWIKI_IMPORT_HTML_TITLE','Import HTML to Wiki Page');
+define('_MD_GWIKI_IMPORT_HTML_FILE','HTML File');
+define('_MD_GWIKI_IMPORT_HTML_TEXT','HTML Text');
+define('_MD_GWIKI_IMPORT_HTML_FORM_DESC','Choose file above, or enter HTML text below.');
+define('_MD_GWIKI_IMPORT_TEXT_TITLE','Import HTML to Wiki Page');
+define('_MD_GWIKI_IMPORT_TEXT_FILE','HTML File');
+define('_MD_GWIKI_IMPORT_TEXT_FORM_DESC','Choose file above to import as a wiki page. No reformatting or translation will be permormed.');
 
 define('_MD_GWIKI_WIZARD_OPTIONS_TITLE','How do you want to build your page?');
 define('_MD_GWIKI_WIZARD_TEMPLATE_TITLE','Create from Template');
@@ -263,6 +265,8 @@ define('_MD_GWIKI_WIZARD_TEMPLATE_DESC','Initialize a new page with a copy of a 
 define('_MD_GWIKI_WIZARD_COPY_TITLE','Copy an existing page');
 define('_MD_GWIKI_WIZARD_COPY_DESC','Duplicate an existing page into a new page.');
 define('_MD_GWIKI_WIZARD_COPY_PAGE','Page to Copy');
+define('_MD_GWIKI_WIZARD_TEXT_TITLE','Import a Text file');
+define('_MD_GWIKI_WIZARD_TEXT_DESC','Copy a text file into a wiki page.');
 define('_MD_GWIKI_WIZARD_HTML_TITLE','Import from HTML');
 define('_MD_GWIKI_WIZARD_HTML_DESC','Convert a simple HTML document into wiki page.');
 define('_MD_GWIKI_WIZARD_GALLERY_TITLE','Create an Image Gallery');
