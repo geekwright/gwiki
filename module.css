@@ -49,6 +49,7 @@ img.right {
 
 ul.wikiulist > li {
 	list-style: disc;
+	color: inherit;
 }
 
 ul.wikiulist > li > ul > li {
@@ -73,6 +74,7 @@ ul.wikiulist > li > ul > li > ul > li > ul > li {
 
 ol.wikiolist > li {
 	list-style: decimal;
+	color: inherit;
 }
 
 ol.wikiolist > li > ol > li {
@@ -997,3 +999,6 @@ div.wikiwizard_content  {margin:2em;}
 .wikiwizard_table { border-spacing: 0.5em; }
 .wikiwizard_formcaption { font-size: 1.2em; font-weight: bold; }
 
+.wikiblocknewpage select, .wikiblocknewpage input { width: auto; font-size: 0.9em;}
+#wiki_pageset_query { width: auto; font-size: 0.9em;}
+.wikitocblock a, .wikilinkshere a, .wikirelated a { font-size: 0.9em; font-weight: lighter; }
