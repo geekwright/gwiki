@@ -158,8 +158,8 @@ $modversion['templates'][] = array(
 	'description' => 'gwiki - Page Info and Tool Bar');
 
 $modversion['templates'][] = array(
-	'file' => 'gwiki_utility.html',
-	'description' => 'gwiki - for utility programs');
+	'file' => 'gwiki_wizard.html',
+	'description' => 'gwiki - page creation wizard');
 
 // Search
 $modversion['hasSearch'] = 1;

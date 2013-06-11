@@ -10,7 +10,7 @@
 * @version    $Id$
 */
 include_once '../../mainfile.php';
-$xoopsOption['template_main'] = 'gwiki_utility.html';
+$xoopsOption['template_main'] = 'gwiki_wizard.html';
 include XOOPS_ROOT_PATH."/header.php";
 include_once 'include/functions.php';
 include_once XOOPS_ROOT_PATH."/class/xoopsformloader.php";
