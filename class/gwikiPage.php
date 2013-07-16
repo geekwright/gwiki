@@ -1857,7 +1857,7 @@ class gwikiPage {
 		$body=preg_replace($search, $replace, $body);
 
 		// strikethru --xxx-- (this does NOT cross lines, as '--' is a common typographic convention
-		$search  = "#-{2}(.*?)(-{2})#";
+		$search  = "#-{2}([^\s]{1}.*?)(-{2})#";
 		$replace = "<del class=\"wikidel\">\\1</del>";
 		$body=preg_replace($search, $replace, $body);
 
