@@ -1862,7 +1862,7 @@ class gwikiPage {
 		$body=preg_replace($search, $replace, $body);
 
 		// underline __xxx__
-		$search  = "#_{2}(.*?)(_{2}|(?=\n\n))#s";
+		$search  = "#(?<=\s)_{2}(.*?)(_{2}|(?=\n\n))#s";
 		$replace = "<span class=\"wikiu\">\\1</span>";
 		$body=preg_replace($search, $replace, $body);
 
