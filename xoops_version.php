@@ -14,10 +14,10 @@ $modversion['dirname']     = basename( dirname( __FILE__ ) ) ;
 // things for ModuleAdmin() class
 $modversion['license_url'] = XOOPS_URL.'/modules/gwiki/docs/license.txt';
 $modversion['license_url'] = substr($modversion['license_url'],strpos($modversion['license_url'],'//')+2);
-$modversion['release_date']     = '2013/06/05';
+$modversion['release_date']     = '2013/07/17';
 $modversion['module_website_url'] = 'geekwright.com';
 $modversion['module_website_name'] = 'geekwright, LLC';
-$modversion['module_status'] = "Beta2";
+$modversion['module_status'] = "RC1";
 $modversion['min_php']='5.2';
 $modversion['min_xoops']='2.5';
 $modversion['system_menu'] = 1;
@@ -43,7 +43,6 @@ $modversion['adminmenu'] = "admin/menu.php";
 $modversion['onInstall'] = 'include/install.php';
 $modversion['onUpdate'] = 'include/update.php';
 $modversion['onUninstall'] = 'include/uninstall.php';
-
 
 // Main menu
 $modversion['hasMain'] = 1;
