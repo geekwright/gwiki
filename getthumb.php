@@ -8,17 +8,17 @@
  * @author	Richard Griffith richard@geekwright.com
  * @package	gwiki
  * @version	$Id$
- * 
+ *
  * Manage thumbnail cache. Expects gwiki_page_images keyword as page and
  * image_name as name, also optional maximal pixel dimension as size.
- * 
+ *
  * Thumbnails are generated for requested size on use, and then served
  * from cache until source image is changed.
- * 
+ *
  * Images which are smaller than requested size, or of an unsupported
  * format (currently only jpeg, png and gif are supported,) are served
  * as original source.
- * 
+ *
  */
 
 include_once '../../mainfile.php';
@@ -31,7 +31,7 @@ error_reporting(-1);
 //include XOOPS_ROOT_PATH."/header.php";
 
 $dir = basename( dirname( __FILE__ ) ) ;
-include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
+include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/class/gwikiPage.php';
 $wikiPage = new gwikiPage;
 
 $default_thumb_size=$wikiPage->defaultThumbSize;
@@ -54,7 +54,7 @@ function cleaner($string) {
 }
 
 function serveFile($name,$mime,$modtime,$nocache=false) {
-	
+
 	if(!($nocache) && (getenv("HTTP_IF_MODIFIED_SINCE") == gmdate("D, d M Y H:i:s",$modtime) . " GMT")) {
 		header ("HTTP/1.0 304 Not Modified");
 		exit;
@@ -65,7 +65,7 @@ function serveFile($name,$mime,$modtime,$nocache=false) {
 	header('Content-Type: ' . $mime);
 	header('Content-Disposition: inline; filename='. urlencode(basename($name)) );
 	header('Content-Length: ' . filesize($name) );
-	
+
 	$seconds_to_cache = 3600;
 	$ts = gmdate("D, d M Y H:i:s", time() + $seconds_to_cache) . " GMT";
 	header("Expires: $ts");
@@ -118,7 +118,7 @@ else { // (!file_exists($thumbname) || (file_exists($thumbname) && (filemtime($f
 	$img_width=$info[0];
 	$img_height=$info[1];
 	$img_mime=$info['mime'];
-	
+
 	if(($size >= $img_width) && ($size >= $img_height)) {
 		$thumb_width  = $img_width;
 		$thumb_height = $img_height;
@@ -130,7 +130,7 @@ else { // (!file_exists($thumbname) || (file_exists($thumbname) && (filemtime($f
 		$thumb_height = ceil($img_height / $ratio);
 		$strategy=$strategy_new_thumb;
 	}
-	
+
 	switch($info[2]) {
 		case IMAGETYPE_JPEG:
 			$img_type='jpg';

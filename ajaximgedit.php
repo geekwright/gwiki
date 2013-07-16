@@ -16,7 +16,7 @@ restore_error_handler();
 error_reporting(-1);
 
 $dir = basename( dirname( __FILE__ ) ) ;
-require_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
+require_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/class/gwikiPage.php';
 global $wikiPage;
 $wikiPage = new gwikiPage;
 

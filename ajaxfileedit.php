@@ -2,7 +2,7 @@
 /**
 * ajaxfileedit.php - backend upload attachments and update file info
 *
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
@@ -16,7 +16,7 @@ restore_error_handler();
 error_reporting(-1);
 
 $dir = basename( dirname( __FILE__ ) ) ;
-require_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
+require_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/class/gwikiPage.php';
 global $wikiPage;
 $wikiPage = new gwikiPage;
 
@@ -38,24 +38,24 @@ function getExtensionInfo($filename) {
 global $whitelist;
 
 	$fi=array();
-	
+
 	// these choices are just from our icon set - nothing magic, just ext => filename - .png
 	$icons=array(
-		'aac' => 'aac', 'aiff' => 'aiff', 'ai' => 'ai', 'avi' => 'avi', 'bmp' => 'bmp', 'c' => 'c', 'cpp' => 'cpp', 
-		'css' => 'css', 'dat' => 'dat', 'dmg' => 'dmg', 
-		'doc' => 'doc', 'docx' => 'doc', 
+		'aac' => 'aac', 'aiff' => 'aiff', 'ai' => 'ai', 'avi' => 'avi', 'bmp' => 'bmp', 'c' => 'c', 'cpp' => 'cpp',
+		'css' => 'css', 'dat' => 'dat', 'dmg' => 'dmg',
+		'doc' => 'doc', 'docx' => 'doc',
 		'dot' => 'dotx', 'dotx' => 'dotx',
-		'dwg' => 'dwg', 'dxf' => 'dxf', 
-		'eps' => 'eps', 'exe' => 'exe', 'flv' => 'flv', 'gif' => 'gif', 'h' => 'h', 'hpp' => 'hpp', 
-		'htm' => 'html', 'html' => 'html', 
-		'ics' => 'ics', 'iso' => 'iso', 'java' => 'java', 
-		'jpe' => 'jpg', 'jpeg' => 'jpg', 'jpg' => 'jpg', 
-		'key' => 'key', 'mid' => 'mid', 'mp3' => 'mp3', 
-		'mp4' => 'mp4', 'mpg' => 'mpg', 'odf' => 'odf', 'ods' => 'ods', 'odt' => 'odt', 'otp' => 'otp', 'ots' => 'ots', 
-		'ott' => 'ott',  'pdf' => 'pdf', 'php' => 'php', 'png' => 'png', 'ppt' => 'ppt', 'psd' => 'psd', 'py' => 'py', 
-		'qt' => 'qt', 'rar' => 'rar', 'rb' => 'rb', 'rtf' => 'rtf', 'sql' => 'sql', 'tga' => 'tga', 'tgz' => 'tgz', 
-		'tif' => 'tiff', 'tiff' => 'tiff', 
-		'txt' => 'txt', 'wav' => 'wav', 'xls' => 'xls', 'xlsx' => 'xlsx', 'xml' => 'xml', 'yml' => 'yml', 
+		'dwg' => 'dwg', 'dxf' => 'dxf',
+		'eps' => 'eps', 'exe' => 'exe', 'flv' => 'flv', 'gif' => 'gif', 'h' => 'h', 'hpp' => 'hpp',
+		'htm' => 'html', 'html' => 'html',
+		'ics' => 'ics', 'iso' => 'iso', 'java' => 'java',
+		'jpe' => 'jpg', 'jpeg' => 'jpg', 'jpg' => 'jpg',
+		'key' => 'key', 'mid' => 'mid', 'mp3' => 'mp3',
+		'mp4' => 'mp4', 'mpg' => 'mpg', 'odf' => 'odf', 'ods' => 'ods', 'odt' => 'odt', 'otp' => 'otp', 'ots' => 'ots',
+		'ott' => 'ott',  'pdf' => 'pdf', 'php' => 'php', 'png' => 'png', 'ppt' => 'ppt', 'psd' => 'psd', 'py' => 'py',
+		'qt' => 'qt', 'rar' => 'rar', 'rb' => 'rb', 'rtf' => 'rtf', 'sql' => 'sql', 'tga' => 'tga', 'tgz' => 'tgz',
+		'tif' => 'tiff', 'tiff' => 'tiff',
+		'txt' => 'txt', 'wav' => 'wav', 'xls' => 'xls', 'xlsx' => 'xlsx', 'xml' => 'xml', 'yml' => 'yml',
 		'zip' => 'zip'
 	);
 	// Also have files '_blank' '_page'
@@ -68,7 +68,7 @@ global $whitelist;
 	//=$path_parts['filename'];
 
 	// if no name, or not on whitelist reject
-	if(empty($path_parts['filename']) || array_search($ext,$whitelist)===false) 
+	if(empty($path_parts['filename']) || array_search($ext,$whitelist)===false)
 		{ return false; }
 
 	if (empty($ext)) $fi['file_icon']='_blank';
@@ -109,9 +109,9 @@ function cleaner($string) {
 function getUserName($uid)
 {
 	global $xoopsConfig;
-    
+
 	$uid = intval($uid);
-    
+
 	 if ($uid > 0) {
 		$member_handler =& xoops_gethandler('member');
 		$user =& $member_handler->getUser($uid);
@@ -119,7 +119,7 @@ function getUserName($uid)
 			return "<a href=\"".XOOPS_URL."/userinfo.php?uid=$uid\">".htmlspecialchars($user->getVar('uname'),ENT_QUOTES)."</a>";
 		}
 	}
-    
+
       return $xoopsConfig['anonymous'];
 }
 
@@ -132,7 +132,7 @@ global $xoopsDB, $uploadpath, $wikiPage;
 	// look up the name and delete the image file
 	$sql = "SELECT file_path FROM ".$xoopsDB->prefix('gwiki_page_files').
 	    " where file_id='{$q_file_id}' AND keyword = '{$q_keyword}' ";
-	
+
 	$result = $xoopsDB->query($sql);
 	if ($result) {
 		$rows=$xoopsDB->getRowsNum($result);
@@ -152,7 +152,7 @@ global $xoopsDB, $uploadpath, $wikiPage;
 	$result = $xoopsDB->queryF($sql);
 	$cnt=$xoopsDB->getAffectedRows();
 	if($cnt) $input['message']= _MD_GWIKI_AJAX_FILEEDIT_DEL_OK ;
-	
+
 	return $result;
 }
 
@@ -172,7 +172,7 @@ global $xoopsDB, $xoopsUser, $wikiPage;
 	$input['file_uid']=$q_file_uid;
 	if(intval($input['file_upload_date'])==0) $input['file_upload_date']=time();
 	$q_file_upload_date=$input['file_upload_date'];
-	
+
 	$sql = "UPDATE ".$xoopsDB->prefix('gwiki_page_files') . ' SET ';
 	$sql.= " file_name = '{$q_file_name}', ";
 	$sql.= " file_icon = '{$q_file_icon}', ";
@@ -183,7 +183,7 @@ global $xoopsDB, $xoopsUser, $wikiPage;
 //	$sql.= " file_uid  = '{$q_file_upload_date}', ";
 	$sql.= " file_description = '{$q_file_description}' ";
 	$sql.= " where file_id = '{$q_file_id}' AND keyword = '{$q_keyword}' ";
-	
+
 	$result = $xoopsDB->queryF($sql);
 	if(!$result) {
 		header("Status: 500 Internal Error - Database Error");
@@ -213,17 +213,17 @@ global $xoopsDB, $xoopsUser, $wikiPage;
 function updateFile($newfile, &$input) {
 global $uploadpath,$xoopsDB;
 	// For now, images are stored in individual directories for each page.
-	// We can change the directory distribution later, as the entire path 
+	// We can change the directory distribution later, as the entire path
 	// relative to /uploads/gwiki/ ($relpath) is stored in the database.
 
-	// We get rid of any colons in the page name in case the filesystem has 
+	// We get rid of any colons in the page name in case the filesystem has
 	// issues with them. (undescore is illegal in page name, so it stays unique.)
 	$relpath='pages/'.str_replace ( ':', '_', $input['page']) .'/file/';
 	$ourpath=$uploadpath.$relpath;
 	@mkdir($ourpath,0755,true);
 	$tempfn = tempnam ( $ourpath, 'WIKIFILE_');
 	$image=file_get_contents('php://input');
-	file_put_contents($tempfn,$image); 
+	file_put_contents($tempfn,$image);
 
 //	$ogimage_parts = pathinfo($newfile);
 
@@ -246,7 +246,7 @@ global $uploadpath,$xoopsDB;
 	$q_file_id=intval($input['file_id']);
 	$sql = "SELECT file_path FROM ".$xoopsDB->prefix('gwiki_page_files').
 	    " where file_id='{$q_file_id}' ";
-	
+
 	$result = $xoopsDB->query($sql);
 	if ($result) {
 		$rows=$xoopsDB->getRowsNum($result);
@@ -288,7 +288,7 @@ global $uploadpath,$xoopsDB;
 	$input['page']=strtolower($wikiPage->normalizeKeyword($input['page']));
 	$pageX = $wikiPage->getPage($input['page']);
 	$mayEdit = $wikiPage->checkEdit();
-	
+
 	if(!$mayEdit) {
 		header("Status: 403 Forbidden - No Permission");
 		if(!$mayEdit) $out['message']=_MD_GWIKI_AJAX_FILEEDIT_NO_AUTH;
@@ -309,7 +309,7 @@ global $uploadpath,$xoopsDB;
 			exit;
 		}
 	}
-	
+
 
 /*
  * This creates issues if page being edited has not been saved yet, so let's not be anal about it

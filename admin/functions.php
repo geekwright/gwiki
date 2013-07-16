@@ -2,7 +2,7 @@
 /**
 * functions.php - admin area functions
 *
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
@@ -38,13 +38,13 @@ function adminTableEnd($links)
 			if($legend=='!PREFORMATTED!') $linkline .= $link;
 			else  $linkline .= '<a href="'.$link.'">'.$legend.'</a>';
 		}
-    
+
 		echo '<div style="text-align: right; padding-top: 2px; border-top: 1px solid #000000;">'.$linkline.'</div>';
 	}
 }
 
 $dir = basename( dirname ( dirname( __FILE__ ) ) ) ;
-include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
+include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/class/gwikiPage.php';
 global $wikiPage;
 $wikiPage = new gwikiPage;
 

@@ -2,7 +2,7 @@
 /**
 * testing/gen.php - rough tool to generate pages for testing
 *
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
@@ -13,7 +13,7 @@ include_once '../../../mainfile.php';
 $xoopsOption['template_main'] = 'gwiki_view.html';
 include XOOPS_ROOT_PATH."/header.php";
 $dir = basename( dirname ( dirname( __FILE__ ) ) ) ;
-include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
+include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/class/gwikiPage.php';
 global $wikiPage;
 $wikiPage = new gwikiPage;
 
@@ -51,7 +51,7 @@ if(!empty($_POST['op'])) {
 			$body = str_replace(' '.$text.' ',' [['.$link.'|'.$text.']] ', $body);
 			//echo $text.':';
 		}
-		
+
 		// convert 2 word phrases in body to links - do lots since most won't be found
 		$linklimit=mt_rand(100,300);
 		for($j=1;$j<$linklimit;$j++) {
@@ -61,7 +61,7 @@ if(!empty($_POST['op'])) {
 			$body = str_replace(' '.$text.' ',' [['.$link.'|'.$text.']] ', $body);
 			//echo $text.':';
 		}
-		
+
 		$wikiPage->keyword=$keyword;
 		$wikiPage->title=$title;
 		$wikiPage->display_keyword=$keyword;

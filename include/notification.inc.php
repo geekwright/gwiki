@@ -4,7 +4,7 @@
 *
 * This file is part of gwiki - geekwright wiki
 *
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
@@ -19,7 +19,7 @@ function gwiki_notify_iteminfo($category, $item_id)
 	global $xoopsDB;
 
 	$dir = basename( dirname ( dirname( __FILE__ ) ) ) ;
-	//include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
+	//include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/class/gwikiPage.php';
 	//$wikiPage = new gwikiPage;
 	$module_handler =& xoops_gethandler('module');
 	$module         =& $module_handler->getByDirname($dir);

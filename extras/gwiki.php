@@ -2,7 +2,7 @@
 /**
 * wiki page anywhere - call it anything, put it anywhere
 *
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
@@ -22,7 +22,7 @@ $highlight = isset($_GET['query'])?cleaner($_GET['query']):null;
 
 // build a URL template to point wiki links to this script
 $script = (!empty($_SERVER['HTTPS']))
-	? "https://".$_SERVER['SERVER_NAME'].parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) 
+	? "https://".$_SERVER['SERVER_NAME'].parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)
 	: "http://".$_SERVER['SERVER_NAME'].parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $ourWikiLinkURL=$script.'?'.$pagevar.'=%s';
 
@@ -64,7 +64,7 @@ global $xoopsConfig;
 
 	loadLanguage('main',$dir);
 	loadLanguage('modinfo',$dir);
-	include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
+	include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/class/gwikiPage.php';
 
 	$wikiPage = new gwikiPage;
 	$wikiPage->setRecentCount($moduleConfig['number_recent']);

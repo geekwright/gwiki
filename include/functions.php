@@ -4,7 +4,7 @@
 *
 * This file is part of gwiki - geekwright wiki
 *
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
@@ -13,7 +13,7 @@
 */
 if (!defined("XOOPS_ROOT_PATH"))  die("Root path not defined");
 $dir = basename( dirname ( dirname( __FILE__ ) ) ) ;
-include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
+include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/class/gwikiPage.php';
 global $wikiPage;
 $wikiPage = new gwikiPage;
 $wikiPage->setRecentCount($xoopsModuleConfig['number_recent']);

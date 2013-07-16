@@ -2,7 +2,7 @@
 /**
 * ajaxwiki.php - serve wiki page via ajax
 *
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
@@ -46,7 +46,7 @@ if (isset($_GET['id'])) $id=intval($_GET['id']);    // from utility (i.e. histor
 	$alloworigin=$moduleConfig['allow_origin'];
 	if(!empty($alloworigin)) header("Access-Control-Allow-Origin: ".$alloworigin);
 
-	include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/classes/gwikiPage.php';
+	include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/class/gwikiPage.php';
 	$imgdir=XOOPS_URL.'/modules/'.$dir.'/images';
 
 	$wikiPage = new gwikiPage;
