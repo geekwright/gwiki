@@ -256,7 +256,7 @@ define('_MD_GWIKI_IMPORT_HTML_FILE','HTML File');
 define('_MD_GWIKI_IMPORT_HTML_TEXT','HTML Text');
 define('_MD_GWIKI_IMPORT_HTML_FORM_DESC','Choose file above, or enter HTML text below.');
 define('_MD_GWIKI_IMPORT_TEXT_TITLE','Import HTML to Wiki Page');
-define('_MD_GWIKI_IMPORT_TEXT_FILE','HTML File');
+define('_MD_GWIKI_IMPORT_TEXT_FILE','Text File');
 define('_MD_GWIKI_IMPORT_TEXT_FORM_DESC','Choose file above to import as a wiki page. No reformatting or translation will be permormed.');
 
 define('_MD_GWIKI_WIZARD_OPTIONS_TITLE','How do you want to build your page?');
