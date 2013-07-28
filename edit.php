@@ -2,7 +2,7 @@
 /**
 * edit.php - edit a wiki page
 *
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
@@ -13,6 +13,21 @@ include "header.php";
 include_once XOOPS_ROOT_PATH.'/class/xoopsformloader.php';
 
 global $xoTheme, $xoopsTpl;
+
+if(isset($_SESSION['gwikiwizard'])) {
+	$wizard_parms=unserialize($_SESSION['gwikiwizard']);
+	$_SESSION['gwikiwizard']=null;
+	unset ($_SESSION['gwikiwizard']);
+	$valid_keys=array('page','op','title','body','display_keyword',
+					'parent_page','page_set_home','page_set_order',
+					'meta_description','meta_keywords',
+					'show_in_index','leave_inactive');
+	foreach($wizard_parms as $key => $value) {
+		if(in_array($key,$valid_keys)) {
+			$_POST[$key]=$value;
+		}
+	}
+}
 
 // $_GET and $_POST variables we use
 if (isset($_GET['page']))  $page = cleaner($_GET['page']);
@@ -33,7 +48,7 @@ if ($normpage==_MI_GWIKI_WIKI404 && strcasecmp($page,_MI_GWIKI_WIKI404)!=0) redi
 else $page=$normpage;
 
 $id=0; $uid=0; $title=''; $body=''; $display_keyword='';
-$parent_page=''; $page_set_home=''; $page_set_order=0; 
+$parent_page=''; $page_set_home=''; $page_set_order=0;
 $meta_description=''; $meta_keywords=''; $show_in_index=1; $leave_inactive=0;
 
 if(isset($_GET['id'])) $id = intval($_GET['id']); // post value will override
@@ -55,7 +70,7 @@ if(isset($_POST['leave_inactive'])) $leave_inactive = intval($_POST['leave_inact
 	global $wikiPage;
 	$pageX = $wikiPage->getPage($page,($id==0?null:$id));
 	$mayEdit = $wikiPage->checkEdit();
-	
+
 	if($pageX) {
 		$pageX['author'] = $wikiPage->getUserName($wikiPage->uid);
 		$pageX['revisiontime']=date($wikiPage->dateFormat,$pageX['lastmodified']);
@@ -177,7 +192,7 @@ case "preview":
 //case "images":
 	$xoopsOption['template_main'] = 'gwiki_edit.html';
 	include XOOPS_ROOT_PATH."/header.php";
-    
+
 	$title = prepOut($title); // we need title ready to display in several places
 	if ($op == "preview") {
 		$pageX['keyword']=$page;
@@ -192,20 +207,20 @@ case "preview":
 	}
 
 	$uid = ($xoopsUser)?$xoopsUser->getVar('uid'):0;
-    
+
 	$form = new XoopsThemeForm(_MD_GWIKI_EDITPAGE.": $page", "gwikiform", "edit.php?page=$page");
-    
+
 	if(empty($display_keyword)) $display_keyword=$page;
-    
+
 	$form->addElement(new XoopsFormHidden('op', 'insert'));
 	$form->addElement(new XoopsFormHidden('page', $page));
 	$form->addElement(new XoopsFormHidden('id', $wikiPage->getCurrentId($page)));
 	$form->addElement(new XoopsFormHidden('uid', $uid));
 	$form->addElement(new XoopsFormHidden('pagechanged', $pagechanged));
-       
+
 	$form->addElement(new XoopsFormText(_MD_GWIKI_TITLE, "title", 40, 250, $title));
 	$form->addElement(new XoopsFormLabel('', '', 'gwikieditbuttons')); // edit buttons added in template
-	
+
 	$form_edit_body=new XoopsFormTextArea(_MD_GWIKI_BODY, 'body', htmlspecialchars($body), 20, 80);
 	$form_edit_body->setExtra("onclick='setWikiChanged();'");
 	$form->addElement($form_edit_body);
@@ -220,17 +235,17 @@ case "preview":
 	"'var ele = document.getElementById(\"gwikiformmetaedit\"); ele.style.display = \"inherit\";".
 	" var ele2 = document.getElementById(\"gwikiformbodyedit\"); ele2.style.display = \"none\";'");
 	$btn_tray->addElement($metadata_btn);
-  
+
 	$preview_btn = new XoopsFormButton("", "preview", _PREVIEW, "button");
 	$preview_btn->setExtra("onclick='prepForPreview();'");
 	$btn_tray->addElement($preview_btn);
-    
+
 	$cancel_btn = new XoopsFormButton("", "cancel", _CANCEL, "button");
 	$cancel_btn->setExtra("onclick='".(($op == "edit")?"history.back();":"document.location.href=\"index.php".(($result)?"?page=$page":"")."\";")."'");
 	$btn_tray->addElement($cancel_btn);
 
 	$btn_tray->addElement(new XoopsFormLabel("", " - <strong>{$pagestatmessage}</strong>"));
-        
+
 	$form->addElement($btn_tray);
 
 	$form->addElement(new XoopsFormText(_MD_GWIKI_DISPLAY_KEYWORD, "display_keyword", 40, 250, htmlspecialchars($display_keyword)));
@@ -252,17 +267,17 @@ case "preview":
 	"'var ele = document.getElementById(\"gwikiformmetaedit\"); ele.style.display = \"none\"; ".
 	" var ele2 = document.getElementById(\"gwikiformbodyedit\"); ele2.style.display = \"inherit\";'");
 	$btn_tray2->addElement($bodydata_btn);
-    
+
 	$preview_btn2 = new XoopsFormButton("", "preview2", _PREVIEW, "button");
 	$preview_btn2->setExtra("onclick='prepForPreview();'");
 	$btn_tray2->addElement($preview_btn2);
-    
+
 	$cancel_btn2 = new XoopsFormButton("", "cancel2", _CANCEL, "button");
 	$cancel_btn2->setExtra("onclick='".(($op == "edit")?"history.back();":"document.location.href=\"index.php".(($result)?"?page=$page":"")."\";")."'");
 	$btn_tray2->addElement($cancel_btn2);
 
 	$btn_tray2->addElement(new XoopsFormLabel("", " - <strong>{$pagestatmessage}</strong>"));
-        
+
 	$form->addElement($btn_tray2);
 
     $form->assign($xoopsTpl);

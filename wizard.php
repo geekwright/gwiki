@@ -18,32 +18,15 @@ global $wikiPage, $xoopsDB;
 
 $token=0;
 
-function redirect_by_post_request($url, $params)
+function redirect_to_edit($params)
 {
-global $xoopsLogger;
+global $xoopsLogger, $wikiPage;
 
-    $cookie_string='';
-    foreach($_COOKIE as $key => $val) {
-		if(empty($cookie_string)) $cookie_string='Cookie:';
-		$cookie_string.=' '.$key.'='.urlencode($val).';';
-	}
-    $parts=parse_url($url);
+	$url=XOOPS_URL.'/modules/'.$wikiPage->getWikiDir().'/edit.php#wikipage';
 
-	$opts = array(
-		'http'=>array(
-			'method'=>"POST",
-			'content' => http_build_query($params),
-			'header'=> $cookie_string."\r\n"
-		)
-	);
+	$_SESSION['gwikiwizard']=serialize($params);
 
-	$context = stream_context_create($opts);
-
-	$xoopsLogger->activated = false;
-	ob_clean();
-	$fp = fopen($url, 'r', false, $context);
-	fpassthru($fp);
-	fclose($fp);
+	redirect_header($url,1,'Transfering to Editor');
     exit;
 }
 
@@ -142,19 +125,13 @@ function doImportText($page,$dir)
 	}
 
 	if(!empty($import)) {
-		// the "--" mark is common in text, but gets interpreted as strike
-		//$search  = "#(?<=\s)(-{2})(?=\s)#";
-		//$replace = "~\\1";
-		//$import=preg_replace($search, $replace, $import);
-
-		$url=XOOPS_URL.'/modules/'.$dir.'/edit.php';
 
 		$params=array(
 			'page' => $page,
 			'op' => 'preview',
 			'body' => $import );
 
-		redirect_by_post_request($url, $params);
+		redirect_to_edit($params);
 		exit;
 	}
 	return false;
@@ -344,9 +321,9 @@ function doImportHTML($page,$import_html,$dir)
 
 	if(!empty($import)) {
 		// the "--" mark is common in text, but gets interpreted as strike
-		$search  = "#(?<=\s)(-{2})(?=\s)#";
-		$replace = "~\\1";
-		$import=preg_replace($search, $replace, $import);
+		//$search  = "#(?<=\s)(-{2})(?=\s)#";
+		//$replace = "~\\1";
+		//$import=preg_replace($search, $replace, $import);
 
 		$doc = new DOMDocument();
 		$doc->loadHTML($import);
@@ -354,14 +331,12 @@ function doImportHTML($page,$import_html,$dir)
 		$out='';
 		foreach($domlist as $node) showDOMNode($out,$node,0,'',0,1);
 
-		$url=XOOPS_URL.'/modules/'.$dir.'/edit.php';
-
 		$params=array(
 			'page' => $page,
 			'op' => 'preview',
 			'body' => $out );
 
-		redirect_by_post_request($url, $params);
+		redirect_to_edit($params);
 		exit;
 	}
 	return false;
@@ -373,14 +348,12 @@ global $wikiPage, $xoopsDB;
 
 	$p=$wikiPage->getPage($templatename);
 	if($p) {
-		$url=XOOPS_URL.'/modules/'.$wikiPage->getWikiDir().'/edit.php';
-
 		$params=array(
 			'page' => $page,
 			'op' => 'preview',
 			'body' => $p['body'] );
 
-		redirect_by_post_request($url, $params);
+		redirect_to_edit($params);
 	}
 	redirect_header(XOOPS_URL."/modules/{$wikiPage->getWikiDir()}/wizard.php?page={$page}", 2, _MD_GWIKI_PAGENOTFOUND);
 	return false;
@@ -391,14 +364,13 @@ function doGallery()
 global $wikiPage, $xoopsDB;
 
 	$page=$wikiPage->keyword;
-	$url=XOOPS_URL.'/modules/'.$wikiPage->getWikiDir().'/edit.php';
 
 	$params=array(
 		'page' => $page,
 		'op' => 'preview',
 		'body' => '{gallery}' );
 
-	redirect_by_post_request($url, $params);
+	redirect_to_edit($params);
 
 }
 
@@ -408,8 +380,6 @@ global $wikiPage, $xoopsDB;
 
 	$p=$wikiPage->getPage($templatename);
 	if($p) {
-		$url=XOOPS_URL.'/modules/'.$wikiPage->getWikiDir().'/edit.php';
-
 		$params=array(
 			'page' => $page,
 			'op' => 'preview',
@@ -424,7 +394,7 @@ global $wikiPage, $xoopsDB;
 			'show_in_index' => '1',
 			'leave_inactive' => '0' );
 
-		redirect_by_post_request($url, $params);
+		redirect_to_edit($params);
 	}
 	redirect_header(XOOPS_URL."/modules/{$wikiPage->getWikiDir()}/wizard.php?page={$page}", 2, _MD_GWIKI_PAGENOTFOUND);
 	return false;
