@@ -26,7 +26,7 @@ global $xoopsLogger, $wikiPage;
 
 	$_SESSION['gwikiwizard']=serialize($params);
 
-	redirect_header($url,1,'Transfering to Editor');
+	redirect_header($url,1,_MD_GWIKI_WIZARD_FORWARDING);
     exit;
 }
 

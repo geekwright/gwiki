@@ -272,5 +272,7 @@ define('_MD_GWIKI_WIZARD_HTML_DESC','Convert a simple HTML document into wiki pa
 define('_MD_GWIKI_WIZARD_GALLERY_TITLE','Create an Image Gallery');
 define('_MD_GWIKI_WIZARD_GALLERY_DESC','Select pictures to include in a new page.');
 define('_MD_GWIKI_WIZARD_GALLERY_SELECT','Select Images for Your Gallery Page');
+
+define('_MD_GWIKI_WIZARD_FORWARDING','Transfering to Editor');
 }
 ?>
