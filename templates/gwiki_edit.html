@@ -758,7 +758,7 @@ function deleteImageDetail() {
 		};
 		// send data
 		xhr.open("POST", document.getElementById("wikieditimg_form").action, true);
-		xhr.setRequestHeader("X_JSONDATA", x_jsondata);
+		xhr.setRequestHeader("GW-JSONDATA", x_jsondata);
 		xhr.send();
 	}
 }
@@ -796,7 +796,7 @@ function fieldEventHandler(event,field) {
 	};
 	// send data
 	xhr.open("POST", document.getElementById("wikieditimg_form").action, true);
-	xhr.setRequestHeader("X_JSONDATA", x_jsondata);
+	xhr.setRequestHeader("GW-JSONDATA", x_jsondata);
 	xhr.send();
 }
 
@@ -819,7 +819,6 @@ Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
 
 	// file selection
 	function FileSelectHandler(e) {
-
 		// cancel event and hover styling
 		FileDragHover(e);
 
@@ -861,7 +860,7 @@ Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
 	// upload JPEG files
 	function UploadFile(file) {
 		// create progress bar
-		var o = document.getElementById("wikieditimg_progress")
+		var o = document.getElementById("wikieditimg_progress");
 		var progress = o.appendChild(document.createElement("p"));
 		progress.appendChild(document.createTextNode(file.name));
 
@@ -899,11 +898,11 @@ Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
 				}
 			};
 
-			// start upload
-			xhr.open("POST", document.getElementById("wikieditimg_form").action, true);
-			xhr.setRequestHeader("X_FILENAME", file.name);
-			xhr.setRequestHeader("X_JSONDATA", x_jsondata);
-			xhr.send(file);
+      // start upload
+      xhr.open("POST", document.getElementById("wikieditimg_form").action, true);
+      xhr.setRequestHeader("GW-FILENAME", file.name);
+      xhr.setRequestHeader("GW-JSONDATA", x_jsondata);
+      xhr.send(file);
 
 		}
 
@@ -1061,7 +1060,7 @@ function deleteFileDetail() {
 		};
 		// send data
 		xhr.open("POST", document.getElementById("wikieditfile_form").action, true);
-		xhr.setRequestHeader("X_JSONDATA", x_jsondata);
+		xhr.setRequestHeader("GW-JSONDATA", x_jsondata);
 		xhr.send();
 	}
 }
@@ -1099,7 +1098,7 @@ function fileFieldEventHandler(event,field) {
 	};
 	// send data
 	xhr.open("POST", document.getElementById("wikieditfile_form").action, true);
-	xhr.setRequestHeader("X_JSONDATA", x_jsondata);
+	xhr.setRequestHeader("GW-JSONDATA", x_jsondata);
 	xhr.send();
 }
 
@@ -1164,7 +1163,7 @@ Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
 	// upload JPEG files
 	function UploadFile(file) {
 		// create progress bar
-		var o = document.getElementById("wikieditfile_progress")
+		var o = document.getElementById("wikieditfile_progress");
 		var progress = o.appendChild(document.createElement("p"));
 		progress.appendChild(document.createTextNode(file.name));
 
@@ -1211,8 +1210,8 @@ Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
 
 			// start upload
 			xhr.open("POST", document.getElementById("wikieditfile_form").action, true);
-			xhr.setRequestHeader("X_FILENAME", file.name);
-			xhr.setRequestHeader("X_JSONDATA", x_jsondata);
+			xhr.setRequestHeader("GW-FILENAME", file.name);
+			xhr.setRequestHeader("GW-JSONDATA", x_jsondata);
 			xhr.send(file);
 
 		}

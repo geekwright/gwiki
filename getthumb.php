@@ -158,7 +158,9 @@ else { // (!file_exists($thumbname) || (file_exists($thumbname) && (filemtime($f
 
 switch($strategy) {
 	case $strategy_new_thumb:
-		@mkdir($thumbpath,0755,true);
+	    $oldUmask = umask(0);
+	    @mkdir($thumbpath,0755,true);
+    	umask($oldUmask);
 		$data = file_get_contents($filename);
 	    $im = imagecreatefromstring($data);
 	    unset($data);

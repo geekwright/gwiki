@@ -74,11 +74,11 @@ Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
 
 	function serializeImageDetail(name) {
 		var image = new Object;
-		
+
 		window.fileUpCount = window.fileUpCount + 1;
 		var fc = "000" + window.fileUpCount;
 		fc = fc.substr(fc.length-2)+' ';
-		
+
 		var imgname = name.substr(0, name.lastIndexOf('.'));
 		imgname = imgname.replace(/[\.\\\/_-]/g,' ');
 		imgname = fc + imgname.replace(/^\s+|\s+$/g, "");
@@ -143,13 +143,13 @@ Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
 		var o = document.getElementById("wikieditimg_progress")
 		var progress = o.appendChild(document.createElement("p"));
 		progress.appendChild(document.createTextNode(file.name));
-		
+
 		if (file.size > document.getElementById("MAX_FILE_SIZE").value) {
 			progress.className = "toobig";
 			return;
 		}
 		var x_jsondata = serializeImageDetail(file.name);
-		
+
 		var xhr = new XMLHttpRequest();
 		if (xhr.upload && (file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/gif")) {
 			progress.className = "sending";
@@ -176,8 +176,8 @@ Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
 
 			// start upload
 			xhr.open("POST", document.getElementById("wikieditimg_form").action, true);
-			xhr.setRequestHeader("X_FILENAME", file.name);
-			xhr.setRequestHeader("X_JSONDATA", x_jsondata);
+			xhr.setRequestHeader("GW-FILENAME", file.name);
+			xhr.setRequestHeader("GW-JSONDATA", x_jsondata);
 			xhr.send(file);
 		}
 	}
