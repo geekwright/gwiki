@@ -1,5 +1,10 @@
 gwiki ChangeLog
 
+=== gwiki Module 1.0 RC2 ===
+Release date: Feb 1, 2014
+
+* fix issues with image/file uploads on some systems
+
 === gwiki Module 1.0 RC1 ===
 Release date: July 17, 2013
 
