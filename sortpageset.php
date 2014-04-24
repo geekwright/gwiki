@@ -2,7 +2,7 @@
 /**
 * sortpageset.php - change order of pages within a page set
 *
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
@@ -12,7 +12,7 @@
 include "header.php";
 global $xoTheme, $xoopsTpl;
 global $wikiPage;
-$GLOBALS['xoopsOption']['template_main'] = 'gwiki_view.html';
+$GLOBALS['xoopsOption']['template_main'] = 'gwiki_view.tpl';
 include(XOOPS_ROOT_PATH.'/header.php');
 $currentscript=basename( __FILE__ ) ;
 include_once XOOPS_ROOT_PATH.'/class/xoopsformloader.php';
@@ -22,47 +22,47 @@ $display_keyword='';
 
 function fetchPageSet($page)
 {
-	global $xoopsDB, $wikiPage, $page_set_home, $display_keyword;
+    global $xoopsDB, $wikiPage, $page_set_home, $display_keyword;
 
-	$q_page=$wikiPage->escapeForDB($page);
-	
-	$pageset=false;
+    $q_page=$wikiPage->escapeForDB($page);
 
-	$sql  = 'SELECT gwiki_id, keyword, display_keyword, page_set_home, page_set_order';
-	$sql .= ' FROM '.$xoopsDB->prefix('gwiki_pages');
-	$sql .= " WHERE active=1 and keyword='{$q_page}' ";
-	
-	$result = $xoopsDB->query($sql);
-    
-	$rows=$xoopsDB->getRowsNum($result);
-	if($rows) {
-		$row = $xoopsDB->fetchArray($result);
-		if(!empty($row['page_set_home'])) {
-			$page=$row['page_set_home']; // this is passed back up to caller!
-			$page_set_home=$row['page_set_home'];
-			$display_keyword=$row['display_keyword'];
-			$q_page=$wikiPage->escapeForDB($row['page_set_home']);
-			$xoopsDB->freeRecordSet($result);
-			$sql  = 'SELECT gwiki_id, keyword, display_keyword, page_set_home, page_set_order ';
-			$sql .= ' FROM '.$xoopsDB->prefix('gwiki_pages');
-			$sql .= " WHERE active=1 and page_set_home='{$q_page}' ";
-			$sql .= " ORDER BY page_set_order, keyword ";
-	
-			$result = $xoopsDB->query($sql);
-			while($row = $xoopsDB->fetchArray($result)) {
-				$row['display_keyword']=strip_tags($row['display_keyword']);
-				if($row['page_set_home']==$row['keyword']) {
-					$display_keyword=$row['display_keyword'];
-				}
-				$pageset[($row['gwiki_id'].'')]=$row;
-			}
-    
-		}
-	}
-	$xoopsDB->freeRecordSet($result);
-	return($pageset);
+    $pageset=false;
+
+    $sql  = 'SELECT gwiki_id, keyword, display_keyword, page_set_home, page_set_order';
+    $sql .= ' FROM '.$xoopsDB->prefix('gwiki_pages');
+    $sql .= " WHERE active=1 and keyword='{$q_page}' ";
+
+    $result = $xoopsDB->query($sql);
+
+    $rows=$xoopsDB->getRowsNum($result);
+    if ($rows) {
+        $row = $xoopsDB->fetchArray($result);
+        if (!empty($row['page_set_home'])) {
+            $page=$row['page_set_home']; // this is passed back up to caller!
+            $page_set_home=$row['page_set_home'];
+            $display_keyword=$row['display_keyword'];
+            $q_page=$wikiPage->escapeForDB($row['page_set_home']);
+            $xoopsDB->freeRecordSet($result);
+            $sql  = 'SELECT gwiki_id, keyword, display_keyword, page_set_home, page_set_order ';
+            $sql .= ' FROM '.$xoopsDB->prefix('gwiki_pages');
+            $sql .= " WHERE active=1 and page_set_home='{$q_page}' ";
+            $sql .= " ORDER BY page_set_order, keyword ";
+
+            $result = $xoopsDB->query($sql);
+            while ($row = $xoopsDB->fetchArray($result)) {
+                $row['display_keyword']=strip_tags($row['display_keyword']);
+                if ($row['page_set_home']==$row['keyword']) {
+                    $display_keyword=$row['display_keyword'];
+                }
+                $pageset[($row['gwiki_id'].'')]=$row;
+            }
+
+        }
+    }
+    $xoopsDB->freeRecordSet($result);
+
+    return($pageset);
 }
-
 
 // $_GET variables we use
 $page='';
@@ -76,7 +76,7 @@ $sort_js = <<<ENDJSCODE
 function move(f,bDir) {
   var el = f.elements["$sortelement"]
   var idx = el.selectedIndex
-  if (idx==-1) 
+  if (idx==-1)
     alert("$selectalert")
   else {
     var nxidx = idx+( bDir? -1 : 1)
@@ -110,7 +110,7 @@ function reverseorder(f) {
 }
 
 function processForm(f) {
-  for (var i=0;i<f.length;i++) {	
+  for (var i=0;i<f.length;i++) {
     var el = f[i]
     // If reorder listbox, then generate value for hidden field
     if (el.name=="$sortelement") {
@@ -130,53 +130,53 @@ if(!$pageX) redirect_header("index.php?page=$page", 3, _MD_GWIKI_PAGENOTFOUND);
 
 // leave if we don't have admin authority
 $mayEdit = $wikiPage->checkEdit();
-if(!$mayEdit) {
-	redirect_header("index.php?page=$page", 3, _NOPERM);
+if (!$mayEdit) {
+    redirect_header("index.php?page=$page", 3, _NOPERM);
 }
 
 $pageset=$page;
 $pages=fetchPageSet($pageset);
 
 // leave if there is nothing to sort
-if($pages===false || count($pages)<2) {
-	redirect_header("index.php?page=$page", 3, _MD_GWIKI_SORT_EMPTY);
+if ($pages===false || count($pages)<2) {
+    redirect_header("index.php?page=$page", 3, _MD_GWIKI_SORT_EMPTY);
 }
 
 $op='display';
-if(isset($_POST['submit'])) {
-	$op='update';
+if (isset($_POST['submit'])) {
+    $op='update';
 }
 
-if($op=='update') {
-	if(isset($_POST['neworder'])) {
-		$neworder=array();
-		$neworder=explode(',',$_POST['neworder']);
-	}
-	else $op='display';
+if ($op=='update') {
+    if (isset($_POST['neworder'])) {
+        $neworder=array();
+        $neworder=explode(',',$_POST['neworder']);
+    }
+    else $op='display';
 }
 
-if($op=='update') {
-	foreach ($neworder as $i => $p) {
-		if(isset($pages[$p])) {
-			$pages[$p]['page_set_order'] = $i+1;
-		}
-		else $op='display';
-	}
+if ($op=='update') {
+    foreach ($neworder as $i => $p) {
+        if (isset($pages[$p])) {
+            $pages[$p]['page_set_order'] = $i+1;
+        }
+        else $op='display';
+    }
 }
 
-if($op=='update') {
-	$q_page=$wikiPage->escapeForDB($page);
-	foreach ($pages as $i => $v) {
-		$sql ='UPDATE '.$xoopsDB->prefix('gwiki_pages');
-		$sql.=' SET page_set_order = '.$v['page_set_order'];
-		$sql.=' WHERE gwiki_id = '. $v['gwiki_id']. " and active=1 and page_set_home='{$q_page}' ";;
-		$result = $xoopsDB->queryF($sql);
-		}
-	$pages=array();
-	$pages=fetchPageSet($pageset);
-	$op='display';
-	$pageX = $wikiPage->getPage($page); // reset current to clean up
-	if(!$pageX) redirect_header("index.php?page=$page", 3, _MD_GWIKI_PAGENOTFOUND); // better not happen, but ...
+if ($op=='update') {
+    $q_page=$wikiPage->escapeForDB($page);
+    foreach ($pages as $i => $v) {
+        $sql ='UPDATE '.$xoopsDB->prefix('gwiki_pages');
+        $sql.=' SET page_set_order = '.$v['page_set_order'];
+        $sql.=' WHERE gwiki_id = '. $v['gwiki_id']. " and active=1 and page_set_home='{$q_page}' ";;
+        $result = $xoopsDB->queryF($sql);
+        }
+    $pages=array();
+    $pages=fetchPageSet($pageset);
+    $op='display';
+    $pageX = $wikiPage->getPage($page); // reset current to clean up
+    if(!$pageX) redirect_header("index.php?page=$page", 3, _MD_GWIKI_PAGENOTFOUND); // better not happen, but ...
 
 }
 
@@ -215,7 +215,7 @@ $form->addElement($buttontray);
 // XoopsFormSelect( string $caption, string $name, [mixed $value = null], [int $size = 1], [bool $multiple = false])
 $listbox = new XoopsFormSelect(_MD_GWIKI_SORT_PAGES, 'sortelement', null, count($pages), false);
 foreach ($pages as $i => $v) {
-	$listbox->addOption($i, $v['display_keyword']);
+    $listbox->addOption($i, $v['display_keyword']);
 }
 $form->addElement($listbox);
 
@@ -244,11 +244,10 @@ $pageX['body']=$body;
 
 $pageX['title']=$title;
 $xoopsTpl->assign('gwiki', $pageX);
-$xoTheme->addStylesheet(XOOPS_URL.'/modules/gwiki/module.css');
+$xoTheme->addStylesheet(XOOPS_URL.'/modules/gwiki/assets/css/module.css');
 
 if(isset($message)) $xoopsTpl->assign('message', $message);
 if(isset($err_message)) $xoopsTpl->assign('err_message', $err_message);
 if(isset($debug)) $xoopsTpl->assign('debug', $debug);
 
 include(XOOPS_ROOT_PATH.'/footer.php');
-?>

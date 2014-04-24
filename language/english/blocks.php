@@ -33,5 +33,3 @@ define('_MB_GWIKI_RELATED_SORT_DATE','Recently Updated');
 define('_MB_GWIKI_RELATED_SORT_ALPHA','Alphabetic');
 define('_MB_GWIKI_RANDOM_PAGE','Show a Random Page');
 define('_MB_GWIKI_RANDOM_PAGE_DESC','(The Page to Load will be used as a prefix pattern to limit selections. Leave blank to include all pages.)');
-
-?>

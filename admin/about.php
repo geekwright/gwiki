@@ -2,7 +2,7 @@
 /**
 * admin/about.php
 *
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
@@ -11,9 +11,9 @@
 */
 
 include 'header.php';
-if($xoop25plus) {
-	echo $moduleAdmin->addNavigation('about.php');
-	echo $moduleAdmin->renderabout('',false);
+if ($xoop25plus) {
+    echo $moduleAdmin->addNavigation('about.php');
+    echo $moduleAdmin->renderabout('',false);
 }
 else { // !$xoop25plus
 $module_handler =& xoops_gethandler('module');
@@ -37,4 +37,3 @@ adminTableEnd(NULL);
 }
 
 include 'footer.php';
-?>

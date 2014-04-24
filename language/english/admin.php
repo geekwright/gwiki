@@ -52,7 +52,7 @@ define('_AD_GW_ADMENU_GOMOD','Go To Module');
 define('_AD_GW_ADMENU_HELP','Help');
 define('_AD_GW_ADMENU_TOADMIN','Back to Module Administration');
 define('_AD_GW_ADMENU_WELCOME','Welcome to GWiki!');
-define('_AD_GW_ADMENU_MESSAGE','<img src="../images/icon_big.png" alt="Logo" style="float:left; margin-right:2em;" /> A flexible wiki for your site.');
+define('_AD_GW_ADMENU_MESSAGE','<img src="../assets/images/icon_big.png" alt="Logo" style="float:left; margin-right:2em;" /> A flexible wiki for your site.');
 
 // namespace
 define('_AD_GWIKI_NAMESPACE_PREFIX','Namespace');
@@ -97,4 +97,3 @@ define('_AD_GWIKI_FILES_DESC','Description');
 define('_AD_GWIKI_FILES_UID','User');
 
 }
-?>

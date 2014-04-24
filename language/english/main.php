@@ -275,4 +275,3 @@ define('_MD_GWIKI_WIZARD_GALLERY_SELECT','Select Images for Your Gallery Page');
 
 define('_MD_GWIKI_WIZARD_FORWARDING','Transfering to Editor');
 }
-?>

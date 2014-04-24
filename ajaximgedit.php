@@ -38,6 +38,7 @@ function cleaner($string)
     $string=strip_tags($string); // DANGER -- kills wiki text
     $string=trim($string);
     $string=stripslashes($string);
+
     return $string;
 }
 
@@ -54,9 +55,9 @@ global $xoopsDB, $uploadpath, $wikiPage;
     $result = $xoopsDB->query($sql);
     if ($result) {
         $rows=$xoopsDB->getRowsNum($result);
-        if($rows) {
+        if ($rows) {
             $myrow=$xoopsDB->fetchArray($result);
-            if(!empty($myrow['image_file'])) {
+            if (!empty($myrow['image_file'])) {
                 $oldfilename=$uploadpath.$myrow['image_file'];
                 unlink($oldfilename);
             }
@@ -70,7 +71,6 @@ global $xoopsDB, $uploadpath, $wikiPage;
     $result = $xoopsDB->queryF($sql);
     $cnt=$xoopsDB->getAffectedRows();
     if($cnt) $input['message']=_MD_GWIKI_AJAX_IMGEDIT_DEL_OK;
-
 
     return $result;
 }
@@ -89,7 +89,7 @@ global $xoopsDB, $wikiPage;
 //  if(!$q_image_id) return false; // only updates
 
     // if we are setting this, clear it on all other images
-    if($q_use_to_represent) {
+    if ($q_use_to_represent) {
         $sql = "UPDATE ".$xoopsDB->prefix('gwiki_page_images').
             " set use_to_represent = 0 where keyword = '{$q_keyword}' ";
 
@@ -104,8 +104,9 @@ global $xoopsDB, $wikiPage;
     $sql.= " where image_id = '{$q_image_id}' ";
 
     $result = $xoopsDB->queryF($sql);
-    if(!$result) {
+    if (!$result) {
         $input['message']=$xoopsDB->error();
+
         return(0);
     }
     $cnt=$xoopsDB->getAffectedRows();
@@ -161,9 +162,9 @@ global $uploadpath,$xoopsDB;
     $result = $xoopsDB->query($sql);
     if ($result) {
         $rows=$xoopsDB->getRowsNum($result);
-        if($rows) {
+        if ($rows) {
             $myrow=$xoopsDB->fetchArray($result);
-            if(!empty($myrow['image_file'])) {
+            if (!empty($myrow['image_file'])) {
                 $oldfilename=$uploadpath . $myrow['image_file'];
                 unlink($oldfilename);
             }
@@ -177,11 +178,11 @@ global $uploadpath,$xoopsDB;
     return updateData($input);
 }
 
-    if($jsondata===false) { header("Status: 500 Internal Error - No Data Passed"); exit; }
+    if ($jsondata===false) { header("Status: 500 Internal Error - No Data Passed"); exit; }
     $input=json_decode($jsondata, true);
     //file_put_contents ( XOOPS_ROOT_PATH.'/uploads/debug.txt', print_r($input,true));
 
-    if(!empty($input['image_id'])) {
+    if (!empty($input['image_id'])) {
         $q_image_id=intval($input['image_id']);
         $sql = "SELECT keyword FROM ".$xoopsDB->prefix('gwiki_page_images')." where image_id = '{$q_image_id}' ";
         $result = $xoopsDB->query($sql);
@@ -190,12 +191,12 @@ global $uploadpath,$xoopsDB;
         }
     }
 
-    if(empty($input['page'])) { header("Status: 500 Internal Error - No Page"); exit; }
+    if (empty($input['page'])) { header("Status: 500 Internal Error - No Page"); exit; }
     $input['page']=strtolower($wikiPage->normalizeKeyword($input['page']));
     $pageX = $wikiPage->getPage($input['page']);
     $mayEdit = $wikiPage->checkEdit();
 
-    if(!$mayEdit) {
+    if (!$mayEdit) {
         header("Status: 403 Forbidden - No Permission");
         if(!$mayEdit) $out['message']=_MD_GWIKI_AJAX_IMGEDIT_NO_AUTH;
         echo json_encode($out);
@@ -204,7 +205,7 @@ global $uploadpath,$xoopsDB;
 
 /*
  * This creates issues if page being edited has not been saved yet, so let's not be anal about it
-    if(!$pageX) {
+    if (!$pageX) {
         header("Status: 403 Forbidden - No Page");
         if(!$pageX) $out['message']='Page does not exist';
         echo json_encode($out);
@@ -212,18 +213,16 @@ global $uploadpath,$xoopsDB;
     }
 */
 
-    if($newimage) {
+    if ($newimage) {
         $input['image_id']=updateImage($newimage,$input);
-        if($input['image_id']) {
+        if ($input['image_id']) {
             $input['message']='Image Saved';
             $input['link']=$uploadurl.$input['image_file'];
         }
     }
     else {
-        if(!empty($input['op']) && $input['op']=='delete') { deleteData($input); }
+        if (!empty($input['op']) && $input['op']=='delete') { deleteData($input); }
         else updateData($input);
     }
     echo json_encode($input);
     exit;
-
-?>

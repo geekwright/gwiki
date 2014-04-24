@@ -14,7 +14,7 @@
 <{if isset($gwizardform)}><{$gwizardform.title}><{else}><{$title}><{/if}>
 </div>
 <table><tr><td style="vertical-align:top;">
-<div class="wikiwizard_logo"><img src="images/wizardlogo.png" alt="logo" /></div>
+<div class="wikiwizard_logo"><img src="assets/images/wizardlogo.png" alt="logo" /></div>
 </td><td>
 <div class="wikiwizard_content">
 <{if isset($body)}>
@@ -38,7 +38,7 @@
 </td></tr></table>
 <br clear="all">
 </div>
-<{include file="db:gwiki_page_info.html"}>
+<{include file="db:gwiki_page_info.tpl"}>
 </div>
 <{if empty($hideInfoBar)}>
 <{/if}>

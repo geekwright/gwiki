@@ -2,7 +2,7 @@
 /**
 * admin/recent.php - recent wiki changes list
 *
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
@@ -28,4 +28,3 @@ echo '</td></tr>';
 adminTableEnd(NULL);
 
 include 'footer.php';
-?>

@@ -2,7 +2,7 @@
 /**
 * header.php - common startup for most scripts
 *
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
@@ -18,5 +18,3 @@ if (file_exists('language/'.$xoopsConfig['language'].'/modinfo.php')) {
 } else {
     include_once 'language/english/modinfo.php';
 }
-
-?>

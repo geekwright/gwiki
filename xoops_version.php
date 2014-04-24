@@ -6,20 +6,21 @@ $modversion['author']      = 'Richard Griffith';
 $modversion['credits']     = "Adapted from Simon \"zeniko\" B&uuml;nzli's wikimod";
 $modversion['license']     = 'GNU General Public License';
 $modversion['official']    = 0;
-$modversion['image'] = 'images/icon.png';
-if (defined('ICMS_ROOT_PATH')) $modversion['image'] = 'images/icon_big.png';
+$modversion['image'] = 'assets/images/icon.png';
+if (defined('ICMS_ROOT_PATH')) $modversion['image'] = 'assets/images/icon_big.png';
 
 $modversion['dirname']     = basename( dirname( __FILE__ ) ) ;
 
 // things for ModuleAdmin() class
 $modversion['license_url'] = XOOPS_URL.'/modules/gwiki/docs/license.txt';
 $modversion['license_url'] = substr($modversion['license_url'],strpos($modversion['license_url'],'//')+2);
-$modversion['release_date']     = '2014/02/01';
+
 $modversion['module_website_url'] = 'geekwright.com';
 $modversion['module_website_name'] = 'geekwright, LLC';
-$modversion['module_status'] = "RC2";
-$modversion['min_php']='5.3';
-$modversion['min_xoops']='2.5';
+$modversion['module_status'] = "RC3";
+$modversion['release_date']     = '2014/02/01';
+$modversion['min_php']='5.3.7';
+$modversion['min_xoops']='2.5.6';
 $modversion['system_menu'] = 1;
 $modversion['help'] = "page=help";
 
@@ -141,23 +142,23 @@ $modversion['notification']['event'][]=array(
 
 // Templates
 $modversion['templates'][1] = array(
-    'file' => 'gwiki_view.html',
+    'file' => 'gwiki_view.tpl',
     'description' => 'gwiki - View Wiki Page');
 
 $modversion['templates'][] = array(
-    'file' => 'gwiki_edit.html',
+    'file' => 'gwiki_edit.tpl',
     'description' => 'gwiki - Edit/Preview Wiki Page');
 
 $modversion['templates'][] = array(
-    'file' => 'gwiki_history.html',
+    'file' => 'gwiki_history.tpl',
     'description' => 'gwiki - Page History');
 
 $modversion['templates'][] = array(
-    'file' => 'gwiki_page_info.html',
+    'file' => 'gwiki_page_info.tpl',
     'description' => 'gwiki - Page Info and Tool Bar');
 
 $modversion['templates'][] = array(
-    'file' => 'gwiki_wizard.html',
+    'file' => 'gwiki_wizard.tpl',
     'description' => 'gwiki - page creation wizard');
 
 // Search
@@ -202,7 +203,6 @@ $modversion['config'][]= array(
     'valuetype' => 'text',
     'default' => XOOPS_URL.'/modules/'.$modversion['dirname'].'/index.php?page=%s',
     'options' => array() );
-
 
 $modversion['config'][]= array(
     'name' => 'searchlink_template',
@@ -289,7 +289,7 @@ $modversion['blocks'][1] = array(
     'show_func' => 'b_gwiki_wikiblock_show',
     'edit_func' => 'b_gwiki_wikiblock_edit',
     'options' => _MI_GWIKI_WIKIHOME.'|0|',
-    'template' => 'gwiki_ajaxblock.html');
+    'template' => 'gwiki_ajaxblock.tpl');
 
 $modversion['blocks'][] = array(
     'file' => 'blocks.php',
@@ -298,7 +298,7 @@ $modversion['blocks'][] = array(
     'show_func' => 'b_gwiki_newpage_show',
     'edit_func' => 'b_gwiki_newpage_edit',
     'options' => '1',
-    'template' => 'gwiki_newpage.html');
+    'template' => 'gwiki_newpage.tpl');
 
 $modversion['blocks'][] = array(
     'file' => 'blocks.php',
@@ -307,7 +307,7 @@ $modversion['blocks'][] = array(
     'show_func' => 'b_gwiki_teaserblock_show',
     'edit_func' => 'b_gwiki_teaserblock_edit',
     'options' => '0||0|1',
-    'template' => 'gwiki_block.html');
+    'template' => 'gwiki_block.tpl');
 
 $modversion['blocks'][] = array(
     'file' => 'blocks.php',
@@ -316,7 +316,7 @@ $modversion['blocks'][] = array(
     'show_func' => 'b_gwiki_recentblock_show',
     'edit_func' => 'b_gwiki_recentblock_edit',
     'options' => '4|0|-3 months',
-    'template' => 'gwiki_recentblock.html');
+    'template' => 'gwiki_recentblock.tpl');
 
 $modversion['blocks'][] = array(
     'file' => 'blocks.php',
@@ -325,7 +325,7 @@ $modversion['blocks'][] = array(
     'show_func' => 'b_gwiki_pagesettoc_show',
     'edit_func' => 'b_gwiki_pagesettoc_edit',
     'options' => '1|',
-    'template' => 'gwiki_pagesettoc.html');
+    'template' => 'gwiki_pagesettoc.tpl');
 
 $modversion['blocks'][] = array(
     'file' => 'blocks.php',
@@ -334,7 +334,7 @@ $modversion['blocks'][] = array(
     'show_func' => 'b_gwiki_related_show',
     'edit_func' => 'b_gwiki_related_edit',
     'options' => '1||0',
-    'template' => 'gwiki_relatedblock.html');
+    'template' => 'gwiki_relatedblock.tpl');
 
 $modversion['blocks'][] = array(
     'file' => 'blocks.php',
@@ -343,4 +343,4 @@ $modversion['blocks'][] = array(
     'show_func' => 'b_gwiki_linkshere_show',
     'edit_func' => 'b_gwiki_linkshere_edit',
     'options' => '0|0',
-    'template' => 'gwiki_linkshere.html');
+    'template' => 'gwiki_linkshere.tpl');

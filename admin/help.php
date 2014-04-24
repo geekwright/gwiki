@@ -2,7 +2,7 @@
 /**
 * admin/help.php - admin help for non Xoops 2.5+ systems
 *
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved. 
+* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
 * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
 * @since      1.0
 * @author     Richard Griffith <richard@geekwright.com>
@@ -26,4 +26,3 @@ echo $helptext.'<br /></td></tr>';
 adminTableEnd(array(_AD_GW_ADMENU_TOADMIN=>'index.php'));
 
 include "footer.php";
-?>

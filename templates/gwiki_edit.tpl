@@ -103,10 +103,10 @@
 </div>
 </span>
    <span style="float:right; display: inline-block; vertical-align: middle; margin-top: 6px; margin-right: 2em;">
-   <a onclick="toggleDiv('wikiimageedit'); return false;"><img src="<{$gwiki.modurl}>/images/imageicon.png" alt="<{$smarty.const._MD_GWIKI_IMAGES}>" title="<{$smarty.const._MD_GWIKI_IMAGES}>" /></a>
-   <a onclick="toggleDiv('wikifileedit'); return false;"><img src="<{$gwiki.modurl}>/images/attachicon.png" alt="<{$smarty.const._MD_GWIKI_ATTACHMENT_EDIT}>" title="<{$smarty.const._MD_GWIKI_ATTACHMENT_EDIT}>" /></a>
-   <a onclick="helpwindow();return false;"><img src="<{$gwiki.modurl}>/images/helpicon.png" alt="<{$smarty.const._MD_GWIKI_WIKI_EDIT_HELP}>" title="<{$smarty.const._MD_GWIKI_WIKI_EDIT_HELP}>" /></a>
-   <a onclick="bigWindow(0); return false;"><img src="<{$gwiki.modurl}>/images/closeicon.png" alt="<{$smarty.const._MD_GWIKI_FULLSCREEN_EXIT}>" title="<{$smarty.const._MD_GWIKI_FULLSCREEN_EDIT}>" /></a>
+   <a onclick="toggleDiv('wikiimageedit'); return false;"><img src="<{$gwiki.modurl}>/assets/images/imageicon.png" alt="<{$smarty.const._MD_GWIKI_IMAGES}>" title="<{$smarty.const._MD_GWIKI_IMAGES}>" /></a>
+   <a onclick="toggleDiv('wikifileedit'); return false;"><img src="<{$gwiki.modurl}>/assets/images/attachicon.png" alt="<{$smarty.const._MD_GWIKI_ATTACHMENT_EDIT}>" title="<{$smarty.const._MD_GWIKI_ATTACHMENT_EDIT}>" /></a>
+   <a onclick="helpwindow();return false;"><img src="<{$gwiki.modurl}>/assets/images/helpicon.png" alt="<{$smarty.const._MD_GWIKI_WIKI_EDIT_HELP}>" title="<{$smarty.const._MD_GWIKI_WIKI_EDIT_HELP}>" /></a>
+   <a onclick="bigWindow(0); return false;"><img src="<{$gwiki.modurl}>/assets/images/closeicon.png" alt="<{$smarty.const._MD_GWIKI_FULLSCREEN_EXIT}>" title="<{$smarty.const._MD_GWIKI_FULLSCREEN_EDIT}>" /></a>
    </span>
    </div>
    <textarea id="editfield" onclick="setWikiChanged();" style="width:100%; height:94%; overflow:auto; border:0px; margin-right: 1em;"> </textarea>
@@ -120,7 +120,7 @@
 <h1 class="wikititle" id="toc0"><{$gwiki.title}></h1>
 <{$gwiki.body}>
 </div>
-<br clear="all" /><a href="#<{$gwikiform.name}>"><img src="<{$gwiki.modurl}>/images/upicon.png" alt="<{$smarty.const._MD_GWIKI_BACK_TO_TOP}>" /> <{$smarty.const._MD_GWIKI_BACK_TO_TOP}></a>
+<br clear="all" /><a href="#<{$gwikiform.name}>"><img src="<{$gwiki.modurl}>/assets/images/upicon.png" alt="<{$smarty.const._MD_GWIKI_BACK_TO_TOP}>" /> <{$smarty.const._MD_GWIKI_BACK_TO_TOP}></a>
 <{/if}>
 
 <div id="wikiimageedit" class="wikiimageedit">
@@ -146,7 +146,7 @@
 <input type="hidden" id="wikiimage_id" name="image_id" value="0" />
 
 <div id="wikieditimg_dd">
-<img name="wikieditimg_img" id="wikieditimg_img" class="wikieditimg" src="images/blank.png" />
+<img name="wikieditimg_img" id="wikieditimg_img" class="wikieditimg" src="assets/images/blank.png" />
 <br /><span id="wikieditimg_dd_msg"><{$smarty.const._MD_GWIKI_IMAGES_DROPHERE}></span>
 <div id="gwikiimgform_nofiledrag"><{$smarty.const._MD_GWIKI_IMAGES_PICKFILE}><input type="file" id="wikieditimg_fileselect" name="fileselect[]" /></div>
 <div id="wikieditimg_progress"></div>
@@ -172,8 +172,8 @@
   <option value="right"><{$smarty.const._MD_GWIKI_IMAGES_ALIGN_RIGHT}></option>
 </select>
 <{$smarty.const._MD_GWIKI_IMAGES_MAX_WIDTH}><input id="wikiimage_maxwidth" name='maxwidth' type="text" size="3">
-<a onclick="addImageMarkup();" title="<{$smarty.const._MD_GWIKI_IMAGES_INSERT_TIP}>"><img src="images/insimgicon.png" /></a>
-<a onclick="toggleDiv('wikiimageedit'); return false;"><img src="images/closeicon.png" title="<{$smarty.const._MD_GWIKI_IMAGES_CLOSE}>" align="right" /></a>
+<a onclick="addImageMarkup();" title="<{$smarty.const._MD_GWIKI_IMAGES_INSERT_TIP}>"><img src="assets/images/insimgicon.png" /></a>
+<a onclick="toggleDiv('wikiimageedit'); return false;"><img src="assets/images/closeicon.png" title="<{$smarty.const._MD_GWIKI_IMAGES_CLOSE}>" align="right" /></a>
 </form>
 </div>
 </td></tr></table>
@@ -194,7 +194,7 @@
 <input type="hidden" id="wikifile_id" name="file_id" value="0" />
 
 <div id="wikieditfile_dd">
-<img name="wikieditfile_img" id="wikieditfile_img" class="wikieditfile" src="images/blank.png" />
+<img name="wikieditfile_img" id="wikieditfile_img" class="wikieditfile" src="assets/images/blank.png" />
 <br /><span id="wikieditfile_dd_msg"><{$smarty.const._MD_GWIKI_FILES_DROPHERE}></span>
 <div id="wikifileform_nofiledrag"><{$smarty.const._MD_GWIKI_FILES_PICKFILE}><input type="file" id="wikieditfile_fileselect" name="fileselect[]" /></div>
 <div id="wikieditfile_progress"></div>
@@ -214,7 +214,7 @@
 </form>
 </div>
 <div>
-<a onclick="toggleDiv('wikifileedit'); return false;"><img src="images/closeicon.png" title="<{$smarty.const._MD_GWIKI_FILES_CLOSE}>" align="right" style="margin:0.5em;" /></a>
+<a onclick="toggleDiv('wikifileedit'); return false;"><img src="assets/images/closeicon.png" title="<{$smarty.const._MD_GWIKI_FILES_CLOSE}>" align="right" style="margin:0.5em;" /></a>
 </div>
 </td></tr></table>
 </div>
@@ -672,7 +672,7 @@ function clearImageDetail() {
 	document.getElementById("wikieditimg_alttext").value='';
 	document.getElementById("wikieditimg_represent").checked=false;
 
-	document.getElementById("wikieditimg_img").src='images/blank.png';
+	document.getElementById("wikieditimg_img").src='assets/images/blank.png';
 
 	document.getElementById("wikieditimg_fileselect").value='';
 	document.getElementById("wikieditimg_progress").innerHTML='';
@@ -695,7 +695,7 @@ function getImageListById(imageid) {
 }
 
 function fetchImageList() {
-	document.getElementById("wikiimagelist").innerHTML='<img id="loadanim" src="images/loading-anim.gif" />';
+	document.getElementById("wikiimagelist").innerHTML='<img id="loadanim" src="assets/images/loading-anim.gif" />';
 	window.imageList = new Object;
 
 	var xmlhttp=new XMLHttpRequest();
@@ -973,7 +973,7 @@ function clearFileDetail() {
 	document.getElementById("wikieditfile_date").innerHTML='';
 	document.getElementById("wikieditfile_description").value='';
 
-	document.getElementById("wikieditfile_img").src='images/blank.png';
+	document.getElementById("wikieditfile_img").src='assets/images/blank.png';
 
 	document.getElementById("wikieditfile_fileselect").value='';
 	document.getElementById("wikieditfile_progress").innerHTML='';
@@ -997,7 +997,7 @@ function getFileListById(fileid) {
 }
 
 function fetchFileList() {
-	document.getElementById("wikifilelist").innerHTML='<img id="loadanim" src="images/loading-anim.gif" />';
+	document.getElementById("wikifilelist").innerHTML='<img id="loadanim" src="assets/images/loading-anim.gif" />';
 	window.fileList = new Object;
 
 	var xmlhttp=new XMLHttpRequest();

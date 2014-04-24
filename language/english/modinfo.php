@@ -107,4 +107,3 @@ define ('_MI_GWIKI_NOTIFY_NS_UPD_PAGE_DESC','Receive notification when a page is
 define ('_MI_GWIKI_NOTIFY_NS_UPD_PAGE_SUBJECT','[{X_SITENAME}] auto-notify : page updated in {NAMESPACE}');
 
 }
-?>

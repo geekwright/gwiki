@@ -14,19 +14,19 @@ include_once XOOPS_ROOT_PATH.'/class/xoopsformloader.php';
 
 global $xoTheme, $xoopsTpl;
 
-if(isset($_SESSION['gwikiwizard'])) {
-	$wizard_parms=unserialize($_SESSION['gwikiwizard']);
-	$_SESSION['gwikiwizard']=null;
-	unset ($_SESSION['gwikiwizard']);
-	$valid_keys=array('page','op','title','body','display_keyword',
-					'parent_page','page_set_home','page_set_order',
-					'meta_description','meta_keywords',
-					'show_in_index','leave_inactive');
-	foreach($wizard_parms as $key => $value) {
-		if(in_array($key,$valid_keys)) {
-			$_POST[$key]=$value;
-		}
-	}
+if (isset($_SESSION['gwikiwizard'])) {
+    $wizard_parms=unserialize($_SESSION['gwikiwizard']);
+    $_SESSION['gwikiwizard']=null;
+    unset ($_SESSION['gwikiwizard']);
+    $valid_keys=array('page','op','title','body','display_keyword',
+                    'parent_page','page_set_home','page_set_order',
+                    'meta_description','meta_keywords',
+                    'show_in_index','leave_inactive');
+    foreach ($wizard_parms as $key => $value) {
+        if (in_array($key,$valid_keys)) {
+            $_POST[$key]=$value;
+        }
+    }
 }
 
 // $_GET and $_POST variables we use
@@ -39,7 +39,7 @@ if(empty($op) || ($op!='preview' && $op!='edit' && $op!='insert')) $op = "edit";
 
 // namespace id (prefix_id) is set by newpage block, turn it into a full page name
 if (isset($_GET['nsid'])) {
-	$page = $wikiPage->makeKeywordFromPrefix(intval($_GET['nsid']),$page);
+    $page = $wikiPage->makeKeywordFromPrefix(intval($_GET['nsid']),$page);
 }
 if(empty($page)) $page=$wikiPage->wikiHomePage;
 
@@ -66,88 +66,87 @@ if(isset($_POST['meta_keywords'])) $meta_keywords = cleaner($_POST['meta_keyword
 if(isset($_POST['show_in_index'])) $show_in_index = intval($_POST['show_in_index']);
 if(isset($_POST['leave_inactive'])) $leave_inactive = intval($_POST['leave_inactive']);
 
+    global $wikiPage;
+    $pageX = $wikiPage->getPage($page,($id==0?null:$id));
+    $mayEdit = $wikiPage->checkEdit();
 
-	global $wikiPage;
-	$pageX = $wikiPage->getPage($page,($id==0?null:$id));
-	$mayEdit = $wikiPage->checkEdit();
+    if ($pageX) {
+        $pageX['author'] = $wikiPage->getUserName($wikiPage->uid);
+        $pageX['revisiontime']=date($wikiPage->dateFormat,$pageX['lastmodified']);
+        $pageX['mayEdit'] = $mayEdit;
+        $pageX['pageFound'] = true;
+        if(!empty($highlight)) $pageX['body'] = $wikiPage->highlightWords($highlight);
+    }
+    else {
+        $pageX=array();
+        $uid = ($xoopsUser)?$xoopsUser->getVar('uid'):0;
+        $pageX['uid']=$uid;
+        $pageX['author']=$wikiPage->getUserName($uid);
+        $pageX['revisiontime']=date($wikiPage->dateFormat);
+        $pageX['mayEdit'] = $mayEdit;
+        $pageX['keyword'] = $page;
+        $pageX['pageFound'] = false;
+    }
+    $dir = basename( dirname( __FILE__ ) ) ;
+    $pageX['moddir']  = $dir;
+    $pageX['modpath'] = XOOPS_ROOT_PATH .'/modules/' . $dir;
+    $pageX['modurl']  = XOOPS_URL .'/modules/' . $dir;
+    $pageX['ineditor']  = true;
+    $pageX['imglib'] = $wikiPage->getImageLib($page);
+    $pageX['maxsize'] = $wikiPage->getMaxUploadSize();
 
-	if($pageX) {
-		$pageX['author'] = $wikiPage->getUserName($wikiPage->uid);
-		$pageX['revisiontime']=date($wikiPage->dateFormat,$pageX['lastmodified']);
-		$pageX['mayEdit'] = $mayEdit;
-		$pageX['pageFound'] = true;
-		if(!empty($highlight)) $pageX['body'] = $wikiPage->highlightWords($highlight);
-	}
-	else {
-		$pageX=array();
-		$uid = ($xoopsUser)?$xoopsUser->getVar('uid'):0;
-		$pageX['uid']=$uid;
-		$pageX['author']=$wikiPage->getUserName($uid);
-		$pageX['revisiontime']=date($wikiPage->dateFormat);
-		$pageX['mayEdit'] = $mayEdit;
-		$pageX['keyword'] = $page;
-		$pageX['pageFound'] = false;
-	}
-	$dir = basename( dirname( __FILE__ ) ) ;
-	$pageX['moddir']  = $dir;
-	$pageX['modpath'] = XOOPS_ROOT_PATH .'/modules/' . $dir;
-	$pageX['modurl']  = XOOPS_URL .'/modules/' . $dir;
-	$pageX['ineditor']  = true;
-	$pageX['imglib'] = $wikiPage->getImageLib($page);
-	$pageX['maxsize'] = $wikiPage->getMaxUploadSize();
+    if (!$mayEdit) {
+        $err_message=_MD_GWIKI_NO_PAGE_PERMISSION;
+        redirect_header("index.php?page=$page", 2, $err_message);
+        exit();
+    }
 
-	if (!$mayEdit) {
-		$err_message=_MD_GWIKI_NO_PAGE_PERMISSION;
-		redirect_header("index.php?page=$page", 2, $err_message);
-		exit();
-	}
+    if ($wikiPage->admin_lock) {
+        redirect_header("index.php?page=$page", 2, _MD_GWIKI_PAGE_IS_LOCKED);
+        exit();
+    }
 
-	if ($wikiPage->admin_lock) {
-		redirect_header("index.php?page=$page", 2, _MD_GWIKI_PAGE_IS_LOCKED);
-		exit();
-	}
+    if (($op == "insert")) {
+        // check if this page was updated elsewhere while we were editing
+        // if so, we save it, but don't make it the active revision
+        if (intval($id) == $wikiPage->getCurrentId($page)) {
+            $forced_inactive=false;
+        } else {
+            $leave_inactive=true; $forced_inactive=true;
+        }
+        $wikiPage->keyword=$page;
+        $wikiPage->title=$title;
+        $wikiPage->display_keyword=$display_keyword;
+        $wikiPage->body=$body;
+        $wikiPage->uid=$uid;
 
-	if (($op == "insert")) {
-		// check if this page was updated elsewhere while we were editing
-		// if so, we save it, but don't make it the active revision
-		if (intval($id) == $wikiPage->getCurrentId($page)) {
-			$forced_inactive=false;
-		} else {
-			$leave_inactive=true; $forced_inactive=true;
-		}
-		$wikiPage->keyword=$page;
-		$wikiPage->title=$title;
-		$wikiPage->display_keyword=$display_keyword;
-		$wikiPage->body=$body;
-		$wikiPage->uid=$uid;
+        $wikiPage->parent_page=$parent_page;
+        $wikiPage->page_set_home=$page_set_home;
+        $wikiPage->page_set_order=$page_set_order;
+        $wikiPage->meta_description=$meta_description;
+        $wikiPage->meta_keywords=$meta_keywords;
+        $wikiPage->show_in_index=$show_in_index;
 
-		$wikiPage->parent_page=$parent_page;
-		$wikiPage->page_set_home=$page_set_home;
-		$wikiPage->page_set_order=$page_set_order;
-		$wikiPage->meta_description=$meta_description;
-		$wikiPage->meta_keywords=$meta_keywords;
-		$wikiPage->show_in_index=$show_in_index;
+        $success = $wikiPage->addRevision($leave_inactive);
 
-		$success = $wikiPage->addRevision($leave_inactive);
-
-		if($success) {
-			if($forced_inactive) {
-				$err_message= _MD_GWIKI_EDITCONFLICT;
-				$op='edit';
-				$id=$success;
-			}
-			else {
-				if($leave_inactive) $message= _MD_GWIKI_SAVED_INACTIVE;
-				else $message= _MD_GWIKI_DBUPDATED;
-				$op='';
-				redirect_header("index.php?page=$page", 2,$message);
-				exit();
-			}
-		} else {
-			$err_message= _MD_GWIKI_ERRORINSERT;
-			$op='edit';
-		}
-	}
+        if ($success) {
+            if ($forced_inactive) {
+                $err_message= _MD_GWIKI_EDITCONFLICT;
+                $op='edit';
+                $id=$success;
+            }
+            else {
+                if($leave_inactive) $message= _MD_GWIKI_SAVED_INACTIVE;
+                else $message= _MD_GWIKI_DBUPDATED;
+                $op='';
+                redirect_header("index.php?page=$page", 2,$message);
+                exit();
+            }
+        } else {
+            $err_message= _MD_GWIKI_ERRORINSERT;
+            $op='edit';
+        }
+    }
 
 
 $pagestatmessage='';
@@ -156,129 +155,129 @@ $result=false;
 if (($op == "preview") && isset($id)) {
     $result=intval($id);
     $pagestatmessage=_MD_GWIKI_PAGENOTSAVED;
-	$pagechanged='yes';
+    $pagechanged='yes';
 } else {
-	//print_r($pageX);
-	if($pageX['pageFound']) {
-		$result=true;
-	} else {
-		$result=false;
-		$pagestatmessage=_MD_GWIKI_PAGENOTFOUND;
-		$op = "edit";
-		$pageX['keyword'] = $page;
+    //print_r($pageX);
+    if ($pageX['pageFound']) {
+        $result=true;
+    } else {
+        $result=false;
+        $pagestatmessage=_MD_GWIKI_PAGENOTFOUND;
+        $op = "edit";
+        $pageX['keyword'] = $page;
 //		$pageX['pageFound'] = true; // not really, but used in template only from here on
-	}
+    }
 
-	$gwiki_id=$wikiPage->gwiki_id;
-	$keyword=$wikiPage->keyword;
-	$display_keyword=$wikiPage->display_keyword;
-	$title=$wikiPage->title;
-	$body=$wikiPage->body;
-	$parent_page=$wikiPage->parent_page;
-	$page_set_home=$wikiPage->page_set_home;
-	$page_set_order=$wikiPage->page_set_order;
-	$meta_description=$wikiPage->meta_description;
-	$meta_keywords=$wikiPage->meta_keywords;
-	$show_in_index=$wikiPage->show_in_index;
-	$lastmodified=$wikiPage->lastmodified;
-	$uid=$wikiPage->uid;
-	$admin_lock=$wikiPage->admin_lock;
-	$active=$wikiPage->active;
+    $gwiki_id=$wikiPage->gwiki_id;
+    $keyword=$wikiPage->keyword;
+    $display_keyword=$wikiPage->display_keyword;
+    $title=$wikiPage->title;
+    $body=$wikiPage->body;
+    $parent_page=$wikiPage->parent_page;
+    $page_set_home=$wikiPage->page_set_home;
+    $page_set_order=$wikiPage->page_set_order;
+    $meta_description=$wikiPage->meta_description;
+    $meta_keywords=$wikiPage->meta_keywords;
+    $show_in_index=$wikiPage->show_in_index;
+    $lastmodified=$wikiPage->lastmodified;
+    $uid=$wikiPage->uid;
+    $admin_lock=$wikiPage->admin_lock;
+    $active=$wikiPage->active;
 }
 
 switch ($op) {
 case "edit":
 case "preview":
 //case "images":
-	$xoopsOption['template_main'] = 'gwiki_edit.html';
-	include XOOPS_ROOT_PATH."/header.php";
+    $xoopsOption['template_main'] = 'gwiki_edit.tpl';
+    include XOOPS_ROOT_PATH."/header.php";
 
-	$title = prepOut($title); // we need title ready to display in several places
-	if ($op == "preview") {
-		$pageX['keyword']=$page;
-		$pageX['title']=$title;
-		$pageX['body']=$wikiPage->renderPage($body);
-		$pageX['preview'] = true;
-	}
-	else {
-		unset($pageX['title']);
-		unset($pageX['body']);
-		$pageX['preview'] = false;
-	}
+    $title = prepOut($title); // we need title ready to display in several places
+    if ($op == "preview") {
+        $pageX['keyword']=$page;
+        $pageX['title']=$title;
+        $pageX['body']=$wikiPage->renderPage($body);
+        $pageX['preview'] = true;
+    }
+    else {
+        unset($pageX['title']);
+        unset($pageX['body']);
+        $pageX['preview'] = false;
+    }
 
-	$uid = ($xoopsUser)?$xoopsUser->getVar('uid'):0;
+    $uid = ($xoopsUser)?$xoopsUser->getVar('uid'):0;
 
-	$form = new XoopsThemeForm(_MD_GWIKI_EDITPAGE.": $page", "gwikiform", "edit.php?page=$page");
+    $form = new XoopsThemeForm(_MD_GWIKI_EDITPAGE.": $page", "gwikiform", "edit.php?page=$page");
 
-	if(empty($display_keyword)) $display_keyword=$page;
+    if(empty($display_keyword)) $display_keyword=$page;
 
-	$form->addElement(new XoopsFormHidden('op', 'insert'));
-	$form->addElement(new XoopsFormHidden('page', $page));
-	$form->addElement(new XoopsFormHidden('id', $wikiPage->getCurrentId($page)));
-	$form->addElement(new XoopsFormHidden('uid', $uid));
-	$form->addElement(new XoopsFormHidden('pagechanged', $pagechanged));
+    $form->addElement(new XoopsFormHidden('op', 'insert'));
+    $form->addElement(new XoopsFormHidden('page', $page));
+    $form->addElement(new XoopsFormHidden('id', $wikiPage->getCurrentId($page)));
+    $form->addElement(new XoopsFormHidden('uid', $uid));
+    $form->addElement(new XoopsFormHidden('pagechanged', $pagechanged));
 
-	$form->addElement(new XoopsFormText(_MD_GWIKI_TITLE, "title", 40, 250, $title));
-	$form->addElement(new XoopsFormLabel('', '', 'gwikieditbuttons')); // edit buttons added in template
+    $form->addElement(new XoopsFormText(_MD_GWIKI_TITLE, "title", 40, 250, $title));
+    $form->addElement(new XoopsFormLabel('', '', 'gwikieditbuttons')); // edit buttons added in template
 
-	$form_edit_body=new XoopsFormTextArea(_MD_GWIKI_BODY, 'body', htmlspecialchars($body), 20, 80);
-	$form_edit_body->setExtra("onclick='setWikiChanged();'");
-	$form->addElement($form_edit_body);
+    $form_edit_body=new XoopsFormTextArea(_MD_GWIKI_BODY, 'body', htmlspecialchars($body), 20, 80);
+    $form_edit_body->setExtra("onclick='setWikiChanged();'");
+    $form->addElement($form_edit_body);
 
-	$btn_tray = new XoopsFormElementTray('', ' ','gwikiformpage1');
-	$submit_btn = new XoopsFormButton("", "submit", _MD_GWIKI_SUBMIT, "submit");
-	$submit_btn->setExtra("onclick='prepForSubmit();'");
-	$btn_tray->addElement($submit_btn);
+    $btn_tray = new XoopsFormElementTray('', ' ','gwikiformpage1');
+    $submit_btn = new XoopsFormButton("", "submit", _MD_GWIKI_SUBMIT, "submit");
+    $submit_btn->setExtra("onclick='prepForSubmit();'");
+    $btn_tray->addElement($submit_btn);
 
-	$metadata_btn = new XoopsFormButton("", "metaedit", _MD_GWIKI_EDIT_SHOW_META, "button");
-	$metadata_btn->setExtra("onclick=".
-	"'var ele = document.getElementById(\"gwikiformmetaedit\"); ele.style.display = \"inherit\";".
-	" var ele2 = document.getElementById(\"gwikiformbodyedit\"); ele2.style.display = \"none\";'");
-	$btn_tray->addElement($metadata_btn);
+    $metadata_btn = new XoopsFormButton("", "metaedit", _MD_GWIKI_EDIT_SHOW_META, "button");
+    $metadata_btn->setExtra("onclick=".
+    "'var ele = document.getElementById(\"gwikiformmetaedit\"); ele.style.display = \"inherit\";".
+    " var ele2 = document.getElementById(\"gwikiformbodyedit\"); ele2.style.display = \"none\";'");
+    $btn_tray->addElement($metadata_btn);
 
-	$preview_btn = new XoopsFormButton("", "preview", _PREVIEW, "button");
-	$preview_btn->setExtra("onclick='prepForPreview();'");
-	$btn_tray->addElement($preview_btn);
+    $preview_btn = new XoopsFormButton("", "preview", _PREVIEW, "button");
+    $preview_btn->setExtra("onclick='prepForPreview();'");
+    $btn_tray->addElement($preview_btn);
 
-	$cancel_btn = new XoopsFormButton("", "cancel", _CANCEL, "button");
-	$cancel_btn->setExtra("onclick='".(($op == "edit")?"history.back();":"document.location.href=\"index.php".(($result)?"?page=$page":"")."\";")."'");
-	$btn_tray->addElement($cancel_btn);
+    $cancel_btn = new XoopsFormButton("", "cancel", _CANCEL, "button");
+    $cancel_btn->setExtra("onclick='".(($op == "edit")?"history.back();":"document.location.href=\"index.php".(($result)?"?page=$page":"")."\";")."'");
+    $btn_tray->addElement($cancel_btn);
 
-	$btn_tray->addElement(new XoopsFormLabel("", " - <strong>{$pagestatmessage}</strong>"));
+    $btn_tray->addElement(new XoopsFormLabel("", " - <strong>{$pagestatmessage}</strong>"));
 
-	$form->addElement($btn_tray);
+    $form->addElement($btn_tray);
 
-	$form->addElement(new XoopsFormText(_MD_GWIKI_DISPLAY_KEYWORD, "display_keyword", 40, 250, htmlspecialchars($display_keyword)));
-	$form->addElement(new XoopsFormText(_MD_GWIKI_PARENT_PAGE, "parent_page", 40, 250, htmlspecialchars($parent_page)));
-	$form->addElement(new XoopsFormText(_MD_GWIKI_PAGE_SET_HOME, "page_set_home", 40, 250, htmlspecialchars($page_set_home)));
-	$form->addElement(new XoopsFormText(_MD_GWIKI_PAGE_SET_ORDER, "page_set_order", 4, 10, htmlspecialchars($page_set_order)));
-	$form->addElement(new XoopsFormText(_MD_GWIKI_META_KEYWORDS, "meta_keywords", 80, 500, htmlspecialchars($meta_keywords)));
-	$form->addElement(new XoopsFormTextArea(_MD_GWIKI_META_DESCRIPTION, 'meta_description', htmlspecialchars($meta_description), 6, 80));
-	$form->addElement(new XoopsFormRadioYN(_MD_GWIKI_SHOW_IN_INDEX, "show_in_index", intval($show_in_index)));
-	$form->addElement(new XoopsFormRadioYN(_MD_GWIKI_LEAVE_INACTIVE, "leave_inactive", intval($leave_inactive)));
-	$btn_tray2 = new XoopsFormElementTray('', ' ','gwikiformpage2');
+    $form->addElement(new XoopsFormText(_MD_GWIKI_DISPLAY_KEYWORD, "display_keyword", 40, 250, htmlspecialchars($display_keyword)));
+    $form->addElement(new XoopsFormText(_MD_GWIKI_PARENT_PAGE, "parent_page", 40, 250, htmlspecialchars($parent_page)));
+    $form->addElement(new XoopsFormText(_MD_GWIKI_PAGE_SET_HOME, "page_set_home", 40, 250, htmlspecialchars($page_set_home)));
+    $form->addElement(new XoopsFormText(_MD_GWIKI_PAGE_SET_ORDER, "page_set_order", 4, 10, htmlspecialchars($page_set_order)));
+    $form->addElement(new XoopsFormText(_MD_GWIKI_META_KEYWORDS, "meta_keywords", 80, 500, htmlspecialchars($meta_keywords)));
+    $form->addElement(new XoopsFormTextArea(_MD_GWIKI_META_DESCRIPTION, 'meta_description', htmlspecialchars($meta_description), 6, 80));
+    $form->addElement(new XoopsFormRadioYN(_MD_GWIKI_SHOW_IN_INDEX, "show_in_index", intval($show_in_index)));
+    $form->addElement(new XoopsFormRadioYN(_MD_GWIKI_LEAVE_INACTIVE, "leave_inactive", intval($leave_inactive)));
+    $btn_tray2 = new XoopsFormElementTray('', ' ','gwikiformpage2');
 
-	$submit_btn2 = new XoopsFormButton('', 'submit2', _MD_GWIKI_SUBMIT, 'submit');
-	$submit_btn2->setExtra("onclick='prepForSubmit();'");
-	$btn_tray2->addElement($submit_btn2);
+    $submit_btn2 = new XoopsFormButton('', 'submit2', _MD_GWIKI_SUBMIT, 'submit');
+    $submit_btn2->setExtra("onclick='prepForSubmit();'");
+    $btn_tray2->addElement($submit_btn2);
 
-	$bodydata_btn = new XoopsFormButton("", "bodyedit", _MD_GWIKI_EDIT_SHOW_BODY, "button");
-	$bodydata_btn->setExtra("onclick=".
-	"'var ele = document.getElementById(\"gwikiformmetaedit\"); ele.style.display = \"none\"; ".
-	" var ele2 = document.getElementById(\"gwikiformbodyedit\"); ele2.style.display = \"inherit\";'");
-	$btn_tray2->addElement($bodydata_btn);
+    $bodydata_btn = new XoopsFormButton("", "bodyedit", _MD_GWIKI_EDIT_SHOW_BODY, "button");
+    $bodydata_btn->setExtra("onclick=".
+    "'var ele = document.getElementById(\"gwikiformmetaedit\"); ele.style.display = \"none\"; ".
+    " var ele2 = document.getElementById(\"gwikiformbodyedit\"); ele2.style.display = \"inherit\";'");
+    $btn_tray2->addElement($bodydata_btn);
 
-	$preview_btn2 = new XoopsFormButton("", "preview2", _PREVIEW, "button");
-	$preview_btn2->setExtra("onclick='prepForPreview();'");
-	$btn_tray2->addElement($preview_btn2);
+    $preview_btn2 = new XoopsFormButton("", "preview2", _PREVIEW, "button");
+    $preview_btn2->setExtra("onclick='prepForPreview();'");
+    $btn_tray2->addElement($preview_btn2);
 
-	$cancel_btn2 = new XoopsFormButton("", "cancel2", _CANCEL, "button");
-	$cancel_btn2->setExtra("onclick='".(($op == "edit")?"history.back();":"document.location.href=\"index.php".(($result)?"?page=$page":"")."\";")."'");
-	$btn_tray2->addElement($cancel_btn2);
+    $cancel_btn2 = new XoopsFormButton("", "cancel2", _CANCEL, "button");
+    $cancel_btn2->setExtra("onclick='".(($op == "edit")?"history.back();":"document.location.href=\"index.php".(($result)?"?page=$page":"")."\";")."'");
+    $btn_tray2->addElement($cancel_btn2);
 
-	$btn_tray2->addElement(new XoopsFormLabel("", " - <strong>{$pagestatmessage}</strong>"));
+    $btn_tray2->addElement(new XoopsFormLabel("", " - <strong>{$pagestatmessage}</strong>"));
 
-	$form->addElement($btn_tray2);
+    $form->addElement($btn_tray2);
 
     $form->assign($xoopsTpl);
     $xoopsTpl->assign('gwiki', $pageX);
@@ -287,8 +286,7 @@ case "preview":
 
 }
 
-
-$xoTheme->addStylesheet(XOOPS_URL.'/modules/gwiki/module.css');
+$xoTheme->addStylesheet(XOOPS_URL.'/modules/gwiki/assets/css/module.css');
 if(empty($title)) $title=$xoopsModule->name();
 $xoopsTpl->assign('xoops_pagetitle', $title);
 $xoopsTpl->assign('icms_pagetitle', $title);
@@ -296,4 +294,3 @@ if(!empty($message)) $xoopsTpl->assign('message', htmlspecialchars($message));
 if(!empty($err_message)) $xoopsTpl->assign('err_message', htmlspecialchars($err_message));
 
 include XOOPS_ROOT_PATH."/footer.php";
-?>

@@ -115,6 +115,7 @@ function cleaner($string)
     $string=strip_tags($string); // DANGER -- kills wiki text
     $string=trim($string);
     $string=stripslashes($string);
+
     return $string;
 }
 
@@ -131,6 +132,7 @@ function getUserName($uid)
             return "<a href=\"".XOOPS_URL."/userinfo.php?uid=$uid\">".htmlspecialchars($user->getVar('uname'), ENT_QUOTES)."</a>";
         }
     }
+
     return $xoopsConfig['anonymous'];
 }
 
@@ -344,7 +346,7 @@ if ($row = $xoopsDB->fetcharray($result)) {
 
 /*
  * This creates issues if page being edited has not been saved yet, so let's not be anal about it
-    if(!$pageX) {
+    if (!$pageX) {
         header("Status: 403 Forbidden - No Page");
         if(!$pageX) $out['message']='Page does not exist';
         echo json_encode($out);
@@ -367,7 +369,7 @@ if ($newfile) {
     if ($input['file_id']) {
         $input['message']='Attachment Saved';
         $input['link']=$uploadurl.$input['file_path'];
-        $input['iconlink']=XOOPS_URL . '/modules/' . $dir . '/icons/48px/' . $input['file_icon'] . '.png';
+        $input['iconlink']=XOOPS_URL . '/modules/' . $dir . '/assets/icons/48px/' . $input['file_icon'] . '.png';
         $input['userlink']=getUserName($input['file_uid']);
         $input['size']=number_format($input['file_size']);
         $input['date']=date($wikiPage->dateFormat, $input['file_upload_date']);
