@@ -36,6 +36,11 @@ if (!empty($wlconfig)) {
     $whitelist=explode(',', $wlconfig);
 }
 
+/**
+ * @param $filename
+ *
+ * @return array
+ */
 function getExtensionInfo($filename)
 {
     global $whitelist;
@@ -91,6 +96,11 @@ function getExtensionInfo($filename)
     return $fi;
 }
 
+/**
+ * @param $filename
+ *
+ * @return array
+ */
 function getFileInfo($filename)
 {
 
@@ -108,6 +118,11 @@ function getFileInfo($filename)
     return $fi;
 }
 
+/**
+ * @param $string
+ *
+ * @return string
+ */
 function cleaner($string)
 {
     $string=stripcslashes($string);
@@ -119,6 +134,11 @@ function cleaner($string)
     return $string;
 }
 
+/**
+ * @param $uid
+ *
+ * @return string
+ */
 function getUserName($uid)
 {
     global $xoopsConfig;
@@ -136,6 +156,11 @@ function getUserName($uid)
     return $xoopsConfig['anonymous'];
 }
 
+/**
+ * @param $input
+ *
+ * @return mixed
+ */
 function deleteData(&$input)
 {
     global $xoopsDB, $uploadpath, $wikiPage;
@@ -173,6 +198,11 @@ function deleteData(&$input)
     return $result;
 }
 
+/**
+ * @param $input
+ *
+ * @return mixed
+ */
 function updateData(&$input)
 {
     global $xoopsDB, $xoopsUser, $wikiPage;
@@ -233,6 +263,12 @@ function updateData(&$input)
 
 }
 
+/**
+ * @param $newfile
+ * @param $input
+ *
+ * @return mixed
+ */
 function updateFile($newfile, &$input)
 {
     global $uploadpath,$xoopsDB;

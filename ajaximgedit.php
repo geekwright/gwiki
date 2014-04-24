@@ -31,6 +31,11 @@ $jsondata = (isset($_SERVER['HTTP_GW_JSONDATA']) ? $_SERVER['HTTP_GW_JSONDATA'] 
 //    trigger_error($k.':'.$v);
 //}
 
+/**
+ * @param $string
+ *
+ * @return string
+ */
 function cleaner($string)
 {
     $string=stripcslashes($string);
@@ -42,6 +47,11 @@ function cleaner($string)
     return $string;
 }
 
+/**
+ * @param $input
+ *
+ * @return mixed
+ */
 function deleteData(&$input) {
 global $xoopsDB, $uploadpath, $wikiPage;
 
@@ -75,6 +85,11 @@ global $xoopsDB, $uploadpath, $wikiPage;
     return $result;
 }
 
+/**
+ * @param $input
+ *
+ * @return mixed
+ */
 function updateData(&$input) {
 global $xoopsDB, $wikiPage;
 
@@ -126,6 +141,12 @@ global $xoopsDB, $wikiPage;
 
 }
 
+/**
+ * @param $newimage
+ * @param $input
+ *
+ * @return mixed
+ */
 function updateImage($newimage, &$input) {
 global $uploadpath,$xoopsDB;
     // For now, images are stored in individual directories for each page.

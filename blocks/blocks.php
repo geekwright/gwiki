@@ -12,6 +12,11 @@
 
 if (!defined('XOOPS_ROOT_PATH')) { exit(); }
 
+/**
+ * @param $options
+ *
+ * @return bool
+ */
 function b_gwiki_wikiblock_show($options) {
 global $xoopsConfig,$xoTheme;
 
@@ -59,6 +64,11 @@ global $xoopsConfig,$xoTheme;
     return $block;
 }
 
+/**
+ * @param $options
+ *
+ * @return string
+ */
 function b_gwiki_wikiblock_edit($options) {
 
     $form = _MB_GWIKI_WIKIPAGE . ' <input type="text" value="'.$options[0].'"id="options[0]" name="options[0]" /><br />';
@@ -70,6 +80,11 @@ function b_gwiki_wikiblock_edit($options) {
     return $form;
 }
 
+/**
+ * @param $options
+ *
+ * @return bool
+ */
 function b_gwiki_newpage_show($options) {
 global $xoopsUser,$xoopsDB;
 
@@ -93,6 +108,11 @@ global $xoopsUser,$xoopsDB;
     return $block;
 }
 
+/**
+ * @param $options
+ *
+ * @return string
+ */
 function b_gwiki_newpage_edit($options) {
     if(!isset($options[0])) $options[0]=0;
     $form  = '';
@@ -105,6 +125,11 @@ function b_gwiki_newpage_edit($options) {
     return $form;
 }
 
+/**
+ * @param $options
+ *
+ * @return bool
+ */
 function b_gwiki_teaserblock_show($options) {
 global $xoopsDB, $xoopsConfig, $xoTheme;
 
@@ -172,6 +197,11 @@ global $xoopsDB, $xoopsConfig, $xoTheme;
     return $block;
 }
 
+/**
+ * @param $options
+ *
+ * @return string
+ */
 function b_gwiki_teaserblock_edit($options) {
     $form  = '';
     $form .= _MB_GWIKI_SHOW_FULL_PAGE . ' <input type="radio" name="options[0]" value="1" ';
@@ -194,6 +224,11 @@ function b_gwiki_teaserblock_edit($options) {
     return $form;
 }
 
+/**
+ * @param $options
+ *
+ * @return bool
+ */
 function b_gwiki_recentblock_show($options) {
 global $xoopsDB,$xoTheme;
 
@@ -261,6 +296,11 @@ global $xoopsDB,$xoTheme;
     return $block;
 }
 
+/**
+ * @param $options
+ *
+ * @return string
+ */
 function b_gwiki_recentblock_edit($options) {
 global $xoopsDB;
 
@@ -280,6 +320,11 @@ global $xoopsDB;
     return $form;
 }
 
+/**
+ * @param $options
+ *
+ * @return bool
+ */
 function b_gwiki_pagesettoc_show($options) {
 global $xoTheme;
 
@@ -322,6 +367,11 @@ global $xoTheme;
     return $block;
 }
 
+/**
+ * @param $options
+ *
+ * @return string
+ */
 function b_gwiki_pagesettoc_edit($options) {
 
     $form  = _MB_GWIKI_WIKIPAGESET_LEVELS. ' <input type="text" value="'.$options[0].'"id="options[0]" name="options[0]" /><br />';
@@ -330,6 +380,11 @@ function b_gwiki_pagesettoc_edit($options) {
     return $form;
 }
 
+/**
+ * @param $options
+ *
+ * @return bool
+ */
 function b_gwiki_related_show($options) {
 global $xoTheme, $xoopsDB;
 
@@ -413,6 +468,11 @@ global $xoTheme, $xoopsDB;
     return $block;
 }
 
+/**
+ * @param $options
+ *
+ * @return string
+ */
 function b_gwiki_related_edit($options) {
 
     $form  = _MB_GWIKI_RELATED_COUNT. ' <input type="text" value="'.$options[0].'"id="options[0]" name="options[0]" /><br />';
@@ -425,6 +485,11 @@ function b_gwiki_related_edit($options) {
     return $form;
 }
 
+/**
+ * @param $options
+ *
+ * @return bool
+ */
 function b_gwiki_linkshere_show($options) {
 global $xoTheme, $xoopsDB;
 
@@ -489,6 +554,11 @@ global $xoTheme, $xoopsDB;
     return $block;
 }
 
+/**
+ * @param $options
+ *
+ * @return string
+ */
 function b_gwiki_linkshere_edit($options) {
 
     $form  = _MB_GWIKI_RELATED_COUNT. ' <input type="text" value="'.$options[0].'"id="options[0]" name="options[0]" /><br />';

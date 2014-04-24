@@ -5,6 +5,9 @@ if (!defined("XOOPS_ROOT_PATH"))  die("Root path not defined");
 //if(!defined('BASEPATH'))
 //    exit('No direct script access allowed');
 
+/**
+ * Class LoremIpsumGenerator
+ */
 class LoremIpsumGenerator {
     /**
     *	Copyright (c) 2009, Mathew Tinsley (tinsley@tinsology.net)
@@ -35,6 +38,9 @@ class LoremIpsumGenerator {
 
     private $words, $wordsPerParagraph, $wordsPerSentence;
 
+    /**
+     * @param int $wordsPer
+     */
     function __construct($wordsPer = 100)
     {
         $this->wordsPerParagraph = $wordsPer;
@@ -220,6 +226,13 @@ class LoremIpsumGenerator {
         'cras' );
     }
 
+    /**
+     * @param        $count
+     * @param string $format
+     * @param bool   $loremipsum
+     *
+     * @return array|string
+     */
     function getContent($count, $format = 'html', $loremipsum = true)
     {
         $format = strtolower($format);
@@ -239,6 +252,11 @@ class LoremIpsumGenerator {
         }
     }
 
+    /**
+     * @param $arr
+     * @param $count
+     * @param $loremipsum
+     */
     private function getWords(&$arr, $count, $loremipsum)
     {
         $i = 0;
@@ -262,6 +280,13 @@ class LoremIpsumGenerator {
         }
     }
 
+    /**
+     * @param      $count
+     * @param      $loremipsum
+     * @param bool $returnStr
+     *
+     * @return array|string
+     */
     private function getPlain($count, $loremipsum, $returnStr = true)
     {
         $words = array();
@@ -302,6 +327,12 @@ class LoremIpsumGenerator {
             return $sentences;
     }
 
+    /**
+     * @param $count
+     * @param $loremipsum
+     *
+     * @return string
+     */
     private function getText($count, $loremipsum)
     {
         $sentences = $this->getPlain($count, $loremipsum, false);
@@ -318,6 +349,11 @@ class LoremIpsumGenerator {
         return implode("\n\n\t", $paragraphStr);
     }
 
+    /**
+     * @param $sentences
+     *
+     * @return array
+     */
     private function getParagraphArr($sentences)
     {
         $wordsPer = $this->wordsPerParagraph;
@@ -347,6 +383,12 @@ class LoremIpsumGenerator {
         return $paragraphs;
     }
 
+    /**
+     * @param $count
+     * @param $loremipsum
+     *
+     * @return string
+     */
     private function getHTML($count, $loremipsum)
     {
         $sentences = $this->getPlain($count, $loremipsum, false);
@@ -363,6 +405,12 @@ class LoremIpsumGenerator {
         return implode("\n", $paragraphStr);
     }
 
+    /**
+     * @param      $paragraph
+     * @param bool $htmlCleanCode
+     *
+     * @return string
+     */
     private function paragraphToString($paragraph, $htmlCleanCode = false)
     {
         $paragraphStr = '';
@@ -382,6 +430,9 @@ class LoremIpsumGenerator {
     * Inserts commas and periods in the given
     * word array.
     */
+    /**
+     * @param $sentence
+     */
     private function punctuate(& $sentence)
     {
         $count = count($sentence);
@@ -410,6 +461,11 @@ class LoremIpsumGenerator {
     * sentence of the given length. Average and
     * standard deviation are determined superficially
     */
+    /**
+     * @param $len
+     *
+     * @return int
+     */
     private function numberOfCommas($len)
     {
         $avg = (float) log($len, 6);
@@ -427,6 +483,9 @@ class LoremIpsumGenerator {
     *	Average: 24.46
     *	Standard Deviation: 5.08
     */
+    /**
+     * @return int
+     */
     private function gaussianSentence()
     {
         $avg = (float) 24.460;
@@ -441,6 +500,9 @@ class LoremIpsumGenerator {
     * Source:
     * 	http://us.php.net/manual/en/function.rand.php#53784
     */
+    /**
+     * @return float
+     */
     private function gauss()
     {   // N(0,1)
         // returns random number with normal distribution:
@@ -459,11 +521,20 @@ class LoremIpsumGenerator {
         return $u;
     }
 
+    /**
+     * @param float $m
+     * @param float $s
+     *
+     * @return float
+     */
     private function gauss_ms($m=0.0,$s=1.0)
     {
         return $this->gauss()*$s+$m;
     }
 
+    /**
+     * @return float
+     */
     private function random_0_1()
     {
         return (float) rand()/(float) getrandmax();

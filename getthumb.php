@@ -38,12 +38,20 @@ $default_thumb_size=$wikiPage->defaultThumbSize;
 
 global $xoopsDB;
 
+/**
+ * @param $msg
+ */
 function errorExit($msg) {
     header("Status: 500 Internal Error - ".$msg);
     echo $msg;
     exit;
 }
 
+/**
+ * @param $string
+ *
+ * @return string
+ */
 function cleaner($string) {
     $string=stripcslashes($string);
     $string=html_entity_decode($string);
@@ -54,6 +62,12 @@ function cleaner($string) {
     return $string;
 }
 
+/**
+ * @param      $name
+ * @param      $mime
+ * @param      $modtime
+ * @param bool $nocache
+ */
 function serveFile($name,$mime,$modtime,$nocache=false) {
 
     if (!($nocache) && (getenv("HTTP_IF_MODIFIED_SINCE") == gmdate("D, d M Y H:i:s",$modtime) . " GMT")) {

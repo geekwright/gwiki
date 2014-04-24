@@ -11,6 +11,11 @@
 */
 
 if (!defined("XOOPS_ROOT_PATH")) die("Root path not defined");
+/**
+ * @param $langdir
+ *
+ * @return bool
+ */
 function loadmodinfo($langdir)
 {
 global $xoopsModule;
@@ -23,12 +28,19 @@ global $xoopsModule;
     return false;
 }
 
+/**
+ * @param $title
+ * @param $cols
+ */
 function adminTableStart($title,$cols)
 {
 echo '<table width="100%" border="0" cellspacing="1" class="outer">';
 echo '<tr><th colspan="'.$cols.'">'.$title.'</th></tr>';
 }
 
+/**
+ * @param $links
+ */
 function adminTableEnd($links)
 {
     echo '</table>';

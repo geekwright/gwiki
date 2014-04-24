@@ -18,6 +18,12 @@ global $wikiPage;
 $wikiPage = new gwikiPage;
 $wikiPage->setRecentCount($xoopsModuleConfig['number_recent']);
 
+/**
+ * @param      $string
+ * @param bool $trim
+ *
+ * @return string
+ */
 function cleaner($string,$trim=true) {
     if (get_magic_quotes_gpc()) $string=stripslashes($string);
 //	$string=stripcslashes($string);
@@ -28,6 +34,11 @@ function cleaner($string,$trim=true) {
     return $string;
 }
 
+/**
+ * @param        $name
+ * @param string $domain
+ * @param null   $language
+ */
 function loadLanguage($name, $domain = '',$language = null)
 {
 global $xoopsConfig;
@@ -36,6 +47,11 @@ global $xoopsConfig;
     }
 }
 
+/**
+ * @param $var
+ *
+ * @return array|string
+ */
 function prepOut(&$var)
 {
     if (is_array($var)) {

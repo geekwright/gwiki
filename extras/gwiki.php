@@ -29,6 +29,11 @@ $ourWikiLinkURL=$script.'?'.$pagevar.'=%s';
 // normally, adjustments to the remaining code are not required
 // ******************************************************************
 
+/**
+ * @param $string
+ *
+ * @return string
+ */
 function cleaner($string) {
     $string=stripcslashes($string);
     $string=html_entity_decode($string);
@@ -39,6 +44,11 @@ function cleaner($string) {
     return $string;
 }
 
+/**
+ * @param $var
+ *
+ * @return array|string
+ */
 function prepOut(&$var)
 {
     if (is_array($var)) {
@@ -50,6 +60,11 @@ function prepOut(&$var)
     return $var;
 }
 
+/**
+ * @param        $name
+ * @param string $domain
+ * @param null   $language
+ */
 function loadLanguage($name, $domain = '',$language = null)
 {
 global $xoopsConfig;

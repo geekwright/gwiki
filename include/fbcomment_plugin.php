@@ -26,6 +26,12 @@ if (!defined("XOOPS_ROOT_PATH"))  die("Root path not defined");
  *
  */
 
+/**
+ * @param $metas
+ * @param $plugin_env
+ *
+ * @return bool
+ */
 function fbcom_plugin(&$metas, $plugin_env) {
 global $xoopsDB;
 

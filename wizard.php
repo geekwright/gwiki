@@ -18,6 +18,9 @@ global $wikiPage, $xoopsDB;
 
 $token=0;
 
+/**
+ * @param $params
+ */
 function redirect_to_edit($params)
 {
 global $xoopsLogger, $wikiPage;
@@ -30,6 +33,9 @@ global $xoopsLogger, $wikiPage;
     exit;
 }
 
+/**
+ * @return bool
+ */
 function obtainPage()
 {
 global $wikiPage, $xoopsTpl, $token;
@@ -102,6 +108,12 @@ global $wikiPage, $xoopsTpl, $token;
 
 }
 
+/**
+ * @param $page
+ * @param $dir
+ *
+ * @return bool
+ */
 function doImportText($page,$dir)
 {
     $import='';
@@ -138,6 +150,9 @@ function doImportText($page,$dir)
     return false;
 }
 
+/**
+ * @param string $import_html
+ */
 function obtainImportHTML($import_html='')
 {
 global $wikiPage, $xoopsTpl, $token;
@@ -167,6 +182,14 @@ global $wikiPage, $xoopsTpl, $token;
 
 }
 
+/**
+ * @param         $out
+ * @param DOMNode $domNode
+ * @param         $nest
+ * @param         $lt
+ * @param         $ld
+ * @param         $nop
+ */
 function showDOMNode(&$out, DOMNode $domNode,$nest,$lt,$ld,$nop) {
     foreach ($domNode->childNodes as $node)
     {
@@ -298,6 +321,13 @@ function showDOMNode(&$out, DOMNode $domNode,$nest,$lt,$ld,$nop) {
     }
 }
 
+/**
+ * @param $page
+ * @param $import_html
+ * @param $dir
+ *
+ * @return bool
+ */
 function doImportHTML($page,$import_html,$dir)
 {
     $import='';
@@ -344,6 +374,12 @@ function doImportHTML($page,$import_html,$dir)
     return false;
 }
 
+/**
+ * @param $page
+ * @param $templatename
+ *
+ * @return bool
+ */
 function doTemplate($page,$templatename)
 {
 global $wikiPage, $xoopsDB;
@@ -377,6 +413,12 @@ global $wikiPage, $xoopsDB;
 
 }
 
+/**
+ * @param $page
+ * @param $templatename
+ *
+ * @return bool
+ */
 function doCopy($page,$templatename)
 {
 global $wikiPage, $xoopsDB;
@@ -404,6 +446,11 @@ global $wikiPage, $xoopsDB;
     return false;
 }
 
+/**
+ * @param $keyword_like
+ *
+ * @return array|bool
+ */
 function getPagesLike($keyword_like)
 {
 global $wikiPage, $xoopsDB;
@@ -427,6 +474,9 @@ global $wikiPage, $xoopsDB;
     return $pages;
 }
 
+/**
+ * @return bool
+ */
 function galleryForm()
 {
 global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
@@ -464,6 +514,9 @@ global $wikiPage, $xoopsTpl, $xoopsModuleConfig;
     return true;
 }
 
+/**
+ * @return bool
+ */
 function chooseWizard()
 {
 global $wikiPage, $xoopsTpl, $xoopsModuleConfig;

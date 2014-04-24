@@ -14,6 +14,11 @@
 
 if (!defined("XOOPS_ROOT_PATH"))  die("Root path not defined");
 
+/**
+ * @param $module
+ *
+ * @return bool
+ */
 function xoops_module_install_gwiki(&$module) {
 // global $xoopsDB,$xoopsConfig;
 

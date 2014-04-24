@@ -17,6 +17,9 @@ if (!defined("XOOPS_ROOT_PATH")) die("Root path not defined");
 define ('_WIKI_CAMELCASE_REGEX','(([A-Z]{1,}[a-z\x80-\xff0-9\:]+){2,}\d*)');
 define ('_WIKI_KEYWORD_REGEX','([A-Za-z\x80-\xff0-9.\:-]{1,})');
 
+/**
+ * Class gwikiPage
+ */
 class gwikiPage {
     //------------------------------------------------------------
     // Properties -  public, protected, and private
@@ -121,6 +124,11 @@ class gwikiPage {
         if(!defined('_MD_GWIKI_PAGE_PERM_EDIT_ANY_NUM')) $this->loadLanguage('main',$dir);
     }
 
+    /**
+     * @param        $name
+     * @param string $domain
+     * @param null   $language
+     */
     private function loadLanguage($name, $domain = '',$language = null)
     {
     global $xoopsConfig;
@@ -165,32 +173,52 @@ class gwikiPage {
         $this->wikiPageLinks=array();
     }
 
+    /**
+     * @param $value
+     *
+     * @return string
+     */
     public function escapeForDB($value)
     {
         return mysql_real_escape_string($value);
     }
 
+    /**
+     * @param $count
+     */
     public function setRecentCount($count)
     {
         $count=intval($count);
         if($count>1 and $count<1000) $this->numberOfRecentItems = $count;
     }
 
+    /**
+     * @param $url
+     */
     public function setWikiLinkURL($url)
     {
         $this->wikiLinkURL=$url;
     }
 
+    /**
+     * @return string
+     */
     public function getWikiLinkURL()
     {
         return $this->wikiLinkURL;
     }
 
+    /**
+     * @return string
+     */
     public function getWikiDir()
     {
         return $this->wikiDir;
     }
 
+    /**
+     * @return int|string
+     */
     public function getMaxUploadSize()
     {
         $val = trim(ini_get('upload_max_filesize'));
@@ -199,15 +227,22 @@ class gwikiPage {
             // The 'G' modifier is available since PHP 5.1.0
             case 'g':
                 $val *= 1024;
+                break;
             case 'm':
                 $val *= 1024;
+                break;
             case 'k':
                 $val *= 1024;
+                break;
         }
 
         return $val;
     }
 
+    /**
+     * @param $prefix
+     * @param $linkformat
+     */
     public function setTocFormat($prefix,$linkformat)
     {
         $this->tocIdPrefix=$prefix;
@@ -215,11 +250,14 @@ class gwikiPage {
     }
 
     /**
-    * Make sure that keyword obeys formatting rules or switch to illegal name
-    * @param mixed $keyword - wiki page name
-    * @access public
-    * @since 1.0
-    */
+     * Make sure that keyword obeys formatting rules or switch to illegal name
+     *
+     * @param mixed $keyword - wiki page name
+     *
+     * @return mixed|string
+     * @access public
+     * @since  1.0
+     */
     public function makeKeyword($keyword)
     {
         if (!preg_match("#^"._WIKI_KEYWORD_REGEX."$#", $keyword)) {
@@ -233,6 +271,12 @@ class gwikiPage {
         return $keyword;
     }
 
+    /**
+     * @param $nsid
+     * @param $page
+     *
+     * @return bool|string
+     */
     public function makeKeywordFromPrefix($nsid,$page)
     {
         if ($nsid>=0) {
@@ -248,18 +292,20 @@ class gwikiPage {
     }
 
     /**
-    * Capture out of bounds data traveling with keyword. Such data is sent
-    * in keyword(oob) construct. This function processes any oob data and
-    * returns a clean keyword.
-    * oob data is used this way to pass page specific data in any url
-    *
-    * Only call this if you will NOT be calling normalizeKeyword or the
-    * OOB data will be lost.
-    *
-    * @param mixed $keyword - wiki page name possibily containing OOB data
-    * @access public
-    * @since 1.0
-    */
+     * Capture out of bounds data traveling with keyword. Such data is sent
+     * in keyword(oob) construct. This function processes any oob data and
+     * returns a clean keyword.
+     * oob data is used this way to pass page specific data in any url
+     *
+     * Only call this if you will NOT be calling normalizeKeyword or the
+     * OOB data will be lost.
+     *
+     * @param mixed $keyword - wiki page name possibily containing OOB data
+     *
+     * @return mixed|string
+     * @access public
+     * @since  1.0
+     */
     public function getOOBFromKeyword($keyword)
     {
         $oob=null;
@@ -279,11 +325,14 @@ class gwikiPage {
     }
 
     /**
-    * If page exists, fix case of page name to that specified in database
-    * @param mixed $keyword - wiki page name
-    * @access public
-    * @since 1.0
-    */
+     * If page exists, fix case of page name to that specified in database
+     *
+     * @param mixed $keyword - wiki page name
+     *
+     * @return mixed|string
+     * @access public
+     * @since  1.0
+     */
     public function normalizeKeyword($keyword)
     {
         global $xoopsDB;
@@ -302,11 +351,14 @@ class gwikiPage {
     }
 
     /**
-    * Get the gwiki_id of the active page for the keyword
-    * @param mixed $keyword - wiki page name
-    * @access public
-    * @since 1.0
-    */
+     * Get the gwiki_id of the active page for the keyword
+     *
+     * @param mixed $keyword - wiki page name
+     *
+     * @return int
+     * @access public
+     * @since  1.0
+     */
     public function getCurrentId($keyword)
     {
         global $xoopsDB;
@@ -319,6 +371,11 @@ class gwikiPage {
         return intval($id);
     }
 
+    /**
+     * @param bool $leave_inactive
+     *
+     * @return mixed
+     */
     public function addRevision($leave_inactive=false)
     {
         global $xoopsDB;
@@ -451,6 +508,9 @@ class gwikiPage {
     }
 
     // update gwiki_pagelinks table - expects $page to be current
+    /**
+     * @param bool $render
+     */
     private function updatePageLinks($render=false) {
         global $xoopsDB;
 
@@ -488,6 +548,11 @@ class gwikiPage {
     }
 
     // get the next higher unused page_set_order for a given page_set_home
+    /**
+     * @param $page_set_home
+     *
+     * @return int
+     */
     private function getNextPageSetOrder($page_set_home) {
         global $xoopsDB;
 
@@ -506,13 +571,15 @@ class gwikiPage {
     }
 
     /**
-    * Check if the current user may edit the current page
-    * Since the class can be used outside the module where permissions are assigned, we have to work at this a bit
-    *
-    * @param mixed $keyword - wiki page name
-    * @access public
-    * @since 1.0
-    */
+     * Check if the current user may edit the current page
+     * Since the class can be used outside the module where permissions are assigned, we have to work at this a bit
+     *
+     * @internal param mixed $keyword - wiki page name
+     *
+     * @return bool
+     * @access   public
+     * @since    1.0
+     */
     public function checkEdit()
     {
         global $xoopsUser, $xoopsDB;
@@ -570,6 +637,11 @@ class gwikiPage {
 
     }
 
+    /**
+     * @param $uid
+     *
+     * @return string
+     */
     public function getUserName($uid)
     {
         global $xoopsConfig;
@@ -588,6 +660,11 @@ class gwikiPage {
     }
 
     // get array of prefixes user can edit
+    /**
+     * @param bool $createonly
+     *
+     * @return array|bool
+     */
     public function getUserNamespaces($createonly=false) {
         global $xoopsUser,$xoopsDB;
 
@@ -635,6 +712,11 @@ class gwikiPage {
         return false;
     }
 
+    /**
+     * @param $page_id
+     *
+     * @return null
+     */
     public function getKeywordById($page_id)
     {
         global $xoopsDB;
@@ -651,6 +733,11 @@ class gwikiPage {
         return $keyword;
     }
 
+    /**
+     * @param $keyword
+     *
+     * @return int
+     */
     public function getPageId($keyword)
     {
         global $xoopsDB;
@@ -669,6 +756,11 @@ class gwikiPage {
         return $page_id;
     }
 
+    /**
+     * @param $keyword
+     *
+     * @return mixed
+     */
     public function registerHit($keyword)
     {
         global $xoopsDB;
@@ -681,6 +773,12 @@ class gwikiPage {
         return $xoopsDB->getAffectedRows();
     }
 
+    /**
+     * @param $keyword
+     * @param $id
+     *
+     * @return mixed
+     */
     public function setRevision($keyword, $id)
     {
         global $xoopsDB;
@@ -702,6 +800,12 @@ class gwikiPage {
         return $result;
     }
 
+    /**
+     * @param      $keyword
+     * @param null $id
+     *
+     * @return bool
+     */
     public function getPage($keyword,$id=NULL)
     {
         global $xoopsDB;
@@ -769,11 +873,14 @@ class gwikiPage {
     }
 
     /**
-    * Check for a prefix (namespace)
-    * @param mixed $keyword - wiki page name
-    * @access public
-    * @since 1.0
-    */
+     * Check for a prefix (namespace)
+     *
+     * @param mixed $keyword - wiki page name
+     *
+     * @return bool
+     * @access public
+     * @since  1.0
+     */
     public function getPrefix($keyword)
     {
 /*
@@ -820,6 +927,11 @@ class gwikiPage {
         return $prefix;
     }
 
+    /**
+     * @param $pid
+     *
+     * @return string
+     */
     public function getPrefixFromId($pid)
     {
     global $xoopsDB;
@@ -833,6 +945,9 @@ class gwikiPage {
         return '';
     }
 
+    /**
+     * @return string
+     */
     public function getTemplateName()
     {
         if ($this->currenttemplateid) {
@@ -845,6 +960,11 @@ class gwikiPage {
         return $template;
     }
 
+    /**
+     * @param $page
+     *
+     * @return array
+     */
     public function getAttachments($page)
     {
     global $xoopsDB;
@@ -866,12 +986,15 @@ class gwikiPage {
     }
 
     /**
-    * Make a link from a wiki keyword
-    * @param mixed $keyword - wiki page name
-    * @param mixed $altkey - alternate text for link. If empty, display_keyword will be used.
-    * @access public
-    * @since 1.0
-    */
+     * Make a link from a wiki keyword
+     *
+     * @param mixed $keyword - wiki page name
+     * @param mixed $altkey  - alternate text for link. If empty, display_keyword will be used.
+     *
+     * @return string
+     * @access public
+     * @since  1.0
+     */
     public function wikiLink($keyword,$altkey=NULL)
     {
         global $xoopsDB;
@@ -935,11 +1058,19 @@ class gwikiPage {
         return sprintf('<a href="%s" title="%s">%s%s</a>', $url, $title, $display_keyword, $newpage);
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function wikiCCLink($matches)
     {
         return $this->wikiLink($matches[1]);
     }
 
+    /**
+     * @return array
+     */
     private function getIndexTabs()
     {
         global $xoopsDB ,$wikiPage;
@@ -975,6 +1106,11 @@ class gwikiPage {
         return $tabs;
     }
 
+    /**
+     * @param null $prefix
+     *
+     * @return string
+     */
     private function pageIndex($prefix=null)
     {
         global $xoopsDB;
@@ -1056,6 +1192,11 @@ class gwikiPage {
         return $body."\n\n";
     }
 
+    /**
+     * @param null $prefix
+     *
+     * @return string
+     */
     private function recentIndex($prefix=null)
     {
         global $xoopsDB;
@@ -1099,6 +1240,11 @@ class gwikiPage {
         return $body."\n\n";
     }
 
+    /**
+     * @param $matches
+     *
+     * @return bool|string
+     */
     private function renderIndex($matches)
     {
         $type=$matches[1];
@@ -1113,6 +1259,11 @@ class gwikiPage {
     // highlight search terms
     // adapted from: http://stack:overflow.com/questions/2591046/highlight-text-except-html-tags
 
+    /**
+     * @param $capture
+     *
+     * @return string
+     */
     private function mon_rplc_callback($capture)
     {
         $haystack=$capture[1];
@@ -1129,6 +1280,14 @@ class gwikiPage {
         return $ret;
     }
 
+    /**
+     * @param $needle
+     * @param $pre
+     * @param $post
+     * @param $txt
+     *
+     * @return mixed
+     */
     private function split_on_tag($needle, $pre, $post, $txt)
     {
         $this->highlightArg = compact('needle', 'pre', 'post');
@@ -1136,6 +1295,11 @@ class gwikiPage {
         return preg_replace_callback('#((?:(?!<[/a-z]).)*)([^>]*>|$)#si', array($this, 'mon_rplc_callback'), $txt);
     }
 
+    /**
+     * @param $words
+     *
+     * @return mixed
+     */
     public function highlightWords($words)
     {
         $words=str_replace ('  ', ' ', $words);
@@ -1148,6 +1312,12 @@ class gwikiPage {
         return $body;
     }
 
+    /**
+     * @param $type
+     * @param $source
+     *
+     * @return string
+     */
     private function noWikiHold($type,$source)
     {
 
@@ -1170,26 +1340,51 @@ class gwikiPage {
         return $ret;
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function noWikiHoldBlock($matches)
     {
         return $this->noWikiHold('block',$matches[1]);
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function noWikiHoldInline($matches)
     {
         return $this->noWikiHold('inline',$matches[1]);
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function noWikiHoldWCInline($matches)
     {
         return $this->noWikiHold('wcinline',$matches[1]);
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function noWikiHoldCode($matches)
     {
         return $matches[1].$this->noWikiHold("block",$matches[2]).$matches[3];
     }
 
+    /**
+     * @param $matches
+     *
+     * @return mixed
+     */
     private function noWikiEmit($matches)
     {
         $index=$matches[1];
@@ -1197,6 +1392,11 @@ class gwikiPage {
         return $this->noWikiQueue[$index];
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function renderTables($matches)
     {
         $source=$matches[0];
@@ -1232,6 +1432,11 @@ class gwikiPage {
         return $table;
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function renderLink($matches)
     {
         $source=trim($matches[1]);
@@ -1283,6 +1488,11 @@ class gwikiPage {
         return $ret;
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function renderHeader($matches)
     {
         $source=$matches[3];
@@ -1295,6 +1505,11 @@ class gwikiPage {
         return $toc;
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function renderIndent($matches)
     {
         $source=$matches[2];
@@ -1305,6 +1520,11 @@ class gwikiPage {
         return $ret;
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function renderToc($matches)
     {
         $tocq=$this->tocQueue;
@@ -1319,6 +1539,11 @@ class gwikiPage {
         return $toc;
     }
 
+    /**
+     * @param $page
+     *
+     * @return array|bool
+     */
     public function fetchPageSetToc(&$page)
     {
         global $xoopsDB;
@@ -1365,11 +1590,23 @@ class gwikiPage {
         return($toc);
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     public function renderPageSetTocWrapper($matches)
     {
         return $this->renderPageSetToc($this->keyword, 6);
     }
 
+    /**
+     * @param        $page
+     * @param        $level
+     * @param string $tocclass
+     *
+     * @return string
+     */
     public function renderPageSetToc(&$page,$level,$tocclass='wikitocpage')
     {
         $toc=$this->fetchPageSetToc($page);
@@ -1390,6 +1627,11 @@ class gwikiPage {
         return($tocout);
     }
 
+    /**
+     * @param $page
+     *
+     * @return mixed
+     */
     public function renderPageSetNav($page)
     {
         $sethome=$page;
@@ -1440,6 +1682,11 @@ class gwikiPage {
         return($pageset);
     }
 
+    /**
+     * @param $keyword
+     *
+     * @return array
+     */
     public function getImageLib($keyword)
     {
         global $xoopsDB;
@@ -1450,6 +1697,12 @@ class gwikiPage {
         return array_unique($lib);;
     }
 
+    /**
+     * @param $keyword
+     * @param $name
+     *
+     * @return bool
+     */
     public function getPageImage($keyword,$name)
     {
         global $xoopsDB;
@@ -1476,6 +1729,11 @@ class gwikiPage {
         //   image_file
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function renderImage($matches)
     {
         $source=trim($matches[1]);
@@ -1550,6 +1808,7 @@ class gwikiPage {
         }
 
         if ($showthumblink) {
+            $ret = '';
             $thumbsize=$this->defaultThumbSize;
             if(!empty($maxpx)) $thumbsize=$maxpx;
             $thumb=XOOPS_URL.'/modules/'.$this->wikiDir.'/getthumb.php?page='.$image['keyword'].'&name='.urlencode($image['image_name']).'&size='.$thumbsize;
@@ -1565,6 +1824,11 @@ class gwikiPage {
         return $ret;
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function renderGallery($matches)
     {
         global $xoopsDB;
@@ -1598,6 +1862,11 @@ class gwikiPage {
         return $body;
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function renderLists($matches)
     {
         $lines=explode("\n",$matches[0]);
@@ -1650,6 +1919,11 @@ class gwikiPage {
         return $list;
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function renderRef($matches)
     {
         $refinfo=$matches[1];
@@ -1689,6 +1963,11 @@ class gwikiPage {
         return $r;
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function renderRefList($matches)
     {
         $this->refShown=true;
@@ -1709,6 +1988,11 @@ class gwikiPage {
         return $r;
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function renderBox($matches)
     {
         $type=$matches[1];
@@ -1746,6 +2030,11 @@ class gwikiPage {
         return $ret;
     }
 
+    /**
+     * @param $body
+     *
+     * @return mixed
+     */
     private function convertEntities($body)
     {
         // convert some entites
@@ -1768,6 +2057,12 @@ class gwikiPage {
         return $body;
     }
 
+    /**
+     * @param null $body
+     * @param null $title
+     *
+     * @return mixed|null|string
+     */
     public function renderTeaser($body=NULL,$title=NULL)
     {
         // chop body at more tag if it is set
@@ -1792,6 +2087,11 @@ class gwikiPage {
         return $body;
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function renderBlockquote($matches)
     {
         $src = str_replace("\n", ' ', preg_replace("#^> #m", "", $matches[0]));
@@ -1799,6 +2099,11 @@ class gwikiPage {
         return '<blockquote class=\"wikiquote\">'.$src."</blockquote>\n";
     }
 
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     private function renderPreformat($matches)
     {
         $src = preg_replace("#^. #m", "", $matches[0]);
@@ -1806,6 +2111,12 @@ class gwikiPage {
         return '<pre>'.$src."</pre>\n";
     }
 
+    /**
+     * @param null $body
+     * @param null $title
+     *
+     * @return string
+     */
     public function renderPage($body=NULL,$title=NULL)
     {
         if(empty($body)) $body=$this->body;

@@ -4,6 +4,7 @@ gwiki ChangeLog
 =================================
 - moved all images, CSS, and JS files to /assets (mamba)
 - renamed .html Smarty templates to .tpl (mamba)
+- added phpDoc comments
 
 === gwiki Module 1.0 RC2 ===
 Release date: Feb 1, 2014

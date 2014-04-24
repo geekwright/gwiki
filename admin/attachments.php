@@ -15,6 +15,12 @@ include 'header.php';
 if(!$xoop25plus) adminmenu(6);
 else echo $moduleAdmin->addNavigation('attachments.php');
 
+/**
+ * @param      $string
+ * @param bool $trim
+ *
+ * @return string
+ */
 function cleaner($string,$trim=true) {
 //	$string=stripcslashes($string);
     $string=html_entity_decode($string);

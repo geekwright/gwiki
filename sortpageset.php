@@ -20,6 +20,11 @@ include_once XOOPS_ROOT_PATH.'/class/xoopsformloader.php';
 $page_set_home='';
 $display_keyword='';
 
+/**
+ * @param $page
+ *
+ * @return bool
+ */
 function fetchPageSet($page)
 {
     global $xoopsDB, $wikiPage, $page_set_home, $display_keyword;

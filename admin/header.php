@@ -33,6 +33,10 @@ if (!defined('_MI_GWIKI_NAME')) { // if modinfo isn't loaded, do it
     }
 }
 
+/**
+ * @param int    $currentoption
+ * @param string $breadcrumb
+ */
 function adminmenu($currentoption=0, $breadcrumb = "")
 {
     global $xoopsModule, $xoopsConfig;

@@ -15,6 +15,11 @@ $xoopsLogger->activated = false;
 header("Pragma: public");
 header("Cache-Control: no-cache");
 
+/**
+ * @param $string
+ *
+ * @return string
+ */
 function cleaner($string) {
     $string=stripcslashes($string);
     $string=html_entity_decode($string);
@@ -25,6 +30,11 @@ function cleaner($string) {
     return $string;
 }
 
+/**
+ * @param $uid
+ *
+ * @return string
+ */
 function getUserName($uid)
 {
     global $xoopsConfig;

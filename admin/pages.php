@@ -17,6 +17,10 @@ include_once XOOPS_ROOT_PATH.'/class/xoopsformloader.php';
 if(!$xoop25plus) adminmenu(3);
 else echo $moduleAdmin->addNavigation('pages.php');
 
+/**
+ * @param $url
+ * @param $params
+ */
 function post_clean_request($url, $params)
 {
     foreach ($params as $key => &$val) {
@@ -42,6 +46,9 @@ function post_clean_request($url, $params)
     fclose($fp);
 }
 
+/**
+ * @param null $message
+ */
 function showPages($message=null)
 {
 global $xoopsDB;
@@ -111,6 +118,9 @@ EOT;
 
 }
 
+/**
+ * @param $page
+ */
 function showHistory($page)
 {
     global $xoopsDB, $xoopsModuleConfig, $wikiPage;
@@ -141,6 +151,10 @@ function showHistory($page)
 
 }
 
+/**
+ * @param $page
+ * @param $id
+ */
 function showPage($page, $id)
 {
     global $xoopsDB, $xoopsModuleConfig, $wikiPage, $xoTheme;
@@ -172,6 +186,10 @@ function showPage($page, $id)
           _AD_GWIKI_FIX => "pages.php?page={$page}&op=fix&id={$id}" ));
 }
 
+/**
+ * @param $page
+ * @param $id
+ */
 function showPageTool($page, $id)
 {
     global $xoopsDB, $xoopsModuleConfig, $wikiPage, $xoTheme;
@@ -212,6 +230,12 @@ $form->addElement(new XoopsFormButton("", "submit", _SUBMIT, "submit"));
           _AD_GWIKI_FIX => "pages.php?page={$page}&op=fix&id={$id}" ));
 }
 
+/**
+ * @param $page
+ * @param $id
+ *
+ * @return mixed
+ */
 function pageToolUpdate($page, $id)
 {
     global $xoopsDB;
@@ -227,6 +251,11 @@ function pageToolUpdate($page, $id)
     return $result;
 }
 
+/**
+ * @param        $action
+ * @param string $keyword
+ * @param        $id
+ */
 function confirmAction($action, $keyword = '', $id = -1)
 {
 
@@ -280,6 +309,12 @@ function confirmAction($action, $keyword = '', $id = -1)
     adminTableEnd(array(_BACK => 'pages.php?op=manage'));
 }
 
+/**
+ * @param $page
+ * @param $id
+ *
+ * @return mixed
+ */
 function getRevision($page, $id)
 {
     global $xoopsDB;
@@ -290,6 +325,12 @@ function getRevision($page, $id)
     return $xoopsDB->fetchRow($result);
 }
 
+/**
+ * @param $page
+ * @param $id
+ *
+ * @return mixed
+ */
 function fixRevision($page, $id)
 {
     global $xoopsDB, $wikiPage;
@@ -303,6 +344,9 @@ function fixRevision($page, $id)
     return $result;
 }
 
+/**
+ * @return bool
+ */
 function checkForPartitions()
 {
     global $xoopsDB;
@@ -315,6 +359,9 @@ function checkForPartitions()
     return false;
 }
 
+/**
+ * @return string
+ */
 function createPartitions()
 {
     global $xoopsDB;
@@ -335,6 +382,9 @@ function createPartitions()
     return $message;
 }
 
+/**
+ * @return string
+ */
 function createHelpPages()
 {
     global $xoopsDB;
@@ -345,6 +395,9 @@ function createHelpPages()
     return $message;
 }
 
+/**
+ * @param $page
+ */
 function allowRestoration($page)
 {
     echo '<script type="text/javascript">

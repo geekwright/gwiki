@@ -14,6 +14,11 @@ if(!$xoop25plus) adminmenu(5);
 else echo $moduleAdmin->addNavigation('prefixes.php');
 
 // return groups and current permissions for a prefix as an array of options for a form select
+/**
+ * @param $pid
+ *
+ * @return array
+ */
 function getPrefixGroups($pid)
 {
 global $xoopsDB;
@@ -34,6 +39,10 @@ global $xoopsDB;
     return $options;
 }
 
+/**
+ * @param $pid
+ * @param $groups
+ */
 function setPrefixGroups($pid,$groups)
 {
 global $xoopsDB;
@@ -141,6 +150,12 @@ EOT;
 }
 
 // Prefixes
+/**
+ * @param $row
+ * @param $action
+ *
+ * @return string
+ */
 function prefixForm($row,$action) {
 
         if(empty($row)) return false;
@@ -174,6 +189,11 @@ function prefixForm($row,$action) {
         return $form;
 }
 
+/**
+ * @param $pid
+ *
+ * @return mixed
+ */
 function getPrefix($pid) {
     global $xoopsDB;
 
@@ -214,6 +234,9 @@ function newPrefix() {
     adminTableEnd(array(_BACK => 'prefixes.php'));
 }
 
+/**
+ * @param $pid
+ */
 function editPrefix($pid) {
     global $xoopsDB;
 
@@ -228,6 +251,9 @@ function editPrefix($pid) {
 
 }
 
+/**
+ * @param $pid
+ */
 function deletePrefix($pid) {
 global $xoopsDB;
 
@@ -248,6 +274,9 @@ global $xoopsDB;
     redirect_header("prefixes.php", 2,_MD_GWIKI_DBUPDATED);
 }
 
+/**
+ * @param $pid
+ */
 function updatePrefix($pid) {
 global $xoopsDB, $wikiPage;
 
@@ -301,6 +330,10 @@ global $xoopsDB, $wikiPage;
 }
 
 // Templates
+/**
+ * @param      $pid
+ * @param bool $delete
+ */
 function installTemplate($pid,$delete=false) {
     global $xoopsModule;
 
@@ -348,6 +381,12 @@ function installTemplate($pid,$delete=false) {
 
 }
 
+/**
+ * @param $row
+ * @param $action
+ *
+ * @return string
+ */
 function templateForm($row,$action) {
 
         if(empty($row)) return false;
@@ -364,6 +403,9 @@ function templateForm($row,$action) {
         return $form;
 }
 
+/**
+ * @param $pid
+ */
 function newTemplate($pid) {
     $row=getPrefix($pid);
 
@@ -376,6 +418,9 @@ function newTemplate($pid) {
     adminTableEnd(array(_BACK => 'prefixes.php?pid='.$pid.'&op=edit'));
 }
 
+/**
+ * @param $pid
+ */
 function editTemplate($pid) {
     $row=getPrefix($pid);
 
@@ -384,6 +429,9 @@ function editTemplate($pid) {
     adminTableEnd(array(_AD_GWIKI_DELETE => "prefixes.php?pid={$pid}&op=deletetemplate", _BACK => 'prefixes.php?pid='.$pid.'&op=edit'));
 }
 
+/**
+ * @param $pid
+ */
 function deleteTemplate($pid) {
 global $xoopsDB;
 
@@ -404,10 +452,19 @@ global $xoopsDB;
     redirect_header("prefixes.php", 2,_MD_GWIKI_DBUPDATED);
 }
 
+/**
+ * @param $string
+ *
+ * @return string
+ */
 function gpcStrip($string) {
     if (get_magic_quotes_gpc()) $string=stripslashes($string);
     return $string;
 }
+
+/**
+ * @param $pid
+ */
 function updateTemplate($pid) {
 global $xoopsDB,$wikiPage;
 
@@ -450,6 +507,10 @@ global $xoopsDB,$wikiPage;
 }
 
 // utility
+/**
+ * @param     $action
+ * @param int $pid
+ */
 function confirmAction($action, $pid=0)
 {
     if($pid) $row=getPrefix($pid);
@@ -478,6 +539,12 @@ function confirmAction($action, $pid=0)
     adminTableEnd(array(_BACK => 'prefixes.php'));
 }
 
+/**
+ * @param      $string
+ * @param bool $trim
+ *
+ * @return string
+ */
 function cleaner($string,$trim=true) {
 //	$string=stripcslashes($string);
     $string=html_entity_decode($string);
@@ -488,6 +555,10 @@ function cleaner($string,$trim=true) {
     return $string;
 }
 
+/**
+ * @param $op
+ * @param $pid
+ */
 function tobedone($op,$pid) {
     echo "Not yet implemented: ".$op.' pid='.$pid.'<br />';
 }

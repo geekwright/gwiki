@@ -15,6 +15,11 @@ $xoopsLogger->activated = false;
 //restore_error_handler();
 //error_reporting(-1);
 
+/**
+ * @param $string
+ *
+ * @return string
+ */
 function cleaner($string) {
     $string=stripcslashes($string);
     $string=html_entity_decode($string);

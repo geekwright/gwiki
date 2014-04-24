@@ -14,7 +14,12 @@
 if ( !defined('GWIKI_NOTIFY_ITEMINFO') ) {
 define('GWIKI_NOTIFY_ITEMINFO', 1);
 
-function gwiki_notify_iteminfo($category, $item_id)
+    /**
+     * @param $category
+     * @param $item_id
+     *
+     * @return mixed
+     */function gwiki_notify_iteminfo($category, $item_id)
 {
     global $xoopsDB;
 
