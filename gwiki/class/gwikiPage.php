@@ -548,7 +548,8 @@ class gwikiPage
         $page = $this->escapeForDB($this->keyword);
 
         $sql = 'DELETE FROM ' . $xoopsDB->prefix('gwiki_pagelinks');
-        $sql .= ' WHERE from_keyword = \'' . $page . '\'';
+//        $sql .= ' WHERE from_keyword = \'' . $page . '\'';
+        $sql .= " WHERE from_keyword = \'{$page}\'";
         $result = $xoopsDB->query($sql);
 
         if (!empty($this->wikiPageLinks)) {

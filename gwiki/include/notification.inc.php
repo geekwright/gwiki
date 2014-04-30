@@ -37,7 +37,8 @@ define('GWIKI_NOTIFY_ITEMINFO', 1);
             $item_id=intval($item_id);
             $sql  = 'SELECT i.keyword as keyword, display_keyword, title FROM ';
             $sql .=  $xoopsDB->prefix('gwiki_pageids').' i, '.$xoopsDB->prefix('gwiki_pages').' p ';
-            $sql .= ' WHERE i.keyword = p.keyword AND active = 1 AND page_id = '.$item_id;
+//            $sql .= ' WHERE i.keyword = p.keyword AND active = 1 AND page_id = '.$item_id;
+            $sql .= " WHERE i.keyword = p.keyword AND active = 1 AND page_id = {$item_id}";
 
             $result = $xoopsDB->query($sql);
             $row = $xoopsDB->fetchArray($result);
@@ -51,7 +52,8 @@ define('GWIKI_NOTIFY_ITEMINFO', 1);
         case 'namespace':
             $item_id=intval($item_id);
             $sql  = 'SELECT prefix, prefix_home FROM '.$xoopsDB->prefix('gwiki_prefix');
-            $sql .= ' WHERE prefix_id = '.$item_id;
+//            $sql .= ' WHERE prefix_id = '.$item_id;
+            $sql .= " WHERE prefix_id = {$item_id}";
 
             $result = $xoopsDB->query($sql);
             $row = $xoopsDB->fetchArray($result);

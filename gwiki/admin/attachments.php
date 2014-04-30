@@ -64,7 +64,8 @@ if(!empty($kw)) $likeclause .= (empty($likeclause)?'':' and ') . " keyword like 
 if(!empty($fn)) $likeclause .= (empty($likeclause)?'':' and ') . " file_name like '{$q_fn}' ";
 if(!empty($ty)) $likeclause .= (empty($likeclause)?'':' and ') . " file_type like '{$q_ty}' ";
 if(!empty($ds)) $likeclause .= (empty($likeclause)?'':' and ') . " file_description like '{$q_ds}' ";
-$whereclause=(empty($likeclause)?'':' where '.$likeclause);
+//$whereclause=(empty($likeclause)?'':' where '.$likeclause);
+$whereclause=(empty($likeclause)?'':" where {$likeclause}");
 
 echo <<<EOT
 <style>
