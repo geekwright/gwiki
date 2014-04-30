@@ -182,7 +182,8 @@ global $xoopsDB, $xoopsConfig, $xoTheme;
 
         if ($options[3]) {
             $sql  = 'SELECT * FROM ' . $xoopsDB->prefix('gwiki_page_images') ;
-            $sql .= ' WHERE keyword = "'.$page.'" AND use_to_represent = 1 ';
+//            $sql .= ' WHERE keyword = "'.$page.'" AND use_to_represent = 1 ';
+            $sql .= " WHERE keyword = '{$page}' AND use_to_represent = 1 ";
             $result = $xoopsDB->query($sql);
             if ($myrow = $xoopsDB->fetchArray($result)) {
                 // $block['image_file'] = XOOPS_URL .'/uploads/' . $dir . '/' . $myrow['image_file'];
@@ -253,7 +254,8 @@ global $xoopsDB,$xoTheme;
 
     $sql  = 'SELECT p.keyword, image_file, image_alt_text, image_name FROM ' . $xoopsDB->prefix('gwiki_pages') . ' p ';
     $sql .= ' left join ' . $xoopsDB->prefix('gwiki_page_images') . ' i on p.keyword=i.keyword and use_to_represent = 1 ';
-    $sql .= ' WHERE active=1 AND show_in_index=1 AND p.keyword like "'.$prefix.'" ';
+//    $sql .= ' WHERE active=1 AND show_in_index=1 AND p.keyword like "'.$prefix.'" ';
+    $sql .= " WHERE active=1 AND show_in_index=1 AND p.keyword like '{$prefix}'";
     $sql .= ' AND lastmodified > "'.$maxage.'" ORDER BY lastmodified desc';
     $result = $xoopsDB->query($sql,$options[0],0);
     while ($myrow = $xoopsDB->fetchArray($result)) {

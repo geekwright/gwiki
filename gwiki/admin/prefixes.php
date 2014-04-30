@@ -199,11 +199,12 @@ function getPrefix($pid) {
 
     $sql  = 'SELECT * FROM '.$xoopsDB->prefix('gwiki_prefix');
     $sql .= ' LEFT JOIN '.$xoopsDB->prefix('gwiki_template').' on prefix_template_id = template_id ';
-    $sql .= ' WHERE prefix_id = "'.$pid.'" ';
+//    $sql .= ' WHERE prefix_id = "'.$pid.'" ';
+    $sql .= " WHERE prefix_id = '{$pid}' ";
 
     $sql0  = 'SELECT * FROM '.$xoopsDB->prefix('gwiki_prefix');
     $sql0 .= ' LEFT JOIN '.$xoopsDB->prefix('gwiki_template').' on prefix_template_id = template_id ';
-    $sql0 .= " WHERE prefix_id = {$pid} ";
+    $sql0 .= " WHERE prefix_id = '{$pid}' ";
 
 
     $result = $xoopsDB->query($sql);
@@ -274,7 +275,8 @@ global $xoopsDB;
     }
 
     $sql  = 'DELETE FROM '.$xoopsDB->prefix('gwiki_prefix');
-    $sql .= ' WHERE prefix_id = "'.$pid.'" ';
+//    $sql .= ' WHERE prefix_id = "'.$pid.'" ';
+    $sql .= " WHERE prefix_id = '{$pid}' ";
     $result = $xoopsDB->queryF($sql);
 
     redirect_header("prefixes.php", 2,_MD_GWIKI_DBUPDATED);
@@ -305,7 +307,8 @@ global $xoopsDB, $wikiPage;
         $sql .= ' , prefix_auto_name = \''. $wikiPage->escapeForDB($row['prefix_auto_name']) .'\'';
         $sql .= ' , prefix_is_external = \''. $wikiPage->escapeForDB($row['prefix_is_external']) .'\'';
         $sql .= ' , prefix_external_url = \''. $wikiPage->escapeForDB($row['prefix_external_url']) .'\'';
-        $sql .= ' WHERE prefix_id = "'.$pid.'" ';
+//        $sql .= ' WHERE prefix_id = "'.$pid.'" ';
+        $sql .= " WHERE prefix_id = '{$pid}' ";
         $result = $xoopsDB->queryF($sql);
     }
     else {
@@ -455,7 +458,8 @@ global $xoopsDB;
 
         $sql  = 'UPDATE '.$xoopsDB->prefix('gwiki_prefix');
         $sql .= ' SET prefix_template_id = \'0\'';
-        $sql .= ' WHERE prefix_id = "'.$pid.'" ';
+//        $sql .= ' WHERE prefix_id = "'.$pid.'" ';
+        $sql .= " WHERE prefix_id = '{$pid}' ";
         $result = $xoopsDB->queryF($sql);
 
         $sql  = 'DELETE FROM '.$xoopsDB->prefix('gwiki_template');
@@ -507,7 +511,8 @@ global $xoopsDB,$wikiPage;
 
         $sql  = 'UPDATE '.$xoopsDB->prefix('gwiki_prefix');
         $sql .= ' SET prefix_template_id = \'' . $row['template_id']. '\'';
-        $sql .= ' WHERE prefix_id = "'.$pid.'" ';
+//        $sql .= ' WHERE prefix_id = "'.$pid.'" ';
+        $sql .= " WHERE prefix_id = '{$pid}' ";
         $result = $xoopsDB->queryF($sql);
     }
 

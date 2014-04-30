@@ -195,7 +195,7 @@ class gwikiPage
     public function setRecentCount($count)
     {
         $count = intval($count);
-        if ($count > 1 and $count < 1000) {
+        if ($count > 1 && $count < 1000) {
             $this->numberOfRecentItems = $count;
         }
     }
@@ -732,7 +732,8 @@ class gwikiPage
         $sql = 'SELECT distinct p.prefix_id, prefix FROM ';
         $sql .= $xoopsDB->prefix('gwiki_prefix') . ' p, ';
         $sql .= $xoopsDB->prefix('gwiki_group_prefix') . ' g ';
-        $sql .= ' WHERE group_id ' . $groupwhere;
+//        $sql .= ' WHERE group_id ' . $groupwhere;
+        $sql .= " WHERE group_id {$groupwhere}";
         $sql .= ' AND p.prefix_id = g.prefix_id';
         $sql .= ' ORDER BY prefix ';
         $prefixes = array();
@@ -1184,7 +1185,8 @@ class gwikiPage
             $pageselect .= ' AND keyword LIKE "' . $prefix . '%" ';
         } else {
             $sql = 'SELECT count(*) as count  FROM ' . $xoopsDB->prefix('gwiki_pages');
-            $sql .= ' WHERE ' . $pageselect;
+//            $sql .= ' WHERE ' . $pageselect;
+            $sql .= " WHERE  {$pageselect}";
             $result = $xoopsDB->query($sql);
             $row    = $xoopsDB->fetchArray($result);
             $cnt    = $row['count'];
@@ -1199,7 +1201,8 @@ class gwikiPage
 
         $sql = 'SELECT keyword, display_keyword, title';
         $sql .= ' FROM ' . $xoopsDB->prefix('gwiki_pages');
-        $sql .= ' WHERE ' . $pageselect;
+//        $sql .= ' WHERE ' . $pageselect;
+        $sql .= " WHERE {$pageselect}";
         $sql .= ' ORDER BY display_keyword ';
 //		$sql.=' ORDER BY active, show_in_index, display_keyword ';
 
@@ -1287,7 +1290,8 @@ class gwikiPage
         $sql = 'SELECT keyword, display_keyword, title, lastmodified';
         $sql .= ', FROM_UNIXTIME(lastmodified) as fmtlastmodified, uid';
         $sql .= ' FROM ' . $xoopsDB->prefix('gwiki_pages');
-        $sql .= ' WHERE ' . $pageselect;
+//        $sql .= ' WHERE ' . $pageselect;
+        $sql .= " WHERE {$pageselect}";
         $sql .= ' ORDER BY lastmodified DESC LIMIT ' . $this->numberOfRecentItems;
 
         $result = $xoopsDB->query($sql);

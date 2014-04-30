@@ -461,7 +461,7 @@ global $wikiPage, $xoopsDB;
         $q_keyword=$wikiPage->escapeForDB($keyword_like.'%');
 
         $sql = 'SELECT keyword, display_keyword FROM '. $xoopsDB->prefix('gwiki_pages');
-        $sql.= ' WHERE keyword like \''.$q_keyword.'\'';
+        $sql.= " WHERE keyword like '{$q_keyword}'";
         $sql.= ' AND active = 1';
         $sql.= ' ORDER BY display_keyword ';
         $pages=array();
