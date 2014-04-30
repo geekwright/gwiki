@@ -1,0 +1,55 @@
+<html><head><style>
+<!--
+
+body { background-color: white; color: #333; }
+body { font-family: Verdana, Arial, Helvetica, sans-serif; line-height: 1.3em; }
+
+div#MarkupHelp table { margin-bottom: 0;
+    border: 3px solid #999;
+    border-right-color: #BBB;
+    border-bottom-color: #BBB;
+}
+div#MarkupHelp td { font-size: 80%; padding: 0.2em; margin: 0; border: 1px solid #999; border-width: 1px 0 1px 0;
+  vertical-align: top; white-space: nowrap; }
+div#MarkupHelp td.arrow {
+    padding: 0 0.75em;
+    color: #999; }
+div#MarkupHelp h3 { font-size: 90%; font-weight: bold; margin: 0 0 5px 0; padding: 5px 0 0 0; }
+div#MarkupHelp p { font-size: 70%; }
+-->
+</style>
+<title>gwiki Editor Help</title>
+</head>
+<body><div id="MarkupHelp">
+<a href="wikihelp4.html"><img src="../../../assets/images/forward.png" style="float:right;" title="Next" alt="Next" /></a>
+  <h3>gwiki Extensions</h3>
+<table cellpadding="0" cellspacing="0">
+  <tbody><tr>
+  <tr><td colspan="3"><strong>Automatic Entities</strong></td></tr>
+  <tr><td>{cent}</td><td class="arrow">&#8594;</td><td>&cent;</td></tr>
+  <tr><td>{pound}</td><td class="arrow">&#8594;</td><td>&pound;</td></tr>
+  <tr><td>{yen}</td><td class="arrow">&#8594;</td><td>&yen;</td></tr>
+  <tr><td>{euro}</td><td class="arrow">&#8594;</td><td>&euro;</td></tr>
+  <tr><td>(c) <i>or</i> {c}</td><td class="arrow">&#8594;</td><td>&copy;</td></tr>
+  <tr><td>(r) <i>or</i> {r}</td><td class="arrow">&#8594;</td><td>&reg;</td></tr>
+  <tr><td>(tm) <i>or</i> {tm}</td><td class="arrow">&#8594;</td><td>&trade;</td></tr>
+  <tr><td>{sm}</td><td class="arrow">&#8594;</td><td><span style="font-size: 50%; vertical-align: super;">SM</span></td></tr>
+  <tr><td colspan="3"><strong>Containers</strong></td></tr>
+  <tr><td colspan="3"><span style="font-family:'Lucida Console', monospace">{info Title}This is an Info box.{endinfo}</span></td></tr>
+  <tr><td colspan="3"><span style="font-family:'Lucida Console', monospace">{note Title}This is a Note box.{endnote}</span></td></tr>
+  <tr><td colspan="3"><span style="font-family:'Lucida Console', monospace">{tip Title}This is a Tip box{endtip}</span></td></tr>
+  <tr><td colspan="3"><span style="font-family:'Lucida Console', monospace">{warning Title}This is a Warning box{endwarning}</span></td></tr>
+  <tr><td colspan="3"><span style="font-family:'Lucida Console', monospace">{code Title}This is a Code box.{endcode}</span></td></tr>
+  <tr><td colspan="3"><span style="font-family:'Lucida Console', monospace">{folded Title}Doesn't show until clicked.{endfolded}</span></td></tr>
+
+  <tr><td colspan="3"><strong>Misc</strong></td></tr>
+  <tr><td>{toc}</td><td colspan="2">Insert Table of Contents</td></tr>
+  <tr><td>{more}</td><td colspan="2">Mark cutoff for teaser section for blocks.</td></tr>
+  <tr><td>{break}</td><td colspan="2">Line break (//), but clears left and right</td></tr>
+  <tr><td>{nowiki}...<br />{endnowiki}</td><td colspan="2">Don't process wiki markup in between.<br /> Like {{{ ... }}} but does not treat as<br />preformatted block.</td></tr>
+  <tr><td>{pageindex}</td><td colspan="2">Index of Wiki Pages</td></tr>
+  <tr><td>{recentchanges}</td><td colspan="2">Recenly changed pages</td></tr>
+  <tr><td>{gallery}</td><td colspan="2">Gallery of page images</td></tr>
+
+</tbody></table>
+</div></body></html>
