@@ -202,13 +202,7 @@ function getPrefix($pid) {
 //    $sql .= ' WHERE prefix_id = "'.$pid.'" ';
     $sql .= " WHERE prefix_id = '{$pid}' ";
 
-    $sql0  = 'SELECT * FROM '.$xoopsDB->prefix('gwiki_prefix');
-    $sql0 .= ' LEFT JOIN '.$xoopsDB->prefix('gwiki_template').' on prefix_template_id = template_id ';
-    $sql0 .= " WHERE prefix_id = '{$pid}' ";
-
-
     $result = $xoopsDB->query($sql);
-    $result0 = $xoopsDB->query($sql0);
 
     $rows=$xoopsDB->getRowsNum($result);
     if ($rows) {
