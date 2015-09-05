@@ -1,10 +1,15 @@
 gwiki ChangeLog
 
-1.0 RC 3        2014-04-23
+1.0 RC 3        NOT RELEASED
 =================================
 - moved all images, CSS, and JS files to /assets (mamba)
 - renamed .html Smarty templates to .tpl (mamba)
-- added phpDoc comments
+- added phpDoc comments (mamba)
+- fix bug in search (slider84/mamba)
+- change intval() to (int) (mamba)
+- change dirname(__FIL__) to __DIR__ (mamba)
+- cosmetics (mamba)
+
 
 === gwiki Module 1.0 RC2 ===
 Release date: Feb 1, 2014
@@ -15,7 +20,7 @@ Release date: Feb 1, 2014
 Release date: July 17, 2013
 
 * add text import to wizard
-* tweak underline and strike thru to be less agressive
+* tweak underline and strike thru to be less aggressive
 * internal: fix name of class directory
 
 === gwiki Module 1.0 beta2 ===

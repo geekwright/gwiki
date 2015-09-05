@@ -1,25 +1,24 @@
 <?php
 /**
-* admin/header.php - preamble for all admin pages
-*
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
-* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
-* @since      1.0
-* @author     Richard Griffith <richard@geekwright.com>
-* @package    gwiki
-* @version    $Id$
-*/
+ * admin/header.php - preamble for all admin pages
+ *
+ * @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
+ * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
+ * @since      1.0
+ * @author     Richard Griffith <richard@geekwright.com>
+ * @package    gwiki
+ * @version    $Id$
+ */
 
-include '../../../include/cp_header.php' ;
+include dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 
-$xoop25plus=false;
+$xoop25plus = false;
 if (is_object($GLOBALS['xoops'])) {
-    if ( file_exists($GLOBALS['xoops']->path('/Frameworks/moduleclasses/moduleadmin/moduleadmin.php'))) {
-        include_once $GLOBALS['xoops']->path('/Frameworks/moduleclasses/moduleadmin/moduleadmin.php');
-        $xoop25plus=true;
-    }
-    else{
-        $xoop25plus=false;
+    if (file_exists($GLOBALS['xoops']->path('Frameworks/moduleclasses/moduleadmin/moduleadmin.php'))) {
+        include_once $GLOBALS['xoops']->path('Frameworks/moduleclasses/moduleadmin/moduleadmin.php');
+        $xoop25plus = true;
+    } else {
+        $xoop25plus = false;
     }
 }
 
@@ -28,8 +27,8 @@ if (is_object($GLOBALS['xoops'])) {
 //}
 
 if (!defined('_MI_GWIKI_NAME')) { // if modinfo isn't loaded, do it
-    if ( !@include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar("dirname") . "/language/" . $xoopsConfig['language'] . "/modinfo.php") {
-        include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar("dirname") . "/language/english/modinfo.php" ;
+    if (!@include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar("dirname") . "/language/" . $xoopsConfig['language'] . "/modinfo.php") {
+        include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar("dirname") . "/language/english/modinfo.php";
     }
 }
 
@@ -37,13 +36,14 @@ if (!defined('_MI_GWIKI_NAME')) { // if modinfo isn't loaded, do it
  * @param int    $currentoption
  * @param string $breadcrumb
  */
-function adminmenu($currentoption=0, $breadcrumb = "")
+function adminmenu($currentoption = 0, $breadcrumb = "")
 {
     global $xoopsModule, $xoopsConfig;
-    $tblColors=Array();
-    $tblColors=array_fill(0 , 8, '');
-    if ($currentoption>=0) {
-        $tblColors[$currentoption]='id=\'current\'';;
+    $tblColors = array();
+    $tblColors = array_fill(0, 8, '');
+    if ($currentoption >= 0) {
+        $tblColors[$currentoption] = 'id=\'current\'';
+        ;
     }
 
     /* Nice buttons styles */
@@ -79,11 +79,11 @@ function adminmenu($currentoption=0, $breadcrumb = "")
         </style>
     ";
 
-    include XOOPS_ROOT_PATH."/modules/".$xoopsModule->getVar('dirname')."/admin/menu.php";
+    include XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar('dirname') . "/admin/menu.php";
 
-  $return .= "<div id='admintop'>";
+    $return .= "<div id='admintop'>";
     $return .= "<table style=\"width: 100%; padding: 0; \" cellspacing=\"0\"><tr>";
-    $return .= "<td style='width: 60%; font-size: 10px; text-align: left; color: #2F5376; padding: 0 6px; line-height: 18px;'><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=preferences&amp;op=showmod&amp;mod=" . $xoopsModule->getVar('mid') . "'>" . _AD_GW_ADMENU_PREF . "</a> | <a href='" . XOOPS_URL . "/modules/" . $xoopsModule->getVar('dirname') . "/index.php'>" . _AD_GW_ADMENU_GOMOD . '</a> | <a href="help.php">'._AD_GW_ADMENU_HELP.'</a></td>';
+    $return .= "<td style='width: 60%; font-size: 10px; text-align: left; color: #2F5376; padding: 0 6px; line-height: 18px;'><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=preferences&amp;op=showmod&amp;mod=" . $xoopsModule->getVar('mid') . "'>" . _AD_GW_ADMENU_PREF . "</a> | <a href='" . XOOPS_URL . "/modules/" . $xoopsModule->getVar('dirname') . "/index.php'>" . _AD_GW_ADMENU_GOMOD . '</a> | <a href="help.php">' . _AD_GW_ADMENU_HELP . '</a></td>';
     $return .= "<td style='width: 40%; font-size: 10px; text-align: right; color: #2F5376; padding: 0 6px; line-height: 18px;'>&nbsp;" . $breadcrumb . "</td>";
     $return .= "</tr></table>";
     $return .= "</div>";
@@ -91,20 +91,22 @@ function adminmenu($currentoption=0, $breadcrumb = "")
     $return .= "<div id='admintabs'>";
     $return .= "<ul>";
     foreach ($adminmenu as $key => $menu) {
-        $return .= "<li ". $tblColors[$key] . "><a href=\"" . XOOPS_URL . "/modules/" . $xoopsModule->getVar('dirname') . "/".$menu['link']."\">" . $menu['title'] . "</a></li>";
+        $return .= "<li " . $tblColors[$key] . "><a href=\"" . XOOPS_URL . "/modules/" . $xoopsModule->getVar('dirname') . "/" . $menu['link'] . "\">" . $menu['title'] . "</a></li>";
     }
     $return .= "</ul></div><div style=\"clear:both;\"></div>";
 
     echo $return;
-
 }
 
-include 'functions.php';
+include __DIR__ . '/functions.php';
 
 xoops_cp_header();
 
 if ($xoop25plus) {
     $moduleAdmin = new ModuleAdmin();
-    if(!is_object($moduleAdmin)) $xoop25plus=false;
+    if (!is_object($moduleAdmin)) {
+        $xoop25plus = false;
+    }
 }
 //$xoop25plus=false;
+

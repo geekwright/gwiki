@@ -9,7 +9,7 @@
  *
  * Refactored for personal scope on base written by Dave Marshall
  *
- * @package 	Wally
+ * @package     Wally
  * @author      Walter Dal Mut
  */
 class Diff
@@ -29,17 +29,17 @@ class Diff
         $mEnd   = count($s1) - 1;
         $nStart = 0;
         $nEnd   = count($s2) - 1;
-        $c = array();
-        for ($i = -1; $i <= $mEnd; $i++) {
+        $c      = array();
+        for ($i = -1; $i <= $mEnd; ++$i) {
             $c[$i] = array();
-            for ($j = -1; $j <= $nEnd; $j++) {
+            for ($j = -1; $j <= $nEnd; ++$j) {
                 $c[$i][$j] = 0;
             }
         }
-        for ($i = $mStart; $i <= $mEnd; $i++) {
-            for ($j = $nStart; $j <= $nEnd; $j++) {
-                if ($s1[$i] == $s2[$j]) {
-                    $c[$i][$j] = $c[$i -1][$j - 1] + 1;
+        for ($i = $mStart; $i <= $mEnd; ++$i) {
+            for ($j = $nStart; $j <= $nEnd; ++$j) {
+                if ($s1[$i] === $s2[$j]) {
+                    $c[$i][$j] = $c[$i - 1][$j - 1] + 1;
                 } else {
                     $c[$i][$j] = max($c[$i][$j - 1], $c[$i - 1][$j]);
                 }
@@ -55,9 +55,9 @@ class Diff
      * prefixed with '+', lines that are only in the first string are prefixed
      * with '-'
      *
-     * @param  array  $c Output of <tt>lsm</tt> method
-     * @param string First string
-     * @param string Second String
+     * @param array $c Output of <tt>lsm</tt> method
+     * @param        string First string
+     * @param        string Second String
      * @param  int    $i
      * @param  int    $j
      * @return string
@@ -66,14 +66,14 @@ class Diff
     protected function _printDiff($c, $s1, $s2, $i, $j)
     {
         $diff = "";
-        if ($i >= 0 && $j >= 0 && $s1[$i] == $s2[$j]) {
+        if ($i >= 0 && $j >= 0 && $s1[$i] === $s2[$j]) {
             $diff .= $this->_printDiff($c, $s1, $s2, $i - 1, $j - 1);
             $diff .= "  " . $s1[$i] . PHP_EOL;
         } else {
-            if ($j >= 0 && ($i == -1 || $c[$i][$j - 1] >= $c[$i - 1][$j])) {
+            if ($j >= 0 && ($i === -1 || $c[$i][$j - 1] >= $c[$i - 1][$j])) {
                 $diff .= $this->_printDiff($c, $s1, $s2, $i, $j - 1);
                 $diff .= "+ " . $s2[$j] . PHP_EOL;
-            } else if ($i >= 0 && ($j == -1 || $c[$i][$j - 1] < $c[$i - 1][$j])) {
+            } elseif ($i >= 0 && ($j === -1 || $c[$i][$j - 1] < $c[$i - 1][$j])) {
                 $diff .= $this->_printDiff($c, $s1, $s2, $i - 1, $j);
                 $diff .= "- " . $s1[$i] . PHP_EOL;
             }

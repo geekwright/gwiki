@@ -1,14 +1,14 @@
 <?php
 /**
-* cleanlitterbox.php - keep a sandbox clean
-*
-* @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
-* @license    gwiki/docs/license.txt  GNU General Public License (GPL)
-* @since      1.0
-* @author     Richard Griffith <richard@geekwright.com>
-* @package    gwiki
-* @version    $Id$
-*/
+ * cleanlitterbox.php - keep a sandbox clean
+ *
+ * @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
+ * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
+ * @since      1.0
+ * @author     Richard Griffith <richard@geekwright.com>
+ * @package    gwiki
+ * @version    $Id$
+ */
 
 /*
   This is a script you can adapt to keep a portion of your wiki
@@ -27,61 +27,63 @@
   it up to be automatically called, for example, by wget in a cron job.
 */
 
-$keywordpattern='';
-$retainhours=0;
-$dir='gwiki';
+$keywordpattern = '';
+$retainhours    = 0;
+$dir            = 'gwiki';
 
-include '../../mainfile.php';
+include dirname(dirname(__DIR__)) . '/mainfile.php';
 // if check variable is set, show like a regular module page (with debug if on)
 // otherwise, turn off logging and just get busy cleaning
-    if (!empty($_REQUEST['check'])) {
-        $xoopsOption['template_main'] = 'gwiki_view.tpl';
-        include XOOPS_ROOT_PATH."/header.php";
-        do_clean();
-        include XOOPS_ROOT_PATH."/footer.php";
+if (!empty($_REQUEST['check'])) {
+    $xoopsOption['template_main'] = 'gwiki_view.tpl';
+    include XOOPS_ROOT_PATH . "/header.php";
+    do_clean();
+    include XOOPS_ROOT_PATH . "/footer.php";
+} else {
+    $xoopsLogger->activated = false;
+    do_clean();
+    exit;
+}
+
+function do_clean()
+{
+    global $xoopsDB;
+
+    global $keywordpattern, $retainhours, $dir;
+
+    if ($retainhours <= 0 || $keywordpattern === '') {
+        return;
     }
-    else {
-        $xoopsLogger->activated = false;
-        do_clean();
-        exit;
-    }
 
-function do_clean() {
-global $xoopsDB;
+    $lastmodifiedbefore = time() - ($retainhours * 3600);
 
-global $keywordpattern, $retainhours, $dir;
-
-    if($retainhours<=0 || $keywordpattern=='') return;
-
-    $lastmodifiedbefore=time()-($retainhours * 3600);
-
-    $sql = 'DELETE FROM '.$xoopsDB->prefix('gwiki_pages')." WHERE keyword like '{$keywordpattern}' AND lastmodified< $lastmodifiedbefore";
+    $sql    = 'DELETE FROM ' . $xoopsDB->prefix('gwiki_pages') . " WHERE keyword like '{$keywordpattern}' AND lastmodified< $lastmodifiedbefore";
     $result = $xoopsDB->queryF($sql);
-    $cnt=$xoopsDB->getAffectedRows();
-    if ($cnt>0) {
-        $sql  = 'SELECT image_file FROM '.$xoopsDB->prefix('gwiki_page_images');
-        $sql .= ' WHERE keyword NOT IN (SELECT keyword from '.$xoopsDB->prefix('gwiki_pages').')';
+    $cnt    = $xoopsDB->getAffectedRows();
+    if ($cnt > 0) {
+        $sql = 'SELECT image_file FROM ' . $xoopsDB->prefix('gwiki_page_images');
+        $sql .= ' WHERE keyword NOT IN (SELECT keyword from ' . $xoopsDB->prefix('gwiki_pages') . ')';
         $result = $xoopsDB->query($sql);
         while ($f = $xoopsDB->fetchArray($result)) {
-            unlink(XOOPS_ROOT_PATH.'/uploads/'.$dir.'/'.$f['image_file']);
+            unlink(XOOPS_ROOT_PATH . '/uploads/' . $dir . '/' . $f['image_file']);
         }
-        $sql  = 'DELETE FROM '.$xoopsDB->prefix('gwiki_page_images');
-        $sql .= ' WHERE keyword NOT IN (SELECT keyword from '.$xoopsDB->prefix('gwiki_pages').')';
+        $sql = 'DELETE FROM ' . $xoopsDB->prefix('gwiki_page_images');
+        $sql .= ' WHERE keyword NOT IN (SELECT keyword from ' . $xoopsDB->prefix('gwiki_pages') . ')';
         $result = $xoopsDB->queryF($sql);
 
-        $sql  = 'SELECT file_path FROM '.$xoopsDB->prefix('gwiki_page_files');
-        $sql .= ' WHERE keyword NOT IN (SELECT keyword from '.$xoopsDB->prefix('gwiki_pages').')';
+        $sql = 'SELECT file_path FROM ' . $xoopsDB->prefix('gwiki_page_files');
+        $sql .= ' WHERE keyword NOT IN (SELECT keyword from ' . $xoopsDB->prefix('gwiki_pages') . ')';
         $result = $xoopsDB->query($sql);
         while ($f = $xoopsDB->fetchArray($result)) {
-            unlink(XOOPS_ROOT_PATH.'/uploads/'.$dir.'/'.$f['file_path']);
+            unlink(XOOPS_ROOT_PATH . '/uploads/' . $dir . '/' . $f['file_path']);
         }
-        $sql  = 'DELETE FROM '.$xoopsDB->prefix('gwiki_page_files');
-        $sql .= ' WHERE keyword NOT IN (SELECT keyword from '.$xoopsDB->prefix('gwiki_pages').')';
+        $sql = 'DELETE FROM ' . $xoopsDB->prefix('gwiki_page_files');
+        $sql .= ' WHERE keyword NOT IN (SELECT keyword from ' . $xoopsDB->prefix('gwiki_pages') . ')';
         $result = $xoopsDB->queryF($sql);
 
-        $sql = 'DELETE FROM '.$xoopsDB->prefix('gwiki_pageids').' WHERE keyword NOT IN (SELECT keyword from '.$xoopsDB->prefix('gwiki_pages').')';
+        $sql    = 'DELETE FROM ' . $xoopsDB->prefix('gwiki_pageids') . ' WHERE keyword NOT IN (SELECT keyword from ' . $xoopsDB->prefix('gwiki_pages') . ')';
         $result = $xoopsDB->queryF($sql);
-        $sql = 'OPTIMIZE TABLE '.$xoopsDB->prefix('gwiki_pages');
+        $sql    = 'OPTIMIZE TABLE ' . $xoopsDB->prefix('gwiki_pages');
         $result = $xoopsDB->queryF($sql);
     }
 }
