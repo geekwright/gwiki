@@ -418,7 +418,7 @@ class gwikiPage
         $this->gwiki_version = $this->gwikiVersion; // new revisions always for current engine
 
         // if we are adding to a page set, auto increment the order if none specified
-        if (!empty($this->page_set_home) && $this->page_set_order === 0) {
+        if (!empty($this->page_set_home) && $this->page_set_order === '') {
             $this->page_set_order = $this->getNextPageSetOrder($this->page_set_home);
         }
 
