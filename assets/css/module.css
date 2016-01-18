@@ -937,6 +937,7 @@ div.wikieditor-buttontray {
     -moz-background-clip: padding;
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
+    line-height: 20px;
 }
 
 div.wikieditor-buttontray {
@@ -955,7 +956,6 @@ div.wikieditor-buttontray {
     float: left;
     cursor: pointer;
     padding: 3px 5px;
-    width: 16px;
     height: 20px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -1093,7 +1093,6 @@ div.wikieditor-buttontray {
 }
 
 .wikieditor-button {
-    height: 16px;
     padding: 3px 4px;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
