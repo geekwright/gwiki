@@ -346,7 +346,6 @@ if (empty($title)) {
     $title = $xoopsModule->name();
 }
 $xoopsTpl->assign('xoops_pagetitle', $title);
-$xoopsTpl->assign('icms_pagetitle', $title);
 if (!empty($message)) {
     $xoopsTpl->assign('message', htmlspecialchars($message));
 }

@@ -754,7 +754,6 @@ switch ($op) {
 
 $title = _MD_GWIKI_WIZARD;
 $xoopsTpl->assign('xoops_pagetitle', $title);
-$xoopsTpl->assign('icms_pagetitle', $title);
 
 $xoopsTpl->assign('gwiki', $pageX);
 

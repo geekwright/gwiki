@@ -243,7 +243,6 @@ $body = $form->render();
 
 $title = _MD_GWIKI_SORT_PAGE_FORM;
 $xoopsTpl->assign('xoops_pagetitle', $title);
-$xoopsTpl->assign('icms_pagetitle', $title);
 
 $dir                = basename(__DIR__);
 $pageX['moddir']    = $dir;

@@ -7,9 +7,6 @@ $modversion['credits']     = "Adapted from Simon \"zeniko\" B&uuml;nzli's wikimo
 $modversion['license']     = 'GNU General Public License';
 $modversion['official']    = 0; //1 indicates supported by XOOPS Dev Team, 0 means 3rd party supported
 $modversion['image']       = 'assets/images/icon.png';
-if (defined('ICMS_ROOT_PATH')) {
-    $modversion['image'] = 'assets/images/icon_big.png';
-}
 
 $modversion['dirname'] = basename(__DIR__);
 
@@ -19,8 +16,8 @@ $modversion['license_url'] = substr($modversion['license_url'], strpos($modversi
 
 $modversion['module_website_url']  = 'geekwright.com';
 $modversion['module_website_name'] = 'geekwright, LLC';
-$modversion['module_status']       = "RC3";
-$modversion['release_date']        = '2014/02/01';
+$modversion['module_status']       = "RC4";
+$modversion['release_date']        = '2016/01/20';
 $modversion['min_php']             = '5.3.7';
 $modversion['min_xoops']           = '2.5.7';
 $modversion['system_menu']         = 1;
@@ -28,14 +25,16 @@ $modversion['help']                = "page=help";
 
 // Tables created by the SQL file (without prefix!)
 $modversion['sqlfile']['mysql'] = "sql/mysql.sql";
-$modversion['tables'][0]        = 'gwiki_pages';
-$modversion['tables'][]         = 'gwiki_pageids';
-$modversion['tables'][]         = 'gwiki_group_prefix';
-$modversion['tables'][]         = 'gwiki_prefix';
-$modversion['tables'][]         = 'gwiki_template';
-$modversion['tables'][]         = 'gwiki_page_images';
-$modversion['tables'][]         = 'gwiki_page_files';
-$modversion['tables'][]         = 'gwiki_pagelinks';
+$modversion['tables'] = array(
+    'gwiki_pages',
+    'gwiki_pageids',
+    'gwiki_group_prefix',
+    'gwiki_prefix',
+    'gwiki_template',
+    'gwiki_page_images',
+    'gwiki_page_files',
+    'gwiki_pagelinks',
+);
 
 // Administration tools
 $modversion['hasAdmin']   = 1;

@@ -148,6 +148,5 @@ if ($pageX['pageFound']) {
 }
 $title = $pageX['title'];
 $xoopsTpl->assign('xoops_pagetitle', $title);
-$xoopsTpl->assign('icms_pagetitle', $title);
 
 include XOOPS_ROOT_PATH . '/footer.php';

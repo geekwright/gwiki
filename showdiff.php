@@ -80,7 +80,6 @@ if (empty($title)) {
     $title = htmlspecialchars($xoopsModule->name());
 }
 $xoopsTpl->assign('xoops_pagetitle', $title);
-$xoopsTpl->assign('icms_pagetitle', $title);
 if (!empty($message)) {
     $xoopsTpl->assign('message', $message);
 }
