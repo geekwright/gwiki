@@ -6,10 +6,8 @@ $modversion['author']      = 'Richard Griffith';
 $modversion['credits']     = "Adapted from Simon \"zeniko\" B&uuml;nzli's wikimod";
 $modversion['license']     = 'GNU General Public License';
 $modversion['official']    = 0; //1 indicates supported by XOOPS Dev Team, 0 means 3rd party supported
-$modversion['image']       = 'assets/images/icon.png';
-if (defined('ICMS_ROOT_PATH')) {
-    $modversion['image'] = 'assets/images/icon_big.png';
-}
+$modversion['image']       = 'assets/images/logo_module.png';
+$modversion['iconbig']     = 'assets/images/logo_big.png';
 
 $modversion['dirname'] = basename(__DIR__);
 
@@ -19,15 +17,15 @@ $modversion['license_url'] = substr($modversion['license_url'], strpos($modversi
 
 $modversion['module_website_url']  = 'geekwright.com';
 $modversion['module_website_name'] = 'geekwright, LLC';
-$modversion['module_status']       = "RC3";
+$modversion['module_status']       = 'RC3';
 $modversion['release_date']        = '2014/02/01';
-$modversion['min_php']             = '5.3.7';
-$modversion['min_xoops']           = '2.5.7';
+$modversion['min_php']             = '5.5';
+$modversion['min_xoops']           = '2.5.8';
 $modversion['system_menu']         = 1;
-$modversion['help']                = "page=help";
+$modversion['help']                = 'page=help';
 
 // Tables created by the SQL file (without prefix!)
-$modversion['sqlfile']['mysql'] = "sql/mysql.sql";
+$modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
 $modversion['tables'][0]        = 'gwiki_pages';
 $modversion['tables'][]         = 'gwiki_pageids';
 $modversion['tables'][]         = 'gwiki_group_prefix';
@@ -39,8 +37,8 @@ $modversion['tables'][]         = 'gwiki_pagelinks';
 
 // Administration tools
 $modversion['hasAdmin']   = 1;
-$modversion['adminindex'] = "admin/index.php";
-$modversion['adminmenu']  = "admin/menu.php";
+$modversion['adminindex'] = 'admin/index.php';
+$modversion['adminmenu']  = 'admin/menu.php';
 
 // Module Administration
 $modversion['onInstall']   = 'include/install.php';
@@ -54,7 +52,8 @@ $modversion['hasMain'] = 1;
 $modversion['hasComments'] = 1;
 $modversion['comments']    = array(
     'itemName' => 'page_id',
-    'pageName' => 'index.php');
+    'pageName' => 'index.php'
+);
 
 // notification
 $modversion['hasNotification'] = 1;
@@ -66,7 +65,8 @@ $modversion['notification']['category'][1] = array(
     'name'           => 'global',
     'title'          => _MI_GWIKI_NOTIFY_GLOBAL,
     'description'    => _MI_GWIKI_NOTIFY_GLOBAL_DESC,
-    'subscribe_from' => array('index.php'));
+    'subscribe_from' => array('index.php')
+);
 
 $modversion['notification']['category'][] = array(
     'name'           => 'page',
@@ -74,7 +74,8 @@ $modversion['notification']['category'][] = array(
     'description'    => _MI_GWIKI_NOTIFY_PAGE_CAT_DESC,
     'subscribe_from' => array('index.php', 'history.php'),
     'item_name'      => 'page_id',
-    'allow_bookmark' => 1);
+    'allow_bookmark' => 1
+);
 
 $modversion['notification']['category'][] = array(
     'name'           => 'namespace',
@@ -82,7 +83,8 @@ $modversion['notification']['category'][] = array(
     'description'    => _MI_GWIKI_NOTIFY_NS_CAT_DESC,
     'subscribe_from' => array('index.php'),
     'item_name'      => 'nsid',
-    'allow_bookmark' => 0);
+    'allow_bookmark' => 0
+);
 
 $modversion['notification']['event'][1] = array(
     'name'          => 'new_page',
@@ -137,29 +139,35 @@ $modversion['notification']['event'][] = array(
 // Templates
 $modversion['templates'][1] = array(
     'file'        => 'gwiki_view.tpl',
-    'description' => 'gwiki - View Wiki Page');
+    'description' => 'gwiki - View Wiki Page'
+);
 
 $modversion['templates'][] = array(
     'file'        => 'gwiki_edit.tpl',
-    'description' => 'gwiki - Edit/Preview Wiki Page');
+    'description' => 'gwiki - Edit/Preview Wiki Page'
+);
 
 $modversion['templates'][] = array(
     'file'        => 'gwiki_history.tpl',
-    'description' => 'gwiki - Page History');
+    'description' => 'gwiki - Page History'
+);
 
 $modversion['templates'][] = array(
     'file'        => 'gwiki_page_info.tpl',
-    'description' => 'gwiki - Page Info and Tool Bar');
+    'description' => 'gwiki - Page Info and Tool Bar'
+);
 
 $modversion['templates'][] = array(
     'file'        => 'gwiki_wizard.tpl',
-    'description' => 'gwiki - page creation wizard');
+    'description' => 'gwiki - page creation wizard'
+);
 
 // Search
 $modversion['hasSearch'] = 1;
 $modversion['search']    = array(
     'file' => 'include/search.inc.php',
-    'func' => 'gwiki_search');
+    'func' => 'gwiki_search'
+);
 
 // Configuration settings
 $modversion['config'][1] = array(
@@ -169,7 +177,8 @@ $modversion['config'][1] = array(
     'formtype'    => 'textbox',
     'valuetype'   => 'text',
     'default'     => _MI_GWIKI_WIKIHOME,
-    'options'     => array());
+    'options'     => array()
+);
 
 $modversion['config'][] = array(
     'name'        => 'date_format',
@@ -178,7 +187,8 @@ $modversion['config'][] = array(
     'formtype'    => 'select',
     'valuetype'   => 'text',
     'default'     => 'Y-m-d',
-    'options'     => array('dd.mm.yy' => 'd.m.y', 'mm/dd/yy' => 'm/d/y', 'yyyy-mm-dd' => 'Y-m-d', 'RFC2822' => 'r', 'ISO 8601' => 'c'));
+    'options'     => array('dd.mm.yy' => 'd.m.y', 'mm/dd/yy' => 'm/d/y', 'yyyy-mm-dd' => 'Y-m-d', 'RFC2822' => 'r', 'ISO 8601' => 'c')
+);
 
 $modversion['config'][] = array(
     'name'        => 'number_recent',
@@ -187,7 +197,8 @@ $modversion['config'][] = array(
     'formtype'    => 'select',
     'valuetype'   => 'int',
     'default'     => 10,
-    'options'     => array('5' => 5, '10' => 10, '20' => 20, '50' => 50));
+    'options'     => array('5' => 5, '10' => 10, '20' => 20, '50' => 50)
+);
 
 $modversion['config'][] = array(
     'name'        => 'wikilink_template',
@@ -196,7 +207,8 @@ $modversion['config'][] = array(
     'formtype'    => 'textbox',
     'valuetype'   => 'text',
     'default'     => XOOPS_URL . '/modules/' . $modversion['dirname'] . '/index.php?page=%s',
-    'options'     => array());
+    'options'     => array()
+);
 
 $modversion['config'][] = array(
     'name'        => 'searchlink_template',
@@ -205,7 +217,8 @@ $modversion['config'][] = array(
     'formtype'    => 'textbox',
     'valuetype'   => 'text',
     'default'     => XOOPS_URL . '/modules/' . $modversion['dirname'] . '/index.php?page=%s&query=%s',
-    'options'     => array());
+    'options'     => array()
+);
 
 $modversion['config'][] = array(
     'name'        => 'imagelib_pages',
@@ -214,7 +227,8 @@ $modversion['config'][] = array(
     'formtype'    => 'textbox',
     'valuetype'   => 'text',
     'default'     => _MI_GWIKI_WIKIHOME,
-    'options'     => array());
+    'options'     => array()
+);
 
 $modversion['config'][] = array(
     'name'        => 'retain_days',
@@ -223,7 +237,8 @@ $modversion['config'][] = array(
     'formtype'    => 'textbox',
     'valuetype'   => 'int',
     'default'     => 60,
-    'options'     => array());
+    'options'     => array()
+);
 
 $modversion['config'][] = array(
     'name'        => 'attach_ext_whitelist',
@@ -232,7 +247,8 @@ $modversion['config'][] = array(
     'formtype'    => 'textbox',
     'valuetype'   => 'text',
     'default'     => 'txt,pdf,doc,docx,xls,ppt,jpg,jpeg,png',
-    'options'     => array());
+    'options'     => array()
+);
 
 $modversion['config'][] = array(
     'name'        => 'allow_origin',
@@ -241,7 +257,8 @@ $modversion['config'][] = array(
     'formtype'    => 'textbox',
     'valuetype'   => 'text',
     'default'     => '',
-    'options'     => array());
+    'options'     => array()
+);
 
 $modversion['config'][] = array(
     'name'        => 'allow_camelcase',
@@ -249,7 +266,8 @@ $modversion['config'][] = array(
     'description' => '_MI_GWIKI_ALLOW_CAMELCASE_DESC',
     'formtype'    => 'yesno',
     'valuetype'   => 'int',
-    'default'     => '1');
+    'default'     => '1'
+);
 
 $modversion['config'][] = array(
     'name'        => 'default_thumb_size',
@@ -257,7 +275,8 @@ $modversion['config'][] = array(
     'description' => '_MI_GWIKI_DEFAULT_THUMB_SIZE_DESC',
     'formtype'    => 'textbox',
     'valuetype'   => 'int',
-    'default'     => 150);
+    'default'     => 150
+);
 
 $modversion['config'][] = array(
     'name'        => 'template_namespace',
@@ -265,7 +284,8 @@ $modversion['config'][] = array(
     'description' => '_MI_GWIKI_WIZARD_TEMPLATES_DESC',
     'formtype'    => 'textbox',
     'valuetype'   => 'text',
-    'default'     => '');
+    'default'     => ''
+);
 
 $modversion['config'][] = array(
     'name'        => 'auto_name_format',
@@ -273,7 +293,8 @@ $modversion['config'][] = array(
     'description' => '_MI_GWIKI_AUTO_NAME_FORMAT_DESC',
     'formtype'    => 'textbox',
     'valuetype'   => 'text',
-    'default'     => 'Y-m-d-His');
+    'default'     => 'Y-m-d-His'
+);
 
 // Blocks
 $modversion['blocks'][1] = array(
@@ -283,7 +304,8 @@ $modversion['blocks'][1] = array(
     'show_func'   => 'b_gwiki_wikiblock_show',
     'edit_func'   => 'b_gwiki_wikiblock_edit',
     'options'     => _MI_GWIKI_WIKIHOME . '|0|',
-    'template'    => 'gwiki_ajaxblock.tpl');
+    'template'    => 'gwiki_ajaxblock.tpl'
+);
 
 $modversion['blocks'][] = array(
     'file'        => 'blocks.php',
@@ -292,7 +314,8 @@ $modversion['blocks'][] = array(
     'show_func'   => 'b_gwiki_newpage_show',
     'edit_func'   => 'b_gwiki_newpage_edit',
     'options'     => '1',
-    'template'    => 'gwiki_newpage.tpl');
+    'template'    => 'gwiki_newpage.tpl'
+);
 
 $modversion['blocks'][] = array(
     'file'        => 'blocks.php',
@@ -301,7 +324,8 @@ $modversion['blocks'][] = array(
     'show_func'   => 'b_gwiki_teaserblock_show',
     'edit_func'   => 'b_gwiki_teaserblock_edit',
     'options'     => '0||0|1',
-    'template'    => 'gwiki_block.tpl');
+    'template'    => 'gwiki_block.tpl'
+);
 
 $modversion['blocks'][] = array(
     'file'        => 'blocks.php',
@@ -310,7 +334,8 @@ $modversion['blocks'][] = array(
     'show_func'   => 'b_gwiki_recentblock_show',
     'edit_func'   => 'b_gwiki_recentblock_edit',
     'options'     => '4|0|-3 months',
-    'template'    => 'gwiki_recentblock.tpl');
+    'template'    => 'gwiki_recentblock.tpl'
+);
 
 $modversion['blocks'][] = array(
     'file'        => 'blocks.php',
@@ -319,7 +344,8 @@ $modversion['blocks'][] = array(
     'show_func'   => 'b_gwiki_pagesettoc_show',
     'edit_func'   => 'b_gwiki_pagesettoc_edit',
     'options'     => '1|',
-    'template'    => 'gwiki_pagesettoc.tpl');
+    'template'    => 'gwiki_pagesettoc.tpl'
+);
 
 $modversion['blocks'][] = array(
     'file'        => 'blocks.php',
@@ -328,7 +354,8 @@ $modversion['blocks'][] = array(
     'show_func'   => 'b_gwiki_related_show',
     'edit_func'   => 'b_gwiki_related_edit',
     'options'     => '1||0',
-    'template'    => 'gwiki_relatedblock.tpl');
+    'template'    => 'gwiki_relatedblock.tpl'
+);
 
 $modversion['blocks'][] = array(
     'file'        => 'blocks.php',
@@ -337,4 +364,5 @@ $modversion['blocks'][] = array(
     'show_func'   => 'b_gwiki_linkshere_show',
     'edit_func'   => 'b_gwiki_linkshere_edit',
     'options'     => '0|0',
-    'template'    => 'gwiki_linkshere.tpl');
+    'template'    => 'gwiki_linkshere.tpl'
+);

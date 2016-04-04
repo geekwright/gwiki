@@ -42,7 +42,7 @@ class LoremIpsumGenerator
     /**
      * @param int $wordsPer
      */
-    protected function __construct($wordsPer = 100)
+    public function __construct($wordsPer = 100)
     {
         $this->wordsPerParagraph = $wordsPer;
         $this->wordsPerSentence  = 24.460;
@@ -224,7 +224,8 @@ class LoremIpsumGenerator
             'elementum',
             'tempor',
             'risus',
-            'cras');
+            'cras'
+        );
     }
 
     /**
@@ -435,7 +436,7 @@ class LoremIpsumGenerator
      */
     private function punctuate(& $sentence)
     {
-        $count                = count($sentence);
+        $count = count($sentence);
         $sentence[$count - 1] .= '.'; //$sentence[$count - 1] = $sentence[$count - 1] . '.';
 
         if ($count < 4) {

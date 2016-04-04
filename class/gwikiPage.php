@@ -9,7 +9,6 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
@@ -28,24 +27,24 @@ class gwikiPage
 
     protected $currentid;
     protected $currentkeyword;
-    public $gwiki_id;
-    public $keyword;
-    public $display_keyword;
-    public $title;
-    public $body;
-    public $parent_page;
-    public $page_set_home;
-    public $page_set_order;
-    public $meta_description;
-    public $meta_keywords;
-    public $lastmodified;
-    public $uid;
-    public $admin_lock;
-    public $active;
-    public $search_body;
-    public $toc_cache;
-    public $show_in_index;
-    public $gwiki_version;
+    public    $gwiki_id;
+    public    $keyword;
+    public    $display_keyword;
+    public    $title;
+    public    $body;
+    public    $parent_page;
+    public    $page_set_home;
+    public    $page_set_order;
+    public    $meta_description;
+    public    $meta_keywords;
+    public    $lastmodified;
+    public    $uid;
+    public    $admin_lock;
+    public    $active;
+    public    $search_body;
+    public    $toc_cache;
+    public    $show_in_index;
+    public    $gwiki_version;
 
     public $page_id; // an integer id for the keyword
     public $wikiHomePage; // the home page
@@ -58,8 +57,8 @@ class gwikiPage
 
     private $numberOfRecentItems = 10;
     private $wikiLinkURL         = 'index.php?page=%s'; // keyword will be inserted with sprintf. better link establised in __construct()
-    public $dateFormat;
-    public $defaultThumbSize;
+    public  $dateFormat;
+    public  $defaultThumbSize;
     private $tocIdPrefix         = 'toc';
     private $tocAnchorFmt        = '#%s';
     private $imageLib            = array();
@@ -107,11 +106,11 @@ class gwikiPage
         $dir           = basename(dirname(__DIR__));
         $this->wikiDir = $dir;
 
-        $module_handler =& xoops_gethandler('module');
-        $module         =& $module_handler->getByDirname($dir);
+        $module_handler = xoops_getHandler('module');
+        $module         = $module_handler->getByDirname($dir);
         $module_id      = $module->getVar('mid');
-        $config_handler =& xoops_gethandler('config');
-        $moduleConfig   =& $config_handler->getConfigsByCat(0, $module->getVar('mid'));
+        $config_handler = xoops_getHandler('config');
+        $moduleConfig   = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
 
         $this->wikiLinkURL      = $moduleConfig['wikilink_template'];
         $this->wikiHomePage     = $moduleConfig['wiki_home_page'];
@@ -186,7 +185,7 @@ class gwikiPage
      */
     public function escapeForDB($value)
     {
-        return mysql_real_escape_string($value);
+        return mysqli_real_escape_string($value);
     }
 
     /**
@@ -194,7 +193,7 @@ class gwikiPage
      */
     public function setRecentCount($count)
     {
-        $count = (int)($count);
+        $count = (int)$count;
         if ($count > 1 && $count < 1000) {
             $this->numberOfRecentItems = $count;
         }
@@ -380,7 +379,7 @@ class gwikiPage
         $result = $xoopsDB->query($sql);
         list($id) = $xoopsDB->fetchRow($result);
 
-        return (int)($id);
+        return (int)$id;
     }
 
     /**
@@ -492,7 +491,7 @@ class gwikiPage
 
                     $this->updatePageLinks();
 
-                    $notification_handler =& xoops_gethandler('notification');
+                    $notification_handler = xoops_getHandler('notification');
                     $tags['PAGE_NAME']    = $page;
                     $tags['PAGE_TITLE']   = $this->title;
                     if (empty($tags['PAGE_TITLE'])) {
@@ -565,7 +564,7 @@ class gwikiPage
             $result = $xoopsDB->query($sql);
         }
 
-        return;
+        //        return;
     }
 
     // get the next higher unused page_set_order for a given page_set_home
@@ -610,17 +609,17 @@ class gwikiPage
         $keyword = $this->keyword;
 
         $dir            = $this->wikiDir;
-        $module_handler =& xoops_gethandler('module');
-        $module         =& $module_handler->getByDirname($dir);
+        $module_handler = xoops_getHandler('module');
+        $module         = $module_handler->getByDirname($dir);
         $module_id      = $module->getVar('mid');
-        // $config_handler =& xoops_gethandler('config');
+        // $config_handler = xoops_getHandler('config');
         // $moduleConfig   =& $config_handler->getConfigsByCat(0, $module->getVar('mid'));
         $groups = XOOPS_GROUP_ANONYMOUS;
         if (is_object($xoopsUser)) {
             $groups = $xoopsUser->getGroups();
         }
 
-        $gperm_handler =& xoops_gethandler('groupperm');
+        $gperm_handler = xoops_getHandler('groupperm');
 
         $edit_any   = $gperm_handler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_EDIT_ANY_NUM, $groups, $module_id);
         $edit_pfx   = $gperm_handler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_EDIT_PFX_NUM, $groups, $module_id);
@@ -644,14 +643,14 @@ class gwikiPage
                     if (($edit_pfx || $create_pfx) && $this->gwiki_id) {
                         $mayEdit = true;
                     }
-                    if ($create_pfx && !($this->gwiki_id)) {
+                    if ($create_pfx && !$this->gwiki_id) {
                         $mayEdit = true;
                     }
                 }
                 if (($edit_any || $create_any) && $this->gwiki_id) {
                     $mayEdit = true;
                 }
-                if ($create_any && !($this->gwiki_id)) {
+                if ($create_any && !$this->gwiki_id) {
                     $mayEdit = true;
                 }
             } else { // allow edit, but no create if prefix is undefined
@@ -663,7 +662,7 @@ class gwikiPage
             if (($edit_any || $create_any) && $this->gwiki_id) {
                 $mayEdit = true;
             }
-            if ($create_any && !($this->gwiki_id)) {
+            if ($create_any && !$this->gwiki_id) {
                 $mayEdit = true;
             }
         }
@@ -680,13 +679,13 @@ class gwikiPage
     {
         global $xoopsConfig;
 
-        $uid = (int)($uid);
+        $uid = (int)$uid;
 
         if ($uid > 0) {
-            $member_handler =& xoops_gethandler('member');
+            $member_handler = xoops_getHandler('member');
             $user           =& $member_handler->getUser($uid);
             if (is_object($user)) {
-                return "<a href=\"" . XOOPS_URL . "/userinfo.php?uid=$uid\">" . htmlspecialchars($user->getVar('uname'), ENT_QUOTES) . "</a>";
+                return "<a href=\"" . XOOPS_URL . "/userinfo.php?uid=$uid\">" . htmlspecialchars($user->getVar('uname'), ENT_QUOTES) . '</a>';
             }
         }
 
@@ -704,8 +703,8 @@ class gwikiPage
         global $xoopsUser, $xoopsDB;
 
         $dir            = $this->wikiDir;
-        $module_handler =& xoops_gethandler('module');
-        $module         =& $module_handler->getByDirname($dir);
+        $module_handler = xoops_getHandler('module');
+        $module         = $module_handler->getByDirname($dir);
         $module_id      = $module->getVar('mid');
 
         $groups = XOOPS_GROUP_ANONYMOUS;
@@ -713,7 +712,7 @@ class gwikiPage
             $groups = $xoopsUser->getGroups();
         }
 
-        $gperm_handler =& xoops_gethandler('groupperm');
+        $gperm_handler = xoops_getHandler('groupperm');
 
         $edit_any   = $gperm_handler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_EDIT_ANY_NUM, $groups, $module_id);
         $edit_pfx   = $gperm_handler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_EDIT_PFX_NUM, $groups, $module_id);
@@ -827,17 +826,17 @@ class gwikiPage
         global $xoopsDB;
 
         $keyword = $this->escapeForDB($keyword);
-        $id      = (int)($id);
+        $id      = (int)$id;
 
         $page = $this->getPage($keyword, $id);
         if (!$page) {
             return false;
         }
 
-        $sql    = "UPDATE " . $xoopsDB->prefix('gwiki_pages') . " SET active = 0 WHERE keyword='{$keyword}' and active = 1 ";
+        $sql    = 'UPDATE ' . $xoopsDB->prefix('gwiki_pages') . " SET active = 0 WHERE keyword='{$keyword}' and active = 1 ";
         $result = $xoopsDB->query($sql);
 
-        $sql    = "UPDATE " . $xoopsDB->prefix('gwiki_pages') . " SET active = 1 WHERE keyword='{$keyword}' AND gwiki_id='{$id}'";
+        $sql    = 'UPDATE ' . $xoopsDB->prefix('gwiki_pages') . " SET active = 1 WHERE keyword='{$keyword}' AND gwiki_id='{$id}'";
         $result = $xoopsDB->query($sql);
 
         $this->updatePageLinks(true);
@@ -869,10 +868,10 @@ class gwikiPage
         $this->page_id = $this->getPageId($keyword);
 
         if (empty($id)) {
-            $sql = "SELECT * FROM " . $xoopsDB->prefix('gwiki_pages') . ' natural left join ' . $xoopsDB->prefix('gwiki_pageids') . " WHERE keyword='{$keyword}' and active = 1 ";
+            $sql = 'SELECT * FROM ' . $xoopsDB->prefix('gwiki_pages') . ' natural left join ' . $xoopsDB->prefix('gwiki_pageids') . " WHERE keyword='{$keyword}' and active = 1 ";
         } else {
-            $id  = (int)($id);
-            $sql = "SELECT * FROM " . $xoopsDB->prefix('gwiki_pages') . ' natural left join ' . $xoopsDB->prefix('gwiki_pageids') . " WHERE keyword='{$keyword}' and gwiki_id = {$id} ";
+            $id  = (int)$id;
+            $sql = 'SELECT * FROM ' . $xoopsDB->prefix('gwiki_pages') . ' natural left join ' . $xoopsDB->prefix('gwiki_pageids') . " WHERE keyword='{$keyword}' and gwiki_id = {$id} ";
         }
         $result = $xoopsDB->query($sql);
         $page   = false;
@@ -951,7 +950,7 @@ class gwikiPage
             $pre    = substr($keyword, 0, $pos);
             $page   = substr($keyword, $pos + 1);
             $q_pre  = $this->escapeForDB($pre);
-            $sql    = "SELECT * FROM " . $xoopsDB->prefix('gwiki_prefix') . " WHERE prefix='{$q_pre}' ";
+            $sql    = 'SELECT * FROM ' . $xoopsDB->prefix('gwiki_prefix') . " WHERE prefix='{$q_pre}' ";
             $result = $xoopsDB->query($sql);
             $rows   = $xoopsDB->getRowsNum($result);
             if ($rows > 0) {
@@ -1017,7 +1016,7 @@ class gwikiPage
 
         $this->attachments = array();
         $q_keyword         = $this->escapeForDB($page);
-        $sql               = "SELECT * FROM " . $xoopsDB->prefix('gwiki_page_files') . " WHERE keyword='{$q_keyword}' ";
+        $sql               = 'SELECT * FROM ' . $xoopsDB->prefix('gwiki_page_files') . " WHERE keyword='{$q_keyword}' ";
         $result            = $xoopsDB->query($sql);
         $rows              = $xoopsDB->getRowsNum($result);
         while ($row = $xoopsDB->fetchArray($result)) {
@@ -1081,7 +1080,7 @@ class gwikiPage
             }
         }
 
-        $sql    = "SELECT keyword, display_keyword, title FROM " . $xoopsDB->prefix('gwiki_pages') . " WHERE keyword='{$keyword}' and active = 1 ";
+        $sql    = 'SELECT keyword, display_keyword, title FROM ' . $xoopsDB->prefix('gwiki_pages') . " WHERE keyword='{$keyword}' and active = 1 ";
         $result = $xoopsDB->query($sql);
         $rows   = $xoopsDB->getRowsNum($result);
         if ($rows) { // existing page
@@ -1103,8 +1102,7 @@ class gwikiPage
         $title           = htmlspecialchars($title);
         $display_keyword = stripslashes($display_keyword);
 
-        @$this->wikiPageLinks[$keyword] += 1; // track where this page links
-
+        ++$this->wikiPageLinks[$keyword];  // track where this page links
         $url = sprintf($this->wikiLinkURL, $keyword);
 
         return sprintf('<a href="%s" title="%s">%s%s</a>', $url, $title, $display_keyword, $newpage);
@@ -1173,7 +1171,7 @@ class gwikiPage
         $simplelayout = false;
         $tablayout    = false;
 
-        $body = "";
+        $body = '';
 
         $pageselect = 'active=1 AND show_in_index=1 ';
 
@@ -1281,7 +1279,7 @@ class gwikiPage
             $pageselect .= ' AND keyword LIKE "' . $prefix . '%" ';
         }
 
-        $body = "";
+        $body = '';
 
         $sql = 'SELECT keyword, display_keyword, title, lastmodified';
         $sql .= ', FROM_UNIXTIME(lastmodified) as fmtlastmodified, uid';
@@ -1460,7 +1458,7 @@ class gwikiPage
      */
     private function noWikiHoldCode($matches)
     {
-        return $matches[1] . $this->noWikiHold("block", $matches[2]) . $matches[3];
+        return $matches[1] . $this->noWikiHold('block', $matches[2]) . $matches[3];
     }
 
     /**
@@ -1510,8 +1508,8 @@ class gwikiPage
                     } elseif (substr($col, 0, 4) === '&lt;') {
                         $table .= '<td class="left">' . substr($col, 4) . '</td>';
                     } elseif (preg_match('/^\s*[0-9.$+\-]+\s*$/', $col)) {
-                        $class = "number";
-                        if ((float)(preg_replace("/[^-0-9\.]/", "", $col)) < 0) {
+                        $class = 'number';
+                        if ((float)preg_replace("/[^-0-9\.]/", '', $col) < 0) {
                             $class = 'number negative';
                         }
                         $table .= '<td class="' . $class . '">' . trim($col) . '</td>';
@@ -1669,7 +1667,7 @@ class gwikiPage
                 $sql = 'SELECT gwiki_id, keyword, display_keyword, page_set_home, page_set_order, toc_cache ';
                 $sql .= ' FROM ' . $xoopsDB->prefix('gwiki_pages');
                 $sql .= " WHERE active=1 and page_set_home='{$q_page}' ";
-                $sql .= " ORDER BY page_set_order, keyword ";
+                $sql .= ' ORDER BY page_set_order, keyword ';
 
                 $result = $xoopsDB->query($sql);
                 while ($row = $xoopsDB->fetchArray($result)) {
@@ -1688,7 +1686,7 @@ class gwikiPage
         }
         $xoopsDB->freeRecordSet($result);
 
-        return ($toc);
+        return $toc;
     }
 
     /**
@@ -1718,7 +1716,7 @@ class gwikiPage
         foreach ($toc as $ti => $tv) {
             //$link=sprintf($this->getWikiLinkURL(),$tv['keyword']);
             foreach ($tv['toc'] as $i => $v) {
-                if ((int)($v['level']) <= $level) {
+                if ((int)$v['level'] <= $level) {
                     $tocout .= '<li class="wikitoclevel' . $v['level'] . '"><a href="' . sprintf($this->getWikiLinkURL(), $tv['keyword'] . sprintf($this->tocAnchorFmt, $this->tocIdPrefix . $i)) . '">' . $v['name'] . '</a></li>';
                 }
             }
@@ -1727,7 +1725,7 @@ class gwikiPage
             $tocout = '<div class="' . $tocclass . '"><ul class="wikitoclist">' . $tocout . '</ul></div>';
         }
 
-        return ($tocout);
+        return $tocout;
     }
 
     /**
@@ -1777,27 +1775,32 @@ class gwikiPage
         $pageset['first'] = array(
             'link' => sprintf($this->getWikiLinkURL(), $toc[$first]['keyword']),
             'text' => htmlentities($toc[$first]['display_keyword'], ENT_QUOTES),
-            'desc' => _MD_GWIKI_PAGENAV_FIRST);
+            'desc' => _MD_GWIKI_PAGENAV_FIRST
+        );
 
         $pageset['prev'] = array(
             'link' => sprintf($this->getWikiLinkURL(), $toc[$prev]['keyword']),
             'text' => htmlentities($toc[$prev]['display_keyword'], ENT_QUOTES),
-            'desc' => _MD_GWIKI_PAGENAV_PREV);
+            'desc' => _MD_GWIKI_PAGENAV_PREV
+        );
 
         $pageset['home'] = array(
             'link' => sprintf($this->getWikiLinkURL(), $toc[$home]['keyword']),
             'text' => htmlentities($toc[$home]['display_keyword'], ENT_QUOTES),
-            'desc' => _MD_GWIKI_PAGENAV_TOP);
+            'desc' => _MD_GWIKI_PAGENAV_TOP
+        );
 
         $pageset['next'] = array(
             'link' => sprintf($this->getWikiLinkURL(), $toc[$next]['keyword']),
             'text' => htmlentities($toc[$next]['display_keyword'], ENT_QUOTES),
-            'desc' => _MD_GWIKI_PAGENAV_NEXT);
+            'desc' => _MD_GWIKI_PAGENAV_NEXT
+        );
 
         $pageset['last'] = array(
             'link' => sprintf($this->getWikiLinkURL(), $toc[$last]['keyword']),
             'text' => htmlentities($toc[$last]['display_keyword'], ENT_QUOTES),
-            'desc' => _MD_GWIKI_PAGENAV_LAST);
+            'desc' => _MD_GWIKI_PAGENAV_LAST
+        );
 
         if (strcasecmp($toc[$first]['keyword'], $page) === 0) {
             $pageset['first']['link'] = 'javascript:void(0)';
@@ -1815,7 +1818,7 @@ class gwikiPage
             $pageset['last']['link'] = 'javascript:void(0)';
         }
 
-        return ($pageset);
+        return $pageset;
     }
 
     /**
@@ -1899,7 +1902,7 @@ class gwikiPage
         }
         $alttext = empty($parms[0]) ? '' : $parms[0];
         $align   = empty($parms[1]) ? '' : $parms[1];
-        $maxpx   = empty($parms[2]) ? '' : (int)($parms[2]);
+        $maxpx   = empty($parms[2]) ? '' : (int)$parms[2];
 
         // align must be left, right, center or empty
         if (strcasecmp($align, 'left') === 0) {
@@ -1992,7 +1995,7 @@ class gwikiPage
         if (isset($matches[1])) {
             $source = $matches[1];
         }
-        $maxpx = (int)(trim($source));
+        $maxpx = (int)trim($source);
         if ($maxpx < 10) {
             $maxpx = $this->defaultThumbSize;
         }
@@ -2004,7 +2007,7 @@ class gwikiPage
         $dir  = $this->wikiDir;
         $body = '<div class="wikigallery"><ul class="wikigalleryimg">';
 
-        for ($i = 0; $i < $xoopsDB->getRowsNum($result); ++$i) {
+        for ($i = 0, $iMax = $xoopsDB->getRowsNum($result); $i < $iMax; ++$i) {
             $image = $xoopsDB->fetchArray($result);
             $img   = XOOPS_URL . '/uploads/' . $dir . '/' . $image['image_file'];
             $thumb = XOOPS_URL . '/modules/' . $dir . '/getthumb.php?page=' . $image['keyword'] . '&name=' . urlencode($image['image_name']) . '&size=' . $maxpx;
@@ -2294,7 +2297,7 @@ class gwikiPage
      */
     private function renderBlockquote($matches)
     {
-        $src = str_replace("\n", ' ', preg_replace("#^> #m", "", $matches[0]));
+        $src = str_replace("\n", ' ', preg_replace('#^> #m', '', $matches[0]));
 
         return '<blockquote class=\"wikiquote\">' . $src . "</blockquote>\n";
     }
@@ -2306,7 +2309,7 @@ class gwikiPage
      */
     private function renderPreformat($matches)
     {
-        $src = preg_replace("#^. #m", "", $matches[0]);
+        $src = preg_replace('#^. #m', '', $matches[0]);
 
         return '<pre>' . $src . "</pre>\n";
     }
@@ -2342,8 +2345,8 @@ class gwikiPage
         $body    = preg_replace($search, $replace, $body);
 
         // neuter html tags
-        $search  = "#<#";
-        $replace = "&lt;";
+        $search  = '#<#';
+        $replace = '&lt;';
         $body    = preg_replace($search, $replace, $body);
 
         // neuter single quotes
@@ -2357,7 +2360,7 @@ class gwikiPage
         $body    = preg_replace_callback($search, $replace, $body);
 
         // nowiki content gwiki style
-        $search  = "#{nowiki}(.*){endnowiki}#Umsi";
+        $search  = '#{nowiki}(.*){endnowiki}#Umsi';
         $replace = array($this, 'noWikiHoldInline');
         $body    = preg_replace_callback($search, $replace, $body);
 
@@ -2367,7 +2370,7 @@ class gwikiPage
         $body    = preg_replace_callback($search, $replace, $body);
 
         // nowiki content inline creole style
-        $search  = "#{{{(.*)}}}#U";
+        $search  = '#{{{(.*)}}}#U';
         $replace = array($this, 'noWikiHoldWCInline');
         $body    = preg_replace_callback($search, $replace, $body);
 
@@ -2530,7 +2533,7 @@ class gwikiPage
         $body    = preg_replace_callback($search, $replace, $body);
 
         // forced line break blog [[br]] or gwiki {break} styles, themed - by default clear all
-        $search  = "#({reflist})#i";
+        $search  = '#({reflist})#i';
         $replace = array($this, 'renderRefList');
         $body    = preg_replace_callback($search, $replace, $body);
 
@@ -2570,7 +2573,7 @@ class gwikiPage
         $body    = preg_replace($search, $replace, $body);
 
         // restore cached nowiki content, all styles (if you need to use {PdNlNw:#} in your page, put it in a nowiki tag)
-        $search  = "#{PdNlNw:([0-9]{1,})}#";
+        $search  = '#{PdNlNw:([0-9]{1,})}#';
         $replace = array($this, 'noWikiEmit');
         $body    = preg_replace_callback($search, $replace, $body);
 

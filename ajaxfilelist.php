@@ -7,13 +7,12 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 include dirname(dirname(__DIR__)) . '/mainfile.php';
 $xoopsLogger->activated = false;
 
-header("Pragma: public");
-header("Cache-Control: no-cache");
+header('Pragma: public');
+header('Cache-Control: no-cache');
 
 /**
  * @param $string
@@ -40,13 +39,13 @@ function getUserName($uid)
 {
     global $xoopsConfig;
 
-    $uid = (int)($uid);
+    $uid = (int)$uid;
 
     if ($uid > 0) {
-        $member_handler =& xoops_gethandler('member');
+        $member_handler = xoops_getHandler('member');
         $user           = $member_handler->getUser($uid);
         if (is_object($user)) {
-            return "<a href=\"" . XOOPS_URL . "/userinfo.php?uid=$uid\">" . htmlspecialchars($user->getVar('uname'), ENT_QUOTES) . "</a>";
+            return "<a href=\"" . XOOPS_URL . "/userinfo.php?uid=$uid\">" . htmlspecialchars($user->getVar('uname'), ENT_QUOTES) . '</a>';
         }
     }
 
@@ -64,7 +63,7 @@ $result = $xoopsDB->query($sql);
 
 $filess = array();
 
-for ($i = 0; $i < $xoopsDB->getRowsNum($result); ++$i) {
+for ($i = 0, $iMax = $xoopsDB->getRowsNum($result); $i < $iMax; ++$i) {
     $row             = $xoopsDB->fetchArray($result);
     $row['iconlink'] = XOOPS_URL . '/modules/' . $dir . '/assets/icons/48px/' . $row['file_icon'] . '.png';
     $row['userlink'] = getUserName($row['file_uid']);

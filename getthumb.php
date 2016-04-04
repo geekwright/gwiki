@@ -7,7 +7,6 @@
  * @since   1.0
  * @author  Richard Griffith richard@geekwright.com
  * @package gwiki
- * @version $Id$
  *
  * Manage thumbnail cache. Expects gwiki_page_images keyword as page and
  * image_name as name, also optional maximal pixel dimension as size.
@@ -43,7 +42,7 @@ global $xoopsDB;
  */
 function errorExit($msg)
 {
-    header("Status: 500 Internal Error - " . $msg);
+    header('Status: 500 Internal Error - ' . $msg);
     echo $msg;
     exit;
 }
@@ -72,8 +71,8 @@ function cleaner($string)
  */
 function serveFile($name, $mime, $modtime, $nocache = false)
 {
-    if (!($nocache) && (getenv("HTTP_IF_MODIFIED_SINCE") === gmdate("D, d M Y H:i:s", $modtime) . " GMT")) {
-        header("HTTP/1.0 304 Not Modified");
+    if (!$nocache && (getenv('HTTP_IF_MODIFIED_SINCE') === gmdate('D, d M Y H:i:s', $modtime) . ' GMT')) {
+        header('HTTP/1.0 304 Not Modified');
         exit;
     }
 
@@ -84,11 +83,11 @@ function serveFile($name, $mime, $modtime, $nocache = false)
     header('Content-Length: ' . filesize($name));
 
     $seconds_to_cache = 3600;
-    $ts               = gmdate("D, d M Y H:i:s", time() + $seconds_to_cache) . " GMT";
+    $ts               = gmdate('D, d M Y H:i:s', time() + $seconds_to_cache) . ' GMT';
     header("Expires: $ts");
-    header("Pragma: cache");
+    header('Pragma: cache');
     header("Cache-Control: max-age=$seconds_to_cache");
-    header("last-modified: " . gmdate("D, d M Y H:i:s", $modtime) . " GMT");
+    header('last-modified: ' . gmdate('D, d M Y H:i:s', $modtime) . ' GMT');
 
     fpassthru($fp);
     fclose($fp);
@@ -103,10 +102,10 @@ if (isset($_GET['name'])) {
     $name = cleaner($_GET['name']);
 }
 if (isset($_GET['size'])) {
-    $size = (int)($_GET['size']);
+    $size = (int)$_GET['size'];
 }
 if (empty($page) || empty($name)) {
-    errorExit("parameter missing");
+    errorExit('parameter missing');
 }
 if (empty($size) || $size === 0) {
     $size = $default_thumb_size;
@@ -119,13 +118,13 @@ $strategy_new_thumb = 3; // generate and pass new thumbnail
 
 $image = $wikiPage->getPageImage($page, $name);
 if (!$image) {
-    errorExit("invalid parameters");
+    errorExit('invalid parameters');
 }
 
 $file = $image['image_file'];
 $i    = strrpos($file, '/');
 if ($i === false) {
-    errorExit("malformed path");
+    errorExit('malformed path');
 }
 $file_pre  = substr($file, 0, $i);
 $file_post = substr($file, $i);
@@ -220,4 +219,3 @@ switch ($strategy) {
 
 errorExit('unknown condition');
 //include XOOPS_ROOT_PATH."/footer.php";
-

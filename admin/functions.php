@@ -7,7 +7,6 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');

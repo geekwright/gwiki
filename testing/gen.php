@@ -7,17 +7,16 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 include_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
 $xoopsOption['template_main'] = 'gwiki_view.tpl';
-include XOOPS_ROOT_PATH . "/header.php";
+include XOOPS_ROOT_PATH . '/header.php';
 $dir = basename(dirname(__DIR__));
 include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
 global $wikiPage;
 $wikiPage = new gwikiPage;
 
-include "LoremIpsumGenerator.php";
+include __DIR__ . '/LoremIpsumGenerator.php';
 $LIGen = new LoremIpsumGenerator;
 
 $limit     = 100;            // how many pages per run
@@ -28,7 +27,7 @@ $pscnt   = 0;
 
 if (!empty($_POST['op'])) {
     for ($i = 1; $i <= $limit; ++$i) {
-        $r         = mt_rand(1, 1000);
+        $r         = random_int(1, 1000);
         $keylength = 1;
         if ($r < 980) {
             $keylength = 2;
@@ -40,14 +39,14 @@ if (!empty($_POST['op'])) {
         $keyword = trim($LIGen->getContent($keylength, 'txt', $loremipsum = false));
         $keyword = str_replace(array(' ', '.', ',', "\t"), array('-', '', '', ''), $keyword);
         //echo $keyword . "\n";
-        $title = $LIGen->getContent(mt_rand(3, 6), 'txt', $loremipsum = false);
+        $title = $LIGen->getContent(random_int(3, 6), 'txt', $loremipsum = false);
         $title = str_replace(array('.', ',', "\t"), '', $title);
         //echo $title . "\n";
-        $body = $LIGen->getContent(mt_rand(60, $bodylimit), 'txt', $loremipsum = true);
+        $body = $LIGen->getContent(random_int(60, $bodylimit), 'txt', $loremipsum = true);
         //echo $body . "\n";
 
         // convert a few single words in body to links
-        $linklimit = mt_rand(3, 8);
+        $linklimit = random_int(3, 8);
         for ($j = 1; $j < $linklimit; ++$j) {
             $text = trim($LIGen->getContent(1, 'txt', $loremipsum = false));
             $text = str_replace('.', '', $text);
@@ -57,7 +56,7 @@ if (!empty($_POST['op'])) {
         }
 
         // convert 2 word phrases in body to links - do lots since most won't be found
-        $linklimit = mt_rand(100, 300);
+        $linklimit = random_int(100, 300);
         for ($j = 1; $j < $linklimit; ++$j) {
             $text = trim($LIGen->getContent(2, 'txt', $loremipsum = false));
             $text = str_replace('.', '', $text);
@@ -70,11 +69,11 @@ if (!empty($_POST['op'])) {
         $wikiPage->title           = $title;
         $wikiPage->display_keyword = $keyword;
         $wikiPage->body            = $body;
-        $wikiPage->uid             = ($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
+        $wikiPage->uid             = $xoopsUser ? $xoopsUser->getVar('uid') : 0;
 
         // randomly pick a random parent page
         $parent = '';
-        if (mt_rand(0, 1000) > 700) {
+        if (random_int(0, 1000) > 700) {
             $sql = 'SELECT keyword FROM ' . $xoopsDB->prefix('gwiki_pageids') . ' AS r1 ';
             $sql .= 'JOIN (SELECT (RAND() * (SELECT MAX(page_id) FROM ' . $xoopsDB->prefix('gwiki_pageids') . ')) AS id) AS r2 ';
             $sql .= 'WHERE r1.page_id >= r2.id ORDER BY r1.page_id ASC LIMIT 1 ';
@@ -88,9 +87,9 @@ if (!empty($_POST['op'])) {
         $wikiPage->parent_page = $parent;
 
         // randomly construct a page set
-        if ($pageset === '' && mt_rand(0, 1000) > 950) {
+        if ($pageset === '' && random_int(0, 1000) > 950) {
             $pageset = $keyword;
-            $pscnt   = mt_rand(3, 20);
+            $pscnt   = random_int(3, 20);
         } else {
             if ((--$pscnt) < 1) {
                 $pageset = '';
@@ -110,4 +109,4 @@ if (!empty($_POST['op'])) {
 }
 echo '<br /><br/><form method="post"><input type="hidden" name="op" value="doit"><input type="submit" value="Run"></form>';
 
-include XOOPS_ROOT_PATH . "/footer.php";
+include XOOPS_ROOT_PATH . '/footer.php';

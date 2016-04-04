@@ -55,27 +55,27 @@ class Diff
      * prefixed with '+', lines that are only in the first string are prefixed
      * with '-'
      *
-     * @param array $c Output of <tt>lsm</tt> method
+     * @param array  $c     Output of <tt>lsm</tt> method
      * @param        string First string
      * @param        string Second String
-     * @param  int    $i
-     * @param  int    $j
+     * @param  int   $i
+     * @param  int   $j
      * @return string
      * @see lsm
      */
     protected function _printDiff($c, $s1, $s2, $i, $j)
     {
-        $diff = "";
+        $diff = '';
         if ($i >= 0 && $j >= 0 && $s1[$i] === $s2[$j]) {
             $diff .= $this->_printDiff($c, $s1, $s2, $i - 1, $j - 1);
-            $diff .= "  " . $s1[$i] . PHP_EOL;
+            $diff .= '  ' . $s1[$i] . PHP_EOL;
         } else {
             if ($j >= 0 && ($i === -1 || $c[$i][$j - 1] >= $c[$i - 1][$j])) {
                 $diff .= $this->_printDiff($c, $s1, $s2, $i, $j - 1);
-                $diff .= "+ " . $s2[$j] . PHP_EOL;
+                $diff .= '+ ' . $s2[$j] . PHP_EOL;
             } elseif ($i >= 0 && ($j === -1 || $c[$i][$j - 1] < $c[$i - 1][$j])) {
                 $diff .= $this->_printDiff($c, $s1, $s2, $i - 1, $j);
-                $diff .= "- " . $s1[$i] . PHP_EOL;
+                $diff .= '- ' . $s1[$i] . PHP_EOL;
             }
         }
 

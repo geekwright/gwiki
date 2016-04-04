@@ -7,15 +7,14 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 //  trigger_error("Clean Invoked");
 include dirname(dirname(__DIR__)) . '/mainfile.php';
 if (empty($_POST['check'])) { // this is set by the admin page option, not by a regular call
     $xoopsOption['template_main'] = 'gwiki_view.tpl';
-    include XOOPS_ROOT_PATH . "/header.php";
+    include XOOPS_ROOT_PATH . '/header.php';
     do_clean();
-    include XOOPS_ROOT_PATH . "/footer.php";
+    include XOOPS_ROOT_PATH . '/footer.php';
 } else {
     $xoopsLogger->activated = false;
     do_clean();
@@ -28,12 +27,12 @@ function do_clean()
 
     $dir = basename(__DIR__);
     // Access module configs from block:
-    $module_handler = &xoops_gethandler('module');
+    $module_handler = xoops_getHandler('module');
     $module         = $module_handler->getByDirname($dir);
-    $config_handler = &xoops_gethandler('config');
+    $config_handler = xoops_getHandler('config');
     $moduleConfig   = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
 
-    $retaindays = (int)($moduleConfig['retain_days']);
+    $retaindays = (int)$moduleConfig['retain_days'];
     if ($retaindays <= 0) {
         return;
     }

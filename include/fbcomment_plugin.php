@@ -9,7 +9,6 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 /*
@@ -38,9 +37,9 @@ function fbcom_plugin(&$metas, $plugin_env)
 
     $dir = basename(dirname(__DIR__));
     // Access module configs from block:
-    $module_handler = &xoops_gethandler('module');
+    $module_handler = xoops_getHandler('module');
     $module         = $module_handler->getByDirname($dir);
-    $config_handler = &xoops_gethandler('config');
+    $config_handler = xoops_getHandler('config');
     $moduleConfig   = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
 
     $wikihome = strtolower($moduleConfig['wiki_home_page']);

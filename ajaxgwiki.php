@@ -7,7 +7,6 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 include dirname(dirname(__DIR__)) . '/mainfile.php';
 $xoopsLogger->activated = false;
@@ -41,22 +40,22 @@ $page = isset($_GET['page']) ? cleaner($_GET['page']) : null;
 //trigger_error($page);
 
 if (isset($_GET['bid'])) {
-    $bid = (int)($_GET['bid']);
+    $bid = (int)$_GET['bid'];
 } // from a block
 if (isset($_GET['id'])) {
-    $id = (int)($_GET['id']);
+    $id = (int)$_GET['id'];
 }    // from utility (i.e. history)
 
 $dir = basename(__DIR__);
 // Access module configs from block:
-$module_handler =& xoops_gethandler('module');
-$module         =& $module_handler->getByDirname($dir);
-$config_handler =& xoops_gethandler('config');
+$module_handler = xoops_getHandler('module');
+$module         = $module_handler->getByDirname($dir);
+$config_handler = xoops_getHandler('config');
 $moduleConfig   =& $config_handler->getConfigsByCat(0, $module->getVar('mid'));
 
 $alloworigin = $moduleConfig['allow_origin'];
 if (!empty($alloworigin)) {
-    header("Access-Control-Allow-Origin: " . $alloworigin);
+    header('Access-Control-Allow-Origin: ' . $alloworigin);
 }
 
 include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';

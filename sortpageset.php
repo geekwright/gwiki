@@ -7,9 +7,8 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
-include "header.php";
+include 'header.php';
 global $xoTheme, $xoopsTpl;
 global $wikiPage;
 $GLOBALS['xoopsOption']['template_main'] = 'gwiki_view.tpl';
@@ -51,7 +50,7 @@ function fetchPageSet($page)
             $sql = 'SELECT gwiki_id, keyword, display_keyword, page_set_home, page_set_order ';
             $sql .= ' FROM ' . $xoopsDB->prefix('gwiki_pages');
             $sql .= " WHERE active=1 and page_set_home='{$q_page}' ";
-            $sql .= " ORDER BY page_set_order, keyword ";
+            $sql .= ' ORDER BY page_set_order, keyword ';
 
             $result = $xoopsDB->query($sql);
             while ($row = $xoopsDB->fetchArray($result)) {
@@ -59,13 +58,13 @@ function fetchPageSet($page)
                 if ($row['page_set_home'] === $row['keyword']) {
                     $display_keyword = $row['display_keyword'];
                 }
-                $pageset[($row['gwiki_id'] . '')] = $row;
+                $pageset[$row['gwiki_id'] . ''] = $row;
             }
         }
     }
     $xoopsDB->freeRecordSet($result);
 
-    return ($pageset);
+    return $pageset;
 }
 
 // $_GET variables we use
@@ -181,7 +180,6 @@ if ($op === 'update') {
         $sql = 'UPDATE ' . $xoopsDB->prefix('gwiki_pages');
         $sql .= ' SET page_set_order = ' . $v['page_set_order'];
         $sql .= ' WHERE gwiki_id = ' . $v['gwiki_id'] . " and active=1 and page_set_home='{$q_page}' ";
-        ;
         $result = $xoopsDB->queryF($sql);
     }
     $pages = array();

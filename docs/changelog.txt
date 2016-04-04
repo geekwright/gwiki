@@ -8,7 +8,9 @@ gwiki ChangeLog
 - fix bug in search (slider84/mamba)
 - change intval() to (int) (mamba)
 - change dirname(__FIL__) to __DIR__ (mamba)
-- cosmetics (mamba)
+- code cosmetics (mamba)
+- removed @version (mamba)
+- single quotes (mamba0
 
 
 === gwiki Module 1.0 RC2 ===

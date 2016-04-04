@@ -7,9 +7,8 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
-include "header.php";
+include 'header.php';
 global $xoTheme, $xoopsTpl;
 global $wikiPage;
 
@@ -38,7 +37,7 @@ if (isset($_GET['page_id']) && !isset($_GET['page'])) {
     }
 }
 // $_GET variables we use
-$page      = $wikiPage->normalizeKeyword((isset($_GET['page'])) ? cleaner($_GET['page']) : $wikiPage->wikiHomePage);
+$page      = $wikiPage->normalizeKeyword(isset($_GET['page']) ? cleaner($_GET['page']) : $wikiPage->wikiHomePage);
 $highlight = isset($_GET['query']) ? cleaner($_GET['query']) : null;
 
 // if we get a naked or external prefix, try and do something useful
@@ -92,7 +91,7 @@ $_GET['page_id'] = $wikiPage->page_id;
 $_GET['nsid']    = $wikiPage->currentprefixid;
 
 $xoopsOption['template_main'] = $wikiPage->getTemplateName(); // 'gwiki_view.tpl';
-include XOOPS_ROOT_PATH . "/header.php";
+include XOOPS_ROOT_PATH . '/header.php';
 
 $pageX['title'] = prepOut($pageX['title']);
 $xoopsTpl->assign('gwiki', $pageX);
@@ -119,4 +118,4 @@ if (!empty($err_message)) {
 
 include XOOPS_ROOT_PATH . '/include/comment_view.php';
 
-include XOOPS_ROOT_PATH . "/footer.php";
+include XOOPS_ROOT_PATH . '/footer.php';

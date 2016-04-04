@@ -7,7 +7,6 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
@@ -25,9 +24,9 @@ function b_gwiki_wikiblock_show($options)
 
     $dir = basename(dirname(__DIR__));
     // Access module configs from block:
-    $module_handler = &xoops_gethandler('module');
+    $module_handler = xoops_getHandler('module');
     $module         = $module_handler->getByDirname($dir);
-    $config_handler = &xoops_gethandler('config');
+    $config_handler = xoops_getHandler('config');
     $moduleConfig   = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
 
     include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
@@ -76,7 +75,7 @@ function b_gwiki_wikiblock_edit($options)
     if ($_GET['op'] === 'clone') {
         $form .= _MI_GWIKI_BL_CLONE_WARN . '<br />';
     }
-    $form .= '<input type="hidden" value="' . (int)($_GET['bid']) . '"id="options[1]" name="options[1]" />';
+    $form .= '<input type="hidden" value="' . (int)$_GET['bid'] . '"id="options[1]" name="options[1]" />';
     $form .= _MB_GWIKI_REMOTE_AJAX_URL . ' <input type="text" size="35" value="' . $options[2] . '"id="options[2]" name="options[2]" />  <i>' . _MB_GWIKI_REMOTE_AJAX_URL_DESC . '</i><br />';
 
     return $form;
@@ -155,9 +154,9 @@ function b_gwiki_teaserblock_show($options)
 
     $dir = basename(dirname(__DIR__));
     // Access module configs from block:
-    $module_handler = &xoops_gethandler('module');
+    $module_handler = xoops_getHandler('module');
     $module         = $module_handler->getByDirname($dir);
-    $config_handler = &xoops_gethandler('config');
+    $config_handler = xoops_getHandler('config');
     $moduleConfig   = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
 
     include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
@@ -167,7 +166,7 @@ function b_gwiki_teaserblock_show($options)
 
     $page = $options[1];
     if ($options[2]) {
-        $pagelike = $page . "%";
+        $pagelike = $page . '%';
         $sql      = 'SELECT keyword FROM ' . $xoopsDB->prefix('gwiki_pageids');
         $sql .= " WHERE keyword like '{$pagelike}' ORDER BY RAND() LIMIT 1 ";
         $result = $xoopsDB->query($sql);
@@ -350,12 +349,12 @@ function b_gwiki_recentblock_edit($options)
     $form = '';
     $form .= _MB_GWIKI_RECENT_COUNT . ' <input type="text" value="' . $options[0] . '"id="options[0]" name="options[0]" /><br />';
     $form .= _MB_GWIKI_PICK_NAMESPACE . ' <select id="options[1]" name="options[1]">';
-    $form .= '<option value="0"' . ((int)($options[1]) === 0 ? ' selected' : '') . '></option>';
+    $form .= '<option value="0"' . ((int)$options[1] === 0 ? ' selected' : '') . '></option>';
     $sql    = 'SELECT prefix_id, prefix FROM ' . $xoopsDB->prefix('gwiki_prefix') . ' ORDER BY prefix';
     $result = $xoopsDB->query($sql);
     while ($myrow = $xoopsDB->fetchArray($result)) {
-        $pid = (int)($myrow['prefix_id']);
-        $form .= '<option value="' . $pid . '"' . ((int)($options[1]) === $pid ? ' selected' : '') . '>' . $myrow['prefix'] . '</option>';
+        $pid = (int)$myrow['prefix_id'];
+        $form .= '<option value="' . $pid . '"' . ((int)$options[1] === $pid ? ' selected' : '') . '>' . $myrow['prefix'] . '</option>';
     }
     $form .= '</select><br />';
     $form .= _MB_GWIKI_MAX_AGE . ' <input type="text" value="' . $options[2] . '"id="options[2]" name="options[2]" /><br />';
@@ -381,9 +380,6 @@ function b_gwiki_pagesettoc_show($options)
     if (empty($options[1])) {
         if (isset($_GET['page'])) {
             $page = $_GET['page'];
-            if (get_magic_quotes_gpc()) {
-                $page = stripslashes($page);
-            }
             $page = html_entity_decode($page);
             $page = trim($page);
         }
@@ -396,7 +392,7 @@ function b_gwiki_pagesettoc_show($options)
     }
     $page = $wikiPage->getOOBFromKeyword($page);
 
-    $level = (int)($options[0]);
+    $level = (int)$options[0];
     if ($level < 1) {
         $level = 1;
     }
@@ -449,9 +445,6 @@ function b_gwiki_related_show($options)
     if (empty($options[1])) {
         if (isset($_GET['page'])) {
             $page = $_GET['page'];
-            if (get_magic_quotes_gpc()) {
-                $page = stripslashes($page);
-            }
             $page = html_entity_decode($page);
             $page = trim($page);
             $page = $wikiPage->getOOBFromKeyword($page);
@@ -482,12 +475,12 @@ function b_gwiki_related_show($options)
         return false;
     }
 
-    $limit = (int)($options[0]);
+    $limit = (int)$options[0];
     if ($limit < 1) {
         $limit = 1;
     }
 
-    $sort = (int)($options[2]);
+    $sort = (int)$options[2];
     if ($sort < 0) {
         $sort = 0;
     }
@@ -495,9 +488,9 @@ function b_gwiki_related_show($options)
         $sort = 1;
     }
 
-    $relatedsort = " lastmodified DESC, hit_count DESC, ";
+    $relatedsort = ' lastmodified DESC, hit_count DESC, ';
     if ($sort === 1) {
-        $relatedsort = " hit_count DESC, lastmodified DESC, ";
+        $relatedsort = ' hit_count DESC, lastmodified DESC, ';
     }
 
     $q_page = $wikiPage->escapeForDB($page);
@@ -541,8 +534,8 @@ function b_gwiki_related_edit($options)
     $form = _MB_GWIKI_RELATED_COUNT . ' <input type="text" value="' . $options[0] . '"id="options[0]" name="options[0]" /><br />';
     $form .= _MB_GWIKI_RELATED . ' <input type="text" value="' . $options[1] . '"id="options[1]" name="options[1]" /> ' . _MB_GWIKI_RELATED_DESC . '<br />';
     $form .= _MB_GWIKI_RELATED_SORT . ' <select id="options[2]" name="options[2]">';
-    $form .= '<option value="0"' . ((int)($options[2]) === 0 ? ' selected' : '') . '>' . _MB_GWIKI_RELATED_SORT_DATE . '</option>';
-    $form .= '<option value="1"' . ((int)($options[2]) === 1 ? ' selected' : '') . '>' . _MB_GWIKI_RELATED_SORT_HITS . '</option>';
+    $form .= '<option value="0"' . ((int)$options[2] === 0 ? ' selected' : '') . '>' . _MB_GWIKI_RELATED_SORT_DATE . '</option>';
+    $form .= '<option value="1"' . ((int)$options[2] === 1 ? ' selected' : '') . '>' . _MB_GWIKI_RELATED_SORT_HITS . '</option>';
     $form .= '</select><br />';
 
     return $form;
@@ -564,10 +557,7 @@ function b_gwiki_linkshere_show($options)
     $wikiPage = new gwikiPage;
 
     if (isset($_GET['page'])) {
-        $page = $_GET['page'];
-        if (get_magic_quotes_gpc()) {
-            $page = stripslashes($page);
-        }
+        $page   = $_GET['page'];
         $page   = html_entity_decode($page);
         $page   = trim($page);
         $page   = $wikiPage->getOOBFromKeyword($page);
@@ -578,12 +568,12 @@ function b_gwiki_linkshere_show($options)
         return false;
     }
 
-    $limit = (int)($options[0]);
+    $limit = (int)$options[0];
     if ($limit < 0) {
         $limit = 0;
     }
 
-    $sort = (int)($options[1]);
+    $sort = (int)$options[1];
     if ($sort < 0) {
         $sort = 0;
     }
@@ -644,9 +634,9 @@ function b_gwiki_linkshere_edit($options)
 {
     $form = _MB_GWIKI_RELATED_COUNT . ' <input type="text" value="' . $options[0] . '"id="options[0]" name="options[0]" /><br />';
     $form .= _MB_GWIKI_RELATED_SORT . ' <select id="options[1]" name="options[1]">';
-    $form .= '<option value="0"' . ((int)($options[1]) === 0 ? ' selected' : '') . '>' . _MB_GWIKI_RELATED_SORT_ALPHA . '</option>';
-    $form .= '<option value="1"' . ((int)($options[1]) === 1 ? ' selected' : '') . '>' . _MB_GWIKI_RELATED_SORT_DATE . '</option>';
-    $form .= '<option value="2"' . ((int)($options[1]) === 2 ? ' selected' : '') . '>' . _MB_GWIKI_RELATED_SORT_HITS . '</option>';
+    $form .= '<option value="0"' . ((int)$options[1] === 0 ? ' selected' : '') . '>' . _MB_GWIKI_RELATED_SORT_ALPHA . '</option>';
+    $form .= '<option value="1"' . ((int)$options[1] === 1 ? ' selected' : '') . '>' . _MB_GWIKI_RELATED_SORT_DATE . '</option>';
+    $form .= '<option value="2"' . ((int)$options[1] === 2 ? ' selected' : '') . '>' . _MB_GWIKI_RELATED_SORT_HITS . '</option>';
     $form .= '</select><br />';
 
     return $form;

@@ -7,7 +7,6 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 
 /*
@@ -36,9 +35,9 @@ include dirname(dirname(__DIR__)) . '/mainfile.php';
 // otherwise, turn off logging and just get busy cleaning
 if (!empty($_REQUEST['check'])) {
     $xoopsOption['template_main'] = 'gwiki_view.tpl';
-    include XOOPS_ROOT_PATH . "/header.php";
+    include XOOPS_ROOT_PATH . '/header.php';
     do_clean();
-    include XOOPS_ROOT_PATH . "/footer.php";
+    include XOOPS_ROOT_PATH . '/footer.php';
 } else {
     $xoopsLogger->activated = false;
     do_clean();
