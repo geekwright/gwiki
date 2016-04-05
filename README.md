@@ -18,7 +18,7 @@ multiple collaborative efforts, each with their own policies.
 
 Although nearing release, this is still a work in progress.
 
-[![Tutorial Available](http://xoops.org/images/tutorial-available-blue.svg)](https://www.gitbook.com/book/xoops/xoops-gwiki-module/) Tutorial: see [here](https://www.gitbook.com/book/xoops/xoops-gwiki-module-tutorial/).
+[![Tutorial Available](http://xoops.org/images/tutorial-available-blue.svg)](https://www.gitbook.com/book/xoops/gwiki-tutorial/) Tutorial: see [here](https://www.gitbook.com/book/xoops/gwiki-tutorial/).
 To contribute to the Tutorial, [fork it on GitHub](https://github.com/XoopsDocs/gwiki-tutorial)
 
 Documentation is also supplied as wiki pages which can be optionally loaded
