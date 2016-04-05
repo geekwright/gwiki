@@ -31,7 +31,7 @@ error_reporting(-1);
 
 $dir = basename(__DIR__);
 include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
-$wikiPage = new gwikiPage;
+$wikiPage = new GwikiPage;
 
 $default_thumb_size = $wikiPage->defaultThumbSize;
 

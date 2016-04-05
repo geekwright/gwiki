@@ -64,4 +64,4 @@ function adminTableEnd($links)
 $dir = basename(dirname(__DIR__));
 include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
 global $wikiPage;
-$wikiPage = new gwikiPage;
+$wikiPage = new GwikiPage;

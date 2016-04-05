@@ -3,12 +3,6 @@
  * gwikiPage.php - class to access wiki page data
  *
  * This file is part of gwiki - geekwright wiki
- *
- * @copyright  Copyright © 2013 geekwright, LLC. All rights reserved.
- * @license    gwiki/docs/license.txt  GNU General Public License (GPL)
- * @since      1.0
- * @author     Richard Griffith <richard@geekwright.com>
- * @package    gwiki
  */
 
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
@@ -17,9 +11,16 @@ define('_WIKI_CAMELCASE_REGEX', '(([A-Z]{1,}[a-z\x80-\xff0-9\:]+){2,}\d*)');
 define('_WIKI_KEYWORD_REGEX', '([A-Za-z\x80-\xff0-9.\:-]{1,})');
 
 /**
- * Class gwikiPage
+ * gwikiPage.php - class to access wiki page data
+ *
+ *
+ * @category  Class
+ * @package   Gwiki
+ * @author    Richard Griffith <richard@geekwright.com>
+ * @copyright 2013-2015 geekwright, LLC. All rights reserved.
+ * @license   gwiki/docs/license.txt  GNU General Public License (GPL)
  */
-class gwikiPage
+class GwikiPage
 {
     //------------------------------------------------------------
     // Properties -  public, protected, and private
@@ -56,19 +57,20 @@ class gwikiPage
     public $renderedPage;
 
     private $numberOfRecentItems = 10;
-    private $wikiLinkURL         = 'index.php?page=%s'; // keyword will be inserted with sprintf. better link establised in __construct()
+    // $wikiLinkURL is a sprintf format string, with keyword as only arg. Better link establised in __construct()
+    private $wikiLinkURL  = 'index.php?page=%s';
     public  $dateFormat;
     public  $defaultThumbSize;
-    private $tocIdPrefix         = 'toc';
-    private $tocAnchorFmt        = '#%s';
-    private $imageLib            = array();
+    private $tocIdPrefix  = 'toc';
+    private $tocAnchorFmt = '#%s';
+    private $imageLib     = array();
     private $useCamelCase;
     private $autoNameFormat;
 
     private $module_id;
 
     private $wikiDir; // dirname of the gwiki module
-    private $gwikiVersion = 1; // wiki syntax version for future backward compatability
+    private $gwikiVersion = 1; // wiki syntax version for future backward compatibility
 
     private $highlightArg;
 
@@ -93,24 +95,18 @@ class gwikiPage
 
     /**
      * class constructor
-     *
-     * @param  ? what and why?
-     *
-     * @access private
-     * @since  1.0.0
      */
     public function __construct()
     {
-        global $xoopsDB;
         $this->resetPage();
         $dir           = basename(dirname(__DIR__));
         $this->wikiDir = $dir;
 
-        $module_handler = xoops_getHandler('module');
-        $module         = $module_handler->getByDirname($dir);
+        $moduleHandler = xoops_getHandler('module');
+        $module         = $moduleHandler->getByDirname($dir);
         $module_id      = $module->getVar('mid');
-        $config_handler = xoops_getHandler('config');
-        $moduleConfig   = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
+        $configHandler = xoops_getHandler('config');
+        $moduleConfig   = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
 
         $this->wikiLinkURL      = $moduleConfig['wikilink_template'];
         $this->wikiHomePage     = $moduleConfig['wiki_home_page'];
@@ -130,9 +126,13 @@ class gwikiPage
     }
 
     /**
-     * @param        $name
-     * @param string $domain
-     * @param null   $language
+     * load language resources
+     *
+     * @param string $name     language file name (main, modinfo, etc.)
+     * @param string $domain   domain/module
+     * @param null   $language language
+     *
+     * @return void
      */
     private function loadLanguage($name, $domain = '', $language = null)
     {
@@ -142,6 +142,11 @@ class gwikiPage
         }
     }
 
+    /**
+     * Reset all page properties
+     *
+     * @return void
+     */
     protected function resetPage()
     {
         $this->gwiki_id         = null;
@@ -179,17 +184,24 @@ class gwikiPage
     }
 
     /**
-     * @param $value
+     * escape a string to be "safe" for use in database
+     *
+     * @param string $value string to be escaped
      *
      * @return string
      */
     public function escapeForDB($value)
     {
-        return mysqli_real_escape_string($value);
+        global $xoopsDB;
+        return $value = $xoopsDB->escape($value);
     }
 
     /**
-     * @param $count
+     * set the count for recent item list
+     *
+     * @param int $count item count
+     *
+     * @return void
      */
     public function setRecentCount($count)
     {
@@ -200,7 +212,11 @@ class gwikiPage
     }
 
     /**
-     * @param $url
+     * Set the URL pattern for wiki links
+     *
+     * @param string $url sprintf pattern for URL. Will get page name as parameter.
+     *
+     * @return void
      */
     public function setWikiLinkURL($url)
     {
@@ -208,6 +224,8 @@ class gwikiPage
     }
 
     /**
+     * Get the URL pattern for wiki links
+     *
      * @return string
      */
     public function getWikiLinkURL()
@@ -216,6 +234,8 @@ class gwikiPage
     }
 
     /**
+     * git the wiki directory (dirname)
+     *
      * @return string
      */
     public function getWikiDir()
@@ -224,6 +244,8 @@ class gwikiPage
     }
 
     /**
+     * get max upload size from ini
+     *
      * @return int|string
      */
     public function getMaxUploadSize()
@@ -234,21 +256,25 @@ class gwikiPage
             // The 'G' modifier is available since PHP 5.1.0
             case 'g':
                 $val *= 1024;
-                break;
+            // no break
             case 'm':
                 $val *= 1024;
-                break;
+            // no break
             case 'k':
                 $val *= 1024;
-                break;
+            // no break
         }
 
         return $val;
     }
 
     /**
-     * @param $prefix
-     * @param $linkformat
+     * set format for TOC links
+     *
+     * @param string $prefix     prefix
+     * @param string $linkformat anchor
+     *
+     * @return void
      */
     public function setTocFormat($prefix, $linkformat)
     {
@@ -261,9 +287,7 @@ class gwikiPage
      *
      * @param mixed $keyword - wiki page name
      *
-     * @return mixed|string
-     * @access public
-     * @since  1.0
+     * @return string
      */
     public function makeKeyword($keyword)
     {
@@ -280,8 +304,10 @@ class gwikiPage
     }
 
     /**
-     * @param $nsid
-     * @param $page
+     * add namespace prefix to a wiki word
+     *
+     * @param int    $nsid namespace (prefix) id
+     * @param string $page keyword
      *
      * @return bool|string
      */
@@ -313,9 +339,7 @@ class gwikiPage
      *
      * @param mixed $keyword - wiki page name possibily containing OOB data
      *
-     * @return mixed|string
-     * @access public
-     * @since  1.0
+     * @return string - keyword with no OOB data
      */
     public function getOOBFromKeyword($keyword)
     {
@@ -324,7 +348,7 @@ class gwikiPage
             $lparen = strpos($keyword, '(');
             if ($lparen !== false) {
                 $inparen = substr($keyword, $lparen);
-                $inparen = substr($inparen, 1, strlen($inparen) - 2);
+                $inparen = substr($inparen, 1, - 2);
                 $keyword = substr($keyword, 0, $lparen);
                 $oob     = $inparen;
             }
@@ -338,11 +362,9 @@ class gwikiPage
     /**
      * If page exists, fix case of page name to that specified in database
      *
-     * @param mixed $keyword - wiki page name
+     * @param string $keyword - wiki page name
      *
-     * @return mixed|string
-     * @access public
-     * @since  1.0
+     * @return string normalized keyword
      */
     public function normalizeKeyword($keyword)
     {
@@ -366,9 +388,7 @@ class gwikiPage
      *
      * @param mixed $keyword - wiki page name
      *
-     * @return int
-     * @access public
-     * @since  1.0
+     * @return int - id of page
      */
     public function getCurrentId($keyword)
     {
@@ -383,7 +403,9 @@ class gwikiPage
     }
 
     /**
-     * @param bool $leave_inactive
+     * Add current page as a new revision
+     *
+     * @param bool $leave_inactive true to save page as inactive
      *
      * @return mixed
      */
@@ -391,8 +413,7 @@ class gwikiPage
     {
         global $xoopsDB;
 
-        $page            = $this->escapeForDB($this->keyword);
-        $display_keyword = $this->display_keyword;
+        $page = $this->escapeForDB($this->keyword);
         if (empty($this->display_keyword)) {
             $this->display_keyword = $page;
         }
@@ -432,7 +453,8 @@ class gwikiPage
             // allow a save that is not activated (for conflict management, and maybe more)
             $this->active = 0;
             $sql          = 'INSERT INTO ' . $xoopsDB->prefix('gwiki_pages');
-            $sql .= ' (keyword, display_keyword, title, body, parent_page, page_set_home, page_set_order, meta_description, meta_keywords';
+            $sql .= ' (keyword, display_keyword, title, body, parent_page, page_set_home, page_set_order';
+            $sql .= ', meta_description, meta_keywords';
             $sql .= ', lastmodified, uid, admin_lock, active, search_body, toc_cache, show_in_index, gwiki_version)';
             $sql .= ' VALUES (';
             $sql .= '\'' . $page . '\' ,';
@@ -464,8 +486,9 @@ class gwikiPage
                 $previous_rows = $xoopsDB->getAffectedRows();
                 $this->active  = 1;
                 $sql           = 'INSERT INTO ' . $xoopsDB->prefix('gwiki_pages');
-                $sql .= ' (keyword, display_keyword, title, body, parent_page, page_set_home, page_set_order, meta_description, meta_keywords';
-                $sql .= ', lastmodified, uid, admin_lock, active, search_body, toc_cache, show_in_index, gwiki_version)';
+                $sql .= ' (keyword, display_keyword, title, body, parent_page, page_set_home, page_set_order';
+                $sql .= ', meta_description, meta_keywords, lastmodified';
+                $sql .= ', uid, admin_lock, active, search_body, toc_cache, show_in_index, gwiki_version)';
                 $sql .= ' VALUES (';
                 $sql .= '\'' . $page . '\' ,';
                 $sql .= '\'' . $this->escapeForDB($this->display_keyword) . '\' ,';
@@ -491,30 +514,30 @@ class gwikiPage
 
                     $this->updatePageLinks();
 
-                    $notification_handler = xoops_getHandler('notification');
+                    $notificationHandler = xoops_getHandler('notification');
                     $tags['PAGE_NAME']    = $page;
                     $tags['PAGE_TITLE']   = $this->title;
                     if (empty($tags['PAGE_TITLE'])) {
                         $tags['PAGE_TITLE'] = $this->display_keyword;
                     }
                     if (empty($tags['PAGE_TITLE'])) {
-                        $tags['PAGE_TITLE'] = $this->page;
+                        $tags['PAGE_TITLE'] = $page;
                     }
                     $tags['PAGE_LINK'] = sprintf($this->wikiLinkURL, $page);
                     $tags['NAMESPACE'] = $this->currentprefix;
 
                     if ($previous_rows < 1) {
                         // only for new
-                        $notification_handler->triggerEvent('global', 0, 'new_page', $tags, array(), $this->module_id);
+                        $notificationHandler->triggerEvent('global', 0, 'new_page', $tags, array(), $this->module_id);
                         if ($this->currentprefixid) { // have namespace
-                            $notification_handler->triggerEvent('namespace', $this->currentprefixid, 'new_ns_page', $tags, array(), $this->module_id);
+                            $notificationHandler->triggerEvent('namespace', $this->currentprefixid, 'new_ns_page', $tags, array(), $this->module_id);
                         }
                     }
                     // for all cases (new is also an update)
-                    $notification_handler->triggerEvent('page', $this->page_id, 'page_watch', $tags, array(), $this->module_id);
-                    $notification_handler->triggerEvent('global', 0, 'upd_page', $tags, array(), $this->module_id);
+                    $notificationHandler->triggerEvent('page', $this->page_id, 'page_watch', $tags, array(), $this->module_id);
+                    $notificationHandler->triggerEvent('global', 0, 'upd_page', $tags, array(), $this->module_id);
                     if ($this->currentprefixid) { // have namespace
-                        $notification_handler->triggerEvent('namespace', $this->currentprefixid, 'upd_ns_page', $tags, array(), $this->module_id);
+                        $notificationHandler->triggerEvent('namespace', $this->currentprefixid, 'upd_ns_page', $tags, array(), $this->module_id);
                     }
                 }
             }
@@ -523,9 +546,12 @@ class gwikiPage
         return $result;
     }
 
-    // update gwiki_pagelinks table - expects $page to be current
     /**
-     * @param bool $render
+     * update gwiki_pagelinks table - expects $page to be current
+     *
+     * @param bool $render do a fresh page render before updating
+     *
+     * @return void
      */
     private function updatePageLinks($render = false)
     {
@@ -547,8 +573,7 @@ class gwikiPage
         $page = $this->escapeForDB($this->keyword);
 
         $sql = 'DELETE FROM ' . $xoopsDB->prefix('gwiki_pagelinks');
-        //        $sql .= ' WHERE from_keyword = \'' . $page . '\'';
-        $sql .= " WHERE from_keyword = \'{$page}\'";
+        $sql .= ' WHERE from_keyword = \'' . $page . '\'';
         $result = $xoopsDB->query($sql);
 
         if (!empty($this->wikiPageLinks)) {
@@ -564,12 +589,13 @@ class gwikiPage
             $result = $xoopsDB->query($sql);
         }
 
-        //        return;
+        return;
     }
 
-    // get the next higher unused page_set_order for a given page_set_home
     /**
-     * @param $page_set_home
+     * get the next higher unused page_set_order for a given page_set_home
+     *
+     * @param string $page_set_home keyword of page set home
      *
      * @return int
      */
@@ -595,11 +621,7 @@ class gwikiPage
      * Check if the current user may edit the current page
      * Since the class can be used outside the module where permissions are assigned, we have to work at this a bit
      *
-     * @internal param mixed $keyword - wiki page name
-     *
-     * @return bool
-     * @access   public
-     * @since    1.0
+     * @return boolean mayEdit
      */
     public function checkEdit()
     {
@@ -609,22 +631,22 @@ class gwikiPage
         $keyword = $this->keyword;
 
         $dir            = $this->wikiDir;
-        $module_handler = xoops_getHandler('module');
-        $module         = $module_handler->getByDirname($dir);
+        $moduleHandler = xoops_getHandler('module');
+        $module         = $moduleHandler->getByDirname($dir);
         $module_id      = $module->getVar('mid');
-        // $config_handler = xoops_getHandler('config');
-        // $moduleConfig   =& $config_handler->getConfigsByCat(0, $module->getVar('mid'));
+        // $configHandler = xoops_getHandler('config');
+        // $moduleConfig   = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
         $groups = XOOPS_GROUP_ANONYMOUS;
         if (is_object($xoopsUser)) {
             $groups = $xoopsUser->getGroups();
         }
 
-        $gperm_handler = xoops_getHandler('groupperm');
+        $gpermHandler = xoops_getHandler('groupperm');
 
-        $edit_any   = $gperm_handler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_EDIT_ANY_NUM, $groups, $module_id);
-        $edit_pfx   = $gperm_handler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_EDIT_PFX_NUM, $groups, $module_id);
-        $create_any = $gperm_handler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_CREATE_ANY_NUM, $groups, $module_id);
-        $create_pfx = $gperm_handler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_CREATE_PFX_NUM, $groups, $module_id);
+        $edit_any   = $gpermHandler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_EDIT_ANY_NUM, $groups, $module_id);
+        $edit_pfx   = $gpermHandler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_EDIT_PFX_NUM, $groups, $module_id);
+        $create_any = $gpermHandler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_CREATE_ANY_NUM, $groups, $module_id);
+        $create_pfx = $gpermHandler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_CREATE_PFX_NUM, $groups, $module_id);
 
         // check for namespace prefix
         $prefix = $this->getPrefix($keyword);
@@ -671,7 +693,9 @@ class gwikiPage
     }
 
     /**
-     * @param $uid
+     * get user name based on id
+     *
+     * @param int $uid user id
      *
      * @return string
      */
@@ -682,8 +706,8 @@ class gwikiPage
         $uid = (int)$uid;
 
         if ($uid > 0) {
-            $member_handler = xoops_getHandler('member');
-            $user           =& $member_handler->getUser($uid);
+            $memberHandler = xoops_getHandler('member');
+            $user           = $memberHandler->getUser($uid);
             if (is_object($user)) {
                 return "<a href=\"" . XOOPS_URL . "/userinfo.php?uid=$uid\">" . htmlspecialchars($user->getVar('uname'), ENT_QUOTES) . '</a>';
             }
@@ -692,19 +716,20 @@ class gwikiPage
         return $xoopsConfig['anonymous'];
     }
 
-    // get array of prefixes user can edit
     /**
-     * @param bool $createonly
+     * get array of prefixes user can edit
      *
-     * @return array|bool
+     * @param boolean $createonly true to show only prefixes with create permission
+     *
+     * @return string[]|false
      */
     public function getUserNamespaces($createonly = false)
     {
         global $xoopsUser, $xoopsDB;
 
         $dir            = $this->wikiDir;
-        $module_handler = xoops_getHandler('module');
-        $module         = $module_handler->getByDirname($dir);
+        $moduleHandler = xoops_getHandler('module');
+        $module         = $moduleHandler->getByDirname($dir);
         $module_id      = $module->getVar('mid');
 
         $groups = XOOPS_GROUP_ANONYMOUS;
@@ -712,12 +737,12 @@ class gwikiPage
             $groups = $xoopsUser->getGroups();
         }
 
-        $gperm_handler = xoops_getHandler('groupperm');
+        $gpermHandler = xoops_getHandler('groupperm');
 
-        $edit_any   = $gperm_handler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_EDIT_ANY_NUM, $groups, $module_id);
-        $edit_pfx   = $gperm_handler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_EDIT_PFX_NUM, $groups, $module_id);
-        $create_any = $gperm_handler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_CREATE_ANY_NUM, $groups, $module_id);
-        $create_pfx = $gperm_handler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_CREATE_PFX_NUM, $groups, $module_id);
+        $edit_any   = $gpermHandler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_EDIT_ANY_NUM, $groups, $module_id);
+        $edit_pfx   = $gpermHandler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_EDIT_PFX_NUM, $groups, $module_id);
+        $create_any = $gpermHandler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_CREATE_ANY_NUM, $groups, $module_id);
+        $create_pfx = $gpermHandler->checkRight('wiki_authority', _MD_GWIKI_PAGE_PERM_CREATE_PFX_NUM, $groups, $module_id);
 
         if (is_array($groups)) {
             $groupwhere = ' IN (' . implode(', ', $groups) . ') ';
@@ -728,8 +753,7 @@ class gwikiPage
         $sql = 'SELECT distinct p.prefix_id, prefix FROM ';
         $sql .= $xoopsDB->prefix('gwiki_prefix') . ' p, ';
         $sql .= $xoopsDB->prefix('gwiki_group_prefix') . ' g ';
-        //        $sql .= ' WHERE group_id ' . $groupwhere;
-        $sql .= " WHERE group_id {$groupwhere}";
+        $sql .= ' WHERE group_id ' . $groupwhere;
         $sql .= ' AND p.prefix_id = g.prefix_id';
         $sql .= ' ORDER BY prefix ';
         $prefixes = array();
@@ -754,9 +778,11 @@ class gwikiPage
     }
 
     /**
-     * @param $page_id
+     * Get keyword for an id
      *
-     * @return null
+     * @param int $page_id id
+     *
+     * @return string|null wiki keyword (page)
      */
     public function getKeywordById($page_id)
     {
@@ -775,7 +801,9 @@ class gwikiPage
     }
 
     /**
-     * @param $keyword
+     * lookup id for a keyword
+     *
+     * @param string $keyword keyword
      *
      * @return int
      */
@@ -798,9 +826,11 @@ class gwikiPage
     }
 
     /**
-     * @param $keyword
+     * record a page hit for a keyword
      *
-     * @return mixed
+     * @param string $keyword keyword
+     *
+     * @return int count of rows updated
      */
     public function registerHit($keyword)
     {
@@ -816,8 +846,10 @@ class gwikiPage
     }
 
     /**
-     * @param $keyword
-     * @param $id
+     * set a specific revison as active for a keyword
+     *
+     * @param string $keyword wiki keyword
+     * @param int    $id      id of revision to activate
      *
      * @return mixed
      */
@@ -845,8 +877,10 @@ class gwikiPage
     }
 
     /**
-     * @param      $keyword
-     * @param null $id
+     * load a page with optional revision id
+     *
+     * @param string   $keyword keyword
+     * @param int|null $id      optional page id
      *
      * @return bool
      */
@@ -925,8 +959,6 @@ class gwikiPage
      * @param mixed $keyword - wiki page name
      *
      * @return bool
-     * @access public
-     * @since  1.0
      */
     public function getPrefix($keyword)
     {
@@ -962,8 +994,7 @@ class gwikiPage
                 // external namespace
                 if ($prefix['prefix_is_external']) {
                     $prefix['actual_page'] = sprintf($prefix['prefix_external_url'], $page);
-                } // local namespace
-                else {
+                } else { // local namespace
                     $prefix['actual_page'] = $prefix['prefix'] . ':' . $page;
                 }
             } else { // we have an undefined prefix
@@ -975,9 +1006,11 @@ class gwikiPage
     }
 
     /**
-     * @param $pid
+     * get prefix string for an id
      *
-     * @return string
+     * @param int $pid prefix id
+     *
+     * @return string namespace prefix, or empty string
      */
     public function getPrefixFromId($pid)
     {
@@ -993,7 +1026,9 @@ class gwikiPage
     }
 
     /**
-     * @return string
+     * get template for the current page
+     *
+     * @return string template name
      */
     public function getTemplateName()
     {
@@ -1006,7 +1041,9 @@ class gwikiPage
     }
 
     /**
-     * @param $page
+     * get attachment info associated with a page
+     *
+     * @param string $page keyword
      *
      * @return array
      */
@@ -1037,8 +1074,6 @@ class gwikiPage
      * @param mixed $altkey  - alternate text for link. If empty, display_keyword will be used.
      *
      * @return string
-     * @access public
-     * @since  1.0
      */
     public function wikiLink($keyword, $altkey = null)
     {
@@ -1074,8 +1109,7 @@ class gwikiPage
                 $ret      = '<a href="' . $link . '" target="_blank" title="' . _MD_GWIKI_PAGE_EXT_LINK_TT . '">' . $linktext . '<span class="wikiextlink"> </span></a>';
 
                 return $ret;
-            } // interal namespace
-            else {
+            } else { // interal namespace
                 $keyword = $link; // we may have modified the keyword
             }
         }
@@ -1102,14 +1136,22 @@ class gwikiPage
         $title           = htmlspecialchars($title);
         $display_keyword = stripslashes($display_keyword);
 
-        ++$this->wikiPageLinks[$keyword];  // track where this page links
+        // track where this page links
+        if (isset($this->wikiPageLinks[$keyword])) {
+            $this->wikiPageLinks[$keyword] += 1;
+        } else {
+            $this->wikiPageLinks[$keyword] = 1;
+        }
+
         $url = sprintf($this->wikiLinkURL, $keyword);
 
         return sprintf('<a href="%s" title="%s">%s%s</a>', $url, $title, $display_keyword, $newpage);
     }
 
     /**
-     * @param $matches
+     * callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -1119,13 +1161,13 @@ class gwikiPage
     }
 
     /**
+     * get tabbed page index
+     *
      * @return array
      */
     private function getIndexTabs()
     {
-        global $xoopsDB, $wikiPage;
-
-        $related = false;
+        global $xoopsDB;
 
         $tabs = array();
 
@@ -1161,9 +1203,12 @@ class gwikiPage
     }
 
     /**
-     * @param null $prefix
+     * get a page index
      *
-     * @return string
+     * @param string|null $prefix if not null, limit index to a prefix
+     *
+     * @return string rendered index
+     *
      */
     private function pageIndex($prefix = null)
     {
@@ -1179,8 +1224,7 @@ class gwikiPage
             $pageselect .= ' AND keyword LIKE "' . $prefix . '%" ';
         } else {
             $sql = 'SELECT count(*) as count  FROM ' . $xoopsDB->prefix('gwiki_pages');
-            //            $sql .= ' WHERE ' . $pageselect;
-            $sql .= " WHERE  {$pageselect}";
+            $sql .= ' WHERE ' . $pageselect;
             $result = $xoopsDB->query($sql);
             $row    = $xoopsDB->fetchArray($result);
             $cnt    = $row['count'];
@@ -1195,8 +1239,7 @@ class gwikiPage
 
         $sql = 'SELECT keyword, display_keyword, title';
         $sql .= ' FROM ' . $xoopsDB->prefix('gwiki_pages');
-        //        $sql .= ' WHERE ' . $pageselect;
-        $sql .= " WHERE {$pageselect}";
+        $sql .= ' WHERE ' . $pageselect;
         $sql .= ' ORDER BY display_keyword ';
         //      $sql.=' ORDER BY active, show_in_index, display_keyword ';
 
@@ -1255,19 +1298,20 @@ class gwikiPage
         $xoopsDB->freeRecordSet($result);
         if ($tablayout) {
             $body .= '</ul></div></div>';
-        } else {
-            if ($body !== '') {
-                $body .= '</ul>';
-            }
+        } elseif ($body != '') {
+            $body .= '</ul>';
         }
 
         return $body . "\n\n";
     }
 
     /**
-     * @param null $prefix
+     * get a recently modfied page index
      *
-     * @return string
+     * @param string|null $prefix if not null, limit index to a prefix
+     *
+     * @return string rendered index
+     *
      */
     private function recentIndex($prefix = null)
     {
@@ -1284,8 +1328,7 @@ class gwikiPage
         $sql = 'SELECT keyword, display_keyword, title, lastmodified';
         $sql .= ', FROM_UNIXTIME(lastmodified) as fmtlastmodified, uid';
         $sql .= ' FROM ' . $xoopsDB->prefix('gwiki_pages');
-        //        $sql .= ' WHERE ' . $pageselect;
-        $sql .= " WHERE {$pageselect}";
+        $sql .= ' WHERE ' . $pageselect;
         $sql .= ' ORDER BY lastmodified DESC LIMIT ' . $this->numberOfRecentItems;
 
         $result = $xoopsDB->query($sql);
@@ -1317,7 +1360,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * callback render match specified index
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return bool|string
      */
@@ -1338,11 +1383,11 @@ class gwikiPage
         return false;
     }
 
-    // highlight search terms
-    // adapted from: http://stack:overflow.com/questions/2591046/highlight-text-except-html-tags
-
     /**
-     * @param $capture
+     * highlight search terms
+     * adapted from: http://stack:overflow.com/questions/2591046/highlight-text-except-html-tags
+     *
+     * @param string[] $capture matches
      *
      * @return string
      */
@@ -1363,12 +1408,14 @@ class gwikiPage
     }
 
     /**
-     * @param $needle
-     * @param $pre
-     * @param $post
-     * @param $txt
+     * split string aware of html tags
      *
-     * @return mixed
+     * @param string $needle string to find
+     * @param string $pre    string to include before each match
+     * @param string $post   string to include after each match
+     * @param string $txt    text to search
+     *
+     * @return string
      */
     private function split_on_tag($needle, $pre, $post, $txt)
     {
@@ -1378,9 +1425,11 @@ class gwikiPage
     }
 
     /**
-     * @param $words
+     * highlight words in page
      *
-     * @return mixed
+     * @param string $words space separated words to match
+     *
+     * @return string rendered page with words highlighted
      */
     public function highlightWords($words)
     {
@@ -1395,14 +1444,16 @@ class gwikiPage
     }
 
     /**
-     * @param $type
-     * @param $source
+     * Hold content not to be processed for wiki markup, generate a unique tag to locate later
      *
-     * @return string
+     * @param string $type   type of nowiki invocation (block, wcinline or inline)
+     * @param string $source content to hold
+     *
+     * @return string generated tag for held content
      */
     private function noWikiHold($type, $source)
     {
-        ++$this->noWikiIndex; //$this->noWikiIndex += 1;
+        ++$this->noWikiIndex;
         switch ($type) {
             case 'block':
                 $this->noWikiQueue[$this->noWikiIndex] = "<pre>\n{$source}\n</pre>";
@@ -1422,7 +1473,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * no wiki block callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -1432,7 +1485,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * no wiki inline callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -1442,7 +1497,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * no wiki inline (WikiCreole style) callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -1452,7 +1509,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * no wiki for code block callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -1462,9 +1521,11 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * emit save nowiki content callback
      *
-     * @return mixed
+     * @param string[] $matches preg_replace_callback matches
+     *
+     * @return string
      */
     private function noWikiEmit($matches)
     {
@@ -1474,7 +1535,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * table support callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -1526,7 +1589,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * link support callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -1542,7 +1607,7 @@ class gwikiPage
             // Creole test includes "[[Ward Cunningham's]]" which leads to a
             // wiki page WardCunningham. Included in spirit of compatibility.
             if (substr($link, -2) === "'s") {
-                $templink = substr($link, 0, strlen($link) - 3); // quote is slashed
+                $templink = substr($link, 0, - 3); // quote is slashed
                 // only if a wiki page
                 if (preg_match('/^([A-Za-z\x80-\xff0-9.:\- ]){2,}$/', $templink)) {
                     $linktext = $link;
@@ -1558,8 +1623,7 @@ class gwikiPage
             //$link=str_replace (' ', '', $link);
             if (empty($linktext)) {
                 $ret = $this->wikiLink($link);
-            } //            else $ret=$this->wikiLink($link,$linktext);
-            else {
+            } else {
                 $ret = $this->wikiLink($link, stripslashes($linktext));
             }
         } else {
@@ -1589,7 +1653,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * header support callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -1600,13 +1666,15 @@ class gwikiPage
         $level                           = strlen($level) + 1;
         $this->tocQueue[$this->tocIndex] = array('level' => $level, 'name' => $source);
         $toc                             = "\n<h" . $level . ' id="' . $this->tocIdPrefix . $this->tocIndex . '" >' . $source . '</h' . $level . ">\n";
-        ++$this->tocIndex; //$this->tocIndex += 1;
+        ++$this->tocIndex;
 
         return $toc;
     }
 
     /**
-     * @param $matches
+     * indent support callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -1621,7 +1689,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * table of contents support callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -1640,7 +1710,9 @@ class gwikiPage
     }
 
     /**
-     * @param $page
+     * fetch table of contents for a page
+     *
+     * @param string $page keyword
      *
      * @return array|bool
      */
@@ -1690,7 +1762,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * page set toc support callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -1700,11 +1774,13 @@ class gwikiPage
     }
 
     /**
-     * @param        $page
-     * @param        $level
-     * @param string $tocclass
+     * render a table of contents
      *
-     * @return string
+     * @param string  $page     keyword
+     * @param integer $level    level limit
+     * @param string  $tocclass base class for toc. Current level will be appended
+     *
+     * @return bool|string
      */
     public function renderPageSetToc(&$page, $level, $tocclass = 'wikitocpage')
     {
@@ -1729,6 +1805,7 @@ class gwikiPage
     }
 
     /**
+     * render navigation for a page set
      * @param $page
      *
      * @return mixed
@@ -1822,14 +1899,14 @@ class gwikiPage
     }
 
     /**
-     * @param $keyword
+     * get image libraries for a page
      *
-     * @return array
+     * @param string $keyword keyword of page
+     *
+     * @return string[]
      */
     public function getImageLib($keyword)
     {
-        global $xoopsDB;
-
         $lib = $this->imageLib;
         array_unshift($lib, $keyword);
 
@@ -1837,10 +1914,19 @@ class gwikiPage
     }
 
     /**
-     * @param $keyword
-     * @param $name
+     * get an image relative to specified page
      *
-     * @return bool
+     * return array includes:
+     *   image_id
+     *   keyword
+     *   image_name
+     *   image_alt_text
+     *   image_file
+     *
+     * @param string $keyword keyword of page
+     * @param string $name    image name
+     *
+     * @return array|bool image data or false if invalid or not found
      */
     public function getPageImage($keyword, $name)
     {
@@ -1861,17 +1947,12 @@ class gwikiPage
         }
 
         return false;
-
-        // return array includes:
-        //   image_id
-        //   keyword
-        //   image_name
-        //   image_alt_text
-        //   image_file
     }
 
     /**
-     * @param $matches
+     * render image support callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -1905,14 +1986,13 @@ class gwikiPage
         $maxpx   = empty($parms[2]) ? '' : (int)$parms[2];
 
         // align must be left, right, center or empty
+        $align = '';
         if (strcasecmp($align, 'left') === 0) {
             $align = 'left';
         } elseif (strcasecmp($align, 'right') === 0) {
             $align = 'right';
         } elseif (strcasecmp($align, 'center') === 0) {
-            $align = 'center';
-        } else {
-            $align = '';
+            $align = 'center';           
         }
 
         $alignparm = '';
@@ -1983,7 +2063,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * gallery support callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -2025,7 +2107,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * list support callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -2098,7 +2182,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * reference support callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -2124,7 +2210,7 @@ class gwikiPage
             $refid                           = $this->refIndex;
             $first_ref                       = true;
             $this->refQueue[$this->refIndex] = $rq;
-            ++$this->refIndex; //$this->refIndex += 1;
+            ++$this->refIndex;
         }
         $paren_ref = false;
         if (!empty($this->refQueue[$refid]['first'])) {
@@ -2146,7 +2232,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * reference list support callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -2170,7 +2258,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * box support callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -2192,12 +2282,7 @@ class gwikiPage
         $ejs      = '';
         $etooltip = '';
         $pos      = strpos($title, '|');
-        if ($pos === false) { // no delimter - whole thing is the title
-            // $title=$title;
-            $parms = array();
-        } else {
-            //$title=trim(substr($title,0,$pos));
-            //          $parms=explode('|',trim(substr($title,$pos+1)));
+        if ($pos !== false) { // if no delimiter - whole thing is the title
             $parms = explode('|', $title);
             $title = $parms[0];
             if (!empty($parms[1]) && ($parms[1] === 'left' || $parms[1] === 'right')) {
@@ -2217,9 +2302,11 @@ class gwikiPage
     }
 
     /**
-     * @param $body
+     * Convert entities
      *
-     * @return mixed
+     * @param string $body wiki text to process
+     *
+     * @return string
      */
     private function convertEntities($body)
     {
@@ -2237,7 +2324,7 @@ class gwikiPage
         $sym[] = '{c}';
         $ent[] = '&copy;';
         $sym[] = '(c)';
-        $ent[] = '&copy;'; // too common to ignore
+        $ent[] = '&copy;';
         $sym[] = '{r}';
         $ent[] = '&reg;';
         $sym[] = '(r)';
@@ -2247,7 +2334,8 @@ class gwikiPage
         $sym[] = '(tm)';
         $ent[] = '&trade;';
         $sym[] = '{sm}';
-        $ent[] = '<span style="font-size: 50%; vertical-align: super;">SM</span>'; // very poor font support for unicode code point for service mark
+        // very poor font support for unicode code point for service mark, fake with markup
+        $ent[] = '<span style="font-size: 50%; vertical-align: super;">SM</span>';
         $sym[] = '{nbsp}';
         $ent[] = '&nbsp;';
 
@@ -2257,10 +2345,13 @@ class gwikiPage
     }
 
     /**
-     * @param null $body
-     * @param null $title
+     * Render a teaser section. If page includes a {more} tag, teaser will be text that preceeds it.
+     * Otherwise try to break semantically at about 400 characters.
      *
-     * @return mixed|null|string
+     * @param string|null $body  text to process, defaults to current page body
+     * @param string|null $title title to use
+     *
+     * @return string
      */
     public function renderTeaser($body = null, $title = null)
     {
@@ -2291,7 +2382,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * block quote support callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -2303,7 +2396,9 @@ class gwikiPage
     }
 
     /**
-     * @param $matches
+     * preformatted support callback
+     *
+     * @param string[] $matches preg_replace_callback matches
      *
      * @return string
      */
@@ -2315,8 +2410,10 @@ class gwikiPage
     }
 
     /**
-     * @param null $body
-     * @param null $title
+     * Render a page
+     *
+     * @param string|null $body  text to process, defaults to current page body
+     * @param string|null $title title to use, defaults to current page title
      *
      * @return string
      */
@@ -2333,11 +2430,10 @@ class gwikiPage
         if (empty($title)) {
             $title = $this->title;
         }
-        $this->renderHeader(array('', '', '', $title)); // do first because title should always be #toc0 - set in template
+        // do first because title should always be #toc0 - set in template
+        $this->renderHeader(array('', '', '', $title));
 
-        //      $search = array();
-        //      $replace = array();
-        $body .= "\n"; //$body = $body . "\n";
+        $body .= "\n";
 
         // eliminate double line endings
         $search  = "#\r\n?#";
@@ -2504,8 +2600,8 @@ class gwikiPage
         $replace = '<a href="mailto:\\1">\\1</a>';
         $body    = preg_replace($search, $replace, $body);
 
-        // CamelCase wiki link
-        //                "#^([A-Z][a-z\:]+){2,}\d*$#" - Could be between whitespace on either end or between > on start and/or < on end
+        // CamelCase wiki link "#^([A-Z][a-z\:]+){2,}\d*$#"
+        // Could be between whitespace on either end or between > on start and/or < on end
         if ($this->useCamelCase) {
             $search  = "#(?<=\s|>)" . _WIKI_CAMELCASE_REGEX . "(?=\s|</l|</t)#";
             $replace = array($this, 'wikiCCLink');
@@ -2572,7 +2668,8 @@ class gwikiPage
         $replace = "\n<p>";
         $body    = preg_replace($search, $replace, $body);
 
-        // restore cached nowiki content, all styles (if you need to use {PdNlNw:#} in your page, put it in a nowiki tag)
+        // restore cached nowiki content, all styles
+        // (if you need to use {PdNlNw:#} in your page, put it in a nowiki tag)
         $search  = '#{PdNlNw:([0-9]{1,})}#';
         $replace = array($this, 'noWikiEmit');
         $body    = preg_replace_callback($search, $replace, $body);

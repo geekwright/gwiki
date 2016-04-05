@@ -17,7 +17,7 @@ error_reporting(-1);
 $dir = basename(__DIR__);
 require_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
 global $wikiPage;
-$wikiPage = new gwikiPage;
+$wikiPage = new GwikiPage;
 
 $uploadpath = XOOPS_ROOT_PATH . "/uploads/{$dir}/";
 $uploadurl  = XOOPS_URL . "/uploads/{$dir}/";
@@ -191,8 +191,8 @@ function getUserName($uid)
     $uid = (int)$uid;
 
     if ($uid > 0) {
-        $member_handler = xoops_getHandler('member');
-        $user           =& $member_handler->getUser($uid);
+        $memberHandler = xoops_getHandler('member');
+        $user           = $memberHandler->getUser($uid);
         if (is_object($user)) {
             return "<a href=\"" . XOOPS_URL . "/userinfo.php?uid=$uid\">" . htmlspecialchars($user->getVar('uname'), ENT_QUOTES) . '</a>';
         }

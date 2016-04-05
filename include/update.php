@@ -26,7 +26,7 @@ function xoops_module_update_gwiki(&$module, $old_version)
     $error = false;
 
     // recompile namespace templates
-    $tplfile_handler = xoops_getHandler('tplfile');
+    $tplfileHandler = xoops_getHandler('tplfile');
 
     $dir = basename(dirname(__DIR__));
     $mid = $module->getVar('mid');
@@ -41,12 +41,12 @@ function xoops_module_update_gwiki(&$module, $old_version)
         $pid  = $template['prefix_id'];
         $file = $dir . '_prefix_' . $pid . '.tpl';
 
-        $tplfiles = $tplfile_handler->find('default', 'module', $mid, $dir, $file, false);
+        $tplfiles = $tplfileHandler->find('default', 'module', $mid, $dir, $file, false);
         if (count($tplfiles)) {
             $tplfile = $tplfiles[0];
             $isnew   = false;
         } else {
-            $tplfile =& $tplfile_handler->create();
+            $tplfile = $tplfileHandler->create();
             $isnew   = true;
         }
 
@@ -61,12 +61,12 @@ function xoops_module_update_gwiki(&$module, $old_version)
         $tplfile->setVar('tpl_type', 'module');
 
         if ($isnew) {
-            if (!$tplfile_handler->insert($tplfile)) {
+            if (!$tplfileHandler->insert($tplfile)) {
                 $module->setErrors('ERROR: Could not insert template ' . htmlspecialchars($file) . ' to the database.');
                 $error = true;
             }
         } else {
-            if (!$tplfile_handler->forceUpdate($tplfile)) {
+            if (!$tplfileHandler->forceUpdate($tplfile)) {
                 $module->setErrors('ERROR: Could not update template ' . htmlspecialchars($file) . ' in the database.');
                 $error = true;
             }

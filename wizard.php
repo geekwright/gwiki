@@ -39,7 +39,7 @@ function obtainPage()
 {
     global $wikiPage, $xoopsTpl, $token;
 
-    $wikiPage = new gwikiPage;
+    $wikiPage = new GwikiPage;
     $prefixes = $wikiPage->getUserNamespaces(true);
     if ($prefixes) {
         $options = array();
@@ -765,8 +765,6 @@ switch ($op) {
 
 $title = _MD_GWIKI_WIZARD;
 $xoopsTpl->assign('xoops_pagetitle', $title);
-$xoopsTpl->assign('icms_pagetitle', $title);
-
 $xoopsTpl->assign('gwiki', $pageX);
 
 if (!empty($err_message)) {

@@ -384,11 +384,7 @@ function checkForPartitions()
     $sql        = 'SELECT PARTITION_NAME FROM INFORMATION_SCHEMA.PARTITIONS WHERE TABLE_SCHEMA = \'' . XOOPS_DB_NAME . '\' AND TABLE_NAME  = \'' . $xoopsDB->prefix('gwiki_pages') . '\'';
     $result     = $xoopsDB->query($sql);
     $partitions = $xoopsDB->getRowsNum($result);
-    if ($partitions > 1) {
-        return true;
-    }
-
-    return false;
+    return $partitions > 1;
 }
 
 /**
@@ -406,10 +402,9 @@ function createPartitions()
         $sql .= '(PARTITION ' . $tablename . '_inactive VALUES IN (0), ';
         $sql .= ' PARTITION ' . $tablename . '_active VALUES IN (1) )';
         $result = $xoopsDB->query($sql);
+        $message = _AD_GWIKI_PARTITION_FAILED;
         if ($result) {
             $message = _AD_GWIKI_PARTITION_OK;
-        } else {
-            $message = _AD_GWIKI_PARTITION_FAILED;
         }
     }
 
@@ -424,10 +419,9 @@ function createHelpPages()
     global $xoopsDB;
 
     $result = $xoopsDB->queryFromFile(__DIR__ . '/helppages.sql');
+    $message = _AD_GWIKI_ADD_HELP_FAILED;
     if ($result) {
         $message = _AD_GWIKI_ADD_HELP_OK;
-    } else {
-        $message = _AD_GWIKI_ADD_HELP_FAILED;
     }
 
     return $message;
@@ -477,10 +471,9 @@ switch ($op) {
         break;
 
     case 'display':
+        $id = null;
         if (!empty($_GET['id'])) {
             $id = (int)$_GET['id'];
-        } else {
-            $id = null;
         }
         showPage($page, $id);
         break;

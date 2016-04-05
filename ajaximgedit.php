@@ -17,7 +17,7 @@ error_reporting(-1);
 $dir = basename(__DIR__);
 require_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
 global $wikiPage;
-$wikiPage = new gwikiPage;
+$wikiPage = new GwikiPage;
 
 $uploadpath = XOOPS_ROOT_PATH . "/uploads/{$dir}/";
 $uploadurl  = XOOPS_URL . "/uploads/{$dir}/";

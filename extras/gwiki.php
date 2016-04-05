@@ -76,16 +76,16 @@ function loadLanguage($name, $domain = '', $language = null)
 }
 
 // Access module configs from outside module:
-$module_handler = xoops_getHandler('module');
-$module         = $module_handler->getByDirname($dir);
-$config_handler = xoops_getHandler('config');
-$moduleConfig   = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
+$moduleHandler = xoops_getHandler('module');
+$module         = $moduleHandler->getByDirname($dir);
+$configHandler = xoops_getHandler('config');
+$moduleConfig   = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
 
 loadLanguage('main', $dir);
 loadLanguage('modinfo', $dir);
 include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
 
-$wikiPage = new gwikiPage;
+$wikiPage = new GwikiPage;
 $wikiPage->setRecentCount($moduleConfig['number_recent']);
 $wikiPage->setWikiLinkURL($ourWikiLinkURL);
 
@@ -147,6 +147,5 @@ if ($pageX['pageFound']) {
 }
 $title = $pageX['title'];
 $xoopsTpl->assign('xoops_pagetitle', $title);
-$xoopsTpl->assign('icms_pagetitle', $title);
 
 include XOOPS_ROOT_PATH . '/footer.php';

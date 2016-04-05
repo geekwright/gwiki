@@ -8,7 +8,7 @@
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
  */
-include 'header.php';
+include __DIR__ . '/header.php';
 global $xoTheme, $xoopsTpl;
 global $wikiPage;
 $GLOBALS['xoopsOption']['template_main'] = 'gwiki_view.tpl';
@@ -241,7 +241,6 @@ $body = $form->render();
 
 $title = _MD_GWIKI_SORT_PAGE_FORM;
 $xoopsTpl->assign('xoops_pagetitle', $title);
-$xoopsTpl->assign('icms_pagetitle', $title);
 
 $dir                = basename(__DIR__);
 $pageX['moddir']    = $dir;

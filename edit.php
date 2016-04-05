@@ -8,7 +8,7 @@
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
  */
-include 'header.php';
+include __DIR__ . '/header.php';
 include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
 global $xoTheme, $xoopsTpl;
@@ -194,10 +194,9 @@ if ($op === 'insert') {
             $op          = 'edit';
             $id          = $success;
         } else {
+            $message = _MD_GWIKI_DBUPDATED;
             if ($leave_inactive) {
                 $message = _MD_GWIKI_SAVED_INACTIVE;
-            } else {
-                $message = _MD_GWIKI_DBUPDATED;
             }
             $op = '';
             redirect_header("index.php?page=$page", 2, $message);
@@ -346,7 +345,6 @@ if (empty($title)) {
     $title = $xoopsModule->name();
 }
 $xoopsTpl->assign('xoops_pagetitle', $title);
-$xoopsTpl->assign('icms_pagetitle', $title);
 if (!empty($message)) {
     $xoopsTpl->assign('message', htmlspecialchars($message));
 }

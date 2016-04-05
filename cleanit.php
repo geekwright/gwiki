@@ -27,10 +27,10 @@ function do_clean()
 
     $dir = basename(__DIR__);
     // Access module configs from block:
-    $module_handler = xoops_getHandler('module');
-    $module         = $module_handler->getByDirname($dir);
-    $config_handler = xoops_getHandler('config');
-    $moduleConfig   = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
+    $moduleHandler = xoops_getHandler('module');
+    $module         = $moduleHandler->getByDirname($dir);
+    $configHandler = xoops_getHandler('config');
+    $moduleConfig   = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
 
     $retaindays = (int)$moduleConfig['retain_days'];
     if ($retaindays <= 0) {

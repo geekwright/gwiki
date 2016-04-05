@@ -8,7 +8,7 @@
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
  */
-include 'header.php';
+include __DIR__ . '/header.php';
 require_once 'include/Diff.php';
 global $xoTheme, $xoopsTpl;
 global $wikiPage;
@@ -79,7 +79,6 @@ if (empty($title)) {
     $title = htmlspecialchars($xoopsModule->name());
 }
 $xoopsTpl->assign('xoops_pagetitle', $title);
-$xoopsTpl->assign('icms_pagetitle', $title);
 if (!empty($message)) {
     $xoopsTpl->assign('message', $message);
 }

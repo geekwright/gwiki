@@ -359,18 +359,18 @@ function installTemplate($pid, $delete = false)
         return false;
     }
 
-    $tplfile_handler = xoops_getHandler('tplfile');
+    $tplfileHandler = xoops_getHandler('tplfile');
 
     $dir  = basename(dirname(__DIR__));
     $mid  = $xoopsModule->getVar('mid');
     $file = $dir . '_prefix_' . $pid . '.tpl';
 
-    $tplfiles = $tplfile_handler->find('default', 'module', $mid, $dir, $file, false);
+    $tplfiles = $tplfileHandler->find('default', 'module', $mid, $dir, $file, false);
 
     // if delete requested, delete it if we found it, and leave.
     if ($delete && count($tplfiles)) {
         $tplfile = $tplfiles[0];
-        $tplfile_handler->delete($tplfile);
+        $tplfileHandler->delete($tplfile);
     }
     if ($delete) {
         return null;
@@ -380,7 +380,7 @@ function installTemplate($pid, $delete = false)
         $tplfile = $tplfiles[0];
         $isnew   = false;
     } else {
-        $tplfile =& $tplfile_handler->create();
+        $tplfile = $tplfileHandler->create();
         $isnew   = true;
     }
 
@@ -394,14 +394,14 @@ function installTemplate($pid, $delete = false)
     $tplfile->setVar('tpl_lastimported', 0);
     $tplfile->setVar('tpl_type', 'module');
     if ($isnew) {
-        if (!$tplfile_handler->insert($tplfile)) {
+        if (!$tplfileHandler->insert($tplfile)) {
             echo '<span style="color:#ff0000;">ERROR: Could not insert template <b>' . htmlspecialchars($file) . '</b> to the database.</span><br />';
         } else {
             $tplid = $tplfile->getVar('tpl_id');
             echo 'Template <b>' . htmlspecialchars($file) . '</b> added to the database. (ID: <b>' . $tplid . '</b>)<br />';
         }
     }
-    if (!$tplfile_handler->forceUpdate($tplfile)) {
+    if (!$tplfileHandler->forceUpdate($tplfile)) {
         echo '<span style="color:#ff0000;">ERROR: Could not update template <b>' . htmlspecialchars($file) . '</b> to the database.</span><br />';
     } else {
         $tplid = $tplfile->getVar('tpl_id');
