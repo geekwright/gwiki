@@ -51,7 +51,7 @@ if (!defined('_MI_GWIKI_NAME')) {
     define('_MI_GWIKI_ADFILES', 'Attachments');
     define('_MI_GWIKI_ADRECENT', 'Recent Activity');
     define('_MI_GWIKI_AD_PERM_TITLE', 'Wiki Page Authority');
-    define('_MI_GWIKI_AD_PERM_DESC', "These permissions control the user's authority to create and edit wiki pages. Permissions can be granted for ALL pages, or only pages in specifc namespaces assigned to the group.");
+    define('_MI_GWIKI_AD_PERM_DESC', "These permissions control the user's authority to create and edit wiki pages. Permissions can be granted for ALL pages, or only pages in specific namespaces assigned to the group.");
 
     // Blocks
     define('_MI_GWIKI_BL_CLONE_WARN', '<span style="color:red;">Please save this cloned block, and then edit and save again!</span>.');
