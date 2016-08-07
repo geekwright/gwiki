@@ -19,7 +19,7 @@ if (!defined('_MI_GWIKI_NAME')) {
     define('_MI_GWIKI_LINK_TEMPLATE_DESC', 'Format string for sprintf, will be passed page keyword.');
     define('_MI_GWIKI_SEARCH_LINK_TEMPLATE', 'Format of Wiki Search Links');
     define('_MI_GWIKI_SEARCH_LINK_TEMPLATE_DESC', 'Format string for sprintf, will be passed page keyword and search terms.');
-    define('_MI_GWIKI_IMAGE_LIBRARY_PAGES', 'Image Libary Page(s)');
+    define('_MI_GWIKI_IMAGE_LIBRARY_PAGES', 'Image Library Page(s)');
     define('_MI_GWIKI_IMAGE_LIBRARY_PAGES_DESC', 'Comma separated list of Wiki pages from which images will be made globally available.');
     define('_MI_GWIKI_RETAIN_DAYS', 'Minimum History Retention Days');
     define('_MI_GWIKI_RETAIN_DAYS_DESC', 'Number of days of change history to retain when database is cleaned. Enter 0 to disable.');
@@ -52,7 +52,7 @@ if (!defined('_MI_GWIKI_NAME')) {
     define('_MI_GWIKI_ADRECENT', 'Recent Activity');
     define('_MI_GWIKI_AD_PERM_TITLE', 'Wiki Page Authority');
     define('_MI_GWIKI_AD_PERM_DESC',
-           "These permissions control the user's authority to create and edit wiki pages. Permissions can be granted for ALL pages, or only pages in specifc namespaces assigned to the group.");
+           "These permissions control the user's authority to create and edit wiki pages. Permissions can be granted for ALL pages, or only pages in specific namespaces assigned to the group.");
 
     // Blocks
     define('_MI_GWIKI_BL_CLONE_WARN', '<span style="color:red;">Please save this cloned block, and then edit and save again!</span>.');

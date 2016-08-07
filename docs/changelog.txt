@@ -8,6 +8,8 @@ gwiki ChangeLog
 - using basename(__FILE__) in addNavigation() (mamba)
 - performance by using $iMax in 'for' (mamba)
 - removed get_magic_quotes_gpc() code (mamba)
+- replaced < br / > with < br > (mamba)
+- HTML5: checked="checked" to checked (mamba)
 - XOOPS 2.5.8 and PHP 7 (mamba)
 - PSR-2 adjustments (mamba)
 
@@ -19,6 +21,7 @@ gwiki ChangeLog
 - merge doc comments and fix from a parallel version (geekwright)
 - remove some vestigial bits (geekwright)
 - move to RC4 (geekwright)
+- English typos (cesagonchu)
 
 1.0 RC 3        NOT RELEASED
 =================================
