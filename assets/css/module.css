@@ -64,11 +64,9 @@ ul.wikiulist > li > ul > li > ul > li > ul > li {
 }
 
 .wikipage ol.wikiolist, .wikiblock ol.wikiolist {
-    list-style-type: decimal;
-    list-style-position: inside;
-    margin: 4px;
+    list-style: decimal inside;
     padding: 4px;
-    margin-left: 2em;
+    margin: 4px 4px 4px 2em;
 }
 
 ol.wikiolist > li {
@@ -499,11 +497,8 @@ ul.wikitoclist > li {
     font-weight: bold;
     text-align: center;
     /*background-image: url('../images/panel.jpg');*/
-    background-image: linear-gradient(bottom, rgb(214, 214, 214) 17%, rgb(255, 255, 255) 88%);
-    background-image: -o-linear-gradient(bottom, rgb(214, 214, 214) 17%, rgb(255, 255, 255) 88%);
-    background-image: -moz-linear-gradient(bottom, rgb(214, 214, 214) 17%, rgb(255, 255, 255) 88%);
-    background-image: -webkit-linear-gradient(bottom, rgb(214, 214, 214) 17%, rgb(255, 255, 255) 88%);
-    background-image: -ms-linear-gradient(bottom, rgb(214, 214, 214) 17%, rgb(255, 255, 255) 88%);
+    background-image: -webkit-linear-gradient(bottom, #d6d6d6 17%, #ffffff 88%);
+    background-image: linear-gradient(to top, #d6d6d6 17%, #ffffff 88%);
     background-repeat: repeat-x;
     border: thin outset #cccccc;
     border-radius: 10px;
@@ -807,14 +802,17 @@ ul.wikigalleryimg a {
     zoom: 1; /* This enables hasLayout, which is required for older IE browsers */
     -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(color='#b0b0b0', Direction=135, Strength=3)";
     filter: progid:DXImageTransform.Microsoft.Shadow(color='#b0b0b0', Direction=135, Strength=3);
-    -webkit-box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-    -moz-box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-    box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    box-shadow: 0 15px 10px -10px #000000, 0 1px 4px #000000, 0 0 40px #000000 inset;
     -webkit-transform: rotate(-2deg);
-    -moz-transform: rotate(-2deg);
     transform: rotate(-2deg);
     -webkit-transition: -webkit-transform .15s linear;
-    -moz-transition: -moz-transform .05s linear;
+    transition: -webkit-transform .15s linear;
+    transition: transform .15s linear;
+    transition: transform .15s linear, -webkit-transform .15s linear;
+    -webkit-transition: -webkit-transform .05s linear;
+    transition: -webkit-transform .05s linear;
+    transition: transform .05s linear;
+    transition: transform .05s linear, -webkit-transform .05s linear;
 }
 
 ul.wikigalleryimg img {
@@ -829,23 +827,20 @@ ul.wikigalleryimg a:after {
 
 ul.wikigalleryimg li:nth-child(even) a {
     -webkit-transform: rotate(2deg);
-    -moz-transform: rotate(2deg);
     transform: rotate(2deg);
 }
 
 ul.wikigalleryimg li:nth-child(3n) a {
-    -webkit-transform: none;
     position: relative;
     top: -5px;
-    -moz-transform: none;
+    -webkit-transform: none;
     transform: none;
 }
 
 ul.wikigalleryimg li:nth-child(5n) a {
-    -webkit-transform: rotate(5deg);
     position: relative;
     right: 5px;
-    -moz-transform: rotate(5deg);
+    -webkit-transform: rotate(5deg);
     transform: rotate(5deg);
 }
 
@@ -863,10 +858,8 @@ ul.wikigalleryimg li:nth-child(11n) a {
 
 ul.wikigalleryimg li a:hover {
     -webkit-transform: scale(1.25);
-    -moz-transform: scale(1.25);
     transform: scale(1.25);
-    -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, .5);
-    -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, .5);
+    box-shadow: 0 3px 6px #000000;
     position: relative;
     z-index: 5;
 }
@@ -931,11 +924,7 @@ div.wikieditor-buttontray {
     margin: 1px 5px 1px 0;
     padding: 1px;
     border: 1px solid #aaa;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
     border-radius: 3px;
-    -moz-background-clip: padding;
-    -webkit-background-clip: padding-box;
     background-clip: padding-box;
     line-height: 20px;
 }
@@ -943,11 +932,7 @@ div.wikieditor-buttontray {
 div.wikieditor-buttontray {
     border-bottom: 1px solid #95a9c3;
     background: #dee8f5;
-    background: -moz-linear-gradient(top, #dee8f5 0, #c7d8ed 29%, #ccdcee 61%, #c0d8ef 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dee8f5), color-stop(29%, #c7d8ed), color-stop(61%, #ccdcee), color-stop(100%, #c0d8ef));
     background: -webkit-linear-gradient(top, #dee8f5 0, #c7d8ed 29%, #ccdcee 61%, #c0d8ef 100%);
-    background: -o-linear-gradient(top, #dee8f5 0, #c7d8ed 29%, #ccdcee 61%, #c0d8ef 100%);
-    background: -ms-linear-gradient(top, #dee8f5 0, #c7d8ed 29%, #ccdcee 61%, #c0d8ef 100%);
     background: linear-gradient(to bottom, #dee8f5 0, #c7d8ed 29%, #ccdcee 61%, #c0d8ef 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dee8f5', endColorstr='#c0d8ef', GradientType=0);
 }
@@ -957,11 +942,7 @@ div.wikieditor-buttontray {
     cursor: pointer;
     padding: 3px 5px;
     height: 20px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
     border-radius: 3px;
-    -moz-background-clip: padding;
-    -webkit-background-clip: padding-box;
     background-clip: padding-box;
     text-indent: -9999px;
 }
@@ -1078,9 +1059,7 @@ div.wikieditor-buttontray {
 */
 .wikieditor-button:hover, .wikieditor-button:active, .wikieditor-button.active {
     background: #fff;
-    -webkit-box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.3), inset -1px 0 rgba(0, 0, 0, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.3), inset -1px 0 rgba(0, 0, 0, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.3), inset -1px 0 rgba(0, 0, 0, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: inset 1px 1px 0 #000000, inset -1px 0 #000000, inset 0 -1px 0 #000000;
 }
 
 .wikieditor-button div {
@@ -1094,32 +1073,18 @@ div.wikieditor-buttontray {
 
 .wikieditor-button {
     padding: 3px 4px;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
     border-radius: 0;
-    -moz-background-clip: padding;
-    -webkit-background-clip: padding-box;
     background-clip: padding-box;
-    -webkit-box-shadow: inset 0 1px #d5e3f1, inset 0 -1px #e3edfb, inset 1px 0 #cddcef, inset -1px 0 #b8ceea;
-    -moz-box-shadow: inset 0 1px #d5e3f1, inset 0 -1px #e3edfb, inset 1px 0 #cddcef, inset -1px 0 #b8ceea;
     box-shadow: inset 0 1px #d5e3f1, inset 0 -1px #e3edfb, inset 1px 0 #cddcef, inset -1px 0 #b8ceea;
 }
 
 .wikieditor-button:first-child {
-    -webkit-border-radius: 4px 0 0 4px;
-    -moz-border-radius: 4px 0 0 4px;
     border-radius: 4px 0 0 4px;
-    -moz-background-clip: padding;
-    -webkit-background-clip: padding-box;
     background-clip: padding-box;
 }
 
 .wikieditor-button:last-child {
-    -webkit-border-radius: 0 4px 4px 0;
-    -moz-border-radius: 0 4px 4px 0;
     border-radius: 0 4px 4px 0;
-    -moz-background-clip: padding;
-    -webkit-background-clip: padding-box;
     background-clip: padding-box;
 }
 
@@ -1129,57 +1094,33 @@ div.wikieditor-buttontray {
 
 .wikieditor-button.active {
     background: #fbdbb5;
-    background: -moz-linear-gradient(top, #fbdbb5 11%, #feb456 29%, #fdeb9f 99%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(11%, #fbdbb5), color-stop(29%, #feb456), color-stop(99%, #fdeb9f));
     background: -webkit-linear-gradient(top, #fbdbb5 11%, #feb456 29%, #fdeb9f 99%);
-    background: -o-linear-gradient(top, #fbdbb5 11%, #feb456 29%, #fdeb9f 99%);
-    background: -ms-linear-gradient(top, #fbdbb5 11%, #feb456 29%, #fdeb9f 99%);
-    background: linear-gradient(top, #fbdbb5 11%, #feb456 29%, #fdeb9f 99%);
+    background: linear-gradient(to bottom, #fbdbb5 11%, #feb456 29%, #fdeb9f 99%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fbdbb5', endColorstr='#fdeb9f', GradientType=0);
-    -webkit-box-shadow: inset 0 1px #ebd1b4, inset 0 -1px #ffe47f, inset -1px 0 #b8ceea;
-    -moz-box-shadow: inset 0 1px #ebd1b4, inset 0 -1px #ffe47f, inset -1px 0 #b8ceea;
     box-shadow: inset 0 1px #ebd1b4, inset 0 -1px #ffe47f, inset -1px 0 #b8ceea;
 }
 
 .wikieditor-button:hover {
     background: #fef7d5;
-    background: -moz-linear-gradient(top, #fef7d5 0, #fae5a9 42%, #ffd048 42%, #ffe59f 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fef7d5), color-stop(42%, #fae5a9), color-stop(42%, #ffd048), color-stop(100%, #ffe59f));
     background: -webkit-linear-gradient(top, #fef7d5 0, #fae5a9 42%, #ffd048 42%, #ffe59f 100%);
-    background: -o-linear-gradient(top, #fef7d5 0, #fae5a9 42%, #ffd048 42%, #ffe59f 100%);
-    background: -ms-linear-gradient(top, #fef7d5 0, #fae5a9 42%, #ffd048 42%, #ffe59f 100%);
     background: linear-gradient(to bottom, #fef7d5 0, #fae5a9 42%, #ffd048 42%, #ffe59f 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fef7d5', endColorstr='#ffe59f', GradientType=0);
-    -webkit-box-shadow: inset 0 1px #fffbe8, inset -1px 0 #ffefc4, inset 0 -1px #fff9cc;
-    -moz-box-shadow: inset 0 1px #fffbe8, inset -1px 0 #ffefc4, inset 0 -1px #fff9cc;
     box-shadow: inset 0 1px #fffbe8, inset -1px 0 #ffefc4, inset 0 -1px #fff9cc;
 }
 
 .wikieditor-button:active {
     background: #e7a66d;
-    background: -moz-linear-gradient(top, #e7a66d 0, #fcb16d 1%, #ff8d05 42%, #ffc450 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e7a66d), color-stop(1%, #fcb16d), color-stop(42%, #ff8d05), color-stop(100%, #ffc450));
     background: -webkit-linear-gradient(top, #e7a66d 0, #fcb16d 1%, #ff8d05 42%, #ffc450 100%);
-    background: -o-linear-gradient(top, #e7a66d 0, #fcb16d 1%, #ff8d05 42%, #ffc450 100%);
-    background: -ms-linear-gradient(top, #e7a66d 0, #fcb16d 1%, #ff8d05 42%, #ffc450 100%);
     background: linear-gradient(to bottom, #e7a66d 0, #fcb16d 1%, #ff8d05 42%, #ffc450 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e7a66d', endColorstr='#ffc450', GradientType=0);
-    -webkit-box-shadow: inset 0 1px 1px #7b6645, inset 0 -1px #d19c33;
-    -moz-box-shadow: inset 0 1px 1px #7b6645, inset 0 -1px #d19c33;
     box-shadow: inset 0 1px 1px #7b6645, inset 0 -1px #d19c33;
 }
 
 .wikieditor-button.active:hover {
     background: #dba368;
-    background: -moz-linear-gradient(top, #dba368 0, #ffbd79 4%, #fea335 34%, #ffc64c 66%, #fee069 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dba368), color-stop(4%, #ffbd79), color-stop(34%, #fea335), color-stop(66%, #ffc64c), color-stop(100%, #fee069));
     background: -webkit-linear-gradient(top, #dba368 0, #ffbd79 4%, #fea335 34%, #ffc64c 66%, #fee069 100%);
-    background: -o-linear-gradient(top, #dba368 0, #ffbd79 4%, #fea335 34%, #ffc64c 66%, #fee069 100%);
-    background: -ms-linear-gradient(top, #dba368 0, #ffbd79 4%, #fea335 34%, #ffc64c 66%, #fee069 100%);
     background: linear-gradient(to bottom, #dba368 0, #ffbd79 4%, #fea335 34%, #ffc64c 66%, #fee069 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dba368', endColorstr='#fee069', GradientType=0);
-    -webkit-box-shadow: inset 0 1px 1px #9e8255, inset 0 -1px #fcce6b;
-    -moz-box-shadow: inset 0 1px 1px #9e8255, inset 0 -1px #fcce6b;
     box-shadow: inset 0 1px 1px #9e8255, inset 0 -1px #fcce6b;
 }
 
@@ -1251,9 +1192,6 @@ div.wikiwizard_content {
 
 #wikiwizard_submit, #wikiwizard_cancel {
     min-width: 92px;
-    background-color: #ccc;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
     border-radius: 6px;
     color: #fff;
     text-decoration: none;
@@ -1262,16 +1200,11 @@ div.wikiwizard_content {
     padding: 10px 15px;
     background: #4479BA;
     color: #FFF;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
     border-radius: 4px;
     border: solid 1px #20538D;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
-    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 -1px 0 #000000;
+    box-shadow: inset 0 1px 0 #ffffff, 0 1px 1px #000000;
     -webkit-transition-duration: 0.2s;
-    -moz-transition-duration: 0.2s;
     transition-duration: 0.2s;
 }
 
@@ -1283,9 +1216,7 @@ div.wikiwizard_content {
 }
 
 #wikiwizard_submit:active, #wikiwizard_cancel:active {
-    -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
-    -moz-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
-    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
+    box-shadow: inset 0 1px 4px #000000;
     background: #2E5481;
     border: solid 1px #203E5F;
     color: #FFF;
