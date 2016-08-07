@@ -10,10 +10,10 @@
  */
 
 include dirname(dirname(__DIR__)) . '/mainfile.php';
-include_once 'include/functions.php';
+include_once __DIR__ . '/include/functions.php';
 
 if (file_exists('language/' . $xoopsConfig['language'] . '/modinfo.php')) {
-    include_once 'language/' . $xoopsConfig['language'] . '/modinfo.php';
+    include_once __DIR__ . '/language/' . $xoopsConfig['language'] . '/modinfo.php';
 } else {
-    include_once 'language/english/modinfo.php';
+    include_once __DIR__ . '/language/english/modinfo.php';
 }

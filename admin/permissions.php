@@ -18,9 +18,9 @@ include_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
 
 if (!defined(_MD_GWIKI_PAGE_PERM_EDIT_ANY)) {
     if (file_exists('../language/' . $xoopsConfig['language'] . '/main.php')) {
-        include_once '../language/' . $xoopsConfig['language'] . '/main.php';
+        include_once __DIR__ . '/../language/' . $xoopsConfig['language'] . '/main.php';
     } else {
-        include_once '../language/english/main.php';
+        include_once __DIR__ . '/../language/english/main.php';
     }
 }
 

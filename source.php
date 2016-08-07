@@ -10,7 +10,7 @@
  */
 include dirname(dirname(__DIR__)) . '/mainfile.php';
 $xoopsLogger->activated = false;
-include_once 'include/functions.php';
+include_once __DIR__ . '/include/functions.php';
 global $wikiPage;
 
 if (isset($_GET['page'])) {
