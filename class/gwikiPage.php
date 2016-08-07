@@ -1139,7 +1139,7 @@ class GwikiPage
 
         // track where this page links
         if (isset($this->wikiPageLinks[$keyword])) {
-            $this->wikiPageLinks[$keyword] += 1;
+            ++$this->wikiPageLinks[$keyword];
         } else {
             $this->wikiPageLinks[$keyword] = 1;
         }

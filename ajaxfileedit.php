@@ -38,7 +38,7 @@ if (!empty($wlconfig)) {
 /**
  * @param $filename
  *
- * @return array
+ * @return array|bool
  */
 function getExtensionInfo($filename)
 {
