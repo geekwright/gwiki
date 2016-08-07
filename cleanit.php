@@ -28,9 +28,9 @@ function do_clean()
     $dir = basename(__DIR__);
     // Access module configs from block:
     $moduleHandler = xoops_getHandler('module');
-    $module         = $moduleHandler->getByDirname($dir);
+    $module        = $moduleHandler->getByDirname($dir);
     $configHandler = xoops_getHandler('config');
-    $moduleConfig   = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+    $moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
 
     $retaindays = (int)$moduleConfig['retain_days'];
     if ($retaindays <= 0) {

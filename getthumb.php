@@ -132,7 +132,7 @@ $file_post = substr($file, $i);
 $filename  = XOOPS_ROOT_PATH . '/uploads/' . $dir . '/' . $file;
 $thumbpath = XOOPS_ROOT_PATH . '/uploads/' . $dir . '/' . $file_pre . '/' . $size;
 $thumbname = $thumbpath . $file_post;
-//echo $filename.'<br />'.$thumbpath.'<br />'.$thumbname;
+//echo $filename.'<br>'.$thumbpath.'<br>'.$thumbname;
 
 $modtime = filemtime($filename);
 
@@ -175,12 +175,12 @@ if (file_exists($thumbname) && (filemtime($thumbname) > $modtime)) {
             break;
     }
     /*
-        echo '<br />Image Width: '.$img_width;
-        echo '<br />Image Height: '.$img_height;
-        echo '<br />Type: '.$info[2].' '.$img_type.' '.$img_mime;
+        echo '<br>Image Width: '.$img_width;
+        echo '<br>Image Height: '.$img_height;
+        echo '<br>Type: '.$info[2].' '.$img_type.' '.$img_mime;
 
-        echo '<br />Thumb Width: '.$thumb_width;
-        echo '<br />Thumb Height: '.$thumb_height;
+        echo '<br>Thumb Width: '.$thumb_width;
+        echo '<br>Thumb Height: '.$thumb_height;
     */
 }
 

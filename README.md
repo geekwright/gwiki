@@ -18,7 +18,7 @@ multiple collaborative efforts, each with their own policies.
 
 Although nearing release, this is still a work in progress.
 
-[![Tutorial Available](http://xoops.org/images/tutorial-available-blue.svg)](https://www.gitbook.com/book/xoops/gwiki-tutorial/) Tutorial: see [here](https://www.gitbook.com/book/xoops/gwiki-tutorial/).
+[![Tutorial Available](http://xoops.org/images/tutorial-available-blue.svg)](https://www.gitbook.com/book/xoops/gwiki-tutorial/) Tutorial: see [GitBook](https://www.gitbook.com/book/xoops/gwiki-tutorial/).
 To contribute to the Tutorial, [fork it on GitHub](https://github.com/XoopsDocs/gwiki-tutorial)
 
 Documentation is also supplied as wiki pages which can be optionally loaded
@@ -26,7 +26,7 @@ into the wiki by the module administrator.
 
 [![Translations on Transifex](http://xoops.org/images/translations-transifex-blue.svg)](https://www.transifex.com/xoops)
 
-Please visit us on http://xoops.org
+Please visit us on  [http://xoops.org](http://xoops.org)
 
 The upcoming "next generation" version of XOOPS CMS is being crafted on GitHub at: https://github.com/XOOPS
 

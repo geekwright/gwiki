@@ -99,7 +99,8 @@ EOT;
     }
 
     adminTableStart(_AD_GWIKI_NAMESPACE_LIST, 6);
-    echo '<tr class="head">' . '<th>' . _AD_GWIKI_NAMESPACE_PREFIX . '</th>' . '<th>' . _AD_GWIKI_NAMESPACE_HOME . '</th>' . '<th>' . _AD_GWIKI_NAMESPACE_AUTONAME_SHORT . '</th>' . '<th>' . _AD_GWIKI_NAMESPACE_TEMPLATE . '</th>' . '<th>' . _AD_GWIKI_NAMESPACE_EXTERN_SHORT . '</th>' . '<th>' . _AD_GWIKI_NAMESPACE_EXTERN_URL . '</th>' . '</tr>';
+    echo '<tr class="head">' . '<th>' . _AD_GWIKI_NAMESPACE_PREFIX . '</th>' . '<th>' . _AD_GWIKI_NAMESPACE_HOME . '</th>' . '<th>' . _AD_GWIKI_NAMESPACE_AUTONAME_SHORT . '</th>' . '<th>'
+         . _AD_GWIKI_NAMESPACE_TEMPLATE . '</th>' . '<th>' . _AD_GWIKI_NAMESPACE_EXTERN_SHORT . '</th>' . '<th>' . _AD_GWIKI_NAMESPACE_EXTERN_URL . '</th>' . '</tr>';
 
     $sql = 'SELECT * FROM ' . $xoopsDB->prefix('gwiki_prefix');
     $sql .= ' LEFT JOIN ' . $xoopsDB->prefix('gwiki_template') . ' on prefix_template_id = template_id ';
@@ -116,7 +117,9 @@ EOT;
             $template = '<a href="prefixes.php?pid=' . $row['prefix_id'] . '&op=edittemplate" title="' . _AD_GWIKI_TEMPLATE_EDIT . '">' . htmlspecialchars($row['template'], ENT_QUOTES) . '</a>';
         }
 
-        echo '<tr class="' . (($i % 2) ? 'even' : 'odd') . '"><td><a href="prefixes.php?pid=' . $row['prefix_id'] . '&op=edit">' . htmlspecialchars($row['prefix'], ENT_QUOTES) . '</a></td>' . '<td>' . htmlspecialchars($row['prefix_home'], ENT_QUOTES) . '</td>' . '<td>' . ($row['prefix_auto_name'] ? _YES : _NO) . '</td>' . '<td>' . $template . '</td>' . '<td>' . ($row['prefix_is_external'] ? _YES : _NO) . '</td>' . '<td>' . htmlspecialchars($row['prefix_external_url'], ENT_QUOTES) . '</td>' . '</tr>';
+        echo '<tr class="' . (($i % 2) ? 'even' : 'odd') . '"><td><a href="prefixes.php?pid=' . $row['prefix_id'] . '&op=edit">' . htmlspecialchars($row['prefix'], ENT_QUOTES) . '</a></td>' . '<td>'
+             . htmlspecialchars($row['prefix_home'], ENT_QUOTES) . '</td>' . '<td>' . ($row['prefix_auto_name'] ? _YES : _NO) . '</td>' . '<td>' . $template . '</td>' . '<td>'
+             . ($row['prefix_is_external'] ? _YES : _NO) . '</td>' . '<td>' . htmlspecialchars($row['prefix_external_url'], ENT_QUOTES) . '</td>' . '</tr>';
     }
     if ($i === 0) {
         echo '<tr class="odd"><td colspan="5">' . _AD_GWIKI_NAMESPACE_EMPTY . '</td></tr>';
@@ -169,15 +172,20 @@ function prefixForm($row, $action)
     if ($action !== 'new') {
         $form .= '<tr><td class="head">' . _AD_GWIKI_NAMESPACE_PREFIX . '</td><td class="odd">' . $row['prefix'] . '</td></tr>';
     } else {
-        $form .= '<tr><td class="head">' . _AD_GWIKI_NAMESPACE_PREFIX . '</td><td class="odd"><input name="prefix" type="text" size="25" value="' . htmlspecialchars($row['prefix'], ENT_QUOTES) . '" ></td></tr>';
+        $form .= '<tr><td class="head">' . _AD_GWIKI_NAMESPACE_PREFIX . '</td><td class="odd"><input name="prefix" type="text" size="25" value="' . htmlspecialchars($row['prefix'], ENT_QUOTES)
+                 . '" ></td></tr>';
     }
-    $form .= '<tr><td class="head">' . _AD_GWIKI_NAMESPACE_HOME . '</td><td class="odd"><input name="prefix_home" type="text" size="25" value="' . htmlspecialchars($row['prefix_home'], ENT_QUOTES) . '" ></td></tr>';
-    $form .= '<tr><td class="head">' . _AD_GWIKI_NAMESPACE_AUTONAME . '</td><td class="odd"><input type="checkbox" name="prefix_auto_name"' . ($row['prefix_auto_name'] ? ' checked ' : '') . 'value="auto"></td></tr>';
+    $form .= '<tr><td class="head">' . _AD_GWIKI_NAMESPACE_HOME . '</td><td class="odd"><input name="prefix_home" type="text" size="25" value="' . htmlspecialchars($row['prefix_home'], ENT_QUOTES)
+             . '" ></td></tr>';
+    $form .= '<tr><td class="head">' . _AD_GWIKI_NAMESPACE_AUTONAME . '</td><td class="odd"><input type="checkbox" name="prefix_auto_name"' . ($row['prefix_auto_name'] ? ' checked ' : '')
+             . 'value="auto"></td></tr>';
     if ($action !== 'new') {
         $form .= '<tr><td class="head">' . _AD_GWIKI_NAMESPACE_TEMPLATE . '</td><td class="odd">' . $template . '</td></tr>';
     }
-    $form .= '<tr><td class="head">' . _AD_GWIKI_NAMESPACE_EXTERN . '</td><td class="odd"><input type="checkbox" name="prefix_is_external"' . ($row['prefix_is_external'] ? ' checked ' : '') . 'value="external"></td></tr>';
-    $form .= '<tr><td class="head">' . _AD_GWIKI_NAMESPACE_EXTERN_URL . '</td><td class="odd"><input name="prefix_external_url" type="text" size="60" value="' . htmlspecialchars($row['prefix_external_url'], ENT_QUOTES) . '" ></td></tr>';
+    $form .= '<tr><td class="head">' . _AD_GWIKI_NAMESPACE_EXTERN . '</td><td class="odd"><input type="checkbox" name="prefix_is_external"' . ($row['prefix_is_external'] ? ' checked ' : '')
+             . 'value="external"></td></tr>';
+    $form .= '<tr><td class="head">' . _AD_GWIKI_NAMESPACE_EXTERN_URL . '</td><td class="odd"><input name="prefix_external_url" type="text" size="60" value="'
+             . htmlspecialchars($row['prefix_external_url'], ENT_QUOTES) . '" ></td></tr>';
 
     $form .= '<tr><td class="head">' . _AD_GWIKI_NAMESPACE_GROUPS . '</td><td class="odd"><select name="groups[]" multiple size="8">' . implode($groups, "\n") . '</select></td></tr>';
     $form .= '<tr><td class="head"> </td><td class="odd"><input type="submit" value="' . _AD_GWIKI_NAMESPACE_SUBMIT . '"></td></tr>';
@@ -395,17 +403,17 @@ function installTemplate($pid, $delete = false)
     $tplfile->setVar('tpl_type', 'module');
     if ($isnew) {
         if (!$tplfileHandler->insert($tplfile)) {
-            echo '<span style="color:#ff0000;">ERROR: Could not insert template <b>' . htmlspecialchars($file) . '</b> to the database.</span><br />';
+            echo '<span style="color:#ff0000;">ERROR: Could not insert template <b>' . htmlspecialchars($file) . '</b> to the database.</span><br>';
         } else {
             $tplid = $tplfile->getVar('tpl_id');
-            echo 'Template <b>' . htmlspecialchars($file) . '</b> added to the database. (ID: <b>' . $tplid . '</b>)<br />';
+            echo 'Template <b>' . htmlspecialchars($file) . '</b> added to the database. (ID: <b>' . $tplid . '</b>)<br>';
         }
     }
     if (!$tplfileHandler->forceUpdate($tplfile)) {
-        echo '<span style="color:#ff0000;">ERROR: Could not update template <b>' . htmlspecialchars($file) . '</b> to the database.</span><br />';
+        echo '<span style="color:#ff0000;">ERROR: Could not update template <b>' . htmlspecialchars($file) . '</b> to the database.</span><br>';
     } else {
         $tplid = $tplfile->getVar('tpl_id');
-        echo 'Template <b>' . htmlspecialchars($file) . '</b> updated to the database. (ID: <b>' . $tplid . '</b>)<br />';
+        echo 'Template <b>' . htmlspecialchars($file) . '</b> updated to the database. (ID: <b>' . $tplid . '</b>)<br>';
     }
 
     return null;
@@ -426,9 +434,13 @@ function templateForm($row, $action)
     $form = '<form action="prefixes.php"  method="POST">';
     $form .= '<input type="hidden" name="pid" value="' . $row['prefix_id'] . '">';
     $form .= '<input type="hidden" name="op" value="updatetemplate">';
-    $form .= '<tr><td class="head" width="10%">' . _AD_GWIKI_TEMPLATE_NAME . '</td><td class="odd"><input name="template" type="text" size="25" value="' . htmlspecialchars($row['template'], ENT_QUOTES) . '" ></td></tr>';
-    $form .= '<tr><td class="head">' . _AD_GWIKI_TEMPLATE_BODY . '</td><td class="odd"><textarea name="template_body" rows="20" cols="80">' . htmlspecialchars($row['template_body'], ENT_QUOTES) . '</textarea></td></tr>';
-    $form .= '<tr><td class="head">' . _AD_GWIKI_TEMPLATE_NOTES . '</td><td class="odd"><textarea name="template_notes" rows="2" cols="80">' . htmlspecialchars($row['template_notes'], ENT_QUOTES) . '</textarea></td></tr>';
+    $form .= '<tr><td class="head" width="10%">' . _AD_GWIKI_TEMPLATE_NAME . '</td><td class="odd"><input name="template" type="text" size="25" value="' . htmlspecialchars($row['template'],
+                                                                                                                                                                            ENT_QUOTES)
+             . '" ></td></tr>';
+    $form .= '<tr><td class="head">' . _AD_GWIKI_TEMPLATE_BODY . '</td><td class="odd"><textarea name="template_body" rows="20" cols="80">' . htmlspecialchars($row['template_body'], ENT_QUOTES)
+             . '</textarea></td></tr>';
+    $form .= '<tr><td class="head">' . _AD_GWIKI_TEMPLATE_NOTES . '</td><td class="odd"><textarea name="template_notes" rows="2" cols="80">' . htmlspecialchars($row['template_notes'], ENT_QUOTES)
+             . '</textarea></td></tr>';
     $form .= '<tr><td class="head"> </td><td class="odd"><input type="submit" value="' . _AD_GWIKI_NAMESPACE_SUBMIT . '"></td></tr>';
     $form .= '</form>';
 
@@ -460,7 +472,10 @@ function editTemplate($pid)
 
     adminTableStart(_AD_GWIKI_TEMPLATE_EDIT, 2);
     echo templateForm($row, 'edit');
-    adminTableEnd(array(_AD_GWIKI_DELETE => "prefixes.php?pid={$pid}&op=deletetemplate", _BACK => 'prefixes.php?pid=' . $pid . '&op=edit'));
+    adminTableEnd(array(
+                      _AD_GWIKI_DELETE => "prefixes.php?pid={$pid}&op=deletetemplate",
+                      _BACK            => 'prefixes.php?pid=' . $pid . '&op=edit'
+                  ));
 }
 
 /**
@@ -570,7 +585,7 @@ function confirmAction($action, $pid = 0)
             break;
     }
 
-    echo '<p align="center">' . $confMsg . '<br /><br />
+    echo '<p align="center">' . $confMsg . '<br><br>
         <input type="submit" value="' . _YES . '">
         <input type="button" onclick="history.back();" value="' . _NO . '"></p></form></div>';
     echo '</td></tr>';
@@ -602,7 +617,7 @@ function cleaner($string, $trim = true)
  */
 function tobedone($op, $pid)
 {
-    echo 'Not yet implemented: ' . $op . ' pid=' . $pid . '<br />';
+    echo 'Not yet implemented: ' . $op . ' pid=' . $pid . '<br>';
 }
 
 $pid = 0;

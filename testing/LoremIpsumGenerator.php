@@ -42,7 +42,7 @@ class LoremIpsumGenerator
     /**
      * @param int $wordsPer
      */
-    protected function __construct($wordsPer = 100)
+    public function __construct($wordsPer = 100)
     {
         $this->wordsPerParagraph = $wordsPer;
         $this->wordsPerSentence  = 24.460;
@@ -270,7 +270,7 @@ class LoremIpsumGenerator
         for ($i; $i < $count; ++$i) {
             $index = array_rand($this->words);
             $word  = $this->words[$index];
-            //echo $index . '=>' . $word . '<br />';
+            //echo $index . '=>' . $word . '<br>';
 
             if ($i > 0 && $arr[$i - 1] === $word) {
                 --$i;
@@ -298,7 +298,7 @@ class LoremIpsumGenerator
         $sentences = array();
         while ($delta > 0) {
             $senSize = $this->gaussianSentence();
-            //echo $curr . '<br />';
+            //echo $curr . '<br>';
             if (($delta - $senSize) < 4) {
                 $senSize = $delta;
             }

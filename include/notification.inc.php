@@ -27,10 +27,10 @@ if (!defined('GWIKI_NOTIFY_ITEMINFO')) {
         //include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/class/gwikiPage.php';
         //$wikiPage = new GwikiPage;
         $moduleHandler = xoops_getHandler('module');
-        $module         = $moduleHandler->getByDirname($dir);
-        $module_id      = $module->getVar('mid');
+        $module        = $moduleHandler->getByDirname($dir);
+        $module_id     = $module->getVar('mid');
         $configHandler = xoops_getHandler('config');
-        $moduleConfig   = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+        $moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
 
         switch ($category) {
             case 'page':

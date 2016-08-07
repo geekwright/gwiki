@@ -104,9 +104,9 @@ if (!empty($_POST['op'])) {
 
         $success = $wikiPage->addRevision();
 
-        echo $success . ' - ' . $keyword . ' (' . $pageset . '-' . $parent . ')<br />';
+        echo $success . ' - ' . $keyword . ' (' . $pageset . '-' . $parent . ')<br>';
     }
 }
-echo '<br /><br/><form method="post"><input type="hidden" name="op" value="doit"><input type="submit" value="Run"></form>';
+echo '<br><br><form method="post"><input type="hidden" name="op" value="doit"><input type="submit" value="Run"></form>';
 
 include XOOPS_ROOT_PATH . '/footer.php';

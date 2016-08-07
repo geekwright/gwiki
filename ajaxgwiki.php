@@ -49,9 +49,9 @@ if (isset($_GET['id'])) {
 $dir = basename(__DIR__);
 // Access module configs from block:
 $moduleHandler = xoops_getHandler('module');
-$module         = $moduleHandler->getByDirname($dir);
+$module        = $moduleHandler->getByDirname($dir);
 $configHandler = xoops_getHandler('config');
-$moduleConfig   =& $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+$moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
 
 $alloworigin = $moduleConfig['allow_origin'];
 if (!empty($alloworigin)) {
@@ -95,11 +95,16 @@ if ($thispage) {
     $rendered .= $wikiPage->renderPage();
     if (!empty($thispage['pageset']['first']['link'])) {
         $rendered .= '<div class="wikipagesetnav">';
-        $rendered .= '<a href="' . $thispage['pageset']['first']['link'] . '"><img src="' . $imgdir . '/psfirst.png" alt="' . $thispage['pageset']['first']['desc'] . '" title="' . $thispage['pageset']['first']['text'] . '" /></a>';
-        $rendered .= '<a href="' . $thispage['pageset']['prev']['link'] . '"><img src="' . $imgdir . '/psprev.png" alt="' . $thispage['pageset']['prev']['desc'] . '" title="' . $thispage['pageset']['prev']['text'] . '" /></a>';
-        $rendered .= '<a href="' . $thispage['pageset']['home']['link'] . '"><img src="' . $imgdir . '/pshome.png" alt="' . $thispage['pageset']['home']['desc'] . '" title="' . $thispage['pageset']['home']['text'] . '" /></a>';
-        $rendered .= '<a href="' . $thispage['pageset']['next']['link'] . '"><img src="' . $imgdir . '/psnext.png" alt="' . $thispage['pageset']['next']['desc'] . '" title="' . $thispage['pageset']['next']['text'] . '" /></a>';
-        $rendered .= '<a href="' . $thispage['pageset']['last']['link'] . '"><img src="' . $imgdir . '/pslast.png" alt="' . $thispage['pageset']['last']['desc'] . '" title="' . $thispage['pageset']['last']['text'] . '" /></a>';
+        $rendered .= '<a href="' . $thispage['pageset']['first']['link'] . '"><img src="' . $imgdir . '/psfirst.png" alt="' . $thispage['pageset']['first']['desc'] . '" title="'
+                     . $thispage['pageset']['first']['text'] . '" /></a>';
+        $rendered .= '<a href="' . $thispage['pageset']['prev']['link'] . '"><img src="' . $imgdir . '/psprev.png" alt="' . $thispage['pageset']['prev']['desc'] . '" title="'
+                     . $thispage['pageset']['prev']['text'] . '" /></a>';
+        $rendered .= '<a href="' . $thispage['pageset']['home']['link'] . '"><img src="' . $imgdir . '/pshome.png" alt="' . $thispage['pageset']['home']['desc'] . '" title="'
+                     . $thispage['pageset']['home']['text'] . '" /></a>';
+        $rendered .= '<a href="' . $thispage['pageset']['next']['link'] . '"><img src="' . $imgdir . '/psnext.png" alt="' . $thispage['pageset']['next']['desc'] . '" title="'
+                     . $thispage['pageset']['next']['text'] . '" /></a>';
+        $rendered .= '<a href="' . $thispage['pageset']['last']['link'] . '"><img src="' . $imgdir . '/pslast.png" alt="' . $thispage['pageset']['last']['desc'] . '" title="'
+                     . $thispage['pageset']['last']['text'] . '" /></a>';
         $rendered .= '</div>';
     }
 

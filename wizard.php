@@ -541,7 +541,7 @@ function galleryForm()
     $body[] = '<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="' . $wikiPage->getMaxUploadSize() . '" />';
     $body[] = '<input type="hidden" id="page" name="page" value="' . $page . '" />';
     $body[] = '<div id="wikieditimg_dd">';
-    //  $body[] = '<img name="wikieditimg_img" id="wikieditimg_img" class="wikieditimg" src="assets/images/blank.png" /><br />';
+    //  $body[] = '<img name="wikieditimg_img" id="wikieditimg_img" class="wikieditimg" src="assets/images/blank.png" /><br>';
     $body[] = '<span id="wikieditimg_dd_msg">' . _MD_GWIKI_IMAGES_DROPHERE . '</span>';
     $body[] = '<div id="gwikiimgform_nofiledrag">' . _MD_GWIKI_IMAGES_PICKFILE . '<input type="file" id="wikieditimg_fileselect" name="fileselect[]"  multiple="multiple"/></div>';
     $body[] = '<div id="wikieditimg_progress"></div>';
@@ -640,7 +640,8 @@ function chooseWizard()
                         $body[] = '</select></td></tr>';
                         break;
                     case 'text':
-                        $body[] = '<tr><td> </td><td>' . $value['prompt'] . ' <input name="' . $value['name'] . '" id="' . $value['name'] . '" value="' . $value['values'] . '" onchange="setRadioButton(\'' . $rid . '\');"></td></tr>';
+                        $body[] = '<tr><td> </td><td>' . $value['prompt'] . ' <input name="' . $value['name'] . '" id="' . $value['name'] . '" value="' . $value['values']
+                                  . '" onchange="setRadioButton(\'' . $rid . '\');"></td></tr>';
                         break;
                     default:
                         break;

@@ -6,7 +6,7 @@ $modversion['author']      = 'Richard Griffith';
 $modversion['credits']     = "Adapted from Simon \"zeniko\" B&uuml;nzli's wikimod";
 $modversion['license']     = 'GNU General Public License';
 $modversion['official']    = 0; //1 indicates supported by XOOPS Dev Team, 0 means 3rd party supported
-$modversion['image']       = 'assets/images/logo_module.png';
+$modversion['image']       = 'assets/images/logoModule.png';
 $modversion['iconbig']     = 'assets/images/logo_big.png';
 
 $modversion['dirname'] = basename(__DIR__);
@@ -190,7 +190,13 @@ $modversion['config'][] = array(
     'formtype'    => 'select',
     'valuetype'   => 'text',
     'default'     => 'Y-m-d',
-    'options'     => array('dd.mm.yy' => 'd.m.y', 'mm/dd/yy' => 'm/d/y', 'yyyy-mm-dd' => 'Y-m-d', 'RFC2822' => 'r', 'ISO 8601' => 'c')
+    'options'     => array(
+        'dd.mm.yy'   => 'd.m.y',
+        'mm/dd/yy'   => 'm/d/y',
+        'yyyy-mm-dd' => 'Y-m-d',
+        'RFC2822'    => 'r',
+        'ISO 8601'   => 'c'
+    )
 );
 
 $modversion['config'][] = array(

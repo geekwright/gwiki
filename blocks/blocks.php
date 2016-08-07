@@ -25,9 +25,9 @@ function b_gwiki_wikiblock_show($options)
     $dir = basename(dirname(__DIR__));
     // Access module configs from block:
     $moduleHandler = xoops_getHandler('module');
-    $module         = $moduleHandler->getByDirname($dir);
+    $module        = $moduleHandler->getByDirname($dir);
     $configHandler = xoops_getHandler('config');
-    $moduleConfig   = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+    $moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
 
     include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
 
@@ -70,13 +70,13 @@ function b_gwiki_wikiblock_show($options)
  */
 function b_gwiki_wikiblock_edit($options)
 {
-    $form = _MB_GWIKI_WIKIPAGE . ' <input type="text" value="' . $options[0] . '"id="options[0]" name="options[0]" /><br />';
+    $form = _MB_GWIKI_WIKIPAGE . ' <input type="text" value="' . $options[0] . '"id="options[0]" name="options[0]" /><br>';
     // capture the block id from the url and save through a hidden option.
     if ($_GET['op'] === 'clone') {
-        $form .= _MI_GWIKI_BL_CLONE_WARN . '<br />';
+        $form .= _MI_GWIKI_BL_CLONE_WARN . '<br>';
     }
     $form .= '<input type="hidden" value="' . (int)$_GET['bid'] . '"id="options[1]" name="options[1]" />';
-    $form .= _MB_GWIKI_REMOTE_AJAX_URL . ' <input type="text" size="35" value="' . $options[2] . '"id="options[2]" name="options[2]" />  <i>' . _MB_GWIKI_REMOTE_AJAX_URL_DESC . '</i><br />';
+    $form .= _MB_GWIKI_REMOTE_AJAX_URL . ' <input type="text" size="35" value="' . $options[2] . '"id="options[2]" name="options[2]" />  <i>' . _MB_GWIKI_REMOTE_AJAX_URL_DESC . '</i><br>';
 
     return $form;
 }
@@ -130,13 +130,13 @@ function b_gwiki_newpage_edit($options)
     $form = '';
     $form .= _MB_GWIKI_NEWPAGE_USE_WIZARD . ' <input type="radio" name="options[0]" value="1" ';
     if ($options[0]) {
-        $form .= 'checked="checked"';
+        $form .= 'checked';
     }
     $form .= ' />&nbsp;' . _YES . '&nbsp;<input type="radio" name="options[0]" value="0" ';
     if (!$options[0]) {
-        $form .= 'checked="checked"';
+        $form .= 'checked';
     }
-    $form .= ' />&nbsp;' . _NO . '<br /><br />';
+    $form .= ' />&nbsp;' . _NO . '<br><br>';
 
     return $form;
 }
@@ -155,9 +155,9 @@ function b_gwiki_teaserblock_show($options)
     $dir = basename(dirname(__DIR__));
     // Access module configs from block:
     $moduleHandler = xoops_getHandler('module');
-    $module         = $moduleHandler->getByDirname($dir);
+    $module        = $moduleHandler->getByDirname($dir);
     $configHandler = xoops_getHandler('config');
-    $moduleConfig   = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+    $moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
 
     include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
 
@@ -227,32 +227,32 @@ function b_gwiki_teaserblock_edit($options)
     $form = '';
     $form .= _MB_GWIKI_SHOW_FULL_PAGE . ' <input type="radio" name="options[0]" value="1" ';
     if ($options[0]) {
-        $form .= 'checked="checked"';
+        $form .= 'checked';
     }
     $form .= ' />&nbsp;' . _YES . '&nbsp;<input type="radio" name="options[0]" value="0" ';
     if (!$options[0]) {
-        $form .= 'checked="checked"';
+        $form .= 'checked';
     }
-    $form .= ' />&nbsp;' . _NO . '<br /><br />';
-    $form .= _MB_GWIKI_WIKIPAGE . ' <input type="text" value="' . $options[1] . '"id="options[1]" name="options[1]" /><br /><br />';
+    $form .= ' />&nbsp;' . _NO . '<br><br>';
+    $form .= _MB_GWIKI_WIKIPAGE . ' <input type="text" value="' . $options[1] . '"id="options[1]" name="options[1]" /><br><br>';
     $form .= _MB_GWIKI_RANDOM_PAGE . ' <input type="radio" name="options[2]" value="1" ';
     if ($options[2]) {
-        $form .= 'checked="checked"';
+        $form .= 'checked';
     }
     $form .= ' />&nbsp;' . _YES . '&nbsp;<input type="radio" name="options[2]" value="0" ';
     if (!$options[2]) {
-        $form .= 'checked="checked"';
+        $form .= 'checked';
     }
-    $form .= ' />&nbsp;' . _NO . '<br />' . _MB_GWIKI_RANDOM_PAGE_DESC . '<br /><br />';
+    $form .= ' />&nbsp;' . _NO . '<br>' . _MB_GWIKI_RANDOM_PAGE_DESC . '<br><br>';
     $form .= _MB_GWIKI_SHOW_DEFAULT_IMAGE . ' <input type="radio" name="options[3]" value="1" ';
     if ($options[3]) {
-        $form .= 'checked="checked" ';
+        $form .= 'checked ';
     }
     $form .= ' />&nbsp;' . _YES . '&nbsp;<input type="radio" name="options[3]" value="0" ';
     if (!$options[3]) {
-        $form .= 'checked="checked"';
+        $form .= 'checked';
     }
-    $form .= ' />&nbsp;' . _NO . '<br /><br />';
+    $form .= ' />&nbsp;' . _NO . '<br><br>';
 
     return $form;
 }
@@ -347,7 +347,7 @@ function b_gwiki_recentblock_edit($options)
     global $xoopsDB;
 
     $form = '';
-    $form .= _MB_GWIKI_RECENT_COUNT . ' <input type="text" value="' . $options[0] . '"id="options[0]" name="options[0]" /><br />';
+    $form .= _MB_GWIKI_RECENT_COUNT . ' <input type="text" value="' . $options[0] . '"id="options[0]" name="options[0]" /><br>';
     $form .= _MB_GWIKI_PICK_NAMESPACE . ' <select id="options[1]" name="options[1]">';
     $form .= '<option value="0"' . ((int)$options[1] === 0 ? ' selected' : '') . '></option>';
     $sql    = 'SELECT prefix_id, prefix FROM ' . $xoopsDB->prefix('gwiki_prefix') . ' ORDER BY prefix';
@@ -356,8 +356,8 @@ function b_gwiki_recentblock_edit($options)
         $pid = (int)$myrow['prefix_id'];
         $form .= '<option value="' . $pid . '"' . ((int)$options[1] === $pid ? ' selected' : '') . '>' . $myrow['prefix'] . '</option>';
     }
-    $form .= '</select><br />';
-    $form .= _MB_GWIKI_MAX_AGE . ' <input type="text" value="' . $options[2] . '"id="options[2]" name="options[2]" /><br />';
+    $form .= '</select><br>';
+    $form .= _MB_GWIKI_MAX_AGE . ' <input type="text" value="' . $options[2] . '"id="options[2]" name="options[2]" /><br>';
 
     return $form;
 }
@@ -419,8 +419,8 @@ function b_gwiki_pagesettoc_show($options)
  */
 function b_gwiki_pagesettoc_edit($options)
 {
-    $form = _MB_GWIKI_WIKIPAGESET_LEVELS . ' <input type="text" value="' . $options[0] . '"id="options[0]" name="options[0]" /><br />';
-    $form .= _MB_GWIKI_WIKIPAGESET . ' <input type="text" value="' . $options[1] . '"id="options[1]" name="options[1]" /> ' . _MB_GWIKI_WIKIPAGESET_DESC . '<br />';
+    $form = _MB_GWIKI_WIKIPAGESET_LEVELS . ' <input type="text" value="' . $options[0] . '"id="options[0]" name="options[0]" /><br>';
+    $form .= _MB_GWIKI_WIKIPAGESET . ' <input type="text" value="' . $options[1] . '"id="options[1]" name="options[1]" /> ' . _MB_GWIKI_WIKIPAGESET_DESC . '<br>';
 
     return $form;
 }
@@ -531,12 +531,12 @@ function b_gwiki_related_show($options)
  */
 function b_gwiki_related_edit($options)
 {
-    $form = _MB_GWIKI_RELATED_COUNT . ' <input type="text" value="' . $options[0] . '"id="options[0]" name="options[0]" /><br />';
-    $form .= _MB_GWIKI_RELATED . ' <input type="text" value="' . $options[1] . '"id="options[1]" name="options[1]" /> ' . _MB_GWIKI_RELATED_DESC . '<br />';
+    $form = _MB_GWIKI_RELATED_COUNT . ' <input type="text" value="' . $options[0] . '"id="options[0]" name="options[0]" /><br>';
+    $form .= _MB_GWIKI_RELATED . ' <input type="text" value="' . $options[1] . '"id="options[1]" name="options[1]" /> ' . _MB_GWIKI_RELATED_DESC . '<br>';
     $form .= _MB_GWIKI_RELATED_SORT . ' <select id="options[2]" name="options[2]">';
     $form .= '<option value="0"' . ((int)$options[2] === 0 ? ' selected' : '') . '>' . _MB_GWIKI_RELATED_SORT_DATE . '</option>';
     $form .= '<option value="1"' . ((int)$options[2] === 1 ? ' selected' : '') . '>' . _MB_GWIKI_RELATED_SORT_HITS . '</option>';
-    $form .= '</select><br />';
+    $form .= '</select><br>';
 
     return $form;
 }
@@ -632,12 +632,12 @@ function b_gwiki_linkshere_show($options)
  */
 function b_gwiki_linkshere_edit($options)
 {
-    $form = _MB_GWIKI_RELATED_COUNT . ' <input type="text" value="' . $options[0] . '"id="options[0]" name="options[0]" /><br />';
+    $form = _MB_GWIKI_RELATED_COUNT . ' <input type="text" value="' . $options[0] . '"id="options[0]" name="options[0]" /><br>';
     $form .= _MB_GWIKI_RELATED_SORT . ' <select id="options[1]" name="options[1]">';
     $form .= '<option value="0"' . ((int)$options[1] === 0 ? ' selected' : '') . '>' . _MB_GWIKI_RELATED_SORT_ALPHA . '</option>';
     $form .= '<option value="1"' . ((int)$options[1] === 1 ? ' selected' : '') . '>' . _MB_GWIKI_RELATED_SORT_DATE . '</option>';
     $form .= '<option value="2"' . ((int)$options[1] === 2 ? ' selected' : '') . '>' . _MB_GWIKI_RELATED_SORT_HITS . '</option>';
-    $form .= '</select><br />';
+    $form .= '</select><br>';
 
     return $form;
 }

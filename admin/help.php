@@ -20,7 +20,7 @@ adminTableStart(_AD_GW_ADMENU_HELP, 1);
 echo '<tr><td width="100%" >';
 $helptext = utf8_encode(implode("\n", file($help)));
 $helptext = str_replace('<{$xoops_url}>', XOOPS_URL, $helptext);
-echo $helptext . '<br /></td></tr>';
+echo $helptext . '<br></td></tr>';
 
 adminTableEnd(array(_AD_GW_ADMENU_TOADMIN => 'index.php'));
 

@@ -103,10 +103,10 @@ class GwikiPage
         $this->wikiDir = $dir;
 
         $moduleHandler = xoops_getHandler('module');
-        $module         = $moduleHandler->getByDirname($dir);
-        $module_id      = $module->getVar('mid');
+        $module        = $moduleHandler->getByDirname($dir);
+        $module_id     = $module->getVar('mid');
         $configHandler = xoops_getHandler('config');
-        $moduleConfig   = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+        $moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
 
         $this->wikiLinkURL      = $moduleConfig['wikilink_template'];
         $this->wikiHomePage     = $moduleConfig['wiki_home_page'];
@@ -193,6 +193,7 @@ class GwikiPage
     public function escapeForDB($value)
     {
         global $xoopsDB;
+
         return $value = $xoopsDB->escape($value);
     }
 
@@ -348,7 +349,7 @@ class GwikiPage
             $lparen = strpos($keyword, '(');
             if ($lparen !== false) {
                 $inparen = substr($keyword, $lparen);
-                $inparen = substr($inparen, 1, - 2);
+                $inparen = substr($inparen, 1, -2);
                 $keyword = substr($keyword, 0, $lparen);
                 $oob     = $inparen;
             }
@@ -515,8 +516,8 @@ class GwikiPage
                     $this->updatePageLinks();
 
                     $notificationHandler = xoops_getHandler('notification');
-                    $tags['PAGE_NAME']    = $page;
-                    $tags['PAGE_TITLE']   = $this->title;
+                    $tags['PAGE_NAME']   = $page;
+                    $tags['PAGE_TITLE']  = $this->title;
                     if (empty($tags['PAGE_TITLE'])) {
                         $tags['PAGE_TITLE'] = $this->display_keyword;
                     }
@@ -630,10 +631,10 @@ class GwikiPage
         $mayEdit = false;
         $keyword = $this->keyword;
 
-        $dir            = $this->wikiDir;
+        $dir           = $this->wikiDir;
         $moduleHandler = xoops_getHandler('module');
-        $module         = $moduleHandler->getByDirname($dir);
-        $module_id      = $module->getVar('mid');
+        $module        = $moduleHandler->getByDirname($dir);
+        $module_id     = $module->getVar('mid');
         // $configHandler = xoops_getHandler('config');
         // $moduleConfig   = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
         $groups = XOOPS_GROUP_ANONYMOUS;
@@ -707,7 +708,7 @@ class GwikiPage
 
         if ($uid > 0) {
             $memberHandler = xoops_getHandler('member');
-            $user           = $memberHandler->getUser($uid);
+            $user          = $memberHandler->getUser($uid);
             if (is_object($user)) {
                 return "<a href=\"" . XOOPS_URL . "/userinfo.php?uid=$uid\">" . htmlspecialchars($user->getVar('uname'), ENT_QUOTES) . '</a>';
             }
@@ -727,10 +728,10 @@ class GwikiPage
     {
         global $xoopsUser, $xoopsDB;
 
-        $dir            = $this->wikiDir;
+        $dir           = $this->wikiDir;
         $moduleHandler = xoops_getHandler('module');
-        $module         = $moduleHandler->getByDirname($dir);
-        $module_id      = $module->getVar('mid');
+        $module        = $moduleHandler->getByDirname($dir);
+        $module_id     = $module->getVar('mid');
 
         $groups = XOOPS_GROUP_ANONYMOUS;
         if (is_object($xoopsUser)) {
@@ -1607,7 +1608,7 @@ class GwikiPage
             // Creole test includes "[[Ward Cunningham's]]" which leads to a
             // wiki page WardCunningham. Included in spirit of compatibility.
             if (substr($link, -2) === "'s") {
-                $templink = substr($link, 0, - 3); // quote is slashed
+                $templink = substr($link, 0, -3); // quote is slashed
                 // only if a wiki page
                 if (preg_match('/^([A-Za-z\x80-\xff0-9.:\- ]){2,}$/', $templink)) {
                     $linktext = $link;
@@ -1793,7 +1794,8 @@ class GwikiPage
             //$link=sprintf($this->getWikiLinkURL(),$tv['keyword']);
             foreach ($tv['toc'] as $i => $v) {
                 if ((int)$v['level'] <= $level) {
-                    $tocout .= '<li class="wikitoclevel' . $v['level'] . '"><a href="' . sprintf($this->getWikiLinkURL(), $tv['keyword'] . sprintf($this->tocAnchorFmt, $this->tocIdPrefix . $i)) . '">' . $v['name'] . '</a></li>';
+                    $tocout .= '<li class="wikitoclevel' . $v['level'] . '"><a href="' . sprintf($this->getWikiLinkURL(), $tv['keyword'] . sprintf($this->tocAnchorFmt, $this->tocIdPrefix . $i)) . '">'
+                               . $v['name'] . '</a></li>';
                 }
             }
         }
@@ -1992,7 +1994,7 @@ class GwikiPage
         } elseif (strcasecmp($align, 'right') === 0) {
             $align = 'right';
         } elseif (strcasecmp($align, 'center') === 0) {
-            $align = 'center';           
+            $align = 'center';
         }
 
         $alignparm = '';
@@ -2271,7 +2273,9 @@ class GwikiPage
         $body  = $matches[3];
         // make sure we have a valid type
         $type = strtolower($type);
-        if (!($type === 'code' || $type === 'info' || $type === 'note' || $type === 'tip' || $type === 'warn' || $type === 'folded')) {
+        if (!($type === 'code' || $type === 'info' || $type === 'note' || $type === 'tip' || $type === 'warn'
+              || $type === 'folded')
+        ) {
             $type = 'info';
         }
 
@@ -2296,7 +2300,8 @@ class GwikiPage
             $etooltip    = '<span>' . _MD_GWIKI_FOLDED_TT . '</span>';
         }
 
-        $ret = '<div class="wiki' . $type . $eclass . '"' . $ejs . '><div class="wiki' . $type . 'icon"></div><div class="wiki' . $type . 'title">' . $title . $etooltip . '</div><div class="wiki' . $type . 'inner">' . $body . '<br clear="all" /></div></div>' . "\n\n";
+        $ret = '<div class="wiki' . $type . $eclass . '"' . $ejs . '><div class="wiki' . $type . 'icon"></div><div class="wiki' . $type . 'title">' . $title . $etooltip . '</div><div class="wiki'
+               . $type . 'inner">' . $body . '<br clear="all" /></div></div>' . "\n\n";
 
         return $ret;
     }
@@ -2542,7 +2547,7 @@ class GwikiPage
 
         // forced line break creole style \\, just a bare break tag
         $search  = "#(\\\{2})#i";
-        $replace = '<br />';
+        $replace = '<br>';
         $body    = preg_replace($search, $replace, $body);
 
         // forced line break blog [[br]] or gwiki {break} styles, themed - by default clear all

@@ -38,9 +38,9 @@ function fbcom_plugin(&$metas, $plugin_env)
     $dir = basename(dirname(__DIR__));
     // Access module configs from block:
     $moduleHandler = xoops_getHandler('module');
-    $module         = $moduleHandler->getByDirname($dir);
+    $module        = $moduleHandler->getByDirname($dir);
     $configHandler = xoops_getHandler('config');
-    $moduleConfig   = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+    $moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
 
     $wikihome = strtolower($moduleConfig['wiki_home_page']);
 

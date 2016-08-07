@@ -43,7 +43,7 @@ function getUserName($uid)
 
     if ($uid > 0) {
         $memberHandler = xoops_getHandler('member');
-        $user           = $memberHandler->getUser($uid);
+        $user          = $memberHandler->getUser($uid);
         if (is_object($user)) {
             return "<a href=\"" . XOOPS_URL . "/userinfo.php?uid=$uid\">" . htmlspecialchars($user->getVar('uname'), ENT_QUOTES) . '</a>';
         }

@@ -24,10 +24,10 @@ function gwiki_search($queryarray, $andor, $limit, $offset, $userid, $prefix = n
     $dir = basename(dirname(__DIR__));
 
     $moduleHandler = xoops_getHandler('module');
-    $module         = $moduleHandler->getByDirname($dir);
-    $module_id      = $module->getVar('mid');
+    $module        = $moduleHandler->getByDirname($dir);
+    $module_id     = $module->getVar('mid');
     $configHandler = xoops_getHandler('config');
-    $moduleConfig   = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+    $moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
 
     $baseurl = $moduleConfig['searchlink_template'];
 
@@ -38,7 +38,9 @@ function gwiki_search($queryarray, $andor, $limit, $offset, $userid, $prefix = n
     }
 
     $pagesetq = '';
-    if (is_array($queryarray) && (count($queryarray) > 1) && substr_compare($queryarray[count($queryarray) - 1], '{pageset=', 0, 9) === 0) {
+    if (is_array($queryarray) && (count($queryarray) > 1)
+        && substr_compare($queryarray[count($queryarray) - 1], '{pageset=', 0, 9) === 0
+    ) {
         $pageset = array_pop($queryarray);
         $pageset = substr($pageset, 9, -1);
         trigger_error($pageset);

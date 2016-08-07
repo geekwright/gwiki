@@ -43,7 +43,8 @@ if (!defined('_MD_GWIKI_PAGE')) {
     define('_MD_GWIKI_PAGE_PERM_CREATE_PFX', 'Create Namespace');
 
     define('_MD_GWIKI_NOEDIT_NOTFOUND_TITLE', 'No Such Page');
-    define('_MD_GWIKI_NOEDIT_NOTFOUND_BODY', '<div class="wikinote"><div class="wikinoteicon"></div><div class="wikinotetitle">That Page Was Not Found</div><div class="wikiwarninner">The requested page has not been created yet.</div></div>');
+    define('_MD_GWIKI_NOEDIT_NOTFOUND_BODY',
+           '<div class="wikinote"><div class="wikinoteicon"></div><div class="wikinotetitle">That Page Was Not Found</div><div class="wikiwarninner">The requested page has not been created yet.</div></div>');
 
     // history
     define('_MD_GWIKI_HISTORY', 'Review page history');

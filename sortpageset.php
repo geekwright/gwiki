@@ -12,7 +12,7 @@ include __DIR__ . '/header.php';
 global $xoTheme, $xoopsTpl;
 global $wikiPage;
 $GLOBALS['xoopsOption']['template_main'] = 'gwiki_view.tpl';
-include(XOOPS_ROOT_PATH . '/header.php');
+include XOOPS_ROOT_PATH . '/header.php';
 $currentscript = basename(__FILE__);
 include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
@@ -265,4 +265,4 @@ if (isset($debug)) {
     $xoopsTpl->assign('debug', $debug);
 }
 
-include(XOOPS_ROOT_PATH . '/footer.php');
+include XOOPS_ROOT_PATH . '/footer.php';

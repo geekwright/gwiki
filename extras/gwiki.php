@@ -20,7 +20,8 @@ $page      = isset($_GET[$pagevar]) ? cleaner($_GET[$pagevar]) : null;
 $highlight = isset($_GET['query']) ? cleaner($_GET['query']) : null;
 
 // build a URL template to point wiki links to this script
-$script         = (!empty($_SERVER['HTTPS'])) ? 'https://' . $_SERVER['SERVER_NAME'] . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) : 'http://' . $_SERVER['SERVER_NAME'] . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$script         = (!empty($_SERVER['HTTPS'])) ? 'https://' . $_SERVER['SERVER_NAME'] . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) : 'http://' . $_SERVER['SERVER_NAME']
+                                                                                                                                          . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $ourWikiLinkURL = $script . '?' . $pagevar . '=%s';
 
 // normally, adjustments to the remaining code are not required
@@ -77,9 +78,9 @@ function loadLanguage($name, $domain = '', $language = null)
 
 // Access module configs from outside module:
 $moduleHandler = xoops_getHandler('module');
-$module         = $moduleHandler->getByDirname($dir);
+$module        = $moduleHandler->getByDirname($dir);
 $configHandler = xoops_getHandler('config');
-$moduleConfig   = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+$moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
 
 loadLanguage('main', $dir);
 loadLanguage('modinfo', $dir);

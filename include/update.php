@@ -14,12 +14,12 @@
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * @param $module
- * @param $old_version
+ * @param XoopsModule $module
+ * @param             $old_version
  *
  * @return bool
  */
-function xoops_module_update_gwiki(&$module, $old_version)
+function xoops_module_update_gwiki(XoopsModule $module, $old_version)
 {
     global $xoopsDB;
 
@@ -94,13 +94,19 @@ function xoops_module_update_gwiki(&$module, $old_version)
         $xoopsDB->queryF($sql);
         $sql = 'ALTER TABLE ' . $xoopsDB->prefix('gwiki_template') . " CHANGE template  template VARCHAR(128) NOT NULL DEFAULT ''";
         $xoopsDB->queryF($sql);
-        $sql = 'ALTER TABLE ' . $xoopsDB->prefix('gwiki_page_images') . " CHANGE keyword  keyword VARCHAR(128) NOT NULL DEFAULT '', " . " CHANGE image_name  image_name VARCHAR(128) NOT NULL DEFAULT ''";
+        $sql = 'ALTER TABLE ' . $xoopsDB->prefix('gwiki_page_images') . " CHANGE keyword  keyword VARCHAR(128) NOT NULL DEFAULT '', "
+               . " CHANGE image_name  image_name VARCHAR(128) NOT NULL DEFAULT ''";
         $xoopsDB->queryF($sql);
 
-        $sql = 'CREATE TABLE ' . $xoopsDB->prefix('gwiki_page_files') . " (file_id int(10) NOT NULL AUTO_INCREMENT, keyword varchar(128) NOT NULL DEFAULT ''," . " file_name varchar(128) NOT NULL DEFAULT '', file_path varchar(255) NOT NULL DEFAULT '', " . " file_type varchar(128) NOT NULL DEFAULT '', file_icon varchar(64) NOT NULL DEFAULT '', " . " file_size int(10) NOT NULL DEFAULT '0', file_upload_date int(10) NOT NULL DEFAULT '0'," . " file_description text, file_uid int(10) NOT NULL DEFAULT '0', " . ' PRIMARY KEY (file_id), UNIQUE KEY (keyword, file_name) ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;';
+        $sql = 'CREATE TABLE ' . $xoopsDB->prefix('gwiki_page_files') . " (file_id int(10) NOT NULL AUTO_INCREMENT, keyword varchar(128) NOT NULL DEFAULT '',"
+               . " file_name varchar(128) NOT NULL DEFAULT '', file_path varchar(255) NOT NULL DEFAULT '', "
+               . " file_type varchar(128) NOT NULL DEFAULT '', file_icon varchar(64) NOT NULL DEFAULT '', " . " file_size int(10) NOT NULL DEFAULT '0', file_upload_date int(10) NOT NULL DEFAULT '0',"
+               . " file_description text, file_uid int(10) NOT NULL DEFAULT '0', " . ' PRIMARY KEY (file_id), UNIQUE KEY (keyword, file_name) ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;';
         $xoopsDB->queryF($sql);
 
-        $sql = 'ALTER TABLE ' . $xoopsDB->prefix('gwiki_page_files') . " ADD COLUMN file_type varchar(128) NOT NULL DEFAULT ''" . ", ADD COLUMN file_icon varchar(64) NOT NULL DEFAULT '', " . " ADD COLUMN file_size int(10) NOT NULL DEFAULT '0'" . ", ADD COLUMN file_upload_date int(10) NOT NULL DEFAULT '0', ADD COLUMN file_description text" . ", ADD COLUMN file_uid int(10) NOT NULL DEFAULT '0' ";
+        $sql = 'ALTER TABLE ' . $xoopsDB->prefix('gwiki_page_files') . " ADD COLUMN file_type varchar(128) NOT NULL DEFAULT ''" . ", ADD COLUMN file_icon varchar(64) NOT NULL DEFAULT '', "
+               . " ADD COLUMN file_size int(10) NOT NULL DEFAULT '0'" . ", ADD COLUMN file_upload_date int(10) NOT NULL DEFAULT '0', ADD COLUMN file_description text"
+               . ", ADD COLUMN file_uid int(10) NOT NULL DEFAULT '0' ";
         $xoopsDB->queryF($sql);
 
         $sql = 'ALTER TABLE ' . $xoopsDB->prefix('gwiki_page_files') . " ADD COLUMN file_uid int(10) NOT NULL DEFAULT '0' ";
@@ -165,7 +171,8 @@ function xoops_module_update_gwiki(&$module, $old_version)
         }
 
         $sql = 'ALTER TABLE ' . $xoopsDB->prefix('gwiki_pages');
-        $sql .= ' ADD KEY activekey (active,keyword), ADD KEY keyword (keyword), ' . ' ADD KEY parent (active,parent_page), ADD KEY pageset (active,page_set_home), ' . ' ADD KEY lastmod (active,lastmodified), ADD KEY pageindex (active,show_in_index,display_keyword) ';
+        $sql .= ' ADD KEY activekey (active,keyword), ADD KEY keyword (keyword), ' . ' ADD KEY parent (active,parent_page), ADD KEY pageset (active,page_set_home), '
+                . ' ADD KEY lastmod (active,lastmodified), ADD KEY pageindex (active,show_in_index,display_keyword) ';
         $xoopsDB->queryF($sql);
     }
     if ($old_version < 101) {
