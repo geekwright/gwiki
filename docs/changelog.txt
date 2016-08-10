@@ -1,5 +1,28 @@
 gwiki ChangeLog
 
+1.0 RC 5        NOT RELEASED
+=================================
+- removed @version (mamba)
+- single quotes (mamba)
+- removed code < $xoop25plus (mamba)
+- using basename(__FILE__) in addNavigation() (mamba)
+- performance by using $iMax in 'for' (mamba)
+- removed get_magic_quotes_gpc() code (mamba)
+- replaced < br / > with < br > (mamba)
+- HTML5: checked="checked" to checked (mamba)
+- XOOPS 2.5.8 and PHP 7 (mamba)
+- PSR-2 adjustments (mamba)
+
+1.0 RC 4        NOT RELEASED
+=================================
+- Update README (geekwright)
+- Reduce visual issues under xbootstrap theme (geekwright)
+- Bring everything back up one level (geekwright)
+- merge doc comments and fix from a parallel version (geekwright)
+- remove some vestigial bits (geekwright)
+- move to RC4 (geekwright)
+- English typos (cesagonchu)
+
 1.0 RC 3        NOT RELEASED
 =================================
 - moved all images, CSS, and JS files to /assets (mamba)
@@ -9,7 +32,6 @@ gwiki ChangeLog
 - change intval() to (int) (mamba)
 - change dirname(__FIL__) to __DIR__ (mamba)
 - cosmetics (mamba)
-
 
 === gwiki Module 1.0 RC2 ===
 Release date: Feb 1, 2014

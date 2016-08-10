@@ -7,7 +7,6 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 include dirname(dirname(__DIR__)) . '/mainfile.php';
 $xoopsLogger->activated = false;
@@ -18,7 +17,7 @@ error_reporting(-1);
 $dir = basename(__DIR__);
 require_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
 global $wikiPage;
-$wikiPage = new gwikiPage;
+$wikiPage = new GwikiPage;
 
 $uploadpath = XOOPS_ROOT_PATH . "/uploads/{$dir}/";
 $uploadurl  = XOOPS_URL . "/uploads/{$dir}/";
@@ -56,11 +55,11 @@ function deleteData(&$input)
 {
     global $xoopsDB, $uploadpath, $wikiPage;
 
-    $q_image_id = (int)($input['image_id']);
+    $q_image_id = (int)$input['image_id'];
     $q_keyword  = $wikiPage->escapeForDB($input['page']); // use keyword in delete so we know id and edit authority are connected
 
     // look up the name and delete the image file
-    $sql = "SELECT image_file FROM " . $xoopsDB->prefix('gwiki_page_images') . " where image_id='{$q_image_id}' AND keyword = '{$q_keyword}' ";
+    $sql = 'SELECT image_file FROM ' . $xoopsDB->prefix('gwiki_page_images') . " where image_id='{$q_image_id}' AND keyword = '{$q_keyword}' ";
 
     $result = $xoopsDB->query($sql);
     if ($result) {
@@ -75,7 +74,7 @@ function deleteData(&$input)
     }
 
     // delete the row
-    $sql = "DELETE FROM " . $xoopsDB->prefix('gwiki_page_images') . " where image_id='{$q_image_id}' AND keyword = '{$q_keyword}' ";
+    $sql = 'DELETE FROM ' . $xoopsDB->prefix('gwiki_page_images') . " where image_id='{$q_image_id}' AND keyword = '{$q_keyword}' ";
 
     $result = $xoopsDB->queryF($sql);
     $cnt    = $xoopsDB->getAffectedRows();
@@ -95,24 +94,24 @@ function updateData(&$input)
 {
     global $xoopsDB, $wikiPage;
 
-    $q_image_id       = (int)($input['image_id']);
+    $q_image_id       = (int)$input['image_id'];
     $q_keyword        = $wikiPage->escapeForDB($input['page']);
     $q_image_name     = $wikiPage->escapeForDB($input['image_name']);
     $q_image_alt_text = $wikiPage->escapeForDB($input['image_alt_text']);
     //  image_file only changed by image upload
-    $q_use_to_represent = (int)($input['use_to_represent']);
+    $q_use_to_represent = (int)$input['use_to_represent'];
     $q_image_file       = empty($input['image_file']) ? '' : $wikiPage->escapeForDB($input['image_file']);
 
     //  if(!$q_image_id) return false; // only updates
 
     // if we are setting this, clear it on all other images
     if ($q_use_to_represent) {
-        $sql = "UPDATE " . $xoopsDB->prefix('gwiki_page_images') . " set use_to_represent = 0 where keyword = '{$q_keyword}' ";
+        $sql = 'UPDATE ' . $xoopsDB->prefix('gwiki_page_images') . " set use_to_represent = 0 where keyword = '{$q_keyword}' ";
 
         $result = $xoopsDB->queryF($sql);
     }
 
-    $sql = "UPDATE " . $xoopsDB->prefix('gwiki_page_images');
+    $sql = 'UPDATE ' . $xoopsDB->prefix('gwiki_page_images');
     $sql .= " set image_name = '{$q_image_name}' ";
     $sql .= " , image_alt_text = '{$q_image_alt_text}' ";
     $sql .= " , use_to_represent = '{$q_use_to_represent}' ";
@@ -125,7 +124,7 @@ function updateData(&$input)
     if (!$result) {
         $input['message'] = $xoopsDB->error();
 
-        return (0);
+        return 0;
     }
     $cnt = $xoopsDB->getAffectedRows();
     if (!$cnt) {
@@ -135,8 +134,8 @@ function updateData(&$input)
     }
 
     if ($result && !$cnt && !empty($q_image_file)) { // database is OK but nothing to update - require image_file
-        $sql = "insert into " . $xoopsDB->prefix('gwiki_page_images');
-        $sql .= " (keyword, image_name, image_alt_text, use_to_represent, image_file) ";
+        $sql = 'insert into ' . $xoopsDB->prefix('gwiki_page_images');
+        $sql .= ' (keyword, image_name, image_alt_text, use_to_represent, image_file) ';
         $sql .= " values ('{$q_keyword}', '{$q_image_name}', '{$q_image_alt_text}', '{$q_use_to_represent}', '{$q_image_file}' )";
         $result            = $xoopsDB->queryF($sql);
         $input['image_id'] = $xoopsDB->getInsertId();
@@ -184,8 +183,8 @@ function updateImage($newimage, &$input)
 
     rename($tempfn, $filename);
     chmod($filename, 0644);
-    $q_image_id = (int)($input['image_id']);
-    $sql        = "SELECT image_file FROM " . $xoopsDB->prefix('gwiki_page_images') . " where image_id='{$q_image_id}' ";
+    $q_image_id = (int)$input['image_id'];
+    $sql        = 'SELECT image_file FROM ' . $xoopsDB->prefix('gwiki_page_images') . " where image_id='{$q_image_id}' ";
 
     $result = $xoopsDB->query($sql);
     if ($result) {
@@ -207,15 +206,15 @@ function updateImage($newimage, &$input)
 }
 
 if ($jsondata === false) {
-    header("Status: 500 Internal Error - No Data Passed");
+    header('Status: 500 Internal Error - No Data Passed');
     exit;
 }
 $input = json_decode($jsondata, true);
 //file_put_contents ( XOOPS_ROOT_PATH.'/uploads/debug.txt', print_r($input,true));
 
 if (!empty($input['image_id'])) {
-    $q_image_id = (int)($input['image_id']);
-    $sql        = "SELECT keyword FROM " . $xoopsDB->prefix('gwiki_page_images') . " where image_id = '{$q_image_id}' ";
+    $q_image_id = (int)$input['image_id'];
+    $sql        = 'SELECT keyword FROM ' . $xoopsDB->prefix('gwiki_page_images') . " where image_id = '{$q_image_id}' ";
     $result     = $xoopsDB->query($sql);
     if ($row = $xoopsDB->fetcharray($result)) {
         $input['page'] = $row['keyword'];
@@ -223,7 +222,7 @@ if (!empty($input['image_id'])) {
 }
 
 if (empty($input['page'])) {
-    header("Status: 500 Internal Error - No Page");
+    header('Status: 500 Internal Error - No Page');
     exit;
 }
 $input['page'] = strtolower($wikiPage->normalizeKeyword($input['page']));
@@ -231,7 +230,7 @@ $pageX         = $wikiPage->getPage($input['page']);
 $mayEdit       = $wikiPage->checkEdit();
 
 if (!$mayEdit) {
-    header("Status: 403 Forbidden - No Permission");
+    header('Status: 403 Forbidden - No Permission');
     if (!$mayEdit) {
         $out['message'] = _MD_GWIKI_AJAX_IMGEDIT_NO_AUTH;
     }

@@ -9,7 +9,6 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 if (!defined('GWIKI_NOTIFY_ITEMINFO')) {
     define('GWIKI_NOTIFY_ITEMINFO', 1);
@@ -26,16 +25,16 @@ if (!defined('GWIKI_NOTIFY_ITEMINFO')) {
 
         $dir = basename(dirname(__DIR__));
         //include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/class/gwikiPage.php';
-        //$wikiPage = new gwikiPage;
-        $module_handler = xoops_gethandler('module');
-        $module         = $module_handler->getByDirname($dir);
+        //$wikiPage = new GwikiPage;
+        $moduleHandler = xoops_getHandler('module');
+        $module        = $moduleHandler->getByDirname($dir);
         $module_id      = $module->getVar('mid');
-        $config_handler = xoops_gethandler('config');
-        $moduleConfig   = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
+        $configHandler = xoops_getHandler('config');
+        $moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
 
         switch ($category) {
             case 'page':
-                $item_id = (int)($item_id);
+                $item_id = (int)$item_id;
                 $sql     = 'SELECT i.keyword as keyword, display_keyword, title FROM ';
                 $sql .= $xoopsDB->prefix('gwiki_pageids') . ' i, ' . $xoopsDB->prefix('gwiki_pages') . ' p ';
                 //            $sql .= ' WHERE i.keyword = p.keyword AND active = 1 AND page_id = '.$item_id;
@@ -55,7 +54,7 @@ if (!defined('GWIKI_NOTIFY_ITEMINFO')) {
                 $item['url'] = sprintf($moduleConfig['wikilink_template'], $row['keyword']);
                 break;
             case 'namespace':
-                $item_id = (int)($item_id);
+                $item_id = (int)$item_id;
                 $sql     = 'SELECT prefix, prefix_home FROM ' . $xoopsDB->prefix('gwiki_prefix');
                 //            $sql .= ' WHERE prefix_id = '.$item_id;
                 $sql .= " WHERE prefix_id = {$item_id}";

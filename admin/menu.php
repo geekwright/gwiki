@@ -7,7 +7,6 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 if (file_exists(XOOPS_ROOT_PATH . '/Frameworks/moduleclasses/icons/32/about.png')) {
     $pathIcon32 = '../../Frameworks/moduleclasses/icons/32';
@@ -15,70 +14,84 @@ if (file_exists(XOOPS_ROOT_PATH . '/Frameworks/moduleclasses/icons/32/about.png'
     $adminmenu[1] = array(
         'title' => _MI_GWIKI_ADMAIN,
         'link'  => 'admin/index.php',
-        'icon'  => $pathIcon32 . '/home.png');
+        'icon'  => $pathIcon32 . '/home.png'
+    );
 
     $adminmenu[] = array(
         'title' => _MI_GWIKI_PAGES,
         'link'  => 'admin/pages.php',
-        'icon'  => $pathIcon32 . '/content.png');
+        'icon'  => $pathIcon32 . '/content.png'
+    );
 
     $adminmenu[] = array(
         'title' => _MI_GWIKI_ADPERM,
         'link'  => 'admin/permissions.php',
-        'icon'  => $pathIcon32 . '/permissions.png');
+        'icon'  => $pathIcon32 . '/permissions.png'
+    );
 
     $adminmenu[] = array(
         'title' => _MI_GWIKI_ADPREFIX,
         'link'  => 'admin/prefixes.php',
-        'icon'  => $pathIcon32 . '/category.png');
+        'icon'  => $pathIcon32 . '/category.png'
+    );
 
     $adminmenu[] = array(
         'title' => _MI_GWIKI_ADFILES,
         'link'  => 'admin/attachments.php',
-        'icon'  => $pathIcon32 . '/fileshare.png');
+        'icon'  => $pathIcon32 . '/fileshare.png'
+    );
 
     $adminmenu[] = array(
         'title' => _MI_GWIKI_ADRECENT,
         'link'  => 'admin/recent.php',
-        'icon'  => $pathIcon32 . '/stats.png');
+        'icon'  => $pathIcon32 . '/stats.png'
+    );
 
     $adminmenu[] = array(
         'title' => _MI_GWIKI_ABOUT,
         'link'  => 'admin/about.php',
-        'icon'  => $pathIcon32 . '/about.png');
+        'icon'  => $pathIcon32 . '/about.png'
+    );
 } else {
     $adminmenu[1] = array(
         'title' => _MI_GWIKI_ADMAIN,
         'link'  => 'admin/index.php',
-        'icon'  => 'assets/images/admin/home.png');
+        'icon'  => 'assets/images/admin/home.png'
+    );
 
     $adminmenu[] = array(
         'title' => _MI_GWIKI_PAGES,
         'link'  => 'admin/pages.php',
-        'icon'  => 'assets/images/admin/manage.png');
+        'icon'  => 'assets/images/admin/manage.png'
+    );
 
     $adminmenu[] = array(
         'title' => _MI_GWIKI_ADPERM,
         'link'  => 'admin/permissions.php',
-        'icon'  => 'assets/images/admin/group.png');
+        'icon'  => 'assets/images/admin/group.png'
+    );
 
     $adminmenu[] = array(
         'title' => _MI_GWIKI_ADPREFIX,
         'link'  => 'admin/prefixes.php',
-        'icon'  => 'assets/images/admin/namespaces.png');
+        'icon'  => 'assets/images/admin/namespaces.png'
+    );
 
     $adminmenu[] = array(
         'title' => _MI_GWIKI_ADFILES,
         'link'  => 'admin/attachments.php',
-        'icon'  => 'assets/images/admin/attachments.png');
+        'icon'  => 'assets/images/admin/attachments.png'
+    );
 
     $adminmenu[] = array(
         'title' => _MI_GWIKI_ADRECENT,
         'link'  => 'admin/recent.php',
-        'icon'  => 'assets/images/admin/recent.png');
+        'icon'  => 'assets/images/admin/recent.png'
+    );
 
     $adminmenu[] = array(
         'title' => _MI_GWIKI_ABOUT,
         'link'  => 'admin/about.php',
-        'icon'  => 'assets/images/admin/about.png');
+        'icon'  => 'assets/images/admin/about.png'
+    );
 }

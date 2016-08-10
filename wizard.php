@@ -7,13 +7,12 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 include dirname(dirname(__DIR__)) . '/mainfile.php';
 $xoopsOption['template_main'] = 'gwiki_wizard.tpl';
-include XOOPS_ROOT_PATH . "/header.php";
-include_once 'include/functions.php';
-include_once XOOPS_ROOT_PATH . "/class/xoopsformloader.php";
+include XOOPS_ROOT_PATH . '/header.php';
+include_once __DIR__ . '/include/functions.php';
+include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 global $wikiPage, $xoopsDB;
 
 $token = 0;
@@ -40,7 +39,7 @@ function obtainPage()
 {
     global $wikiPage, $xoopsTpl, $token;
 
-    $wikiPage = new gwikiPage;
+    $wikiPage = new GwikiPage;
     $prefixes = $wikiPage->getUserNamespaces(true);
     if ($prefixes) {
         $options = array();
@@ -63,11 +62,11 @@ function obtainPage()
     $form->addElement(new XoopsFormText(_MD_GWIKI_WIZARD_PAGE_NAME, 'page', 20, 120, $page));
 
     $btn_tray   = new XoopsFormElementTray('', ' ', 'gwizardformtray');
-    $submit_btn = new XoopsFormButton("", "wikiwizard_submit", _MD_GWIKI_WIZARD_CONTINUE, "submit");
+    $submit_btn = new XoopsFormButton('', 'wikiwizard_submit', _MD_GWIKI_WIZARD_CONTINUE, 'submit');
     //  $submit_btn->setExtra("onclick='prepForSubmit();'");
     $btn_tray->addElement($submit_btn);
 
-    $cancel_btn = new XoopsFormButton("", "wikiwizard_cancel", _MD_GWIKI_WIZARD_CANCEL, "button");
+    $cancel_btn = new XoopsFormButton('', 'wikiwizard_cancel', _MD_GWIKI_WIZARD_CANCEL, 'button');
     $cancel_btn->setExtra(' onclick="document.location.href=\'index.php\';"');
     $btn_tray->addElement($cancel_btn);
 
@@ -90,11 +89,11 @@ function obtainImportText()
     $form->addElement(new XoopsFormLabel('', _MD_GWIKI_IMPORT_TEXT_FORM_DESC, 'instructions'));
 
     $btn_tray   = new XoopsFormElementTray('', ' ', 'gwizardformtray');
-    $submit_btn = new XoopsFormButton("", "wikiwizard_submit", _MD_GWIKI_WIZARD_CONTINUE, "submit");
+    $submit_btn = new XoopsFormButton('', 'wikiwizard_submit', _MD_GWIKI_WIZARD_CONTINUE, 'submit');
     //  $submit_btn->setExtra("onclick='prepForSubmit();'");
     $btn_tray->addElement($submit_btn);
 
-    $cancel_btn = new XoopsFormButton("", "wikiwizard_cancel", _MD_GWIKI_WIZARD_CANCEL, "button");
+    $cancel_btn = new XoopsFormButton('', 'wikiwizard_cancel', _MD_GWIKI_WIZARD_CANCEL, 'button');
     $cancel_btn->setExtra(" onclick='history.back();'");
     $btn_tray->addElement($cancel_btn);
 
@@ -136,7 +135,8 @@ function doImportText($page, $dir)
         $params = array(
             'page' => $page,
             'op'   => 'preview',
-            'body' => $import);
+            'body' => $import
+        );
 
         redirect_to_edit($params);
         exit;
@@ -161,11 +161,11 @@ function obtainImportHTML($import_html = '')
 
     $form->addElement(new XoopsFormTextArea(_MD_GWIKI_IMPORT_HTML_TEXT, 'import_html', htmlspecialchars($import_html), 10, 40));
     $btn_tray   = new XoopsFormElementTray('', ' ', 'gwizardformtray');
-    $submit_btn = new XoopsFormButton("", "wikiwizard_submit", _MD_GWIKI_WIZARD_CONTINUE, "submit");
+    $submit_btn = new XoopsFormButton('', 'wikiwizard_submit', _MD_GWIKI_WIZARD_CONTINUE, 'submit');
     //  $submit_btn->setExtra("onclick='prepForSubmit();'");
     $btn_tray->addElement($submit_btn);
 
-    $cancel_btn = new XoopsFormButton("", "wikiwizard_cancel", _MD_GWIKI_WIZARD_CANCEL, "button");
+    $cancel_btn = new XoopsFormButton('', 'wikiwizard_cancel', _MD_GWIKI_WIZARD_CANCEL, 'button');
     $cancel_btn->setExtra(" onclick='history.back();'");
     $btn_tray->addElement($cancel_btn);
 
@@ -259,14 +259,14 @@ function showDOMNode(&$out, DOMNode $domNode, $nest, $lt, $ld, $nop)
                 }
                 if ($lt === '#') {
                     for ($i = 1; $i <= $ld; ++$i) {
-                        $out .= "#";
+                        $out .= '#';
                     }
                 } else {
                     for ($i = 1; $i <= $ld; ++$i) {
-                        $out .= "*";
+                        $out .= '*';
                     }
                 }
-                $out .= " ";
+                $out .= ' ';
                 if ($node->hasChildNodes()) {
                     showDOMNode($out, $node, $nest + 1, $lt, $ld, 1);
                 }
@@ -342,13 +342,13 @@ function showDOMNode(&$out, DOMNode $domNode, $nest, $lt, $ld, $nop)
                 $out .= "|\n";
                 break;
             case 'td':
-                $out .= "|";
+                $out .= '|';
                 if ($node->hasChildNodes()) {
                     showDOMNode($out, $node, $nest + 1, $lt, $ld, 1);
                 }
                 break;
             case 'th':
-                $out .= "|=";
+                $out .= '|=';
                 if ($node->hasChildNodes()) {
                     showDOMNode($out, $node, $nest + 1, $lt, $ld, 1);
                 }
@@ -414,7 +414,8 @@ function doImportHTML($page, $import_html, $dir)
         $params = array(
             'page' => $page,
             'op'   => 'preview',
-            'body' => $out);
+            'body' => $out
+        );
 
         redirect_to_edit($params);
         exit;
@@ -438,7 +439,8 @@ function doTemplate($page, $templatename)
         $params = array(
             'page' => $page,
             'op'   => 'preview',
-            'body' => $p['body']);
+            'body' => $p['body']
+        );
 
         redirect_to_edit($params);
     }
@@ -456,7 +458,8 @@ function doGallery()
     $params = array(
         'page' => $page,
         'op'   => 'preview',
-        'body' => '{gallery}');
+        'body' => '{gallery}'
+    );
 
     redirect_to_edit($params);
 }
@@ -485,7 +488,8 @@ function doCopy($page, $templatename)
             'meta_description' => $p['meta_description'],
             'meta_keywords'    => $p['meta_keywords'],
             'show_in_index'    => '1',
-            'leave_inactive'   => '0');
+            'leave_inactive'   => '0'
+        );
 
         redirect_to_edit($params);
     }
@@ -537,7 +541,7 @@ function galleryForm()
     $body[] = '<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="' . $wikiPage->getMaxUploadSize() . '" />';
     $body[] = '<input type="hidden" id="page" name="page" value="' . $page . '" />';
     $body[] = '<div id="wikieditimg_dd">';
-    //  $body[] = '<img name="wikieditimg_img" id="wikieditimg_img" class="wikieditimg" src="assets/images/blank.png" /><br />';
+    //  $body[] = '<img name="wikieditimg_img" id="wikieditimg_img" class="wikieditimg" src="assets/images/blank.png" /><br>';
     $body[] = '<span id="wikieditimg_dd_msg">' . _MD_GWIKI_IMAGES_DROPHERE . '</span>';
     $body[] = '<div id="gwikiimgform_nofiledrag">' . _MD_GWIKI_IMAGES_PICKFILE . '<input type="file" id="wikieditimg_fileselect" name="fileselect[]"  multiple="multiple"/></div>';
     $body[] = '<div id="wikieditimg_progress"></div>';
@@ -580,7 +584,9 @@ function chooseWizard()
                 'title'       => _MD_GWIKI_WIZARD_TEMPLATE_TITLE,
                 'description' => _MD_GWIKI_WIZARD_TEMPLATE_DESC,
                 'options'     => array(
-                    array('type' => 'select', 'prompt' => '', 'name' => 'templatename', 'values' => $templates)));
+                    array('type' => 'select', 'prompt' => '', 'name' => 'templatename', 'values' => $templates)
+                )
+            );
         }
     }
 
@@ -589,25 +595,30 @@ function chooseWizard()
         'title'       => _MD_GWIKI_WIZARD_COPY_TITLE,
         'description' => _MD_GWIKI_WIZARD_COPY_DESC,
         'options'     => array(
-            array('type' => 'text', 'prompt' => _MD_GWIKI_WIZARD_COPY_PAGE, 'name' => 'copykeyword', 'values' => '')));
+            array('type' => 'text', 'prompt' => _MD_GWIKI_WIZARD_COPY_PAGE, 'name' => 'copykeyword', 'values' => '')
+        )
+    );
 
     $wizopts[] = array(
         'name'        => 'importhtml',
         'title'       => _MD_GWIKI_WIZARD_HTML_TITLE,
         'description' => _MD_GWIKI_WIZARD_HTML_DESC,
-        'options'     => null);
+        'options'     => null
+    );
 
     $wizopts[] = array(
         'name'        => 'importtext',
         'title'       => _MD_GWIKI_WIZARD_TEXT_TITLE,
         'description' => _MD_GWIKI_WIZARD_TEXT_DESC,
-        'options'     => null);
+        'options'     => null
+    );
 
     $wizopts[] = array(
         'name'        => 'gallery',
         'title'       => _MD_GWIKI_WIZARD_GALLERY_TITLE,
         'description' => _MD_GWIKI_WIZARD_GALLERY_DESC,
-        'options'     => null);
+        'options'     => null
+    );
 
     $page   = $wikiPage->keyword;
     $title  = _MD_GWIKI_WIZARD_OPTIONS_TITLE;
@@ -629,7 +640,8 @@ function chooseWizard()
                         $body[] = '</select></td></tr>';
                         break;
                     case 'text':
-                        $body[] = '<tr><td> </td><td>' . $value['prompt'] . ' <input name="' . $value['name'] . '" id="' . $value['name'] . '" value="' . $value['values'] . '" onchange="setRadioButton(\'' . $rid . '\');"></td></tr>';
+                        $body[] = '<tr><td> </td><td>' . $value['prompt'] . ' <input name="' . $value['name'] . '" id="' . $value['name'] . '" value="' . $value['values']
+                                  . '" onchange="setRadioButton(\'' . $rid . '\');"></td></tr>';
                         break;
                     default:
                         break;
@@ -661,7 +673,7 @@ if (isset($_POST['page'])) {
 }
 // namespace id (prefix_id) is set by newpage block, turn it into a full page name
 if (isset($_REQUEST['nsid'])) {
-    $page = $wikiPage->makeKeywordFromPrefix((int)($_REQUEST['nsid']), $page);
+    $page = $wikiPage->makeKeywordFromPrefix((int)$_REQUEST['nsid'], $page);
 }
 
 $op = '';
@@ -682,7 +694,7 @@ if (isset($_POST['copykeyword'])) {
 }
 if (empty($page)) {
     $pageX   = false;
-    $op      = "page";
+    $op      = 'page';
     $mayEdit = false;
 } else {
     $pageX   = $wikiPage->getPage($page);
@@ -700,7 +712,7 @@ if ($pageX) {
     $pageX['pageFound']    = true;
 } else {
     $pageX                 = array();
-    $uid                   = ($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
+    $uid                   = $xoopsUser ? $xoopsUser->getVar('uid') : 0;
     $pageX['uid']          = $uid;
     $pageX['author']       = $wikiPage->getUserName($uid);
     $pageX['revisiontime'] = date($wikiPage->dateFormat);
@@ -754,7 +766,6 @@ switch ($op) {
 
 $title = _MD_GWIKI_WIZARD;
 $xoopsTpl->assign('xoops_pagetitle', $title);
-
 $xoopsTpl->assign('gwiki', $pageX);
 
 if (!empty($err_message)) {
@@ -766,4 +777,4 @@ if (!empty($message)) {
 
 $xoTheme->addStylesheet(XOOPS_URL . '/modules/gwiki/assets/css/module.css');
 
-include XOOPS_ROOT_PATH . "/footer.php";
+include XOOPS_ROOT_PATH . '/footer.php';

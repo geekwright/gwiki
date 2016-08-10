@@ -9,14 +9,13 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @param XoopsModule $module
- * @param int $old_version
+ * @param             $old_version
  *
  * @return bool
  */
@@ -27,7 +26,7 @@ function xoops_module_update_gwiki(XoopsModule $module, $old_version)
     $error = false;
 
     // recompile namespace templates
-    $tplfile_handler = xoops_gethandler('tplfile');
+    $tplfileHandler = xoops_getHandler('tplfile');
 
     $dir = basename(dirname(__DIR__));
     $mid = $module->getVar('mid');
@@ -42,12 +41,12 @@ function xoops_module_update_gwiki(XoopsModule $module, $old_version)
         $pid  = $template['prefix_id'];
         $file = $dir . '_prefix_' . $pid . '.tpl';
 
-        $tplfiles = $tplfile_handler->find('default', 'module', $mid, $dir, $file, false);
+        $tplfiles = $tplfileHandler->find('default', 'module', $mid, $dir, $file, false);
         if (count($tplfiles)) {
             $tplfile = $tplfiles[0];
             $isnew   = false;
         } else {
-            $tplfile =& $tplfile_handler->create();
+            $tplfile = $tplfileHandler->create();
             $isnew   = true;
         }
 
@@ -62,12 +61,12 @@ function xoops_module_update_gwiki(XoopsModule $module, $old_version)
         $tplfile->setVar('tpl_type', 'module');
 
         if ($isnew) {
-            if (!$tplfile_handler->insert($tplfile)) {
+            if (!$tplfileHandler->insert($tplfile)) {
                 $module->setErrors('ERROR: Could not insert template ' . htmlspecialchars($file) . ' to the database.');
                 $error = true;
             }
         } else {
-            if (!$tplfile_handler->forceUpdate($tplfile)) {
+            if (!$tplfileHandler->forceUpdate($tplfile)) {
                 $module->setErrors('ERROR: Could not update template ' . htmlspecialchars($file) . ' in the database.');
                 $error = true;
             }
@@ -95,13 +94,19 @@ function xoops_module_update_gwiki(XoopsModule $module, $old_version)
         $xoopsDB->queryF($sql);
         $sql = 'ALTER TABLE ' . $xoopsDB->prefix('gwiki_template') . " CHANGE template  template VARCHAR(128) NOT NULL DEFAULT ''";
         $xoopsDB->queryF($sql);
-        $sql = 'ALTER TABLE ' . $xoopsDB->prefix('gwiki_page_images') . " CHANGE keyword  keyword VARCHAR(128) NOT NULL DEFAULT '', " . " CHANGE image_name  image_name VARCHAR(128) NOT NULL DEFAULT ''";
+        $sql = 'ALTER TABLE ' . $xoopsDB->prefix('gwiki_page_images') . " CHANGE keyword  keyword VARCHAR(128) NOT NULL DEFAULT '', "
+               . " CHANGE image_name  image_name VARCHAR(128) NOT NULL DEFAULT ''";
         $xoopsDB->queryF($sql);
 
-        $sql = "CREATE TABLE " . $xoopsDB->prefix('gwiki_page_files') . " (file_id int(10) NOT NULL AUTO_INCREMENT, keyword varchar(128) NOT NULL DEFAULT ''," . " file_name varchar(128) NOT NULL DEFAULT '', file_path varchar(255) NOT NULL DEFAULT '', " . " file_type varchar(128) NOT NULL DEFAULT '', file_icon varchar(64) NOT NULL DEFAULT '', " . " file_size int(10) NOT NULL DEFAULT '0', file_upload_date int(10) NOT NULL DEFAULT '0'," . " file_description text, file_uid int(10) NOT NULL DEFAULT '0', " . " PRIMARY KEY (file_id), UNIQUE KEY (keyword, file_name) ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
+        $sql = 'CREATE TABLE ' . $xoopsDB->prefix('gwiki_page_files') . " (file_id int(10) NOT NULL AUTO_INCREMENT, keyword varchar(128) NOT NULL DEFAULT '',"
+               . " file_name varchar(128) NOT NULL DEFAULT '', file_path varchar(255) NOT NULL DEFAULT '', "
+               . " file_type varchar(128) NOT NULL DEFAULT '', file_icon varchar(64) NOT NULL DEFAULT '', " . " file_size int(10) NOT NULL DEFAULT '0', file_upload_date int(10) NOT NULL DEFAULT '0',"
+               . " file_description text, file_uid int(10) NOT NULL DEFAULT '0', " . ' PRIMARY KEY (file_id), UNIQUE KEY (keyword, file_name) ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;';
         $xoopsDB->queryF($sql);
 
-        $sql = 'ALTER TABLE ' . $xoopsDB->prefix('gwiki_page_files') . " ADD COLUMN file_type varchar(128) NOT NULL DEFAULT ''" . ", ADD COLUMN file_icon varchar(64) NOT NULL DEFAULT '', " . " ADD COLUMN file_size int(10) NOT NULL DEFAULT '0'" . ", ADD COLUMN file_upload_date int(10) NOT NULL DEFAULT '0', ADD COLUMN file_description text" . ", ADD COLUMN file_uid int(10) NOT NULL DEFAULT '0' ";
+        $sql = 'ALTER TABLE ' . $xoopsDB->prefix('gwiki_page_files') . " ADD COLUMN file_type varchar(128) NOT NULL DEFAULT ''" . ", ADD COLUMN file_icon varchar(64) NOT NULL DEFAULT '', "
+               . " ADD COLUMN file_size int(10) NOT NULL DEFAULT '0'" . ", ADD COLUMN file_upload_date int(10) NOT NULL DEFAULT '0', ADD COLUMN file_description text"
+               . ", ADD COLUMN file_uid int(10) NOT NULL DEFAULT '0' ";
         $xoopsDB->queryF($sql);
 
         $sql = 'ALTER TABLE ' . $xoopsDB->prefix('gwiki_page_files') . " ADD COLUMN file_uid int(10) NOT NULL DEFAULT '0' ";
@@ -118,7 +123,8 @@ function xoops_module_update_gwiki(XoopsModule $module, $old_version)
             'gwiki_prefix',
             'gwiki_template',
             'gwiki_page_images',
-            'gwiki_page_files');
+            'gwiki_page_files'
+        );
         foreach ($tabs as $v) {
             $sql = 'ALTER TABLE ' . $xoopsDB->prefix($v) . ' ENGINE = MyISAM';
             $xoopsDB->queryF($sql);
@@ -165,7 +171,8 @@ function xoops_module_update_gwiki(XoopsModule $module, $old_version)
         }
 
         $sql = 'ALTER TABLE ' . $xoopsDB->prefix('gwiki_pages');
-        $sql .= ' ADD KEY activekey (active,keyword), ADD KEY keyword (keyword), ' . ' ADD KEY parent (active,parent_page), ADD KEY pageset (active,page_set_home), ' . ' ADD KEY lastmod (active,lastmodified), ADD KEY pageindex (active,show_in_index,display_keyword) ';
+        $sql .= ' ADD KEY activekey (active,keyword), ADD KEY keyword (keyword), ' . ' ADD KEY parent (active,parent_page), ADD KEY pageset (active,page_set_home), '
+                . ' ADD KEY lastmod (active,lastmodified), ADD KEY pageindex (active,show_in_index,display_keyword) ';
         $xoopsDB->queryF($sql);
     }
     if ($old_version < 101) {

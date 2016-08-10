@@ -7,15 +7,14 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
-include "header.php";
-require_once 'include/Diff.php';
+include __DIR__ . '/header.php';
+require_once __DIR__ . '/include/Diff.php';
 global $xoTheme, $xoopsTpl;
 global $wikiPage;
 
 // $_GET variables we use
-$page = $wikiPage->normalizeKeyword((isset($_GET['page'])) ? cleaner($_GET['page']) : $wikiPage->wikiHomePage);
+$page = $wikiPage->normalizeKeyword(isset($_GET['page']) ? cleaner($_GET['page']) : $wikiPage->wikiHomePage);
 $id   = isset($_GET['id']) ? cleaner($_GET['id']) : null; // old revision id
 $nid  = isset($_GET['nid']) ? cleaner($_GET['nid']) : null; // new revision id
 
@@ -63,7 +62,7 @@ $pageX['modpath'] = XOOPS_ROOT_PATH . '/modules/' . $dir;
 $pageX['modurl']  = XOOPS_URL . '/modules/' . $dir;
 
 $xoopsOption['template_main'] = 'gwiki_view.tpl';
-include XOOPS_ROOT_PATH . "/header.php";
+include XOOPS_ROOT_PATH . '/header.php';
 
 $pageX['title'] = sprintf(_MD_GWIKI_DIFF_TITLE, prepOut($pageX['title']));
 $xoopsTpl->assign('gwiki', $pageX);
@@ -87,4 +86,4 @@ if (!empty($err_message)) {
     $xoopsTpl->assign('err_message', $err_message);
 }
 
-include XOOPS_ROOT_PATH . "/footer.php";
+include XOOPS_ROOT_PATH . '/footer.php';

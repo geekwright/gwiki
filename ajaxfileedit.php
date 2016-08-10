@@ -7,7 +7,6 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 include dirname(dirname(__DIR__)) . '/mainfile.php';
 $xoopsLogger->activated = false;
@@ -18,7 +17,7 @@ error_reporting(-1);
 $dir = basename(__DIR__);
 require_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
 global $wikiPage;
-$wikiPage = new gwikiPage;
+$wikiPage = new GwikiPage;
 
 $uploadpath = XOOPS_ROOT_PATH . "/uploads/{$dir}/";
 $uploadurl  = XOOPS_URL . "/uploads/{$dir}/";
@@ -39,7 +38,7 @@ if (!empty($wlconfig)) {
 /**
  * @param $filename
  *
- * @return array
+ * @return array|bool
  */
 function getExtensionInfo($filename)
 {
@@ -111,7 +110,8 @@ function getExtensionInfo($filename)
         'xlsx' => 'xlsx',
         'xml'  => 'xml',
         'yml'  => 'yml',
-        'zip'  => 'zip');
+        'zip'  => 'zip',
+    );
     // Also have files '_blank' '_page'
 
     $path_parts = pathinfo($filename);
@@ -188,13 +188,13 @@ function getUserName($uid)
 {
     global $xoopsConfig;
 
-    $uid = (int)($uid);
+    $uid = (int)$uid;
 
     if ($uid > 0) {
-        $member_handler = xoops_gethandler('member');
-        $user           = $member_handler->getUser($uid);
+        $memberHandler = xoops_getHandler('member');
+        $user          = $memberHandler->getUser($uid);
         if (is_object($user)) {
-            return "<a href=\"" . XOOPS_URL . "/userinfo.php?uid=$uid\">" . htmlspecialchars($user->getVar('uname'), ENT_QUOTES) . "</a>";
+            return "<a href=\"" . XOOPS_URL . "/userinfo.php?uid=$uid\">" . htmlspecialchars($user->getVar('uname'), ENT_QUOTES) . '</a>';
         }
     }
 
@@ -210,12 +210,12 @@ function deleteData(&$input)
 {
     global $xoopsDB, $uploadpath, $wikiPage;
 
-    $q_file_id = (int)($input['file_id']);
+    $q_file_id = (int)$input['file_id'];
     // use keyword in delete so we know id and edit authority are connected
     $q_keyword = $wikiPage->escapeForDB($input['page']);
 
     // look up the name and delete the image file
-    $sql = "SELECT file_path FROM " . $xoopsDB->prefix('gwiki_page_files') . " where file_id='{$q_file_id}' AND keyword = '{$q_keyword}' ";
+    $sql = 'SELECT file_path FROM ' . $xoopsDB->prefix('gwiki_page_files') . " where file_id='{$q_file_id}' AND keyword = '{$q_keyword}' ";
 
     $result = $xoopsDB->query($sql);
     if ($result) {
@@ -250,23 +250,23 @@ function updateData(&$input)
 {
     global $xoopsDB, $xoopsUser, $wikiPage;
 
-    $q_file_id          = (int)($input['file_id']);
+    $q_file_id          = (int)$input['file_id'];
     $q_keyword          = $wikiPage->escapeForDB($input['page']);
     $q_file_name        = $wikiPage->escapeForDB($input['file_name']);
     $q_file_icon        = $wikiPage->escapeForDB($input['file_icon']);
     $q_file_type        = $wikiPage->escapeForDB($input['file_type']);
     $q_file_description = $wikiPage->escapeForDB($input['file_description']);
     //  file_path only changed by image upload
-    $q_file_size       = (int)($input['file_size']);
+    $q_file_size       = (int)$input['file_size'];
     $q_file_path       = empty($input['file_path']) ? '' : $wikiPage->escapeForDB($input['file_path']);
-    $q_file_uid        = ($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
+    $q_file_uid        = $xoopsUser ? $xoopsUser->getVar('uid') : 0;
     $input['file_uid'] = $q_file_uid;
-    if ((int)($input['file_upload_date']) === 0) {
+    if ((int)$input['file_upload_date'] === 0) {
         $input['file_upload_date'] = time();
     }
     $q_file_upload_date = $input['file_upload_date'];
 
-    $sql = "UPDATE " . $xoopsDB->prefix('gwiki_page_files') . ' SET ';
+    $sql = 'UPDATE ' . $xoopsDB->prefix('gwiki_page_files') . ' SET ';
     $sql .= " file_name = '{$q_file_name}', ";
     $sql .= " file_icon = '{$q_file_icon}', ";
     $sql .= " file_type = '{$q_file_type}', ";
@@ -279,7 +279,7 @@ function updateData(&$input)
 
     $result = $xoopsDB->queryF($sql);
     if (!$result) {
-        header("Status: 500 Internal Error - Database Error");
+        header('Status: 500 Internal Error - Database Error');
         $out['message'] === $xoopsDB->error();
         echo json_encode($out);
         exit;
@@ -294,8 +294,8 @@ function updateData(&$input)
     //file_id, keyword, file_name, file_path, file_type, file_icon, file_size, file_upload_date, file_description, file_uid
 
     if ($result && !$cnt && !empty($q_file_path)) { // database is OK but nothing to update - require file_path
-        $sql = "insert into " . $xoopsDB->prefix('gwiki_page_files');
-        $sql .= " (keyword, file_name, file_path, file_type, file_icon, file_size, file_upload_date, file_description, file_uid) ";
+        $sql = 'insert into ' . $xoopsDB->prefix('gwiki_page_files');
+        $sql .= ' (keyword, file_name, file_path, file_type, file_icon, file_size, file_upload_date, file_description, file_uid) ';
         $sql .= " values ('{$q_keyword}', '{$q_file_name}', '{$q_file_path}', '{$q_file_type}', '{$q_file_icon}', '{$q_file_size}', $q_file_upload_date, '{$q_file_description}', '{$q_file_uid}' )";
         $result           = $xoopsDB->queryF($sql);
         $input['file_id'] = $xoopsDB->getInsertId();
@@ -344,8 +344,8 @@ function updateFile($newfile, &$input)
 
     rename($tempfn, $filename);
     chmod($filename, 0644);
-    $q_file_id = (int)($input['file_id']);
-    $sql       = "SELECT file_path FROM " . $xoopsDB->prefix('gwiki_page_files') . " where file_id='{$q_file_id}' ";
+    $q_file_id = (int)$input['file_id'];
+    $sql       = 'SELECT file_path FROM ' . $xoopsDB->prefix('gwiki_page_files') . " where file_id='{$q_file_id}' ";
 
     $result = $xoopsDB->query($sql);
     if ($result) {
@@ -374,7 +374,7 @@ $input = json_decode($jsondata, true);
 //file_put_contents ( XOOPS_ROOT_PATH.'/uploads/debug.txt', print_r($input,true));
 
 if (!empty($input['file_id'])) {
-    $q_file_id = (int)($input['file_id']);
+    $q_file_id = (int)$input['file_id'];
     $sql       = 'SELECT * FROM ' . $xoopsDB->prefix('gwiki_page_files') . " where file_id = '{$q_file_id}' ";
     $result    = $xoopsDB->query($sql);
     if ($row = $xoopsDB->fetcharray($result)) {

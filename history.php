@@ -7,15 +7,14 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 
-include "header.php";
+include __DIR__ . '/header.php';
 global $xoTheme, $xoopsTpl;
 global $wikiPage;
 
 // $_GET variables we use
-$page      = $wikiPage->normalizeKeyword((isset($_GET['page'])) ? cleaner($_GET['page']) : $wikiPage->wikiHomePage);
+$page      = $wikiPage->normalizeKeyword(isset($_GET['page']) ? cleaner($_GET['page']) : $wikiPage->wikiHomePage);
 $highlight = isset($_GET['query']) ? cleaner($_GET['query']) : null;
 
 global $wikiPage, $xoopsDB, $xoopsModuleConfig;
@@ -32,7 +31,7 @@ if ($mayEdit) {
     // $_POST variable for restore operation
     if (isset($_POST['page']) && isset($_POST['id']) && isset($_POST['op']) && $_POST['op'] === 'restore') {
         $page = cleaner($_POST['page']);
-        $id   = (int)($_POST['id']);
+        $id   = (int)$_POST['id'];
         if ($id) {
             $wikiPage->setRevision($page, $id);
         }
@@ -92,7 +91,7 @@ $pageX['modpath'] = XOOPS_ROOT_PATH . '/modules/' . $dir;
 $pageX['modurl']  = XOOPS_URL . '/modules/' . $dir;
 
 $xoopsOption['template_main'] = 'gwiki_history.tpl';
-include XOOPS_ROOT_PATH . "/header.php";
+include XOOPS_ROOT_PATH . '/header.php';
 
 $xoopsTpl->assign('gwiki', $pageX);
 $xoopsTpl->assign('history', $history);
@@ -111,4 +110,4 @@ if (!empty($err_message)) {
     $xoopsTpl->assign('err_message', $err_message);
 }
 
-include XOOPS_ROOT_PATH . "/footer.php";
+include XOOPS_ROOT_PATH . '/footer.php';

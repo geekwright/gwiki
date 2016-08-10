@@ -7,7 +7,6 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 include dirname(dirname(__DIR__)) . '/mainfile.php';
 $xoopsLogger->activated = false;
@@ -41,28 +40,28 @@ $page = isset($_GET['page']) ? cleaner($_GET['page']) : null;
 //trigger_error($page);
 
 if (isset($_GET['bid'])) {
-    $bid = (int)($_GET['bid']);
+    $bid = (int)$_GET['bid'];
 } // from a block
 if (isset($_GET['id'])) {
-    $id = (int)($_GET['id']);
+    $id = (int)$_GET['id'];
 }    // from utility (i.e. history)
 
 $dir = basename(__DIR__);
 // Access module configs from block:
-$module_handler = xoops_gethandler('module');
-$module         = $module_handler->getByDirname($dir);
-$config_handler = xoops_gethandler('config');
-$moduleConfig   = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
+$moduleHandler = xoops_getHandler('module');
+$module        = $moduleHandler->getByDirname($dir);
+$configHandler = xoops_getHandler('config');
+$moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
 
 $alloworigin = $moduleConfig['allow_origin'];
 if (!empty($alloworigin)) {
-    header("Access-Control-Allow-Origin: " . $alloworigin);
+    header('Access-Control-Allow-Origin: ' . $alloworigin);
 }
 
 include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
 $imgdir = XOOPS_URL . '/modules/' . $dir . '/images';
 
-$wikiPage = new gwikiPage;
+$wikiPage = new GwikiPage;
 $wikiPage->setRecentCount($moduleConfig['number_recent']);
 
 if (empty($page)) {
@@ -96,11 +95,16 @@ if ($thispage) {
     $rendered .= $wikiPage->renderPage();
     if (!empty($thispage['pageset']['first']['link'])) {
         $rendered .= '<div class="wikipagesetnav">';
-        $rendered .= '<a href="' . $thispage['pageset']['first']['link'] . '"><img src="' . $imgdir . '/psfirst.png" alt="' . $thispage['pageset']['first']['desc'] . '" title="' . $thispage['pageset']['first']['text'] . '" /></a>';
-        $rendered .= '<a href="' . $thispage['pageset']['prev']['link'] . '"><img src="' . $imgdir . '/psprev.png" alt="' . $thispage['pageset']['prev']['desc'] . '" title="' . $thispage['pageset']['prev']['text'] . '" /></a>';
-        $rendered .= '<a href="' . $thispage['pageset']['home']['link'] . '"><img src="' . $imgdir . '/pshome.png" alt="' . $thispage['pageset']['home']['desc'] . '" title="' . $thispage['pageset']['home']['text'] . '" /></a>';
-        $rendered .= '<a href="' . $thispage['pageset']['next']['link'] . '"><img src="' . $imgdir . '/psnext.png" alt="' . $thispage['pageset']['next']['desc'] . '" title="' . $thispage['pageset']['next']['text'] . '" /></a>';
-        $rendered .= '<a href="' . $thispage['pageset']['last']['link'] . '"><img src="' . $imgdir . '/pslast.png" alt="' . $thispage['pageset']['last']['desc'] . '" title="' . $thispage['pageset']['last']['text'] . '" /></a>';
+        $rendered .= '<a href="' . $thispage['pageset']['first']['link'] . '"><img src="' . $imgdir . '/psfirst.png" alt="' . $thispage['pageset']['first']['desc'] . '" title="'
+                     . $thispage['pageset']['first']['text'] . '" /></a>';
+        $rendered .= '<a href="' . $thispage['pageset']['prev']['link'] . '"><img src="' . $imgdir . '/psprev.png" alt="' . $thispage['pageset']['prev']['desc'] . '" title="'
+                     . $thispage['pageset']['prev']['text'] . '" /></a>';
+        $rendered .= '<a href="' . $thispage['pageset']['home']['link'] . '"><img src="' . $imgdir . '/pshome.png" alt="' . $thispage['pageset']['home']['desc'] . '" title="'
+                     . $thispage['pageset']['home']['text'] . '" /></a>';
+        $rendered .= '<a href="' . $thispage['pageset']['next']['link'] . '"><img src="' . $imgdir . '/psnext.png" alt="' . $thispage['pageset']['next']['desc'] . '" title="'
+                     . $thispage['pageset']['next']['text'] . '" /></a>';
+        $rendered .= '<a href="' . $thispage['pageset']['last']['link'] . '"><img src="' . $imgdir . '/pslast.png" alt="' . $thispage['pageset']['last']['desc'] . '" title="'
+                     . $thispage['pageset']['last']['text'] . '" /></a>';
         $rendered .= '</div>';
     }
 
