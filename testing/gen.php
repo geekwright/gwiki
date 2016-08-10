@@ -7,17 +7,16 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 include_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
 $xoopsOption['template_main'] = 'gwiki_view.tpl';
-include XOOPS_ROOT_PATH . "/header.php";
+include XOOPS_ROOT_PATH . '/header.php';
 $dir = basename(dirname(__DIR__));
 include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
 global $wikiPage;
-$wikiPage = new gwikiPage;
+$wikiPage = new GwikiPage;
 
-include "LoremIpsumGenerator.php";
+include __DIR__ . '/LoremIpsumGenerator.php';
 $LIGen = new LoremIpsumGenerator;
 
 $limit     = 100;            // how many pages per run
@@ -70,7 +69,7 @@ if (!empty($_POST['op'])) {
         $wikiPage->title           = $title;
         $wikiPage->display_keyword = $keyword;
         $wikiPage->body            = $body;
-        $wikiPage->uid             = ($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
+        $wikiPage->uid             = $xoopsUser ? $xoopsUser->getVar('uid') : 0;
 
         // randomly pick a random parent page
         $parent = '';
@@ -105,9 +104,9 @@ if (!empty($_POST['op'])) {
 
         $success = $wikiPage->addRevision();
 
-        echo $success . ' - ' . $keyword . ' (' . $pageset . '-' . $parent . ')<br />';
+        echo $success . ' - ' . $keyword . ' (' . $pageset . '-' . $parent . ')<br>';
     }
 }
-echo '<br /><br/><form method="post"><input type="hidden" name="op" value="doit"><input type="submit" value="Run"></form>';
+echo '<br><br><form method="post"><input type="hidden" name="op" value="doit"><input type="submit" value="Run"></form>';
 
-include XOOPS_ROOT_PATH . "/footer.php";
+include XOOPS_ROOT_PATH . '/footer.php';

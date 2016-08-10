@@ -7,16 +7,11 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 include __DIR__ . '/header.php';
 //include_once dirname(__DIR__) . '/include/functions.php';
 
-if (!$xoop25plus) {
-    adminmenu(6);
-} else {
-    echo $moduleAdmin->addNavigation('attachments.php');
-}
+echo $moduleAdmin->addNavigation(basename(__FILE__));
 
 /**
  * @param      $string
@@ -102,10 +97,10 @@ EOT;
     $limit = 10;
     $start = 0;
     if (!empty($_GET['start'])) {
-        $start = (int)($_GET['start']);
+        $start = (int)$_GET['start'];
     }
 
-    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix('gwiki_page_files') . $whereclause;
+    $sql    = 'SELECT count(*) FROM ' . $xoopsDB->prefix('gwiki_page_files') . $whereclause;
     $result = $xoopsDB->query($sql);
     if ($result) {
         $myrow = $xoopsDB->fetchRow($result);
@@ -113,8 +108,12 @@ EOT;
     }
 
     adminTableStart(_AD_GWIKI_FILES_LIST, 9);
-    echo '<tr><form method="get">' . '<td><input type="text" name="kw" size="10" value="' . $kw . '"></td>' . '<td><input type="text" name="fn" size="10" value="' . $fn . '"></td>' . '<td>&nbsp;</td>' . '<td><input type="text" name="ty" size="10" value="' . $ty . '"></td>' . '<td>&nbsp;</td>' . '<td>&nbsp;</td>' . '<td>&nbsp;</td>' . '<td><input type="text" name="ds" size="10" value="' . $ds . '"></td>' . '<td><input type="submit" value="' . _AD_GWIKI_FILES_FILTER . '"></td>' . '</form></tr>';
-    echo '<tr class="head">' . '<th>' . _AD_GWIKI_FILES_KEYWORD . '</th>' . '<th>' . _AD_GWIKI_FILES_NAME . '</th>' . '<th>' . _AD_GWIKI_FILES_PATH . '</th>' . '<th>' . _AD_GWIKI_FILES_TYPE . '</th>' . '<th>' . _AD_GWIKI_FILES_ICON . '</th>' . '<th>' . _AD_GWIKI_FILES_SIZE . '</th>' . '<th>' . _AD_GWIKI_FILES_DATE . '</th>' . '<th>' . _AD_GWIKI_FILES_DESC . '</th>' . '<th>' . _AD_GWIKI_FILES_UID . '</th>' . '</tr>';
+    echo '<tr><form method="get">' . '<td><input type="text" name="kw" size="10" value="' . $kw . '"></td>' . '<td><input type="text" name="fn" size="10" value="' . $fn . '"></td>' . '<td>&nbsp;</td>'
+         . '<td><input type="text" name="ty" size="10" value="' . $ty . '"></td>' . '<td>&nbsp;</td>' . '<td>&nbsp;</td>' . '<td>&nbsp;</td>' . '<td><input type="text" name="ds" size="10" value="'
+         . $ds . '"></td>' . '<td><input type="submit" value="' . _AD_GWIKI_FILES_FILTER . '"></td>' . '</form></tr>';
+    echo '<tr class="head">' . '<th>' . _AD_GWIKI_FILES_KEYWORD . '</th>' . '<th>' . _AD_GWIKI_FILES_NAME . '</th>' . '<th>' . _AD_GWIKI_FILES_PATH . '</th>' . '<th>' . _AD_GWIKI_FILES_TYPE . '</th>'
+         . '<th>' . _AD_GWIKI_FILES_ICON . '</th>' . '<th>' . _AD_GWIKI_FILES_SIZE . '</th>' . '<th>' . _AD_GWIKI_FILES_DATE . '</th>' . '<th>' . _AD_GWIKI_FILES_DESC . '</th>' . '<th>'
+         . _AD_GWIKI_FILES_UID . '</th>' . '</tr>';
 
     $sql = 'SELECT * FROM ' . $xoopsDB->prefix('gwiki_page_files');
     $sql .= $whereclause;
@@ -122,7 +121,7 @@ EOT;
 
     $result = $xoopsDB->query($sql, $limit, $start);
 
-    for ($i = 0; $i < $xoopsDB->getRowsNum($result); ++$i) {
+    for ($i = 0, $iMax = $xoopsDB->getRowsNum($result); $i < $iMax; ++$i) {
         $row = $xoopsDB->fetchArray($result);
         /*
         gwiki_page_files
@@ -137,7 +136,13 @@ EOT;
           file_description text,
           file_uid int(10) NOT NULL DEFAULT '0',
         */
-        echo '<tr class="' . (($i % 2) ? "even" : "odd") . '"><td><a href="../edit.php?page=' . $row['keyword'] . '">' . htmlspecialchars($row['keyword'], ENT_QUOTES) . '</a></td>' . '<td>' . htmlspecialchars($row['file_name'], ENT_QUOTES) . '</td>' . '<td><a href="' . XOOPS_URL . '/uploads/' . $dir . '/' . $row['file_path'] . '">' . htmlspecialchars($row['file_path'], ENT_QUOTES) . '</a></td>' . '<td>' . htmlspecialchars($row['file_type'], ENT_QUOTES) . '</td>' . '<td><img src="' . XOOPS_URL . '/modules/' . $dir . '/assets/icons/16px/' . $row['file_icon'] . '.png" alt="' . $row['file_icon'] . '" title="' . $row['file_icon'] . '" /></td>' . '<td>' . htmlspecialchars($row['file_size'], ENT_QUOTES) . '</td>' . '<td>' . date('Y-m-d', $row['file_upload_date']) . '</td>' . '<td>' . htmlspecialchars($row['file_description'], ENT_QUOTES) . '</td>' . '<td>' . $wikiPage->getUserName($row['file_uid']) . '</td>' . '</tr>';
+        echo '<tr class="' . (($i % 2) ? 'even' : 'odd') . '"><td><a href="../edit.php?page=' . $row['keyword'] . '">' . htmlspecialchars($row['keyword'], ENT_QUOTES) . '</a></td>' . '<td>'
+             . htmlspecialchars($row['file_name'], ENT_QUOTES) . '</td>' . '<td><a href="' . XOOPS_URL . '/uploads/' . $dir . '/' . $row['file_path'] . '">' . htmlspecialchars($row['file_path'],
+                                                                                                                                                                                ENT_QUOTES)
+             . '</a></td>' . '<td>' . htmlspecialchars($row['file_type'], ENT_QUOTES) . '</td>' . '<td><img src="' . XOOPS_URL . '/modules/' . $dir . '/assets/icons/16px/' . $row['file_icon']
+             . '.png" alt="' . $row['file_icon'] . '" title="' . $row['file_icon'] . '" /></td>' . '<td>' . htmlspecialchars($row['file_size'], ENT_QUOTES) . '</td>' . '<td>' . date('Y-m-d',
+                                                                                                                                                                                      $row['file_upload_date'])
+             . '</td>' . '<td>' . htmlspecialchars($row['file_description'], ENT_QUOTES) . '</td>' . '<td>' . $wikiPage->getUserName($row['file_uid']) . '</td>' . '</tr>';
     }
     if ($i === 0) {
         echo '<tr class="odd"><td colspan="9">' . _AD_GWIKI_FILES_EMPTY . '</td></tr>';

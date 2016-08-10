@@ -7,11 +7,10 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 include dirname(dirname(__DIR__)) . '/mainfile.php';
 $xoopsLogger->activated = false;
-include_once "include/functions.php";
+include_once __DIR__ . '/include/functions.php';
 global $wikiPage;
 
 if (isset($_GET['page'])) {

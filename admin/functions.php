@@ -7,7 +7,6 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
@@ -65,4 +64,4 @@ function adminTableEnd($links)
 $dir = basename(dirname(__DIR__));
 include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
 global $wikiPage;
-$wikiPage = new gwikiPage;
+$wikiPage = new GwikiPage;

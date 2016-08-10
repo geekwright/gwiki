@@ -7,13 +7,12 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 include dirname(dirname(__DIR__)) . '/mainfile.php';
 $xoopsLogger->activated = false;
 
-header("Pragma: public");
-header("Cache-Control: no-cache");
+header('Pragma: public');
+header('Cache-Control: no-cache');
 
 /**
  * @param $string
@@ -42,7 +41,7 @@ $result = $xoopsDB->query($sql);
 
 $images = array();
 
-for ($i = 0; $i < $xoopsDB->getRowsNum($result); ++$i) {
+for ($i = 0, $iMax = $xoopsDB->getRowsNum($result); $i < $iMax; ++$i) {
     $image = $xoopsDB->fetchArray($result);
     //      $image['link']=XOOPS_URL . '/uploads/' . $dir . '/' . $image['image_file'];
     $image['link'] = XOOPS_URL . '/modules/' . $dir . '/getthumb.php?page=' . $image['keyword'] . '&name=' . $image['image_name'];

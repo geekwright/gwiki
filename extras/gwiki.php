@@ -7,7 +7,6 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 
 // ******************************************************************
@@ -21,7 +20,8 @@ $page      = isset($_GET[$pagevar]) ? cleaner($_GET[$pagevar]) : null;
 $highlight = isset($_GET['query']) ? cleaner($_GET['query']) : null;
 
 // build a URL template to point wiki links to this script
-$script         = (!empty($_SERVER['HTTPS'])) ? "https://" . $_SERVER['SERVER_NAME'] . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) : "http://" . $_SERVER['SERVER_NAME'] . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$script         = (!empty($_SERVER['HTTPS'])) ? 'https://' . $_SERVER['SERVER_NAME'] . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) : 'http://' . $_SERVER['SERVER_NAME']
+                                                                                                                                          . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $ourWikiLinkURL = $script . '?' . $pagevar . '=%s';
 
 // normally, adjustments to the remaining code are not required
@@ -77,16 +77,16 @@ function loadLanguage($name, $domain = '', $language = null)
 }
 
 // Access module configs from outside module:
-$module_handler = &xoops_gethandler('module');
-$module         = $module_handler->getByDirname($dir);
-$config_handler = &xoops_gethandler('config');
-$moduleConfig   = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
+$moduleHandler = xoops_getHandler('module');
+$module        = $moduleHandler->getByDirname($dir);
+$configHandler = xoops_getHandler('config');
+$moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
 
 loadLanguage('main', $dir);
 loadLanguage('modinfo', $dir);
 include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
 
-$wikiPage = new gwikiPage;
+$wikiPage = new GwikiPage;
 $wikiPage->setRecentCount($moduleConfig['number_recent']);
 $wikiPage->setWikiLinkURL($ourWikiLinkURL);
 
@@ -136,7 +136,7 @@ if (!empty($attachments)) {
 }
 
 $xoopsOption['template_main'] = $wikiPage->getTemplateName(); // 'gwiki_view.tpl';
-include XOOPS_ROOT_PATH . "/header.php";
+include XOOPS_ROOT_PATH . '/header.php';
 
 $pageX['title'] = prepOut($pageX['title']);
 $xoopsTpl->assign('gwiki', $pageX);

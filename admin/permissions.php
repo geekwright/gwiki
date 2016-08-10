@@ -7,24 +7,20 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 include __DIR__ . '/header.php';
-if (!$xoop25plus) {
-    adminmenu(4);
-} else {
-    echo $moduleAdmin->addNavigation('permissions.php');
-}
+
+echo $moduleAdmin->addNavigation(basename(__FILE__));
 
 global $xoopsModule, $xoopsConfig;
 
 include_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
 
 if (!defined(_MD_GWIKI_PAGE_PERM_EDIT_ANY)) {
-    if (file_exists("../language/" . $xoopsConfig['language'] . "/main.php")) {
-        include_once "../language/" . $xoopsConfig['language'] . "/main.php";
+    if (file_exists('../language/' . $xoopsConfig['language'] . '/main.php')) {
+        include_once __DIR__ . '/../language/' . $xoopsConfig['language'] . '/main.php';
     } else {
-        include_once "../language/english/main.php";
+        include_once __DIR__ . '/../language/english/main.php';
     }
 }
 
@@ -34,7 +30,8 @@ $item_list = array(
     _MD_GWIKI_PAGE_PERM_EDIT_ANY_NUM   => _MD_GWIKI_PAGE_PERM_EDIT_ANY,
     _MD_GWIKI_PAGE_PERM_EDIT_PFX_NUM   => _MD_GWIKI_PAGE_PERM_EDIT_PFX,
     _MD_GWIKI_PAGE_PERM_CREATE_ANY_NUM => _MD_GWIKI_PAGE_PERM_CREATE_ANY,
-    _MD_GWIKI_PAGE_PERM_CREATE_PFX_NUM => _MD_GWIKI_PAGE_PERM_CREATE_PFX);
+    _MD_GWIKI_PAGE_PERM_CREATE_PFX_NUM => _MD_GWIKI_PAGE_PERM_CREATE_PFX
+);
 
 $title_of_form = _MI_GWIKI_AD_PERM_TITLE;
 $perm_name     = 'wiki_authority';

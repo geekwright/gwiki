@@ -20,7 +20,7 @@ install help pages for gwiki, covering editing and administration topics.
 
 Notes
 =====
-This module has been tested in Xoops version 2.5.6 and ImpressCMS 1.2.7.
+This module has been tested in Xoops version 2.5.7.
 
 This module was developed by Geekwright, LLC. Report any bugs or
 issues to richard@geekwright.com

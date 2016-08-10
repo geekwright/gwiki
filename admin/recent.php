@@ -7,14 +7,10 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 include __DIR__ . '/header.php';
-if (!$xoop25plus) {
-    adminmenu(7);
-} else {
-    echo $moduleAdmin->addNavigation('recent.php');
-}
+
+echo $moduleAdmin->addNavigation(basename(__FILE__));
 
 global $xoopsModule, $xoopsConfig;
 

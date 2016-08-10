@@ -9,13 +9,12 @@
  * @since      1.0
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
- * @version    $Id$
  */
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 $dir = basename(dirname(__DIR__));
 include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
 global $wikiPage;
-$wikiPage = new gwikiPage;
+$wikiPage = new GwikiPage;
 $wikiPage->setRecentCount($xoopsModuleConfig['number_recent']);
 
 /**
@@ -26,9 +25,6 @@ $wikiPage->setRecentCount($xoopsModuleConfig['number_recent']);
  */
 function cleaner($string, $trim = true)
 {
-    if (get_magic_quotes_gpc()) {
-        $string = stripslashes($string);
-    }
     //  $string=stripcslashes($string);
     $string = html_entity_decode($string);
     //  $string=strip_tags($string); // DANGER -- kills wiki text
