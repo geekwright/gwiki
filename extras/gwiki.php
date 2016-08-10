@@ -77,9 +77,9 @@ function loadLanguage($name, $domain = '', $language = null)
 }
 
 // Access module configs from outside module:
-$module_handler = &xoops_gethandler('module');
+$module_handler = xoops_gethandler('module');
 $module         = $module_handler->getByDirname($dir);
-$config_handler = &xoops_gethandler('config');
+$config_handler = xoops_gethandler('config');
 $moduleConfig   = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
 
 loadLanguage('main', $dir);

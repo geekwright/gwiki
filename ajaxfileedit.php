@@ -191,8 +191,8 @@ function getUserName($uid)
     $uid = (int)($uid);
 
     if ($uid > 0) {
-        $member_handler =& xoops_gethandler('member');
-        $user           =& $member_handler->getUser($uid);
+        $member_handler = xoops_gethandler('member');
+        $user           = $member_handler->getUser($uid);
         if (is_object($user)) {
             return "<a href=\"" . XOOPS_URL . "/userinfo.php?uid=$uid\">" . htmlspecialchars($user->getVar('uname'), ENT_QUOTES) . "</a>";
         }

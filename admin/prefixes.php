@@ -363,7 +363,7 @@ function installTemplate($pid, $delete = false)
         return false;
     }
 
-    $tplfile_handler =& xoops_gethandler('tplfile');
+    $tplfile_handler = xoops_gethandler('tplfile');
 
     $dir  = basename(dirname(__DIR__));
     $mid  = $xoopsModule->getVar('mid');
@@ -384,7 +384,7 @@ function installTemplate($pid, $delete = false)
         $tplfile = $tplfiles[0];
         $isnew   = false;
     } else {
-        $tplfile =& $tplfile_handler->create();
+        $tplfile = $tplfile_handler->create();
         $isnew   = true;
     }
 

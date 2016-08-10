@@ -25,9 +25,9 @@ function b_gwiki_wikiblock_show($options)
 
     $dir = basename(dirname(__DIR__));
     // Access module configs from block:
-    $module_handler = &xoops_gethandler('module');
+    $module_handler = xoops_gethandler('module');
     $module         = $module_handler->getByDirname($dir);
-    $config_handler = &xoops_gethandler('config');
+    $config_handler = xoops_gethandler('config');
     $moduleConfig   = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
 
     include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
@@ -155,9 +155,9 @@ function b_gwiki_teaserblock_show($options)
 
     $dir = basename(dirname(__DIR__));
     // Access module configs from block:
-    $module_handler = &xoops_gethandler('module');
+    $module_handler = xoops_gethandler('module');
     $module         = $module_handler->getByDirname($dir);
-    $config_handler = &xoops_gethandler('config');
+    $config_handler = xoops_gethandler('config');
     $moduleConfig   = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
 
     include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';

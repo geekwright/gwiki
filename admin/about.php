@@ -15,8 +15,8 @@ if ($xoop25plus) {
     echo $moduleAdmin->addNavigation('about.php');
     echo $moduleAdmin->renderabout('', false);
 } else { // !$xoop25plus
-    $module_handler =& xoops_gethandler('module');
-    $module_info    =& $module_handler->get($xoopsModule->getVar("mid"));
+    $module_handler = xoops_gethandler('module');
+    $module_info    = $module_handler->get($xoopsModule->getVar("mid"));
 
     adminmenu(2);
 

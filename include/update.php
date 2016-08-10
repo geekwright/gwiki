@@ -15,19 +15,19 @@
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * @param $module
- * @param $old_version
+ * @param XoopsModule $module
+ * @param int $old_version
  *
  * @return bool
  */
-function xoops_module_update_gwiki(&$module, $old_version)
+function xoops_module_update_gwiki(XoopsModule $module, $old_version)
 {
     global $xoopsDB;
 
     $error = false;
 
     // recompile namespace templates
-    $tplfile_handler =& xoops_gethandler('tplfile');
+    $tplfile_handler = xoops_gethandler('tplfile');
 
     $dir = basename(dirname(__DIR__));
     $mid = $module->getVar('mid');

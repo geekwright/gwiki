@@ -24,10 +24,10 @@ function gwiki_search($queryarray, $andor, $limit, $offset, $userid, $prefix = n
 
     $dir = basename(dirname(__DIR__));
 
-    $module_handler = &xoops_gethandler('module');
+    $module_handler = xoops_gethandler('module');
     $module         = $module_handler->getByDirname($dir);
     $module_id      = $module->getVar('mid');
-    $config_handler = &xoops_gethandler('config');
+    $config_handler = xoops_gethandler('config');
     $moduleConfig   = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
 
     $baseurl = $moduleConfig['searchlink_template'];
