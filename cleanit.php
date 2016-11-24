@@ -9,9 +9,9 @@
  * @package    gwiki
  */
 //  trigger_error("Clean Invoked");
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 if (empty($_POST['check'])) { // this is set by the admin page option, not by a regular call
-    $xoopsOption['template_main'] = 'gwiki_view.tpl';
+    $GLOBALS['xoopsOption']['template_main'] = 'gwiki_view.tpl';
     include XOOPS_ROOT_PATH . '/header.php';
     do_clean();
     include XOOPS_ROOT_PATH . '/footer.php';
@@ -27,6 +27,7 @@ function do_clean()
 
     $dir = basename(__DIR__);
     // Access module configs from block:
+    /** @var XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $module        = $moduleHandler->getByDirname($dir);
     $configHandler = xoops_getHandler('config');

@@ -8,8 +8,8 @@
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
  */
-include_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
-$xoopsOption['template_main'] = 'gwiki_view.tpl';
+include_once __DIR__ . '/../../../mainfile.php';
+$GLOBALS['xoopsOption']['template_main'] = 'gwiki_view.tpl';
 include XOOPS_ROOT_PATH . '/header.php';
 $dir = basename(dirname(__DIR__));
 include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';

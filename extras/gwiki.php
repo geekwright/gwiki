@@ -11,7 +11,7 @@
 
 // ******************************************************************
 // adjust these next few lines to reflect your installation
-include_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
+include_once __DIR__ . '/../../../mainfile.php';
 $dir     = 'gwiki';  // wiki module directory
 $pagevar = 'page'; // what is our page variable name?
 
@@ -77,6 +77,7 @@ function loadLanguage($name, $domain = '', $language = null)
 }
 
 // Access module configs from outside module:
+/** @var XoopsModuleHandler $moduleHandler */
 $moduleHandler = xoops_getHandler('module');
 $module        = $moduleHandler->getByDirname($dir);
 $configHandler = xoops_getHandler('config');
@@ -135,7 +136,7 @@ if (!empty($attachments)) {
     $pageX['attachments'] = prepOut($attachments);
 }
 
-$xoopsOption['template_main'] = $wikiPage->getTemplateName(); // 'gwiki_view.tpl';
+$GLOBALS['xoopsOption']['template_main'] = $wikiPage->getTemplateName(); // 'gwiki_view.tpl';
 include XOOPS_ROOT_PATH . '/header.php';
 
 $pageX['title'] = prepOut($pageX['title']);

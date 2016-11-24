@@ -24,6 +24,7 @@ function b_gwiki_wikiblock_show($options)
 
     $dir = basename(dirname(__DIR__));
     // Access module configs from block:
+    /** @var XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $module        = $moduleHandler->getByDirname($dir);
     $configHandler = xoops_getHandler('config');
@@ -154,6 +155,7 @@ function b_gwiki_teaserblock_show($options)
 
     $dir = basename(dirname(__DIR__));
     // Access module configs from block:
+    /** @var XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $module        = $moduleHandler->getByDirname($dir);
     $configHandler = xoops_getHandler('config');

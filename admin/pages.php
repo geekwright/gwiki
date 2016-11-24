@@ -10,7 +10,7 @@
  */
 include __DIR__ . '/header.php';
 
-include_once dirname(__DIR__) . '/include/functions.php';
+include_once __DIR__ . '/../include/functions.php';
 include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
 echo $moduleAdmin->addNavigation(basename(__FILE__));

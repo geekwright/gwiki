@@ -12,6 +12,14 @@ gwiki ChangeLog
 - HTML5: checked="checked" to checked (mamba)
 - XOOPS 2.5.8 and PHP 7 (mamba)
 - PSR-2 adjustments (mamba)
+- Convert CSS color value to HEX (mamba)
+- optimize background properties (mamba)
+- postcss fixes in module.css (mamba)
+- dirname(dirname(__DIR__)) to __DIR__ . '/../../ (mamba)
+- add /** @var XoopsModuleHandler $moduleHandler */ (mamba)
+- changed $xoopsOption['template_main'] to $GLOBALS['xoopsOption']['template_main']  (mamba)
+
+
 
 1.0 RC 4        NOT RELEASED
 =================================

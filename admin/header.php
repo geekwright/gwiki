@@ -9,7 +9,7 @@
  * @package    gwiki
  */
 
-include dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
+include __DIR__ . '/../../../include/cp_header.php';
 
 if (is_object($GLOBALS['xoops'])) {
     if (file_exists($GLOBALS['xoops']->path('Frameworks/moduleclasses/moduleadmin/moduleadmin.php'))) {

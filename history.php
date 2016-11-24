@@ -90,7 +90,7 @@ $pageX['moddir']  = $dir;
 $pageX['modpath'] = XOOPS_ROOT_PATH . '/modules/' . $dir;
 $pageX['modurl']  = XOOPS_URL . '/modules/' . $dir;
 
-$xoopsOption['template_main'] = 'gwiki_history.tpl';
+$GLOBALS['xoopsOption']['template_main'] = 'gwiki_history.tpl';
 include XOOPS_ROOT_PATH . '/header.php';
 
 $xoopsTpl->assign('gwiki', $pageX);

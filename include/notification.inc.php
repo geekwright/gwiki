@@ -26,6 +26,7 @@ if (!defined('GWIKI_NOTIFY_ITEMINFO')) {
         $dir = basename(dirname(__DIR__));
         //include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/class/gwikiPage.php';
         //$wikiPage = new GwikiPage;
+        /** @var XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $module        = $moduleHandler->getByDirname($dir);
         $module_id     = $module->getVar('mid');

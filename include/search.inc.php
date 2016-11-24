@@ -23,6 +23,7 @@ function gwiki_search($queryarray, $andor, $limit, $offset, $userid, $prefix = n
 
     $dir = basename(dirname(__DIR__));
 
+    /** @var XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $module        = $moduleHandler->getByDirname($dir);
     $module_id     = $module->getVar('mid');
