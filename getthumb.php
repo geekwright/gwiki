@@ -20,13 +20,13 @@
  *
  */
 
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 $xoopsLogger->activated = false;
 // provide error logging for our sanity in debugging (won't see xoops logger)
 restore_error_handler();
 error_reporting(-1);
 
-//$xoopsOption['template_main'] = 'gwiki_view.tpl';
+//$GLOBALS['xoopsOption']['template_main'] = 'gwiki_view.tpl';
 //include XOOPS_ROOT_PATH."/header.php";
 
 $dir = basename(__DIR__);

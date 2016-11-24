@@ -90,7 +90,7 @@ if (!empty($attachments)) {
 $_GET['page_id'] = $wikiPage->page_id;
 $_GET['nsid']    = $wikiPage->currentprefixid;
 
-$xoopsOption['template_main'] = $wikiPage->getTemplateName(); // 'gwiki_view.tpl';
+$GLOBALS['xoopsOption']['template_main'] = $wikiPage->getTemplateName(); // 'gwiki_view.tpl';
 include XOOPS_ROOT_PATH . '/header.php';
 
 $pageX['title'] = prepOut($pageX['title']);

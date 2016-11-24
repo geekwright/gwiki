@@ -102,6 +102,7 @@ class GwikiPage
         $dir           = basename(dirname(__DIR__));
         $this->wikiDir = $dir;
 
+        /** @var XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $module        = $moduleHandler->getByDirname($dir);
         $module_id     = $module->getVar('mid');
@@ -632,6 +633,7 @@ class GwikiPage
         $keyword = $this->keyword;
 
         $dir           = $this->wikiDir;
+        /** @var XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $module        = $moduleHandler->getByDirname($dir);
         $module_id     = $module->getVar('mid');
@@ -729,6 +731,7 @@ class GwikiPage
         global $xoopsUser, $xoopsDB;
 
         $dir           = $this->wikiDir;
+        /** @var XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $module        = $moduleHandler->getByDirname($dir);
         $module_id     = $module->getVar('mid');

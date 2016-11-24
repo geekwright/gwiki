@@ -247,7 +247,7 @@ switch ($op) {
     case 'edit':
     case 'preview':
         //case "images":
-        $xoopsOption['template_main'] = 'gwiki_edit.tpl';
+        $GLOBALS['xoopsOption']['template_main'] = 'gwiki_edit.tpl';
         include XOOPS_ROOT_PATH . '/header.php';
 
         $title = prepOut($title); // we need title ready to display in several places
@@ -288,8 +288,7 @@ switch ($op) {
         $btn_tray->addElement($submit_btn);
 
         $metadata_btn = new XoopsFormButton('', 'metaedit', _MD_GWIKI_EDIT_SHOW_META, 'button');
-        $metadata_btn->setExtra('onclick=' . "'var ele = document.getElementById(\"gwikiformmetaedit\"); ele.style.display = \"inherit\";"
-                                . " var ele2 = document.getElementById(\"gwikiformbodyedit\"); ele2.style.display = \"none\";'");
+        $metadata_btn->setExtra('onclick=' . "'var ele = document.getElementById(\"gwikiformmetaedit\"); ele.style.display = \"inherit\";" . " var ele2 = document.getElementById(\"gwikiformbodyedit\"); ele2.style.display = \"none\";'");
         $btn_tray->addElement($metadata_btn);
 
         $preview_btn = new XoopsFormButton('', 'preview', _PREVIEW, 'button');
@@ -319,8 +318,7 @@ switch ($op) {
         $btn_tray2->addElement($submit_btn2);
 
         $bodydata_btn = new XoopsFormButton('', 'bodyedit', _MD_GWIKI_EDIT_SHOW_BODY, 'button');
-        $bodydata_btn->setExtra('onclick=' . "'var ele = document.getElementById(\"gwikiformmetaedit\"); ele.style.display = \"none\"; "
-                                . " var ele2 = document.getElementById(\"gwikiformbodyedit\"); ele2.style.display = \"inherit\";'");
+        $bodydata_btn->setExtra('onclick=' . "'var ele = document.getElementById(\"gwikiformmetaedit\"); ele.style.display = \"none\"; " . " var ele2 = document.getElementById(\"gwikiformbodyedit\"); ele2.style.display = \"inherit\";'");
         $btn_tray2->addElement($bodydata_btn);
 
         $preview_btn2 = new XoopsFormButton('', 'preview2', _PREVIEW, 'button');

@@ -61,7 +61,7 @@ $pageX['moddir']  = $dir;
 $pageX['modpath'] = XOOPS_ROOT_PATH . '/modules/' . $dir;
 $pageX['modurl']  = XOOPS_URL . '/modules/' . $dir;
 
-$xoopsOption['template_main'] = 'gwiki_view.tpl';
+$GLOBALS['xoopsOption']['template_main'] = 'gwiki_view.tpl';
 include XOOPS_ROOT_PATH . '/header.php';
 
 $pageX['title'] = sprintf(_MD_GWIKI_DIFF_TITLE, prepOut($pageX['title']));

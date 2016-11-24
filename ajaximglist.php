@@ -8,7 +8,7 @@
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
  */
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 $xoopsLogger->activated = false;
 
 header('Pragma: public');

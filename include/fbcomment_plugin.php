@@ -37,6 +37,7 @@ function fbcom_plugin(&$metas, $plugin_env)
 
     $dir = basename(dirname(__DIR__));
     // Access module configs from block:
+    /** @var XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $module        = $moduleHandler->getByDirname($dir);
     $configHandler = xoops_getHandler('config');

@@ -8,7 +8,7 @@
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
  */
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 $xoopsLogger->activated = false;
 include_once __DIR__ . '/include/functions.php';
 global $wikiPage;

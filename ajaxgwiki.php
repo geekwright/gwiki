@@ -8,7 +8,7 @@
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
  */
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 $xoopsLogger->activated = false;
 // provide error logging for our sanity in debugging ajax use (won't see xoops logger)
 //restore_error_handler();
@@ -48,6 +48,7 @@ if (isset($_GET['id'])) {
 
 $dir = basename(__DIR__);
 // Access module configs from block:
+/** @var XoopsModuleHandler $moduleHandler */
 $moduleHandler = xoops_getHandler('module');
 $module        = $moduleHandler->getByDirname($dir);
 $configHandler = xoops_getHandler('config');
