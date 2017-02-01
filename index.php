@@ -1,4 +1,7 @@
 <?php
+
+use Xmf\Request;
+
 /**
  * index.php - display wiki page
  *
@@ -14,8 +17,8 @@ global $wikiPage;
 
 // this exists to make xoops comments work
 // index.php?page_id=15&com_mode=thread&com_order=0&com_id=2&com_rootid=1
-if (isset($_GET['page_id']) && !isset($_GET['page'])) {
-    $page_id = $_GET['page_id'];
+if (Request::hasVar('page_id', 'GET')) {
+    $page_id = Request::getInt('page_id', 0, 'GET');
     $page    = $wikiPage->getKeywordById($page_id);
     if (!empty($page)) {
         $extra = '';
@@ -37,8 +40,8 @@ if (isset($_GET['page_id']) && !isset($_GET['page'])) {
     }
 }
 // $_GET variables we use
-$page      = $wikiPage->normalizeKeyword(isset($_GET['page']) ? cleaner($_GET['page']) : $wikiPage->wikiHomePage);
-$highlight = isset($_GET['query']) ? cleaner($_GET['query']) : null;
+$page      = $wikiPage->normalizeKeyword(Request::getString('page', $wikiPage->wikiHomePage, 'GET'));
+$highlight = Request::getString('query', null, 'GET');
 
 // if we get a naked or external prefix, try and do something useful
 $pfx = $wikiPage->getPrefix($page);
@@ -90,7 +93,7 @@ if (!empty($attachments)) {
 $_GET['page_id'] = $wikiPage->page_id;
 $_GET['nsid']    = $wikiPage->currentprefixid;
 
-$xoopsOption['template_main'] = $wikiPage->getTemplateName(); // 'gwiki_view.tpl';
+$GLOBALS['xoopsOption']['template_main'] = $wikiPage->getTemplateName(); // 'gwiki_view.tpl';
 include XOOPS_ROOT_PATH . '/header.php';
 
 $pageX['title'] = prepOut($pageX['title']);

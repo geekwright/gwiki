@@ -1,4 +1,7 @@
 <?php
+
+use Xmf\Request;
+
 /**
  * admin/attachments.php - file attachment review tool
  *
@@ -11,26 +14,7 @@
 include __DIR__ . '/header.php';
 //include_once dirname(__DIR__) . '/include/functions.php';
 
-echo $moduleAdmin->addNavigation(basename(__FILE__));
-
-/**
- * @param      $string
- * @param bool $trim
- *
- * @return string
- */
-function cleaner($string, $trim = true)
-{
-    //  $string=stripcslashes($string);
-    $string = html_entity_decode($string);
-    $string = strip_tags($string);
-    if ($trim) {
-        $string = trim($string);
-    }
-    $string = stripslashes($string);
-
-    return $string;
-}
+$moduleAdmin->displayNavigation(basename(__FILE__));
 
 function showAttachments()
 {
@@ -49,22 +33,10 @@ function showAttachments()
       file_description text,
       file_uid int(10) NOT NULL DEFAULT '0',
     */
-    $kw = '';
-    $fn = '';
-    $ty = '';
-    $ds = '';
-    if (!empty($_GET['kw'])) {
-        $kw = cleaner($_GET['kw']);
-    }
-    if (!empty($_GET['fn'])) {
-        $fn = cleaner($_GET['fn']);
-    }
-    if (!empty($_GET['ty'])) {
-        $ty = cleaner($_GET['ty']);
-    }
-    if (!empty($_GET['ds'])) {
-        $ds = cleaner($_GET['ds']);
-    }
+    $kw = Request::getString('kw', '', 'get');
+    $fn = Request::getString('fn', '', 'get');;
+    $ty = Request::getString('ty', '', 'get');;
+    $ds = Request::getString('ds', '', 'get');;
 
     $q_kw = '%' . $wikiPage->escapeForDB($kw) . '%';
     $q_fn = '%' . $wikiPage->escapeForDB($fn) . '%';

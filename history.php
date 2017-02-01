@@ -1,4 +1,7 @@
 <?php
+
+use Xmf\Request;
+
 /**
  * history.php - display/manage page revisions
  *
@@ -14,8 +17,8 @@ global $xoTheme, $xoopsTpl;
 global $wikiPage;
 
 // $_GET variables we use
-$page      = $wikiPage->normalizeKeyword(isset($_GET['page']) ? cleaner($_GET['page']) : $wikiPage->wikiHomePage);
-$highlight = isset($_GET['query']) ? cleaner($_GET['query']) : null;
+$page = $wikiPage->normalizeKeyword(Request::getString('page', $wikiPage->wikiHomePage, 'GET'));
+$highlight = Request::getString('query', null, 'GET');
 
 global $wikiPage, $xoopsDB, $xoopsModuleConfig;
 $pageX   = $wikiPage->getPage($page);
@@ -27,14 +30,12 @@ if ($wikiPage->admin_lock) {
     $mayEdit = false;
 }
 
-if ($mayEdit) {
+if ($mayEdit && 'POST' === Request::getMethod()) {
     // $_POST variable for restore operation
-    if (isset($_POST['page']) && isset($_POST['id']) && isset($_POST['op']) && $_POST['op'] === 'restore') {
-        $page = cleaner($_POST['page']);
-        $id   = (int)$_POST['id'];
-        if ($id) {
-            $wikiPage->setRevision($page, $id);
-        }
+    $page = Request::getString('page', null, 'POST');
+    $id = Request::getInt('id', 0, 'POST');
+    if (!empty($page) && !empty($id) && 'restore' === Request::getCmd('op')) {
+        $wikiPage->setRevision($page, $id);
         $message = _MD_GWIKI_RESTORED;
         redirect_header("history.php?page=$page", 2, $message);
     }
@@ -90,7 +91,7 @@ $pageX['moddir']  = $dir;
 $pageX['modpath'] = XOOPS_ROOT_PATH . '/modules/' . $dir;
 $pageX['modurl']  = XOOPS_URL . '/modules/' . $dir;
 
-$xoopsOption['template_main'] = 'gwiki_history.tpl';
+$GLOBALS['xoopsOption']['template_main'] = 'gwiki_history.tpl';
 include XOOPS_ROOT_PATH . '/header.php';
 
 $xoopsTpl->assign('gwiki', $pageX);

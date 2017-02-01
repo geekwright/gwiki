@@ -1,4 +1,9 @@
 <?php
+
+use Xmf\Database\TableLoad;
+use Xmf\Database\Tables;
+use Xmf\Request;
+
 /**
  * admin/pages.php - manage wiki page revision
  *
@@ -10,10 +15,10 @@
  */
 include __DIR__ . '/header.php';
 
-include_once dirname(__DIR__) . '/include/functions.php';
+include_once __DIR__ . '/../include/functions.php';
 include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
-echo $moduleAdmin->addNavigation(basename(__FILE__));
+$moduleAdmin->displayNavigation(basename(__FILE__));
 
 /**
  * @param $url
@@ -60,14 +65,9 @@ form {display:inline;}
 EOT;
     $total = 0;
     $limit = 10;
-    $start = 0;
-    $like  = '';
-    if (!empty($_GET['start'])) {
-        $start = (int)$_GET['start'];
-    }
-    if (!empty($_GET['like'])) {
-        $like = cleaner($_GET['like']);
-    }
+
+    $start = Request::getInt('start', 0, 'GET');
+    $like = Request::getString('like', '', 'GET');
 
     $sql = 'SELECT COUNT(*) FROM ' . $xoopsDB->prefix('gwiki_pageids');
     if (!empty($like)) {
@@ -90,7 +90,7 @@ EOT;
         $sqlwhere = " WHERE t1.keyword LIKE '{$like}%' ";
     }
     $sql    = 'SELECT t1.keyword, COUNT(*), t2.title, t2.admin_lock, t2.active FROM ' . $xoopsDB->prefix('gwiki_pages') . ' t1 ' . ' LEFT JOIN ' . $xoopsDB->prefix('gwiki_pages')
-              . ' t2 on t1.keyword = t2.keyword and t2.active = 1 ' . $sqlwhere . ' GROUP BY keyword ';
+              . ' t2 on t1.keyword = t2.keyword and t2.active = 1 ' . $sqlwhere . ' GROUP BY keyword, t2.title, t2.admin_lock, t2.active ';
     $result = $xoopsDB->query($sql, $limit, $start);
 
     for ($i = 0, $iMax = $xoopsDB->getRowsNum($result); $i < $iMax; ++$i) {
@@ -142,7 +142,7 @@ EOT;
  */
 function showHistory($page)
 {
-    global $xoopsDB, $xoopsModuleConfig, $wikiPage;
+    global $xoopsDB, $wikiPage;
 
     allowRestoration($page);
 
@@ -177,7 +177,7 @@ function showHistory($page)
  */
 function showPage($page, $id)
 {
-    global $xoopsDB, $xoopsModuleConfig, $wikiPage, $xoTheme;
+    global $xoopsModuleConfig, $wikiPage, $xoTheme;
 
     $dir = basename(dirname(__DIR__));
     if (is_object($xoTheme)) {
@@ -219,7 +219,7 @@ function showPage($page, $id)
  */
 function showPageTool($page, $id)
 {
-    global $xoopsDB, $xoopsModuleConfig, $wikiPage, $xoTheme;
+    global $xoopsModuleConfig, $wikiPage, $xoTheme;
 
     $dir = basename(dirname(__DIR__));
     if (is_object($xoTheme)) {
@@ -424,13 +424,46 @@ function createPartitions()
  */
 function createHelpPages()
 {
-    global $xoopsDB;
+    // make any existing help pages inactive
+    $criteria = new Criteria('page_set_home', 'Help:Index', '=');
+    if (0 < TableLoad::countRows('gwiki_pages', $criteria)) {
+        $migrate = new Tables();
+        $values = array('active' => '0');
+        $migrate->useTable('gwiki_pages');
+        $migrate->update('gwiki_pages', $values, $criteria);
+        $migrate->executeQueue(true);
+    }
 
-    $result  = $xoopsDB->queryFromFile(__DIR__ . '/helppages.sql');
+    // delete help: to help: page links
+    $criteria = new CriteriaCompo(new Criteria('from_keyword', 'help:%', 'LIKE'));
+    $criteria->add(new Criteria('to_keyword', 'help:%', 'LIKE'), 'AND');
+    if (0 < TableLoad::countRows('gwiki_pagelinks', $criteria)) {
+        $migrate = new Tables();
+        $migrate->useTable('gwiki_pagelinks');
+        $migrate->delete('gwiki_pagelinks', $criteria);
+        $migrate->executeQueue(true);
+    }
+
+    // load fresh help pages
+    $result = TableLoad::loadTableFromYamlFile('gwiki_pages', '../sql/helppages.yml');
     $message = _AD_GWIKI_ADD_HELP_FAILED;
     if ($result) {
-        $message = _AD_GWIKI_ADD_HELP_OK;
+        $result = TableLoad::loadTableFromYamlFile('gwiki_pagelinks', '../sql/helplinks.yml');
+        if ($result) {
+            $message = _AD_GWIKI_ADD_HELP_OK;
+        }
     }
+
+    // make sure the new help pages have an entry in pageids (for comments, notifications, etc)
+    $criteria = new CriteriaCompo(new Criteria('page_set_home', 'Help:Index', '='));
+    $criteria->add(new Criteria('active', '1', '='), 'AND');
+    $rows = TableLoad::extractRows('gwiki_pages', $criteria, array('body', 'search_body', 'toc_cache'));
+    $insertRows = array();
+    $time = time();
+    foreach ($rows as $row) {
+        $insertRows[] = array('keyword' => $row['keyword'], 'created' => $time, 'hit_count' => '0');
+    }
+    TableLoad::loadTableFromArray('gwiki_pageids', $insertRows);
 
     return $message;
 }
@@ -457,21 +490,13 @@ function allowRestoration($page)
 }
 
 // page, op, id
-$page = isset($_GET['page']) ? cleaner($_GET['page']) : '';
-//$page = makeKeyWord((isset($_GET['page']))?cleaner($_GET['page']):"");
-$op = isset($_GET['op']) ? cleaner($_GET['op']) : '';
+$page = Request::getString('page', '', 'GET');
+$op = Request::getCmd('op', '', 'GET');
 
 // $_POST variables we use
-if (isset($_POST['op'])) {
-    $op = cleaner($_POST['op']);
-}
-if (isset($_POST['page'])) {
-    $page = cleaner($_POST['page']);
-}
-if (isset($_POST['id'])) {
-    $id = (int)$_POST['id'];
-}
-//if(isset($_POST[''])) $ = (int)($_POST['']);
+$op = Request::getCmd('op', $op, 'POST');
+$page = Request::getString('page', $page, 'POST');
+$id = Request::getInt('id', 0, 'POST');
 
 switch ($op) {
     case 'history':
@@ -479,10 +504,7 @@ switch ($op) {
         break;
 
     case 'display':
-        $id = null;
-        if (!empty($_GET['id'])) {
-            $id = (int)$_GET['id'];
-        }
+        $id = Request::getInt('id', null, 'GET');
         showPage($page, $id);
         break;
 
@@ -492,7 +514,7 @@ switch ($op) {
         break;
 
     case 'fix':
-        confirmAction('fix', $page, (int)$_GET['id']);
+        confirmAction('fix', $page, Request::getInt('id', 0, 'GET'));
         break;
 
     case 'fixit':
@@ -501,7 +523,7 @@ switch ($op) {
         break;
 
     case 'tool':
-        showPageTool($page, (int)$_GET['id']);
+        showPageTool($page, Request::getInt('id', 0, 'GET'));
         break;
 
     case 'toolupdate':

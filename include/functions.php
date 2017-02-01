@@ -12,7 +12,7 @@
  */
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 $dir = basename(dirname(__DIR__));
-include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
+include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/GwikiPage.php';
 global $wikiPage;
 $wikiPage = new GwikiPage;
 $wikiPage->setRecentCount($xoopsModuleConfig['number_recent']);

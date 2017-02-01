@@ -36,13 +36,9 @@ function fbcom_plugin(&$metas, $plugin_env)
     global $xoopsDB;
 
     $dir = basename(dirname(__DIR__));
-    // Access module configs from block:
-    $moduleHandler = xoops_getHandler('module');
-    $module        = $moduleHandler->getByDirname($dir);
-    $configHandler = xoops_getHandler('config');
-    $moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+    $moduleHelper = Xmf\Module\Helper::getHelper($dir);
 
-    $wikihome = strtolower($moduleConfig['wiki_home_page']);
+    $wikihome = strtolower($moduleHelper->getConfig('wiki_home_page'));
 
     // fake a full url with page if at top of module
     if (!isset($plugin_env['page']) && substr($metas['og:url'], -1) === '/') {

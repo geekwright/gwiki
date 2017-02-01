@@ -247,7 +247,7 @@ switch ($op) {
     case 'edit':
     case 'preview':
         //case "images":
-        $xoopsOption['template_main'] = 'gwiki_edit.tpl';
+        $GLOBALS['xoopsOption']['template_main'] = 'gwiki_edit.tpl';
         include XOOPS_ROOT_PATH . '/header.php';
 
         $title = prepOut($title); // we need title ready to display in several places

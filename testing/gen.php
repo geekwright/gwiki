@@ -9,10 +9,10 @@
  * @package    gwiki
  */
 include_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
-$xoopsOption['template_main'] = 'gwiki_view.tpl';
+$GLOBALS['xoopsOption']['template_main'] = 'gwiki_view.tpl';
 include XOOPS_ROOT_PATH . '/header.php';
 $dir = basename(dirname(__DIR__));
-include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
+include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/GwikiPage.php';
 global $wikiPage;
 $wikiPage = new GwikiPage;
 

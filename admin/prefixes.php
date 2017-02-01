@@ -10,7 +10,7 @@
  */
 include __DIR__ . '/header.php';
 
-echo $moduleAdmin->addNavigation(basename(__FILE__));
+$moduleAdmin->displayNavigation(basename(__FILE__));
 
 // return groups and current permissions for a prefix as an array of options for a form select
 /**
@@ -122,7 +122,7 @@ EOT;
              . ($row['prefix_is_external'] ? _YES : _NO) . '</td>' . '<td>' . htmlspecialchars($row['prefix_external_url'], ENT_QUOTES) . '</td>' . '</tr>';
     }
     if ($i === 0) {
-        echo '<tr class="odd"><td colspan="5">' . _AD_GWIKI_NAMESPACE_EMPTY . '</td></tr>';
+        echo '<tr class="odd"><td colspan="6">' . _AD_GWIKI_NAMESPACE_EMPTY . '</td></tr>';
     }
 
     $endarray[_AD_GWIKI_NAMESPACE_NEW] = 'prefixes.php?op=new';

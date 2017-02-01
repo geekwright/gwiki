@@ -1,4 +1,7 @@
 <?php
+
+use Xmf\Request;
+
 /**
  * sortpageset.php - change order of pages within a page set
  *
@@ -67,14 +70,7 @@ function fetchPageSet($page)
     return $pageset;
 }
 
-// $_GET variables we use
-$page = '';
-if (isset($_POST['page'])) {
-    $page = cleaner($_POST['page']);
-} elseif (isset($_GET['page'])) {
-    $page = cleaner($_GET['page']);
-}
-$page = $wikiPage->normalizeKeyword((!empty($page)) ? $page : $wikiPage->wikiHomePage);
+$page = $wikiPage->normalizeKeyword(Request::getString('page',$wikiPage->wikiHomePage));
 
 $selectalert = _MD_GWIKI_SORT_PAGE_SELECT;
 $sortelement = 'sortelement';
@@ -151,14 +147,14 @@ if ($pages === false || count($pages) < 2) {
 }
 
 $op = 'display';
-if (isset($_POST['submit'])) {
+if (Request::hasVar('submit', 'POST')) {
     $op = 'update';
 }
 
 if ($op === 'update') {
-    if (isset($_POST['neworder'])) {
+    if (Request::hasVar('neworder', 'POST')) {
         $neworder = array();
-        $neworder = explode(',', $_POST['neworder']);
+        $neworder = explode(',', Request::getString('neworder','', 'POST'));
     } else {
         $op = 'display';
     }
@@ -233,11 +229,6 @@ $form->addElement($buttontray);
 
 $form->addElement(new XoopsFormHidden('neworder', ''));
 $body = $form->render();
-
-//$debug='<pre>$_POST='.print_r($_POST,true).'</pre>';
-//$debug.='<pre>$places='.print_r($places,true).'</pre>';
-//if(isset($neworder)) $debug.='<pre>$neworder='.print_r($neworder,true).'</pre>';
-//$debug.='<pre>$topics='.print_r($topics,true).'</pre>';
 
 $title = _MD_GWIKI_SORT_PAGE_FORM;
 $xoopsTpl->assign('xoops_pagetitle', $title);

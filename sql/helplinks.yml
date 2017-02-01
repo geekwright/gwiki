@@ -1,0 +1,54 @@
+-
+    from_keyword: 'Help:Administration'
+    to_keyword: 'help:preferences'
+-
+    from_keyword: 'Help:Blocks'
+    to_keyword: 'help:pagesets'
+-
+    from_keyword: 'Help:Blocks'
+    to_keyword: 'help:preferences'
+-
+    from_keyword: 'Help:Images'
+    to_keyword: 'help:blocks'
+-
+    from_keyword: 'Help:Misc'
+    to_keyword: 'help:blocks'
+-
+    from_keyword: 'Help:Pages'
+    to_keyword: 'help:blocks'
+-
+    from_keyword: 'Help:Pages'
+    to_keyword: 'help:boxes'
+-
+    from_keyword: 'Help:Pages'
+    to_keyword: 'help:format'
+-
+    from_keyword: 'Help:Pages'
+    to_keyword: 'help:images'
+-
+    from_keyword: 'Help:Pages'
+    to_keyword: 'help:links'
+-
+    from_keyword: 'Help:Pages'
+    to_keyword: 'help:misc'
+-
+    from_keyword: 'Help:Pages'
+    to_keyword: 'help:references'
+-
+    from_keyword: 'Help:Pages'
+    to_keyword: 'help:text'
+-
+    from_keyword: 'Help:Pages'
+    to_keyword: 'help:wizard'
+-
+    from_keyword: 'Help:PageSets'
+    to_keyword: 'help:blocks'
+-
+    from_keyword: 'Help:PageSets'
+    to_keyword: 'help:misc'
+-
+    from_keyword: 'Help:PageSets'
+    to_keyword: 'help:pages'
+-
+    from_keyword: 'Help:Wizard'
+    to_keyword: 'help:blocks'

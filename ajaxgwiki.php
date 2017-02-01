@@ -1,4 +1,7 @@
 <?php
+
+use Xmf\Request;
+
 /**
  * ajaxwiki.php - serve wiki page via ajax
  *
@@ -8,7 +11,7 @@
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
  */
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 $xoopsLogger->activated = false;
 // provide error logging for our sanity in debugging ajax use (won't see xoops logger)
 //restore_error_handler();
@@ -32,37 +35,35 @@ function cleaner($string)
 
 // $_GET variables we use
 unset($page, $bid, $id);
-$page = isset($_GET['page']) ? cleaner($_GET['page']) : null;
+$page = Request::getString('page', null, 'GET');
 
 // strip rid of any anchor references
 //$x=strpos($page,'#');
 //if($x!==false) $page=substr($page,0,$x);
 //trigger_error($page);
 
-if (isset($_GET['bid'])) {
-    $bid = (int)$_GET['bid'];
+if (Request::hasVar('bid', 'GET')) {
+    $bid = Request::getInt('bid', 'get');
 } // from a block
-if (isset($_GET['id'])) {
-    $id = (int)$_GET['id'];
+if (Request::hasVar('id', 'GET')) {
+    $id = Request::getInt('id', 'get');
 }    // from utility (i.e. history)
 
 $dir = basename(__DIR__);
-// Access module configs from block:
-$moduleHandler = xoops_getHandler('module');
-$module        = $moduleHandler->getByDirname($dir);
-$configHandler = xoops_getHandler('config');
-$moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+$moduleHelper = Xmf\Module\Helper::getHelper($dir);
 
-$alloworigin = $moduleConfig['allow_origin'];
+$retaindays = (int) $moduleHelper->getConfig('retain_days', 0);
+
+$alloworigin = $moduleHelper->getConfig('allow_origin', '');
 if (!empty($alloworigin)) {
     header('Access-Control-Allow-Origin: ' . $alloworigin);
 }
 
-include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
-$imgdir = XOOPS_URL . '/modules/' . $dir . '/images';
+include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/GwikiPage.php';
+$imgdir = XOOPS_URL . '/modules/' . $dir . '/assets/images';
 
 $wikiPage = new GwikiPage;
-$wikiPage->setRecentCount($moduleConfig['number_recent']);
+$wikiPage->setRecentCount($moduleHelper->getConfig('number_recent', 10));
 
 if (empty($page)) {
     $page = $wikiPage->wikiHomePage;

@@ -23,16 +23,12 @@ function b_gwiki_wikiblock_show($options)
     $block = false;
 
     $dir = basename(dirname(__DIR__));
-    // Access module configs from block:
-    $moduleHandler = xoops_getHandler('module');
-    $module        = $moduleHandler->getByDirname($dir);
-    $configHandler = xoops_getHandler('config');
-    $moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+    $moduleHelper = Xmf\Module\Helper::getHelper($dir);
 
-    include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
+    include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/GwikiPage.php';
 
     $wikiPage = new GwikiPage;
-    $wikiPage->setRecentCount($moduleConfig['number_recent']);
+    $wikiPage->setRecentCount($moduleHelper->getConfig('number_recent', 10));
 
     $remotegwiki = !empty($options[2]);
     if (!$remotegwiki) {
@@ -96,7 +92,7 @@ function b_gwiki_newpage_show($options)
     $block = false;
 
     $dir = basename(dirname(__DIR__));
-    include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
+    include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/GwikiPage.php';
 
     $wikiPage = new GwikiPage;
     $prefixes = $wikiPage->getUserNamespaces();
@@ -153,21 +149,17 @@ function b_gwiki_teaserblock_show($options)
     $block = false;
 
     $dir = basename(dirname(__DIR__));
-    // Access module configs from block:
-    $moduleHandler = xoops_getHandler('module');
-    $module        = $moduleHandler->getByDirname($dir);
-    $configHandler = xoops_getHandler('config');
-    $moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+    $moduleHelper = Xmf\Module\Helper::getHelper($dir);
 
-    include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
+    include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/GwikiPage.php';
 
     $wikiPage = new GwikiPage;
-    $wikiPage->setRecentCount($moduleConfig['number_recent']);
+    $wikiPage->setRecentCount($moduleHelper->getConfig('number_recent', 10));
 
     $page = $options[1];
     if ($options[2]) {
         $pagelike = $page . '%';
-        $sql      = 'SELECT keyword FROM ' . $xoopsDB->prefix('gwiki_pageids');
+        $sql  = 'SELECT keyword FROM ' . $xoopsDB->prefix('gwiki_pageids');
         $sql .= " WHERE keyword like '{$pagelike}' ORDER BY RAND() LIMIT 1 ";
         $result = $xoopsDB->query($sql);
         if ($result) {
@@ -269,7 +261,7 @@ function b_gwiki_recentblock_show($options)
     $block = false;
 
     $dir = basename(dirname(__DIR__));
-    include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
+    include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/GwikiPage.php';
 
     $wikiPage = new GwikiPage;
 
@@ -374,7 +366,7 @@ function b_gwiki_pagesettoc_show($options)
     $block = false;
 
     $dir = basename(dirname(__DIR__));
-    include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
+    include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/GwikiPage.php';
     $wikiPage = new GwikiPage;
 
     if (empty($options[1])) {
@@ -437,7 +429,7 @@ function b_gwiki_related_show($options)
     $block = false;
 
     $dir = basename(dirname(__DIR__));
-    include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
+    include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/GwikiPage.php';
     $wikiPage = new GwikiPage;
 
     $q_exclude_page = '';
@@ -553,7 +545,7 @@ function b_gwiki_linkshere_show($options)
     $block = false;
 
     $dir = basename(dirname(__DIR__));
-    include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
+    include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/GwikiPage.php';
     $wikiPage = new GwikiPage;
 
     if (isset($_GET['page'])) {

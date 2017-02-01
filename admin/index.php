@@ -10,7 +10,7 @@
  */
 include __DIR__ . '/header.php';
 
-echo $moduleAdmin->addNavigation(basename(__FILE__));
+$moduleAdmin->displayNavigation(basename(__FILE__));
 $welcome = _AD_GW_ADMENU_WELCOME;
 $moduleAdmin->addInfoBox($welcome);
 $moduleAdmin->addInfoBoxLine($welcome, _AD_GW_ADMENU_MESSAGE, '', '', 'information');

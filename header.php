@@ -9,7 +9,7 @@
  * @package    gwiki
  */
 
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 include_once __DIR__ . '/include/functions.php';
 
 if (file_exists('language/' . $xoopsConfig['language'] . '/modinfo.php')) {

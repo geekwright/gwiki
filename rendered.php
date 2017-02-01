@@ -1,4 +1,7 @@
 <?php
+
+use Xmf\Request;
+
 /**
  * rendered.php - return rendered page as text file
  *
@@ -8,13 +11,13 @@
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
  */
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 $xoopsLogger->activated = false;
 include_once __DIR__ . '/include/functions.php';
 global $wikiPage;
 
-if (isset($_GET['page'])) {
-    $page  = $wikiPage->normalizeKeyword(cleaner($_GET['page']));
+if (Request::hasVar('page')) {
+    $page  = $wikiPage->normalizeKeyword(Request::getString('page', '', 'GET'));
     $pageX = $wikiPage->getPage($page);
 } else {
     $page  = false;

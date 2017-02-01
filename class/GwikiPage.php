@@ -102,20 +102,16 @@ class GwikiPage
         $dir           = basename(dirname(__DIR__));
         $this->wikiDir = $dir;
 
-        $moduleHandler = xoops_getHandler('module');
-        $module        = $moduleHandler->getByDirname($dir);
-        $module_id     = $module->getVar('mid');
-        $configHandler = xoops_getHandler('config');
-        $moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+        $moduleHelper = Xmf\Module\Helper::getHelper($dir);
 
-        $this->wikiLinkURL      = $moduleConfig['wikilink_template'];
-        $this->wikiHomePage     = $moduleConfig['wiki_home_page'];
-        $this->dateFormat       = $moduleConfig['date_format'];
-        $this->imageLib         = explode(',', $moduleConfig['imagelib_pages']);
-        $this->useCamelCase     = $moduleConfig['allow_camelcase'];
-        $this->defaultThumbSize = $moduleConfig['default_thumb_size'];
-        $this->autoNameFormat   = $moduleConfig['auto_name_format'];
-        $this->module_id        = $module_id;
+        $this->wikiLinkURL      = $moduleHelper->getConfig('wikilink_template');
+        $this->wikiHomePage     = $moduleHelper->getConfig('wiki_home_page');
+        $this->dateFormat       = $moduleHelper->getConfig('date_format');
+        $this->imageLib         = explode(',', $moduleHelper->getConfig('imagelib_pages'));
+        $this->useCamelCase     = $moduleHelper->getConfig('allow_camelcase');
+        $this->defaultThumbSize = $moduleHelper->getConfig('default_thumb_size');
+        $this->autoNameFormat   = $moduleHelper->getConfig('auto_name_format');
+        $this->module_id        = $moduleHelper->getModule()->getVar('mid');
 
         if (!defined('_MI_GWIKI_WIKIHOME')) {
             $this->loadLanguage('modinfo', $dir);
@@ -631,12 +627,7 @@ class GwikiPage
         $mayEdit = false;
         $keyword = $this->keyword;
 
-        $dir           = $this->wikiDir;
-        $moduleHandler = xoops_getHandler('module');
-        $module        = $moduleHandler->getByDirname($dir);
-        $module_id     = $module->getVar('mid');
-        // $configHandler = xoops_getHandler('config');
-        // $moduleConfig   = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+        $module_id = $this->module_id;
         $groups = XOOPS_GROUP_ANONYMOUS;
         if (is_object($xoopsUser)) {
             $groups = $xoopsUser->getGroups();
@@ -728,10 +719,7 @@ class GwikiPage
     {
         global $xoopsUser, $xoopsDB;
 
-        $dir           = $this->wikiDir;
-        $moduleHandler = xoops_getHandler('module');
-        $module        = $moduleHandler->getByDirname($dir);
-        $module_id     = $module->getVar('mid');
+        $module_id = $this->module_id;
 
         $groups = XOOPS_GROUP_ANONYMOUS;
         if (is_object($xoopsUser)) {

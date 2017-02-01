@@ -30,11 +30,11 @@ $keywordpattern = '';
 $retainhours    = 0;
 $dir            = 'gwiki';
 
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 // if check variable is set, show like a regular module page (with debug if on)
 // otherwise, turn off logging and just get busy cleaning
 if (!empty($_REQUEST['check'])) {
-    $xoopsOption['template_main'] = 'gwiki_view.tpl';
+    $GLOBALS['xoopsOption']['template_main'] = 'gwiki_view.tpl';
     include XOOPS_ROOT_PATH . '/header.php';
     do_clean();
     include XOOPS_ROOT_PATH . '/footer.php';

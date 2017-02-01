@@ -8,14 +8,14 @@
  * @author     Richard Griffith <richard@geekwright.com>
  * @package    gwiki
  */
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 $xoopsLogger->activated = false;
 // provide error logging for our sanity in debugging ajax use (won't see xoops logger)
 restore_error_handler();
 error_reporting(-1);
 
 $dir = basename(__DIR__);
-require_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
+require_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/GwikiPage.php';
 global $wikiPage;
 $wikiPage = new GwikiPage;
 

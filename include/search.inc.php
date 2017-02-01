@@ -22,14 +22,9 @@ function gwiki_search($queryarray, $andor, $limit, $offset, $userid, $prefix = n
     global $xoopsDB;
 
     $dir = basename(dirname(__DIR__));
+    $moduleHelper = Xmf\Module\Helper::getHelper($dir);
 
-    $moduleHandler = xoops_getHandler('module');
-    $module        = $moduleHandler->getByDirname($dir);
-    $module_id      = $module->getVar('mid');
-    $configHandler = xoops_getHandler('config');
-    $moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
-
-    $baseurl = $moduleConfig['searchlink_template'];
+    $baseurl = $moduleHelper->getConfig('searchlink_template');
 
     if ($queryarray === '') {
         $args       = '';

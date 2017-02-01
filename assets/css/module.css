@@ -799,19 +799,8 @@ ul.wikigalleryimg a {
     color: #333;
     font-size: 16pt;
     font-weight: normal;
-    zoom: 1; /* This enables hasLayout, which is required for older IE browsers */
-    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(color='#b0b0b0', Direction=135, Strength=3)";
-    filter: progid:DXImageTransform.Microsoft.Shadow(color='#b0b0b0', Direction=135, Strength=3);
-    box-shadow: 0 15px 10px -10px #000000, 0 1px 4px #000000, 0 0 40px #000000 inset;
-    -webkit-transform: rotate(-2deg);
+    box-shadow: 0 15px 10px -10px #CCCCCC, 0 1px 4px #CCCCCC, 0 0 40px #CCCCCC inset;
     transform: rotate(-2deg);
-    -webkit-transition: -webkit-transform .15s linear;
-    transition: -webkit-transform .15s linear;
-    transition: transform .15s linear;
-    transition: transform .15s linear, -webkit-transform .15s linear;
-    -webkit-transition: -webkit-transform .05s linear;
-    transition: -webkit-transform .05s linear;
-    transition: transform .05s linear;
     transition: transform .05s linear, -webkit-transform .05s linear;
 }
 

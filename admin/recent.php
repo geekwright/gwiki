@@ -10,7 +10,7 @@
  */
 include __DIR__ . '/header.php';
 
-echo $moduleAdmin->addNavigation(basename(__FILE__));
+$moduleAdmin->displayNavigation(basename(__FILE__));
 
 global $xoopsModule, $xoopsConfig;
 

@@ -1,4 +1,7 @@
 <?php
+
+use Xmf\Request;
+
 /*
  * getthumb
  *
@@ -20,17 +23,17 @@
  *
  */
 
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 $xoopsLogger->activated = false;
 // provide error logging for our sanity in debugging (won't see xoops logger)
 restore_error_handler();
 error_reporting(-1);
 
-//$xoopsOption['template_main'] = 'gwiki_view.tpl';
+//$GLOBALS['xoopsOption']['template_main'] = 'gwiki_view.tpl';
 //include XOOPS_ROOT_PATH."/header.php";
 
 $dir = basename(__DIR__);
-include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/gwikiPage.php';
+include_once XOOPS_ROOT_PATH . '/modules/' . $dir . '/class/GwikiPage.php';
 $wikiPage = new GwikiPage;
 
 $default_thumb_size = $wikiPage->defaultThumbSize;
@@ -95,15 +98,10 @@ function serveFile($name, $mime, $modtime, $nocache = false)
 }
 
 unset($page, $name, $size);
-if (isset($_GET['page'])) {
-    $page = cleaner($_GET['page']);
-}
-if (isset($_GET['name'])) {
-    $name = cleaner($_GET['name']);
-}
-if (isset($_GET['size'])) {
-    $size = (int)$_GET['size'];
-}
+$page = Request::getString('page', '', 'get');
+$name = Request::getString('name', '', 'get');
+$size = Request::getInt('size', $default_thumb_size, 'get');
+
 if (empty($page) || empty($name)) {
     errorExit('parameter missing');
 }

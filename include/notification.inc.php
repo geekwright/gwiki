@@ -24,13 +24,9 @@ if (!defined('GWIKI_NOTIFY_ITEMINFO')) {
         global $xoopsDB;
 
         $dir = basename(dirname(__DIR__));
-        //include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/class/gwikiPage.php';
+        //include_once XOOPS_ROOT_PATH.'/modules/'.$dir.'/class/GwikiPage.php';
         //$wikiPage = new GwikiPage;
-        $moduleHandler = xoops_getHandler('module');
-        $module        = $moduleHandler->getByDirname($dir);
-        $module_id      = $module->getVar('mid');
-        $configHandler = xoops_getHandler('config');
-        $moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+        $moduleHelper = Xmf\Module\Helper::getHelper($dir);
 
         switch ($category) {
             case 'page':
@@ -51,7 +47,7 @@ if (!defined('GWIKI_NOTIFY_ITEMINFO')) {
                     $item['name'] = $row['keyword'];
                 }
 
-                $item['url'] = sprintf($moduleConfig['wikilink_template'], $row['keyword']);
+                $item['url'] = sprintf($moduleHelper->getConfig('wikilink_template'), $row['keyword']);
                 break;
             case 'namespace':
                 $item_id = (int)$item_id;
@@ -63,7 +59,7 @@ if (!defined('GWIKI_NOTIFY_ITEMINFO')) {
                 $row    = $xoopsDB->fetchArray($result);
 
                 $item['name'] = $row['prefix'];
-                $item['url']  = sprintf($moduleConfig['wikilink_template'], $row['prefix'] . ':' . $row['prefix_home']);
+                $item['url']  = sprintf($moduleHelper->getConfig('wikilink_template'), $row['prefix'] . ':' . $row['prefix_home']);
                 break;
             default:
                 $item['name'] = $category;

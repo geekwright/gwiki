@@ -11,7 +11,7 @@
 
 include __DIR__ . '/header.php';
 
-echo $moduleAdmin->addNavigation(basename(__FILE__));
-echo $moduleAdmin->renderAbout('', false);
+$moduleAdmin->displayNavigation(basename(__FILE__));
+$moduleAdmin->displayAbout('', false);
 
 include __DIR__ . '/footer.php';
