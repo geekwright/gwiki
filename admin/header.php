@@ -22,9 +22,8 @@ if (is_object($GLOBALS['xoops'])) {
 //}
 
 if (!defined('_MI_GWIKI_NAME')) { // if modinfo isn't loaded, do it
-    if (!@include_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/language/' . $xoopsConfig['language'] . '/modinfo.php') {
-        include_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/language/english/modinfo.php';
-    }
+    $moduleDirName = basename(__DIR__);
+    xoops_loadLanguage('modinfo', $moduleDirName);
 }
 
 include __DIR__ . '/functions.php';
