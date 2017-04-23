@@ -109,7 +109,7 @@ EOT;
              . '</a>' . $lockaction . ' | <a href="pages.php?page=' . $page . '&op=delete">' . _DELETE . '</a></td></tr>';
     }
     if ($i === 0) {
-        echo '<tr class="odd"><td colspan="3">' . _AD_GWIKI_EMPTYWIKI . '</td></tr>';
+        echo '<tr class="odd"><td colspan="4">' . _AD_GWIKI_EMPTYWIKI . '</td></tr>';
     }
 
     $endarray[_AD_GWIKI_CLEANUPDB] = 'pages.php?op=clean';
