@@ -249,6 +249,7 @@ class GwikiPage
     {
         $val  = trim(ini_get('upload_max_filesize'));
         $last = strtolower($val[strlen($val) - 1]);
+        $val  = (int) $val;
         switch ($last) {
             // The 'G' modifier is available since PHP 5.1.0
             case 'g':
