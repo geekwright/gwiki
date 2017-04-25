@@ -53,7 +53,7 @@ function obtainPage()
 
     $page = '';
 
-    $form = new XoopsThemeForm(_MD_GWIKI_WIZARD_NEWPAGE_PROMPT, 'gwizardform', 'wizard.php', 'POST', $token);
+    $form = new XoopsThemeForm(_MD_GWIKI_WIZARD_NEWPAGE_PROMPT, 'gwizardform', 'wizard.php', 'get');
 
     $form_ns_select = new XoopsFormSelect(_MD_GWIKI_WIZARD_PICK_NAMESPACE, 'nsid'); //, [mixed $value = null], [int $size = 1], [bool $multiple = false]  )
     $form_ns_select->addOptionArray($options);
@@ -760,6 +760,12 @@ switch ($op) {
         doGallery();
         break;
     default:
+        if (isset($_POST['wikiwizard_submit'])) {
+            $params = array(
+                'page' => $page,
+            );
+            redirect_to_edit($params);
+        }
         chooseWizard();
         break;
 }
