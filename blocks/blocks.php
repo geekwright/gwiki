@@ -101,11 +101,23 @@ function b_gwiki_newpage_show($options)
         $block['modpath']  = XOOPS_ROOT_PATH . '/modules/' . $dir;
         $block['modurl']   = XOOPS_URL . '/modules/' . $dir;
         $block['prefixes'] = $prefixes;
-        if ($options[0]) {
-            $block['action'] = 'wizard.php';
-        } else {
-            $block['action'] = 'edit.php';
+        $action = ($options[0]) ? 'wizard.php' : 'edit.php';
+        $block['action'] = $action;
+
+        xoops_load('XoopsFormLoader');
+        $form = new XoopsSimpleForm('', 'newwikipageform', XOOPS_URL . "/modules/{$dir}/$action", 'get');
+        if (count($prefixes) > 0) {
+            $options = array();
+            foreach($prefixes as $key => $value) {
+                $options[$value['prefix_id']] = $value['prefix'];
+            }
+            $select = new XoopsFormSelect(_MB_GWIKI_PICK_NAMESPACE, 'nsid');
+            $select->addOptionArray($options);
+            $form->addElement($select);
         }
+        $form->addElement(new XoopsFormText(_MB_GWIKI_PAGE_NAME, 'page', 16, 128));
+        $form->addElement(new XoopsFormButton('', 'submit', _MB_GWIKI_NEWPAGE, 'submit'));
+        $block['form'] = $form->render();
     } else {
         $block = false;
     }
