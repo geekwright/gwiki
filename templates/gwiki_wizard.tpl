@@ -15,7 +15,7 @@
         </div>
         <table>
             <tr>
-                <td style="vertical-align:top;">
+                <td class="hidden-xs" style="vertical-align:top;">
                     <div class="wikiwizard_logo"><img src="assets/images/wizardlogo.png" alt="logo"/></div>
                 </td>
                 <td>
